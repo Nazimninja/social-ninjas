@@ -1,0 +1,454 @@
+
+import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Monitor, Video, Zap, BarChart3, Hexagon, ArrowRight, Cpu, Layers, Code, Globe, Play, MessageSquare, Database, Share2, Search, CheckCircle2 } from 'lucide-react';
+import SEO from '../components/SEO';
+import ScrollReveal from '../components/ScrollReveal';
+
+// Internal Component for Parallax Cards
+interface ParallaxCardProps {
+  children: React.ReactNode;
+  className?: string;
+  bgContent: React.ReactNode;
+  videoSrc?: string;
+}
+
+const ParallaxCard: React.FC<ParallaxCardProps> = ({
+  children,
+  className = "",
+  bgContent,
+  videoSrc
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  // Disable heavy calculations on touch devices
+  const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current || isTouch) return;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+
+    cardRef.current.style.setProperty('--mouse-x', x.toString());
+    cardRef.current.style.setProperty('--mouse-y', y.toString());
+  };
+
+  const handleMouseLeave = () => {
+    if (!cardRef.current || isTouch) return;
+    cardRef.current.style.setProperty('--mouse-x', '0');
+    cardRef.current.style.setProperty('--mouse-y', '0');
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0A0A0A] transition-all duration-500 hover:border-brand-primary/30 hover:shadow-[0_0_40px_rgba(56,189,248,0.1)] group ${className}`}
+      style={{
+        perspective: '1000px',
+        // Default vars to avoid null issues
+        ['--mouse-x' as any]: '0',
+        ['--mouse-y' as any]: '0'
+      }}
+    >
+      {/* Background Visual Layer with Parallax */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+
+        {/* Video Background Layer */}
+        {videoSrc && (
+          <div className="absolute inset-0 z-0 opacity-20 md:group-hover:opacity-40 transition-opacity duration-700">
+            <div className="absolute inset-0 bg-brand-dark/50 z-10 mix-blend-multiply"></div> {/* Darken overlay */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              onLoadedData={() => setIsVideoLoaded(true)}
+              className={`w-full h-full object-cover grayscale mix-blend-screen transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          </div>
+        )}
+
+        {/* Abstract/SVG Layer (Sits on top of video) */}
+        <div className="relative z-10 w-full h-full">
+          {bgContent}
+        </div>
+      </div>
+
+      {/* Content Layer */}
+      <div className="relative z-20 h-full flex flex-col p-8 md:p-10 pointer-events-none">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const Services: React.FC = () => {
+  const serviceDetails = [
+    {
+      title: "Paid Media Buying",
+      description: "Mathematical ad scaling on Meta & Google.",
+      features: [
+        "Algorithmic Audience Targeting",
+        "Creative Testing Frameworks",
+        "Cross-Channel Retargeting",
+        "ROAS & LTV Optimization",
+        "Pixel & CAPI Setup"
+      ]
+    },
+    {
+      title: "Content Production",
+      description: "Visual assets that convert cold traffic.",
+      features: [
+        "High-Fidelity Video Ads (UGC/Studio)",
+        "Direct Response Copywriting",
+        "3D Motion Graphics & Visuals",
+        "Brand Identity Design",
+        "Viral Social Hooks"
+      ]
+    },
+    {
+      title: "AI Automation",
+      description: "Systems that work while you sleep.",
+      features: [
+        "24/7 Lead Qualification Agents",
+        "CRM Sync & Workflow Automation",
+        "Automated Email/SMS Nurturing",
+        "Custom Chatbot Development",
+        "Data Entry Automation"
+      ]
+    },
+    {
+      title: "Web Development",
+      description: "Digital real estate built for speed.",
+      features: [
+        "High-Converting Landing Pages",
+        "Next.js & React Applications",
+        "Technical SEO & Speed Opt",
+        "Custom API Integrations",
+        "Headless CMS Architecture"
+      ]
+    }
+  ];
+
+  return (
+    <div className="pt-24 pb-32 min-h-screen bg-[#020617] overflow-hidden selection:bg-brand-primary selection:text-black">
+      <SEO
+        title="Performance Marketing Services | AI, Paid Media & Content | Social Ninja's"
+        description="Full-stack growth infrastructure: Facebook/Google Ads, AI Automation Agents, and studio-grade content production. We build systems that generate predictable revenue."
+      />
+
+      {/* Background Ambient Glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-brand-secondary/5 rounded-full blur-[120px]"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+
+        {/* Modernist Header */}
+        <div className="mb-12 md:mb-16 max-w-3xl animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
+            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse"></div>
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-brand-primary">Growth Ecosystem</span>
+          </div>
+          <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+            Our Capabilities.
+          </h1>
+          <p className="text-xl text-neutral-400 font-light leading-relaxed max-w-xl">
+            We combine technical precision with avant-garde creative to build digital systems that outperform the market.
+          </p>
+        </div>
+
+        {/* --- BENTO GRID LAYOUT --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(350px,auto)]">
+
+          {/* Card 1: AI Solutions (Square) */}
+          <div className="md:col-span-1 h-full">
+            <ScrollReveal className="h-full">
+              <ParallaxCard
+                className="h-full group"
+                videoSrc="https://cdn.coverr.co/videos/coverr-neural-network-5238/1080p.mp4"
+                bgContent={
+                  <>
+                    <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-brand-primary/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
+                      style={{ transform: 'translate(calc(-50% + var(--mouse-x) * -20px), calc(-50% + var(--mouse-y) * -20px))' }}></div>
+
+                    <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+                      <div className="relative w-48 h-48 border border-white/10 rounded-full animate-[spin_10s_linear_infinite]"
+                        style={{ transform: 'rotateX(60deg) translate(calc(var(--mouse-x) * 10px), calc(var(--mouse-y) * 10px))' }}>
+                        <div className="absolute top-0 left-1/2 w-3 h-3 bg-brand-primary rounded-full blur-[2px] shadow-[0_0_10px_#38bdf8]"></div>
+                      </div>
+                      <div className="absolute w-32 h-32 border border-brand-primary/20 rounded-full animate-[spin_7s_linear_infinite_reverse]"
+                        style={{ transform: 'translate(calc(var(--mouse-x) * 20px), calc(var(--mouse-y) * 20px))' }}></div>
+                    </div>
+                  </>
+                }
+              >
+                <div className="mt-auto pointer-events-auto relative">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
+                    <div className="w-10 h-10 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-6 border border-brand-primary/20">
+                      <MessageSquare size={20} />
+                    </div>
+                    <h2 className="text-2xl font-display font-bold text-white mb-3">AI Automation</h2>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                      Deploy 24/7 intelligent agents. We build custom LLM workflows that handle sales qualification and support.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Chatbots', 'CRM Sync', 'Lead Gen'].map((tag, i) => (
+                        <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Slide-Up CTA */}
+                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                    <Link to="/contact">
+                      <button className="w-full py-3 rounded-xl bg-brand-primary text-brand-dark font-bold text-sm shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                        Configure Agent <ArrowRight size={16} />
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </ParallaxCard>
+            </ScrollReveal>
+          </div>
+
+          {/* Card 2: Tech Ecosystem (Wide) */}
+          <div className="md:col-span-2 h-full">
+            <ScrollReveal className="h-full" delay="100ms">
+              <ParallaxCard
+                className="h-full group"
+                videoSrc="https://cdn.coverr.co/videos/coverr-html-coding-5407/1080p.mp4"
+                bgContent={
+                  <div className="absolute inset-0 opacity-20" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                    transform: 'translate(calc(var(--mouse-x) * -15px), calc(var(--mouse-y) * -15px))'
+                  }}></div>
+                }
+              >
+                <div className="relative z-10 flex flex-col h-full justify-between pointer-events-auto">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-2">
+                    <div className="w-12 h-12 bg-brand-secondary/10 rounded-xl flex items-center justify-center text-brand-secondary mb-6 border border-brand-secondary/20">
+                      <Layers size={24} />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-display font-bold text-white mb-3">Tech Ecosystem & Web</h2>
+                      <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mb-6">
+                        Powering innovation through modern frameworks. We build high-performance websites (React, Next.js), custom API integrations, and scalable digital products.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {['React / Next.js', 'Python Automation', 'SEO', 'Custom APIs'].map((tag, i) => (
+                          <span key={i} className="text-xs font-bold uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Wide Card Action */}
+                  <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <Link to="/contact">
+                      <button className="px-6 py-3 rounded-xl bg-white text-black font-bold text-sm shadow-xl hover:bg-brand-secondary hover:text-white transition-colors flex items-center gap-2">
+                        Build Infrastructure <ArrowRight size={16} />
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </ParallaxCard>
+            </ScrollReveal>
+          </div>
+
+          {/* Card 3: Analytics / Paid Ads (Square) */}
+          <div className="md:col-span-1 h-full">
+            <ScrollReveal className="h-full" delay="200ms">
+              <ParallaxCard
+                className="h-full group"
+                videoSrc="https://cdn.coverr.co/videos/coverr-business-charts-5369/1080p.mp4"
+                bgContent={
+                  <>
+                    <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-brand-primary/10 to-transparent perspective-3d opacity-30">
+                      <div className="w-full h-full border-t border-brand-primary/20"
+                        style={{ transform: 'rotateX(60deg) scale(2)' }}></div>
+                    </div>
+                    <svg viewBox="0 0 200 100" className="absolute bottom-20 left-0 w-full h-32 stroke-brand-primary fill-none stroke-[3px] drop-shadow-[0_0_10px_rgba(56,189,248,0.5)]"
+                      style={{ transform: 'translate(calc(var(--mouse-x) * 15px), calc(var(--mouse-y) * 5px))' }}>
+                      <path d="M0 80 Q 50 70, 80 40 T 200 10" />
+                    </svg>
+                  </>
+                }
+              >
+                <div className="mt-auto pointer-events-auto relative">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
+                    <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 mb-6 border border-green-500/20">
+                      <BarChart3 size={20} />
+                    </div>
+                    <h2 className="text-2xl font-display font-bold text-white mb-3">Paid Media & Analytics</h2>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                      Algorithmic media buying on Meta & Google. We track every dollar.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Meta Ads', 'Google Ads', 'Data Science'].map((tag, i) => (
+                        <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                    <Link to="/contact">
+                      <button className="w-full py-3 rounded-xl bg-green-500 text-black font-bold text-sm shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                        Scale Revenue <ArrowRight size={16} />
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </ParallaxCard>
+            </ScrollReveal>
+          </div>
+
+          {/* Card 4: Design / Creative (Square) */}
+          <div className="md:col-span-1 h-full">
+            <ScrollReveal className="h-full" delay="300ms">
+              <ParallaxCard
+                className="h-full group"
+                videoSrc="https://cdn.coverr.co/videos/coverr-ink-swirl-in-water-18/1080p.mp4"
+                bgContent={
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+                }
+              >
+                <div className="mt-auto pointer-events-auto relative">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
+                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 mb-6 border border-purple-500/20">
+                      <Video size={20} />
+                    </div>
+                    <h2 className="text-2xl font-display font-bold text-white mb-3">Creative Production</h2>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                      High-fidelity video and design that stops the scroll.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Video Editing', '3D Motion', 'Branding'].map((tag, i) => (
+                        <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                    <Link to="/contact">
+                      <button className="w-full py-3 rounded-xl bg-purple-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                        Start Production <ArrowRight size={16} />
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </ParallaxCard>
+            </ScrollReveal>
+          </div>
+
+          {/* Card 5: Workflow / Strategy (Square) */}
+          <div className="md:col-span-1 h-full">
+            <ScrollReveal className="h-full" delay="400ms">
+              <ParallaxCard
+                className="h-full group"
+                videoSrc="https://cdn.coverr.co/videos/coverr-time-lapse-in-modern-office-5264/1080p.mp4"
+                bgContent={
+                  <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '30px 30px' }}></div>
+                }
+              >
+                <div className="mt-auto pointer-events-auto relative">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
+                    <div className="w-10 h-10 rounded-lg bg-brand-accent/10 flex items-center justify-center text-brand-accent mb-6 border border-brand-accent/20">
+                      <Share2 size={20} />
+                    </div>
+                    <h2 className="text-2xl font-display font-bold text-white mb-3">Workflow Strategy</h2>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                      We build systems, not just campaigns. Consult on total growth structure.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Consulting', 'Funnels', 'Audits'].map((tag, i) => (
+                        <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                    <Link to="/contact">
+                      <button className="w-full py-3 rounded-xl bg-brand-accent text-brand-dark font-bold text-sm shadow-[0_0_20px_rgba(45,212,191,0.4)] hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                        Book Audit <ArrowRight size={16} />
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </ParallaxCard>
+            </ScrollReveal>
+          </div>
+
+          {/* CTA Banner */}
+          <div className="md:col-span-3 mt-8">
+            <ScrollReveal>
+              <Link to="/contact">
+                <div className="bg-brand-primary rounded-[32px] p-12 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group hover:shadow-[0_0_50px_rgba(56,189,248,0.3)] transition-all duration-500">
+                  {/* Animated Shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+
+                  <div className="relative z-10">
+                    <h3 className="text-3xl md:text-5xl font-display font-black text-brand-dark uppercase tracking-tight mb-2">Ready to Scale?</h3>
+                    <p className="text-brand-dark/80 font-bold text-lg">Get a custom roadmap tailored to your unit economics.</p>
+                  </div>
+                  <div className="relative z-10 mt-6 md:mt-0 bg-brand-dark text-white px-10 py-5 rounded-full font-bold flex items-center gap-3 group-hover:scale-105 transition-transform shadow-2xl border border-white/10">
+                    Start Project <ArrowRight size={20} />
+                  </div>
+                </div>
+              </Link>
+            </ScrollReveal>
+          </div>
+
+        </div>
+
+        {/* Bottom Detailed List (SEO) - Refined */}
+        <div className="mt-16 md:mt-24 pt-12 md:pt-16 border-t border-white/5">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+            <div>
+              <h2 className="text-white text-3xl font-display font-bold mb-2">Core Services Breakdown</h2>
+              <p className="text-neutral-500 text-sm">Granular capabilities for technical due diligence.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+            {serviceDetails.map((service, i) => (
+              <div key={i} className="group">
+                <h4 className="text-white font-bold text-lg mb-2 group-hover:text-brand-primary transition-colors">{service.title}</h4>
+                <p className="text-xs text-neutral-500 mb-6 border-b border-white/5 pb-4 leading-relaxed">{service.description}</p>
+                <ul className="space-y-3">
+                  {service.features.map((feature, j) => (
+                    <li key={j} className="text-neutral-400 text-sm flex items-start gap-3 group/item">
+                      <CheckCircle2 size={16} className="text-brand-dark/50 group-hover/item:text-brand-primary transition-colors mt-0.5 shrink-0" />
+                      <span className="group-hover/item:text-neutral-300 transition-colors">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Services;
