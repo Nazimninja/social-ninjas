@@ -93,7 +93,7 @@ const Careers: React.FC = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch("https://formsubmit.co/ajax/nazim.socialninja@gmail.com", {
+            const response = await fetch("https://formsubmit.co/ajax/nazim@socialninjas.in", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

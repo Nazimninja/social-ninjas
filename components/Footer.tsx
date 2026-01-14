@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
   const socialLinks = [
     { Icon: Instagram, href: "https://www.instagram.com/socialninja.s/" },
     { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61553674457871" },
-    { Icon: Mail, href: "mailto:nazim.socialninja@gmail.com" },
+    { Icon: Mail, href: "mailto:nazim@socialninjas.in" },
     { Icon: Phone, href: "tel:+918892587979" },
     { Icon: Linkedin, href: "https://www.linkedin.com/company/99078419/admin/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BHPz7sWkvRce97k%2Bu7fpv2Q%3D%3D" }
   ];

@@ -87,7 +87,7 @@ const Contact: React.FC = () => {
     // 1. Send Email via FormSubmit.co (AJAX)
     try {
       // Existing FormSubmit.co call
-      const response = await fetch("https://formsubmit.co/ajax/nazim.socialninja@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/nazim@socialninjas.in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -220,7 +220,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-neutral-500 uppercase font-bold">Direct Email</p>
-                  <p className="font-medium">nazim.socialninja@gmail.com</p>
+                  <p className="font-medium">nazim@socialninjas.in</p>
                 </div>
               </div>
             </div>

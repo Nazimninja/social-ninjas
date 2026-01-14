@@ -156,8 +156,8 @@ const PrivacyPolicy: React.FC = () => {
 
                         <div className="space-y-2">
                             <p className="text-white font-bold">Social Ninja's (Data Compliance Officer)</p>
-                            <a href="mailto:nazim.socialninja@gmail.com" className="text-brand-primary hover:text-white transition-colors block text-lg font-mono">
-                                nazim.socialninja@gmail.com
+                            <a href="mailto:nazim@socialninjas.in" className="text-brand-primary hover:text-white transition-colors block text-lg font-mono">
+                                nazim@socialninjas.in
                             </a>
                         </div>
                     </section>
