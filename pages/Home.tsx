@@ -109,16 +109,16 @@ const Home: React.FC = () => {
                             {/* Premium Tag */}
                             <div className="inline-flex items-center gap-2 self-start px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 mb-6 md:mb-8 backdrop-blur-md animate-fade-in-up">
                                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary animate-pulse"></div>
-                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-300">Performance-First Agency</span>
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-300">Ads • Content • Automation</span>
                             </div>
 
                             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] md:leading-[1.05] tracking-tight mb-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                                We Engineer <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-secondary">Predictable Revenue.</span>
+                                We Scale Brands with <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-secondary">Ads, Content & AI.</span>
                             </h1>
 
                             <p className="text-base sm:text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-xl mb-8 md:mb-10 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                                Stop guessing. Social Ninja’s combines elite creative production with mathematical media buying to build robust growth systems for market leaders in <span className="text-white font-medium">India & UAE</span>.
+                                Social Ninja’s is the performance agency for <span className="text-white font-medium">India & UAE</span>. We combine high-converting video creatives with data-driven media buying and 24/7 AI sales agents.
                             </p>
 
                             <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4 sm:gap-6 animate-fade-in-up md:ml-32" style={{ animationDelay: '300ms' }}>
