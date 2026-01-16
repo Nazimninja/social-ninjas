@@ -289,9 +289,9 @@ const Home: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { icon: Rocket, title: "Growth Strategy", outcome: "Revenue & ROAS", desc: "We engineer campaigns that drive tangible business outcomes, not just vanity metrics.", bg: "from-blue-500/10 to-purple-500/5", delay: '0ms' },
-                            { icon: Zap, title: "Premium Content", outcome: "Authority & Retention", desc: "High-fidelity production that commands attention and positions your brand as the market leader.", bg: "from-purple-500/10 to-pink-500/5", delay: '100ms' },
-                            { icon: Activity, title: "AI Automation", outcome: "Efficiency & Speed", desc: "Intelligent agents that nurture leads and streamline operations 24/7 without overhead.", bg: "from-green-500/10 to-teal-500/5", delay: '200ms' }
+                            { icon: Rocket, title: "Performance Marketing", outcome: "Revenue & ROAS", desc: "Data-driven ad campaigns on Meta & Google that maximize your ROI.", bg: "from-blue-500/10 to-purple-500/5", delay: '0ms' },
+                            { icon: Zap, title: "Creative Studio", outcome: "Authority & Retention", desc: "Eye-catching videos and designs that grab attention and tell your story.", bg: "from-purple-500/10 to-pink-500/5", delay: '100ms' },
+                            { icon: Activity, title: "AI & Automation", outcome: "Efficiency & Speed", desc: "Intelligent chatbots and workflows that handle sales 24/7.", bg: "from-green-500/10 to-teal-500/5", delay: '200ms' }
                         ].map((item, i) => (
                             <ScrollReveal key={i} delay={item.delay}>
                                 <Link to="/services">
