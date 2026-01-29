@@ -1,76 +1,70 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 interface SEOProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   image?: string;
-  url?: string;
   type?: string;
-  keywords?: string;
+  article?: {
+    publishedTime: string;
+    modifiedTime: string;
+    section: string;
+    tags: string[];
+    author: string;
+  };
 }
 
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = "/og-image.png",
-  url = window.location.href,
-  type = "website",
-  keywords = "digital marketing, social media agency, performance marketing, AI automation, video production, ROAS, growth agency"
+  image = 'https://social-ninjas.vercel.app/og-image.png?v=2',
+  type = 'website',
+  article
 }) => {
-  useEffect(() => {
-    const prevTitle = document.title;
+  const location = useLocation();
+  const canonicalUrl = `https://social-ninjas.vercel.app${location.pathname}`;
+  const siteTitle = "Social Ninja's | #1 Performance Marketing Agency for High-Growth Brands";
+  const defaultDescription = "Stop burning cash. Social Ninja's engineers predictable revenue systems for brands in India & UAE. We combine AI automation, elite content, and paid media to drive 3-10x ROAS.";
 
-    // Helper to update or create meta tags
-    const updateMeta = (name: string, content: string, attributeName: string = 'name') => {
-      let element = document.querySelector(`meta[${attributeName}="${name}"]`);
-      if (!element) {
-        element = document.createElement('meta');
-        element.setAttribute(attributeName, name);
-        document.head.appendChild(element);
-      }
-      element.setAttribute('content', content);
-    };
+  const fullTitle = title ? `${title} | Social Ninja's` : siteTitle;
 
-    // Helper for canonical link
-    const updateCanonical = (href: string) => {
-      let element = document.querySelector('link[rel="canonical"]');
-      if (!element) {
-        element = document.createElement('link');
-        element.setAttribute('rel', 'canonical');
-        document.head.appendChild(element);
-      }
-      element.setAttribute('href', href);
-    };
+  return (
+    <Helmet>
+      {/* Basic Metadata */}
+      <title>{fullTitle}</title>
+      <meta name="description" content={description || defaultDescription} />
+      <link rel="canonical" href={canonicalUrl} />
 
-    // 1. Basic Meta
-    document.title = title;
-    updateMeta('description', description);
-    updateMeta('keywords', keywords);
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content={type} />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description || defaultDescription} />
+      <meta property="og:image" content={image} />
+      <meta property="og:url" content={canonicalUrl} />
 
-    // 2. Open Graph / Facebook / LinkedIn
-    updateMeta('og:type', type, 'property');
-    updateMeta('og:title', title, 'property');
-    updateMeta('og:description', description, 'property');
-    updateMeta('og:image', image, 'property');
-    updateMeta('og:url', url, 'property');
-    updateMeta('og:site_name', "Social Ninja's", 'property');
+      {/* Twitter */}
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:title" content={fullTitle} />
+      <meta property="twitter:description" content={description || defaultDescription} />
+      <meta property="twitter:image" content={image} />
 
-    // 3. Twitter
-    updateMeta('twitter:card', 'summary_large_image');
-    updateMeta('twitter:title', title);
-    updateMeta('twitter:description', description);
-    updateMeta('twitter:image', image);
-
-    // 4. Canonical
-    updateCanonical(url.split('?')[0]); // Remove query params for canonical
-
-    return () => {
-      document.title = prevTitle;
-    };
-  }, [title, description, image, url, type, keywords]);
-
-  return null;
+      {/* Article Specific Metadata */}
+      {article && (
+        <>
+          <meta property="article:published_time" content={article.publishedTime} />
+          <meta property="article:modified_time" content={article.modifiedTime} />
+          <meta property="article:section" content={article.section} />
+          <meta property="article:author" content={article.author} />
+          {article.tags.map((tag) => (
+            <meta key={tag} property="article:tag" content={tag} />
+          ))}
+        </>
+      )}
+    </Helmet>
+  );
 };
 
 export default SEO;

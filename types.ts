@@ -34,3 +34,20 @@ export interface NavLink {
   label: string;
   path: string;
 }
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  coverImage: string;
+  category: string;
+  author: {
+    name: string;
+    image: string;
+  };
+  publishedAt: string;
+  readTime: string;
+  content: string; // Markdown or HTML string
+  tags: string[];
+}

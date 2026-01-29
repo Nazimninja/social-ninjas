@@ -55,7 +55,8 @@ const Footer: React.FC = () => {
                 { label: 'Performance Ads (Paid Media)', path: '/services#ads' },
                 { label: 'Video Production', path: '/services#video' },
                 { label: 'AI Automation', path: '/ai-automation' },
-                { label: 'Web & SEO', path: '/services#web' }
+                { label: 'Web & SEO', path: '/services#web' },
+                { label: 'Blog', path: '/blog' }
               ].map((item, i) => (
                 <li key={i}>
                   <Link to={item.path} className="text-neutral-400 hover:text-white transition-colors text-sm font-medium">
