@@ -5,6 +5,7 @@ import { TrendingUp, ArrowRight, ShieldCheck, Star, Rocket, ChevronRight, BarCha
 import Button from '../components/Button';
 import SEO from '../components/SEO';
 import ScrollReveal from '../components/ScrollReveal';
+import InstagramFeed from '../components/InstagramFeed';
 
 const Home: React.FC = () => {
     // Testimonial Carousel State
@@ -508,6 +509,8 @@ const Home: React.FC = () => {
                     </ScrollReveal>
                 </div>
             </section>
+
+            <InstagramFeed />
         </main>
     );
 };

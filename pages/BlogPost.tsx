@@ -20,9 +20,6 @@ const BlogPost: React.FC = () => {
         return <NotFound />;
     }
 
-    // Calculate read time if not provided, or use the one from data
-    // Using the one from data for now.
-
     const shareUrl = window.location.href;
 
     return (
@@ -41,107 +38,133 @@ const BlogPost: React.FC = () => {
                 }}
             />
 
-            <article className="min-h-screen pt-32 pb-20 px-6 relative overflow-hidden">
-                {/* Background Elements */}
-                <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-brand-primary/5 to-transparent pointer-events-none"></div>
+            <article className="min-h-screen pt-32 pb-20 relative bg-brand-dark">
 
-                <div className="max-w-4xl mx-auto relative z-10">
-                    {/* Back Link */}
-                    <Link to="/blog" className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8 group">
-                        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-sm font-medium">Back to Blog</span>
+                {/* Progress Bar (Optional - could implement scroll watcher) */}
+
+                <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+                    {/* Navigation */}
+                    <Link to="/blog" className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-12 group">
+                        <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-brand-dark transition-all">
+                            <ArrowLeft size={16} />
+                        </div>
+                        <span className="text-sm font-medium tracking-wide uppercase">Back to Feed</span>
                     </Link>
 
-                    {/* Header */}
-                    <header className="space-y-6 mb-12">
-                        <div className="flex flex-wrap items-center gap-4 text-xs font-medium">
-                            <span className="px-3 py-1 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary">
-                                {post.category}
-                            </span>
-                            <div className="flex items-center gap-1.5 text-neutral-400">
-                                <Calendar size={14} />
-                                <span>{post.publishedAt}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-neutral-400">
-                                <Clock size={14} />
-                                <span>{post.readTime}</span>
-                            </div>
+                    {/* New Header Design */}
+                    <header className="max-w-5xl mx-auto text-center space-y-8 mb-20">
+                        <div className="flex items-center justify-center gap-4 text-sm font-bold tracking-widest uppercase text-brand-primary">
+                            <span>{post.category}</span>
+                            <span className="w-1 h-1 rounded-full bg-white/20"></span>
+                            <span className="text-neutral-400">{post.readTime}</span>
                         </div>
 
-                        <h1 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight leading-tight">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white tracking-tighter leading-[1.1]">
                             {post.title}
                         </h1>
 
-                        <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-white/10 overflow-hidden">
+                        <div className="flex items-center justify-center gap-4 pt-4">
+                            {/* Author */}
+                            <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full pr-6 pl-2 py-2">
+                                <div className="w-10 h-10 rounded-full overflow-hidden">
                                     <img src={post.author.image} alt={post.author.name} className="w-full h-full object-cover" />
                                 </div>
-                                <div>
-                                    <p className="text-sm font-medium text-white">{post.author.name}</p>
-                                    <p className="text-xs text-neutral-400">Social Ninja's Team</p>
+                                <div className="text-left leading-tight">
+                                    <p className="text-sm font-bold text-white">{post.author.name}</p>
+                                    <p className="text-[10px] text-neutral-400 uppercase tracking-wider">Social Ninja's Team</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                <Button variant="outline" className="p-2 h-auto text-neutral-400 hover:text-white rounded-full border-white/10" onClick={() => navigator.clipboard.writeText(shareUrl)}>
-                                    <Share2 size={16} />
-                                </Button>
+                            {/* Date */}
+                            <div className="hidden md:flex items-center gap-2 text-neutral-400 text-sm font-medium px-6 py-4 bg-white/5 border border-white/10 rounded-full">
+                                <Calendar size={16} />
+                                <span>{post.publishedAt}</span>
                             </div>
                         </div>
                     </header>
 
-                    {/* Featured Image */}
-                    <div className="relative aspect-video rounded-2xl overflow-hidden mb-16 border border-white/10 shadow-2xl">
+                    {/* Cinema Mode Image */}
+                    <div className="w-full aspect-[21/9] rounded-[2rem] overflow-hidden mb-24 relative shadow-2xl">
+                        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent opacity-50"></div>
                         <img
                             src={post.coverImage}
                             alt={post.title}
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/50 to-transparent"></div>
                     </div>
 
-                    {/* Content */}
-                    <div className="prose prose-invert prose-lg max-w-none 
-            prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight
-            prose-a:text-brand-primary prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-white prose-strong:font-semibold
-            prose-ul:list-disc prose-ul:pl-6
-            prose-blockquote:border-l-4 prose-blockquote:border-brand-primary prose-blockquote:bg-white/5 prose-blockquote:px-6 prose-blockquote:py-2 prose-blockquote:rounded-r-lg prose-blockquote:italic
-            prose-img:rounded-xl prose-img:shadow-lg
-          ">
-                        <Markdown>{post.content}</Markdown>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-[1400px] mx-auto">
+                        {/* Sidebar (Share & TOC) */}
+                        <div className="hidden lg:block lg:col-span-2 relative">
+                            <div className="sticky top-40 space-y-8">
+                                <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest text-center">Share</p>
+                                <div className="flex flex-col gap-4 items-center">
+                                    <button onClick={() => navigator.clipboard.writeText(shareUrl)} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all">
+                                        <Linkedin size={20} />
+                                    </button>
+                                    <button onClick={() => navigator.clipboard.writeText(shareUrl)} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all">
+                                        <Twitter size={20} />
+                                    </button>
+                                    <button onClick={() => navigator.clipboard.writeText(shareUrl)} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all">
+                                        <Share2 size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Main Content - Wider and more readable */}
+                        <div className="lg:col-span-8">
+                            <div className="prose prose-invert prose-xl max-w-none 
+                  prose-p:leading-relaxed prose-p:text-neutral-300
+                  prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-white
+                  prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6
+                  prose-h3:text-2xl prose-h3:text-brand-primary
+                  prose-a:text-brand-primary prose-a:no-underline hover:prose-a:underline
+                  prose-strong:text-white prose-strong:font-bold
+                  prose-ul:list-none prose-ul:space-y-2 prose-ul:pl-0
+                  prose-li:pl-6 prose-li:relative prose-li:before:content-[''] prose-li:before:absolute prose-li:before:left-0 prose-li:before:top-3 prose-li:before:w-2 prose-li:before:h-2 prose-li:before:bg-brand-primary prose-li:before:rounded-full
+                  prose-blockquote:border-none prose-blockquote:bg-white/5 prose-blockquote:p-8 prose-blockquote:rounded-2xl prose-blockquote:text-xl prose-blockquote:font-display prose-blockquote:not-italic prose-blockquote:text-white
+                  prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-12
+                ">
+                                <Markdown>{post.content}</Markdown>
+                            </div>
+
+                            {/* Footer Tags */}
+                            <div className="mt-20 pt-10 border-t border-white/10">
+                                <div className="flex flex-wrap gap-3">
+                                    {post.tags.map(tag => (
+                                        <span key={tag} className="px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/5 rounded-full text-sm font-medium text-neutral-300 transition-colors cursor-default">
+                                            #{tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Empty right col for balance */}
+                        <div className="hidden lg:block lg:col-span-2"></div>
                     </div>
 
-                    {/* Footer Tags */}
-                    <div className="mt-16 pt-8 border-t border-white/10">
-                        <div className="flex flex-wrap gap-2">
-                            {post.tags.map(tag => (
-                                <span key={tag} className="px-3 py-1 bg-white/5 hover:bg-white/10 rounded-full text-xs text-neutral-300 transition-colors cursor-default">
-                                    #{tag}
-                                </span>
-                            ))}
+                    {/* CTA Section */}
+                    <div className="max-w-5xl mx-auto mt-32 mb-12">
+                        <div className="relative rounded-[2.5rem] overflow-hidden bg-brand-primary">
+                            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+                            <div className="relative z-10 px-6 py-20 text-center space-y-8">
+                                <h2 className="text-4xl md:text-5xl font-display font-bold text-white max-w-2xl mx-auto leading-tight">
+                                    Ready to apply these insights to your business?
+                                </h2>
+                                <p className="text-white/80 text-lg max-w-xl mx-auto">
+                                    Stop guessing. Start scaling with data-driven AI systems.
+                                </p>
+                                <Link to="/contact">
+                                    <Button className="bg-white text-brand-dark hover:bg-brand-dark hover:text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl shadow-brand-dark/20">
+                                        Book Your Strategy Call
+                                    </Button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
-                    {/* CTA */}
-                    <div className="mt-20 p-8 md:p-12 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 border border-white/10 text-center space-y-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
-
-                        <div className="relative z-10">
-                            <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
-                                Ready to Scale with AI Automation?
-                            </h2>
-                            <p className="text-neutral-400 max-w-lg mx-auto mb-8">
-                                Book a free strategy call to discuss how we can implement these systems in your business.
-                            </p>
-                            <Link to="/contact">
-                                <Button variant="primary" className="px-8 py-3 text-sm font-bold">
-                                    Book Your Strategy Call
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
                 </div>
             </article>
         </>
