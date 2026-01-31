@@ -30,7 +30,7 @@ const AiAutomation: React.FC = () => {
                             <span className="text-brand-primary text-xs font-bold uppercase tracking-widest">System Online v2.4</span>
                         </div>
 
-                        <h1 className="font-display text-5xl md:text-8xl font-black text-white mb-8 tracking-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+                        <h1 className="font-display text-4xl md:text-8xl font-black text-white mb-8 tracking-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
                             HIRE YOUR <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-primary animate-shine">DIGITAL WORKFORCE</span>
                         </h1>
@@ -215,72 +215,74 @@ const AiAutomation: React.FC = () => {
                 </div>
 
                 <div className="max-w-5xl mx-auto">
-                    <div className="bg-[#050A1F]/50 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
-                        {/* Table Header */}
-                        <div className="grid grid-cols-12 border-b border-white/5 bg-white/5">
-                            <div className="col-span-4 p-6 md:p-8 flex items-center">
-                                <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">Metric</span>
+                    <div className="bg-[#050A1F]/50 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative overflow-x-auto">
+                        <div className="min-w-[700px]">
+                            {/* Table Header */}
+                            <div className="grid grid-cols-12 border-b border-white/5 bg-white/5">
+                                <div className="col-span-4 p-6 md:p-8 flex items-center">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">Metric</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
+                                    <span className="text-lg md:text-xl font-bold text-white">Human SDR</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 bg-brand-primary text-brand-dark text-[10px] font-bold px-2 py-1 uppercase tracking-wider">Winner</div>
+                                    <span className="text-lg md:text-xl font-bold text-brand-primary flex items-center gap-2">
+                                        <Bot size={20} /> AI Agent
+                                    </span>
+                                </div>
                             </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
-                                <span className="text-lg md:text-xl font-bold text-white">Human SDR</span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 bg-brand-primary text-brand-dark text-[10px] font-bold px-2 py-1 uppercase tracking-wider">Winner</div>
-                                <span className="text-lg md:text-xl font-bold text-brand-primary flex items-center gap-2">
-                                    <Bot size={20} /> AI Agent
-                                </span>
-                            </div>
-                        </div>
 
-                        {/* Row 1: Cost */}
-                        <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <div className="col-span-4 p-6 md:p-8 flex items-center">
-                                <span className="text-white font-medium">Monthly Cost</span>
+                            {/* Row 1: Cost */}
+                            <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <div className="col-span-4 p-6 md:p-8 flex items-center">
+                                    <span className="text-white font-medium">Monthly Cost</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
+                                    <span className="text-red-400 font-bold text-lg">$3,500 - $5,000</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
+                                    <span className="text-green-400 font-bold text-lg">$500 - $1,500</span>
+                                </div>
                             </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
-                                <span className="text-red-400 font-bold text-lg">$3,500 - $5,000</span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
-                                <span className="text-green-400 font-bold text-lg">$500 - $1,500</span>
-                            </div>
-                        </div>
 
-                        {/* Row 2: Availability */}
-                        <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <div className="col-span-4 p-6 md:p-8 flex items-center">
-                                <span className="text-white font-medium">Availability</span>
+                            {/* Row 2: Availability */}
+                            <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <div className="col-span-4 p-6 md:p-8 flex items-center">
+                                    <span className="text-white font-medium">Availability</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 text-center">
+                                    <span className="text-neutral-400 text-sm font-medium">8 Hours / Day<br /><span className="text-xs opacity-50">(Mon-Fri)</span></span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
+                                    <span className="text-brand-primary font-bold text-lg">24/7/365</span>
+                                </div>
                             </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 text-center">
-                                <span className="text-neutral-400 text-sm font-medium">8 Hours / Day<br /><span className="text-xs opacity-50">(Mon-Fri)</span></span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
-                                <span className="text-brand-primary font-bold text-lg">24/7/365</span>
-                            </div>
-                        </div>
 
-                        {/* Row 3: Response Time */}
-                        <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
-                            <div className="col-span-4 p-6 md:p-8 flex items-center">
-                                <span className="text-white font-medium">Response Time</span>
+                            {/* Row 3: Response Time */}
+                            <div className="grid grid-cols-12 border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <div className="col-span-4 p-6 md:p-8 flex items-center">
+                                    <span className="text-white font-medium">Response Time</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
+                                    <span className="text-neutral-400 font-medium">1 - 4 Hours (Avg)</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
+                                    <span className="text-brand-primary font-bold text-lg">Instant <span className="text-sm font-normal opacity-70">(Seconds)</span></span>
+                                </div>
                             </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
-                                <span className="text-neutral-400 font-medium">1 - 4 Hours (Avg)</span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
-                                <span className="text-brand-primary font-bold text-lg">Instant <span className="text-sm font-normal opacity-70">(Seconds)</span></span>
-                            </div>
-                        </div>
 
-                        {/* Row 4: Scalability */}
-                        <div className="grid grid-cols-12 hover:bg-white/5 transition-colors">
-                            <div className="col-span-4 p-6 md:p-8 flex items-center">
-                                <span className="text-white font-medium">Scalability</span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
-                                <span className="text-neutral-400 font-medium">Linear <span className="text-xs opacity-50">(Hire more)</span></span>
-                            </div>
-                            <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
-                                <span className="text-brand-primary font-bold text-lg">Infinite <span className="text-sm font-normal opacity-70">(Instant)</span></span>
+                            {/* Row 4: Scalability */}
+                            <div className="grid grid-cols-12 hover:bg-white/5 transition-colors">
+                                <div className="col-span-4 p-6 md:p-8 flex items-center">
+                                    <span className="text-white font-medium">Scalability</span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5">
+                                    <span className="text-neutral-400 font-medium">Linear <span className="text-xs opacity-50">(Hire more)</span></span>
+                                </div>
+                                <div className="col-span-4 p-6 md:p-8 flex items-center justify-center border-l border-white/5 bg-brand-primary/5">
+                                    <span className="text-brand-primary font-bold text-lg">Infinite <span className="text-sm font-normal opacity-70">(Instant)</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>

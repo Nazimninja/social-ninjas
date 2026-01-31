@@ -156,10 +156,10 @@ const Services: React.FC = () => {
             <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse"></div>
             <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-brand-primary">What We Do</span>
           </div>
-          <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+          <h1 className="font-display text-4xl md:text-7xl font-bold text-white mb-6 tracking-tight">
             Comprehensive Digital Growth Solutions.
           </h1>
-          <p className="text-xl text-neutral-400 font-light leading-relaxed max-w-xl">
+          <p className="text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-xl">
             We provide the tools and strategies you need to scale. Simple, transparent, and effective.
           </p>
         </div>

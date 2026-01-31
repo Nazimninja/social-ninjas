@@ -98,8 +98,8 @@ const Home: React.FC = () => {
             <section className="relative min-h-[90vh] lg:min-h-[100dvh] flex items-center pt-24 pb-12 lg:pt-20 lg:pb-0 overflow-hidden">
 
                 {/* Subtle Background Glows (No more messy noise) */}
-                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
-                <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-brand-secondary/5 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="absolute top-0 left-1/4 w-[80vw] h-[80vw] md:w-[500px] md:h-[500px] bg-brand-primary/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
+                <div className="absolute bottom-0 right-1/4 w-[80vw] h-[80vw] md:w-[500px] md:h-[500px] bg-brand-secondary/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
 
                 <div className="max-w-7xl mx-auto px-6 w-full relative z-10 h-full">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -170,10 +170,10 @@ const Home: React.FC = () => {
                         </div>
 
                         {/* RIGHT COLUMN: Cohesive Abstract Composition (Span 5 cols) */}
-                        <div className="lg:col-span-5 relative h-[400px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center lg:justify-end perspective-1000 mt-8 lg:mt-0 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+                        <div className="lg:col-span-5 relative h-[350px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center lg:justify-end perspective-1000 mt-12 lg:mt-0 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
 
                             {/* Visual Container - The "Revenue Engine" */}
-                            <div className="relative w-full max-w-[400px] lg:max-w-[450px] aspect-[4/5] transform scale-90 md:scale-100">
+                            <div className="relative w-full max-w-[320px] md:max-w-[400px] lg:max-w-[450px] aspect-[4/5] transform scale-100 md:scale-100">
 
                                 {/* 1. Background Blur Plate */}
                                 <div className="absolute inset-0 bg-brand-primary/5 rounded-[40px] blur-3xl transform rotate-6"></div>
@@ -181,20 +181,20 @@ const Home: React.FC = () => {
                                 {/* 2. Main Glass Card - The Dashboard */}
                                 <div className="absolute inset-4 md:inset-10 bg-brand-surface/80 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-2xl overflow-hidden flex flex-col z-10 animate-float">
                                     {/* Header of Card */}
-                                    <div className="h-16 border-b border-white/5 flex items-center px-6 justify-between">
+                                    <div className="h-14 md:h-16 border-b border-white/5 flex items-center px-4 md:px-6 justify-between">
                                         <div className="flex gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                                            <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                                            <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/50"></div>
+                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500/50"></div>
+                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500/50"></div>
                                         </div>
-                                        <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
+                                        <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                                             AI System Active
                                         </div>
                                     </div>
 
                                     {/* Body of Card */}
-                                    <div className="p-6 flex-1 flex flex-col justify-between relative">
+                                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-between relative">
                                         {/* Chart Line Decor */}
                                         <div className="absolute top-20 left-0 right-0 h-32 opacity-20 pointer-events-none">
                                             <svg viewBox="0 0 100 40" className="w-full h-full fill-none stroke-brand-primary stroke-[0.5]">
@@ -203,24 +203,24 @@ const Home: React.FC = () => {
                                         </div>
 
                                         <div>
-                                            <p className="text-neutral-400 text-xs font-bold uppercase mb-1">AI-Attributed Revenue</p>
-                                            <h3 className="text-4xl font-display font-bold text-white">$4.2M<span className="text-brand-primary text-xl">+</span></h3>
+                                            <p className="text-neutral-400 text-[10px] md:text-xs font-bold uppercase mb-1">AI-Attributed Revenue</p>
+                                            <h3 className="text-3xl md:text-4xl font-display font-bold text-white">$4.2M<span className="text-brand-primary text-xl">+</span></h3>
                                         </div>
 
-                                        <div className="space-y-4">
-                                            <div className="bg-white/5 rounded-xl p-4 flex items-center justify-between border border-white/5">
+                                        <div className="space-y-3 md:space-y-4">
+                                            <div className="bg-white/5 rounded-xl p-3 md:p-4 flex items-center justify-between border border-white/5">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary"><Bot size={16} /></div>
-                                                    <span className="text-sm font-bold text-white">Leads Qualified</span>
+                                                    <div className="p-1.5 md:p-2 rounded-lg bg-brand-primary/20 text-brand-primary"><Bot size={16} /></div>
+                                                    <span className="text-xs md:text-sm font-bold text-white">Leads Qualified</span>
                                                 </div>
-                                                <span className="text-brand-primary font-bold">14,203</span>
+                                                <span className="text-brand-primary font-bold text-sm md:text-base">14,203</span>
                                             </div>
-                                            <div className="bg-white/5 rounded-xl p-4 flex items-center justify-between border border-white/5">
+                                            <div className="bg-white/5 rounded-xl p-3 md:p-4 flex items-center justify-between border border-white/5">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 rounded-lg bg-brand-secondary/20 text-brand-secondary"><TrendingUp size={16} /></div>
-                                                    <span className="text-sm font-bold text-white">Growth</span>
+                                                    <div className="p-1.5 md:p-2 rounded-lg bg-brand-secondary/20 text-brand-secondary"><TrendingUp size={16} /></div>
+                                                    <span className="text-xs md:text-sm font-bold text-white">Growth</span>
                                                 </div>
-                                                <span className="text-brand-secondary font-bold">+128%</span>
+                                                <span className="text-brand-secondary font-bold text-sm md:text-base">+128%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -229,26 +229,26 @@ const Home: React.FC = () => {
                                 {/* 3. Floating Elements for Depth */}
 
                                 {/* Top Right Sphere */}
-                                <div className="absolute top-4 -right-4 md:top-12 md:-right-6 w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary shadow-2xl z-20 animate-float-delayed flex items-center justify-center border border-white/10">
-                                    <Rocket className="text-white w-8 h-8 md:w-10 md:h-10 transform -rotate-45" strokeWidth={1.5} />
+                                <div className="absolute top-2 -right-2 md:top-12 md:-right-6 w-16 h-16 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary shadow-2xl z-20 animate-float-delayed flex items-center justify-center border border-white/10">
+                                    <Rocket className="text-white w-6 h-6 md:w-10 md:h-10 transform -rotate-45" strokeWidth={1.5} />
                                 </div>
 
                                 {/* Bottom Left Badge */}
-                                <div className="absolute bottom-8 -left-4 md:bottom-12 md:-left-8 bg-brand-dark/90 backdrop-blur-md border border-white/10 p-4 rounded-2xl shadow-xl z-30 animate-float flex items-center gap-4">
-                                    <div className="flex -space-x-3">
-                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" className="w-10 h-10 rounded-full border-2 border-brand-dark" alt="Client" />
-                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" className="w-10 h-10 rounded-full border-2 border-brand-dark" alt="Client" />
-                                        <div className="w-10 h-10 rounded-full border-2 border-brand-dark bg-brand-secondary flex items-center justify-center text-[10px] font-bold text-white">50+</div>
+                                <div className="absolute bottom-6 -left-2 md:bottom-12 md:-left-8 bg-brand-dark/90 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-2xl shadow-xl z-30 animate-float flex items-center gap-3 md:gap-4">
+                                    <div className="flex -space-x-2 md:-space-x-3">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark" alt="Client" />
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark" alt="Client" />
+                                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark bg-brand-secondary flex items-center justify-center text-[8px] md:text-[10px] font-bold text-white">50+</div>
                                     </div>
                                     <div>
-                                        <p className="text-white text-xs font-bold">Active Clients</p>
-                                        <p className="text-neutral-500 text-[10px]">India & UAE</p>
+                                        <p className="text-white text-[10px] md:text-xs font-bold">Active Clients</p>
+                                        <p className="text-neutral-500 text-[9px] md:text-[10px]">India & UAE</p>
                                     </div>
                                 </div>
 
                                 {/* Decorative Geometric Elements behind */}
-                                <div className="absolute top-[20%] -left-[10%] w-32 h-32 border border-white/5 rounded-full z-0"></div>
-                                <div className="absolute bottom-[10%] -right-[5%] w-48 h-48 border border-dashed border-white/10 rounded-full z-0 animate-spin-slow"></div>
+                                <div className="absolute top-[20%] -left-[10%] w-24 h-24 md:w-32 md:h-32 border border-white/5 rounded-full z-0"></div>
+                                <div className="absolute bottom-[10%] -right-[5%] w-32 h-32 md:w-48 md:h-48 border border-dashed border-white/10 rounded-full z-0 animate-spin-slow"></div>
 
                             </div>
 
@@ -449,7 +449,7 @@ const Home: React.FC = () => {
 
                             {/* Right Column: Interactive Testimonial Card */}
                             <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                                <div className="bg-brand-dark border border-white/10 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden h-[450px] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(56,189,248,0.15)] group">
+                                <div className="bg-brand-dark border border-white/10 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden min-h-[500px] md:h-[450px] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(56,189,248,0.15)] group">
                                     {testimonials.map((t, i) => (
                                         <div
                                             key={i}
