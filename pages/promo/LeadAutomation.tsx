@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Bot, MessageSquare, Zap, Clock, Calendar, Users, Briefcase, ArrowRight, CheckCircle2, AlertCircle, TrendingUp, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import Button from '../../components/Button';
+import { submitToGoogleSheets } from '../../services/googleSheets';
 
 // Reusing ScrollReveal for animations
 import ScrollReveal from '../../components/ScrollReveal';
@@ -10,18 +11,49 @@ import ScrollReveal from '../../components/ScrollReveal';
 const LeadAutomation: React.FC = () => {
     const [activeFaq, setActiveFaq] = useState<number | null>(null);
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [formData, setFormData] = useState({
+        name: '',
+        businessName: '',
+        phone: '',
+        email: ''
+    });
 
     const toggleFaq = (index: number) => {
         setActiveFaq(activeFaq === index ? null : index);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const scrollToDemo = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const element = document.getElementById('demo');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setFormStatus('submitting');
-        // Simulate submission - In real app, connect to API
-        setTimeout(() => {
+
+        try {
+            await submitToGoogleSheets({
+                type: 'Leads',
+                Name: formData.name,
+                Email: formData.email,
+                Phone: formData.phone,
+                Company: formData.businessName,
+                Source: "Promo Page (AI Lead Handling)",
+                Date: new Date().toISOString()
+            });
             setFormStatus('success');
-        }, 2000);
+        } catch (error) {
+            console.error("Submission error:", error);
+            // Fallback to success UI even if sheet fails
+            setFormStatus('success');
+        }
     };
 
     const features = [
@@ -55,9 +87,9 @@ const LeadAutomation: React.FC = () => {
                         <img src="/logo.png" alt="Social Ninja's" className="h-10 w-auto" />
                         <span className="font-display font-bold text-lg hidden sm:block">Social<span className="text-brand-primary">Ninja's</span></span>
                     </div>
-                    <a href="#demo">
+                    <button onClick={scrollToDemo}>
                         <Button className="py-2 px-4 md:px-6 text-sm md:text-base font-bold rounded-full">Book Free Demo</Button>
-                    </a>
+                    </button>
                 </div>
             </nav>
 
@@ -82,14 +114,14 @@ const LeadAutomation: React.FC = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-                        <a href="#demo" className="w-full sm:w-auto">
+                        <button onClick={scrollToDemo} className="w-full sm:w-auto">
                             <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_0_40px_rgba(56,189,248,0.3)] hover:shadow-[0_0_60px_rgba(56,189,248,0.5)]">
                                 👉 Book a Free Demo
                             </Button>
-                        </a>
-                        <a href="#how-it-works" className="text-sm font-bold text-neutral-400 hover:text-white transition-colors underline underline-offset-4">
+                        </button>
+                        <button onClick={(e) => { e.preventDefault(); document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }) }} className="text-sm font-bold text-neutral-400 hover:text-white transition-colors underline underline-offset-4">
                             See How It Works
-                        </a>
+                        </button>
                     </div>
 
                     {/* Hero Visual */}
@@ -319,22 +351,54 @@ const LeadAutomation: React.FC = () => {
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-neutral-400 ml-1">Full Name</label>
-                                        <input type="text" required className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="John Doe" />
+                                        <input
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            type="text"
+                                            required
+                                            className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                                            placeholder="John Doe"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-neutral-400 ml-1">Business Name</label>
-                                        <input type="text" required className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="Acme Inc." />
+                                        <input
+                                            name="businessName"
+                                            value={formData.businessName}
+                                            onChange={handleChange}
+                                            type="text"
+                                            required
+                                            className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                                            placeholder="Acme Inc."
+                                        />
                                     </div>
                                 </div>
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-neutral-400 ml-1">Phone / WhatsApp</label>
-                                        <input type="tel" required className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="+91 99999 99999" />
+                                        <input
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            type="tel"
+                                            required
+                                            className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                                            placeholder="+91 99999 99999"
+                                        />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-neutral-400 ml-1">Email Address</label>
-                                        <input type="email" required className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="john@company.com" />
+                                        <input
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            type="email"
+                                            required
+                                            className="w-full bg-[#020617] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                                            placeholder="john@company.com"
+                                        />
                                     </div>
                                 </div>
 
@@ -404,11 +468,11 @@ const LeadAutomation: React.FC = () => {
                 <div className="max-w-4xl mx-auto px-6">
                     <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Stop Losing Leads today.</h2>
                     <p className="text-xl text-neutral-400 mb-10">Let AI handle them for you. Deploy your system this week.</p>
-                    <a href="#demo">
+                    <button onClick={scrollToDemo}>
                         <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_0_50px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform">
                             👉 Book a Free Demo
                         </Button>
-                    </a>
+                    </button>
                     <div className="mt-12 text-sm text-neutral-600">
                         &copy; {new Date().getFullYear()} Social Ninja's. All rights reserved.
                     </div>
