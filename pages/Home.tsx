@@ -110,26 +110,26 @@ const Home: React.FC = () => {
                             {/* Premium Tag */}
                             <div className="inline-flex items-center gap-2 self-start px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 mb-6 md:mb-8 backdrop-blur-md animate-fade-in-up">
                                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary animate-pulse"></div>
-                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-300">Ads • Content • Automation</span>
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-300">AI-First Marketing Agency</span>
                             </div>
 
                             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] md:leading-[1.05] tracking-tight mb-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                                We Scale Brands with <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-secondary">Ads, Content & AI.</span>
+                                The AI-Powered <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-secondary">Growth Engine.</span>
                             </h1>
 
                             <p className="text-base sm:text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-xl mb-8 md:mb-10 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                                Social Ninja’s is the performance agency for <span className="text-white font-medium">India & UAE</span>. We combine high-converting video creatives with data-driven media buying and 24/7 AI sales agents.
+                                Social Ninja’s combines elite creative production with 24/7 AI Sales Agents to scale brands in <span className="text-white font-medium">India & UAE</span>. The future of marketing is automated.
                             </p>
 
                             <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4 sm:gap-6 animate-fade-in-up md:ml-32" style={{ animationDelay: '300ms' }}>
                                 <Link to="/contact" className="w-full sm:w-auto">
                                     <Button variant="primary" className="w-full sm:w-auto rounded-full px-8 py-4 md:px-10 md:py-5 text-sm md:text-base font-bold shadow-[0_0_40px_rgba(56,189,248,0.15)] hover:shadow-[0_0_60px_rgba(56,189,248,0.3)]">
-                                        Book Strategy Call
+                                        Deploy AI Growth
                                     </Button>
                                 </Link>
-                                <Link to="/case-studies" className="w-full sm:w-auto px-6 py-4 text-sm font-bold text-white border border-white/10 rounded-full hover:bg-white/5 transition-all flex items-center justify-center sm:justify-start gap-2 group">
-                                    View Case Studies <ChevronRight size={16} className="text-brand-primary group-hover:translate-x-1 transition-transform" />
+                                <Link to="/ai-automation" className="w-full sm:w-auto px-6 py-4 text-sm font-bold text-white border border-white/10 rounded-full hover:bg-white/5 transition-all flex items-center justify-center sm:justify-start gap-2 group">
+                                    View AI Systems <ChevronRight size={16} className="text-brand-primary group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
 
@@ -139,11 +139,11 @@ const Home: React.FC = () => {
                                 {/* Meta Partner */}
                                 <div className="flex items-center gap-4 group">
                                     <div className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-brand-primary group-hover:bg-brand-primary/10 group-hover:border-brand-primary/20 transition-all duration-300">
-                                        <ShieldCheck size={20} strokeWidth={1.5} />
+                                        <Bot size={20} strokeWidth={1.5} />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">Meta Certified</p>
-                                        <p className="text-[10px] text-neutral-500 font-medium">Top 1% Performance Partner</p>
+                                        <p className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">AI Integrated</p>
+                                        <p className="text-[10px] text-neutral-500 font-medium">Next-Gen Automation</p>
                                     </div>
                                 </div>
 
@@ -187,7 +187,10 @@ const Home: React.FC = () => {
                                             <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
                                             <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
                                         </div>
-                                        <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Live Metrics</div>
+                                        <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                            AI System Active
+                                        </div>
                                     </div>
 
                                     {/* Body of Card */}
@@ -200,17 +203,17 @@ const Home: React.FC = () => {
                                         </div>
 
                                         <div>
-                                            <p className="text-neutral-400 text-xs font-bold uppercase mb-1">Total Revenue</p>
+                                            <p className="text-neutral-400 text-xs font-bold uppercase mb-1">AI-Attributed Revenue</p>
                                             <h3 className="text-4xl font-display font-bold text-white">$4.2M<span className="text-brand-primary text-xl">+</span></h3>
                                         </div>
 
                                         <div className="space-y-4">
                                             <div className="bg-white/5 rounded-xl p-4 flex items-center justify-between border border-white/5">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary"><Activity size={16} /></div>
-                                                    <span className="text-sm font-bold text-white">ROAS</span>
+                                                    <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary"><Bot size={16} /></div>
+                                                    <span className="text-sm font-bold text-white">Leads Qualified</span>
                                                 </div>
-                                                <span className="text-brand-primary font-bold">5.2x</span>
+                                                <span className="text-brand-primary font-bold">14,203</span>
                                             </div>
                                             <div className="bg-white/5 rounded-xl p-4 flex items-center justify-between border border-white/5">
                                                 <div className="flex items-center gap-3">
@@ -280,7 +283,7 @@ const Home: React.FC = () => {
                         <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-6">
                             <div className="max-w-2xl">
                                 <span className="text-brand-primary font-bold tracking-widest text-xs uppercase mb-4 block">Our Expertise</span>
-                                <h2 className="font-display text-4xl font-bold text-white">Strategic Growth Systems</h2>
+                                <h2 className="font-display text-4xl font-bold text-white">AI-First Growth Systems</h2>
                             </div>
                             <Link to="/services">
                                 <Button variant="outline" className="rounded-full px-8">View All Services</Button>
@@ -290,9 +293,9 @@ const Home: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { icon: Rocket, title: "Performance Marketing", outcome: "Revenue & ROAS", desc: "Data-driven ad campaigns on Meta & Google that maximize your ROI.", bg: "from-blue-500/10 to-purple-500/5", delay: '0ms' },
-                            { icon: Zap, title: "Creative Studio", outcome: "Authority & Retention", desc: "Eye-catching videos and designs that grab attention and tell your story.", bg: "from-purple-500/10 to-pink-500/5", delay: '100ms' },
-                            { icon: Activity, title: "AI & Automation", outcome: "Efficiency & Speed", desc: "Intelligent chatbots and workflows that handle sales 24/7.", bg: "from-green-500/10 to-teal-500/5", delay: '200ms' }
+                            { icon: Activity, title: "AI & Automation", outcome: "Efficiency & Speed", desc: "Intelligent chatbots and workflows that handle sales 24/7.", bg: "from-green-500/10 to-teal-500/5", delay: '0ms' },
+                            { icon: Rocket, title: "Performance Marketing", outcome: "Revenue & ROAS", desc: "Data-driven ad campaigns on Meta & Google enriched with AI insights.", bg: "from-blue-500/10 to-purple-500/5", delay: '100ms' },
+                            { icon: Zap, title: "Creative Studio", outcome: "Authority & Retention", desc: "High-converting designs optimized by performance data.", bg: "from-purple-500/10 to-pink-500/5", delay: '200ms' }
                         ].map((item, i) => (
                             <ScrollReveal key={i} delay={item.delay}>
                                 <Link to="/services">

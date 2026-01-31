@@ -90,28 +90,6 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({
 const Services: React.FC = () => {
   const serviceDetails = [
     {
-      title: "Performance Marketing",
-      description: "We manage your ad spend on Meta & Google to maximize ROI using data-driven strategies.",
-      features: [
-        "Precise Audience Targeting",
-        "A/B Testing Creatives",
-        "Retargeting Campaigns",
-        "Real-time ROI Tracking",
-        "Conversion Optimization"
-      ]
-    },
-    {
-      title: "Creative Studio",
-      description: "High-quality video and design assets tailored to convert viewers into customers.",
-      features: [
-        "High-Converting Video Ads",
-        "Persuasive Copywriting",
-        "3D Visuals & Animation",
-        "Brand Identity Design",
-        "Social Media Content"
-      ]
-    },
-    {
       title: "AI & Automation",
       description: "Custom chatbots and workflows to automate lead qualification and sales processes.",
       features: [
@@ -120,6 +98,28 @@ const Services: React.FC = () => {
         "CRM Integration",
         "Lead Scoring Systems",
         "Workflow Optimization"
+      ]
+    },
+    {
+      title: "Performance Marketing",
+      description: "AI-enhanced ad spend management on Meta & Google to maximize ROI.",
+      features: [
+        "Predictive Audience Targeting",
+        "A/B Testing Creatives",
+        "Retargeting Campaigns",
+        "Real-time ROI Tracking",
+        "Conversion Optimization"
+      ]
+    },
+    {
+      title: "Creative Studio",
+      description: "Data-backed video and design assets tailored to convert viewers into customers.",
+      features: [
+        "High-Converting Video Ads",
+        "Persuasive Copywriting",
+        "3D Visuals & Animation",
+        "Brand Identity Design",
+        "Social Media Content"
       ]
     },
     {
@@ -167,8 +167,8 @@ const Services: React.FC = () => {
         {/* --- BENTO GRID LAYOUT --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(350px,auto)]">
 
-          {/* Card 1: AI & Automation (Square) */}
-          <div className="md:col-span-1 h-full">
+          {/* Card 1: AI & Automation (Wide) */}
+          <div className="md:col-span-2 h-full">
             <ScrollReveal className="h-full">
               <ParallaxCard
                 className="h-full group"
@@ -189,17 +189,17 @@ const Services: React.FC = () => {
                   </>
                 }
               >
-                <div className="mt-auto pointer-events-auto relative">
-                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
+                <div className="relative z-10 flex flex-col h-full justify-between pointer-events-auto">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-2">
                     <div className="w-10 h-10 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-6 border border-brand-primary/20">
                       <MessageSquare size={20} />
                     </div>
                     <h2 className="text-2xl font-display font-bold text-white mb-3">AI & Automation</h2>
-                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                    <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mb-6">
                       Deploy 24/7 intelligent agents. We build custom workflows that handle sales qualification and support automatically.
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {['Chatbots', 'CRM Sync', 'Auto-Replies'].map((tag, i) => (
+                      {['Chatbots', 'CRM Sync', 'Auto-Replies', 'Sales Agents'].map((tag, i) => (
                         <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
                           {tag}
                         </span>
@@ -207,10 +207,10 @@ const Services: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Slide-Up CTA */}
-                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                  {/* Wide Card Action */}
+                  <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <Link to="/contact">
-                      <button className="w-full py-3 rounded-xl bg-brand-primary text-brand-dark font-bold text-sm shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                      <button className="px-6 py-3 rounded-xl bg-brand-primary text-black font-bold text-sm shadow-xl hover:bg-white transition-colors flex items-center gap-2">
                         Get Automated <ArrowRight size={16} />
                       </button>
                     </Link>
@@ -220,8 +220,8 @@ const Services: React.FC = () => {
             </ScrollReveal>
           </div>
 
-          {/* Card 2: Web & Tech (Wide) */}
-          <div className="md:col-span-2 h-full">
+          {/* Card 2: Web & Tech (Square) */}
+          <div className="md:col-span-1 h-full">
             <ScrollReveal className="h-full" delay="100ms">
               <ParallaxCard
                 className="h-full group"
@@ -233,31 +233,31 @@ const Services: React.FC = () => {
                   }}></div>
                 }
               >
-                <div className="relative z-10 flex flex-col h-full justify-between pointer-events-auto">
-                  <div className="transform transition-all duration-500 group-hover:-translate-y-2">
+                <div className="mt-auto pointer-events-auto relative">
+                  <div className="transform transition-all duration-500 group-hover:-translate-y-12">
                     <div className="w-12 h-12 bg-brand-secondary/10 rounded-xl flex items-center justify-center text-brand-secondary mb-6 border border-brand-secondary/20">
                       <Layers size={24} />
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-display font-bold text-white mb-3">Web & Tech</h2>
-                      <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mb-6">
-                        We build fast, secure, and beautiful websites that actually rank on Google. From simple landing pages to complex custom applications.
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {['Fast Loading', 'SEO Ready', 'Secure', 'Custom Design'].map((tag, i) => (
-                          <span key={i} className="text-xs font-bold uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+
+                    <h2 className="text-2xl font-display font-bold text-white mb-3">Web & Tech</h2>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+                      Fast, secure, and beautiful websites that actually rank.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Fast Loading', 'SEO', 'Secure'].map((tag, i) => (
+                        <span key={i} className="text-xs font-bold uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
+
                   </div>
 
-                  {/* Wide Card Action */}
-                  <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  {/* Slide-Up CTA */}
+                  <div className="absolute bottom-0 left-0 w-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
                     <Link to="/contact">
-                      <button className="px-6 py-3 rounded-xl bg-white text-black font-bold text-sm shadow-xl hover:bg-brand-secondary hover:text-white transition-colors flex items-center gap-2">
-                        Build Your Site <ArrowRight size={16} />
+                      <button className="w-full py-3 rounded-xl bg-white text-black font-bold text-sm shadow-xl hover:bg-brand-secondary hover:text-white transition-colors flex items-center justify-center gap-2">
+                        Build Site <ArrowRight size={16} />
                       </button>
                     </Link>
                   </div>

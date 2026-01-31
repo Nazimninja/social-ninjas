@@ -53,9 +53,14 @@ const Navbar: React.FC = () => {
               e.currentTarget.style.display = 'none';
             }}
           />
-          <span className="font-display text-xl md:text-2xl font-bold text-white tracking-tight">
-            Social<span className="text-brand-primary">Ninja's</span>.
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+              Social<span className="text-brand-primary">Ninja's</span>.
+            </span>
+            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-primary self-end leading-none translate-y-[-2px]">
+              AI Agency
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
