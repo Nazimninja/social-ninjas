@@ -23,6 +23,8 @@ const Careers = lazy(() => import('./pages/Careers'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+const LeadAutomation = lazy(() => import('./pages/promo/LeadAutomation'));
+
 // Premium Loading State
 const LoadingFallback = () => (
   <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center gap-6">
@@ -69,6 +71,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
         <Route path="/ai-automation" element={<PageTransition><AiAutomation /></PageTransition>} />
+        <Route path="/promo/ai-lead-handling" element={<PageTransition><LeadAutomation /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
@@ -82,21 +85,31 @@ const AnimatedRoutes: React.FC = () => {
   );
 };
 
+// Main Layout Component to handle conditional rendering
+const MainLayout: React.FC = () => {
+  const location = useLocation();
+  const isPromoPage = location.pathname.startsWith('/promo');
+
+  return (
+    <div className="flex flex-col min-h-screen bg-brand-dark font-sans text-white selection:bg-brand-primary selection:text-brand-dark">
+      {!isPromoPage && <Navbar />}
+      <SchemaMarkup />
+      <Suspense fallback={<LoadingFallback />}>
+        <AnimatedRoutes />
+      </Suspense>
+      {!isPromoPage && <Footer />}
+      {!isPromoPage && <WhatsAppWidget />}
+      {!isPromoPage && <ChatBot />}
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <HelmetProvider>
       <Router>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen bg-brand-dark font-sans text-white selection:bg-brand-primary selection:text-brand-dark">
-          <Navbar />
-          <SchemaMarkup />
-          <Suspense fallback={<LoadingFallback />}>
-            <AnimatedRoutes />
-          </Suspense>
-          <Footer />
-          <WhatsAppWidget />
-          <ChatBot />
-        </div>
+        <MainLayout />
       </Router>
     </HelmetProvider>
   );
