@@ -57,20 +57,19 @@ const LeadAutomation: React.FC = () => {
     };
 
     const features = [
-        { icon: Bot, title: "AI Website Assistant", desc: "Instantly greets visitors and captures details." },
-        { icon: Zap, title: "Lead Qualification", desc: "Filters 'tire kickers' from serious buyers." },
-        { icon: MessageSquare, title: "Central Dashboard", desc: "All leads from all channels in one place." },
-        { icon: AlertCircle, title: "Instant Alerts", desc: "Get notified via WhatsApp/SMS immediately." },
-        { icon: Calendar, title: "Auto-Booking", desc: "Qualified leads book calls on your calendar." },
-        { icon: Users, title: "Human Handover", desc: "Jump in chat anytime with full context." },
+        { icon: Bot, title: "AI Website & WhatsApp Assistant", desc: "Replies instantly to enquiries, even at night or on weekends." },
+        { icon: Zap, title: "Smart Lead Qualification", desc: "AI asks the right questions and filters serious buyers from casual enquiries." },
+        { icon: MessageSquare, title: "Central Lead Dashboard", desc: "All leads from all platforms — in one clean, organized system." },
+        { icon: AlertCircle, title: "Instant Owner Alerts", desc: "Get notified the moment a high-intent lead appears." },
+        { icon: Calendar, title: "Automated Booking & Reminders", desc: "Turn conversations into booked calls without manual effort." },
+        { icon: Users, title: "Human Handover (When It Matters)", desc: "AI passes full context to you — no awkward \"please explain again.\"" },
     ];
 
     const faqs = [
-        { q: "Is this a chatbot or a full system?", a: "It's a complete system. While it includes a chatbot interface for leads, the backend handles CRM storage, qualification logic, calendar integration, and notifications." },
-        { q: "Will this work with WhatsApp & Instagram?", a: "Yes. Our system centralizes conversations. Whether a lead comes from your website, WhatsApp, or Instagram, it lands in one dashboard." },
-        { q: "Can it integrate with my CRM?", a: "Absolutely. We support integrations with HubSpot, Salesforce, Zoho, and Google Sheets." },
-        { q: "Do I still need a human team?", a: "You still need humans to close the deal! The AI handles the repetitive 'qualification' and 'scheduling' work so your team focuses on selling." },
-        { q: "How long does setup take?", a: "Tyically 5-7 days. We build the custom flows, train the AI on your data, and integrate it with your tools." },
+        { q: "Is this just another chatbot?", a: "No. This is a full lead handling system — chatbot, qualification, follow-ups, dashboards, and bookings." },
+        { q: "Will this replace my team?", a: "No. It removes repetitive work so your team focuses on closing." },
+        { q: "Can it work with my existing tools?", a: "Yes — WhatsApp, Instagram, CRMs, Google Sheets, calendars." },
+        { q: "How long does setup take?", a: "Usually 7–14 days, depending on complexity." },
     ];
 
     return (
@@ -101,16 +100,17 @@ const LeadAutomation: React.FC = () => {
 
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-bold uppercase tracking-widest mb-8 animate-fade-in-up">
                         <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></span>
-                        Now Available for Service Businesses
+                        Used by service businesses that can’t afford to miss enquiries
                     </div>
 
                     <h1 className="font-display text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                        Never Miss a Lead Again. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-blue-500">Automate Lead Handling.</span>
+                        Your Business Is Losing Leads Right Now. <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-blue-500">AI Can Fix That — Automatically.</span>
                     </h1>
 
                     <p className="text-lg md:text-2xl text-neutral-400 max-w-3xl mx-auto mb-10 font-light leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                        AI-powered system that captures, qualifies, and follows up with leads automatically across Website, WhatsApp, & Instagram.
+                        Every missed WhatsApp message, delayed reply, or forgotten follow-up is lost revenue. <br className="hidden md:block" />
+                        We capture, qualify, and follow up with leads instantly — 24/7.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
@@ -182,33 +182,33 @@ const LeadAutomation: React.FC = () => {
             {/* --- 2. PROBLEM SECTION --- */}
             <section className="py-24 bg-[#050A1F]">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Why Most Businesses <span className="text-red-500">Lose Leads</span> Every Day</h2>
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Be Honest — <span className="text-red-500">How Many Leads</span> Do You Miss Every Week?</h2>
 
                     <div className="grid md:grid-cols-2 gap-8 text-left">
                         <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
                             <Clock className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">Slow Response Times</h3>
-                            <p className="text-neutral-400">If you don't reply in 5 minutes, the lead moves to your competitor.</p>
+                            <h3 className="text-xl font-bold mb-2">You're Busy or Offline</h3>
+                            <p className="text-neutral-400">Customers message when you're sleeping or working. They expected an instant reply.</p>
                         </div>
                         <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
                             <Bot className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">Manual Follow-ups</h3>
-                            <p className="text-neutral-400">Chasing leads manually is exhausting and prone to human error.</p>
+                            <h3 className="text-xl font-bold mb-2">Delayed Replies</h3>
+                            <p className="text-neutral-400">WhatsApp and Instagram DMs sit unread for hours. Hot leads turn cold.</p>
                         </div>
                         <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
                             <AlertCircle className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">After-Hours Misses</h3>
-                            <p className="text-neutral-400">Leads inquiring at 9 PM or weekends get ignored until Monday.</p>
+                            <h3 className="text-xl font-bold mb-2">No Follow-Up</h3>
+                            <p className="text-neutral-400">You reply once, but if they don't answer, does anyone follow up 3 more times? Probably not.</p>
                         </div>
                         <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
                             <MessageSquare className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
                             <h3 className="text-xl font-bold mb-2">Scattered Messages</h3>
-                            <p className="text-neutral-400">DMs on Insta, WhatsApp messages, emails—it's a mess to track.</p>
+                            <p className="text-neutral-400">Leads are everywhere — Email, Insta, WhatsApp. It's impossible to track manually.</p>
                         </div>
                     </div>
 
                     <p className="mt-12 text-xl font-bold text-white bg-red-500/10 inline-block px-6 py-3 rounded-lg border border-red-500/20">
-                        ⚠️ Every missed message = <span className="text-red-400 text-decoration-line-through">Lost Revenue.</span>
+                        ⚠️ You're paying for ads. <span className="text-red-400">Missing leads = Wasting money.</span>
                     </p>
                 </div>
             </section>
@@ -218,8 +218,8 @@ const LeadAutomation: React.FC = () => {
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
                         <span className="text-brand-primary font-bold tracking-widest text-xs uppercase mb-4 block">The Solution</span>
-                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">The AI Lead Handling System</h2>
-                        <p className="text-xl text-neutral-400 max-w-2xl mx-auto">We build a complete ecosystem that handles inquiries, qualifies leads, and routes only serious prospects to you.</p>
+                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">One System That Handles Every Lead — <span className="text-brand-primary">Automatically</span></h2>
+                        <p className="text-xl text-neutral-400 max-w-2xl mx-auto">Our AI Lead Handling & Automation System works like a full-time assistant that never sleeps, never forgets, and never misses a follow-up.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -239,25 +239,26 @@ const LeadAutomation: React.FC = () => {
             {/* --- 4. HOW IT WORKS --- */}
             <section id="how-it-works" className="py-24 bg-brand-surface border-t border-white/5">
                 <div className="max-w-6xl mx-auto px-6">
-                    <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-16">How It Works</h2>
+                    <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-16">What Happens When a Lead Comes In</h2>
 
                     <div className="relative">
                         {/* Connecting Line (Desktop) */}
                         <div className="hidden md:block absolute top-12 left-0 w-full h-1 bg-gradient-to-r from-brand-primary/20 via-brand-primary to-brand-primary/20"></div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
                             {[
-                                { step: "01", title: "Lead Inquires", desc: "Customer messages via Website, WhatsApp, or Ads." },
-                                { step: "02", title: "AI Responds", desc: "Instant reply. AI asks qualifying questions." },
-                                { step: "03", title: "Qualification", desc: "AI scores the lead (Hot/Warm/Cold)." },
-                                { step: "04", title: "Conversion", desc: "Meeting booked or Human notified instantly." }
+                                { step: "01", title: "Enquiry Arrives", desc: "Website, WhatsApp, Instagram DM, or ad." },
+                                { step: "02", title: "AI Responds", desc: "Instant reply. No \"seen but not replied\"." },
+                                { step: "03", title: "AI Qualifies", desc: "Understands intent, urgency, and requirement." },
+                                { step: "04", title: "Logged", desc: "Details saved automatically in your system." },
+                                { step: "05", title: "Action Taken", desc: "You're notified or a call is booked." }
                             ].map((s, i) => (
-                                <div key={i} className="text-center">
-                                    <div className="w-24 h-24 bg-[#020617] border-4 border-brand-primary rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto mb-6 relative shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+                                <div key={i} className="text-center group">
+                                    <div className="w-20 h-20 bg-[#020617] border-4 border-brand-primary rounded-full flex items-center justify-center text-2xl font-bold text-white mx-auto mb-6 relative shadow-[0_0_20px_rgba(56,189,248,0.3)] group-hover:scale-110 transition-transform bg-brand-dark">
                                         {s.step}
                                     </div>
-                                    <h3 className="text-xl font-bold mb-2">{s.title}</h3>
-                                    <p className="text-neutral-400 text-sm px-4">{s.desc}</p>
+                                    <h3 className="text-lg font-bold mb-2">{s.title}</h3>
+                                    <p className="text-neutral-400 text-xs px-2">{s.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -269,18 +270,19 @@ const LeadAutomation: React.FC = () => {
             <section className="py-24 bg-[#020617]">
                 <div className="max-w-5xl mx-auto px-6">
                     <div className="bg-gradient-to-br from-brand-primary/10 to-blue-600/10 rounded-[3rem] p-8 md:p-16 border border-brand-primary/20 text-center">
-                        <h2 className="text-3xl md:text-4xl font-display font-bold mb-10">Who This Is Perfect For</h2>
+                        <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">This Is Built for Businesses Like Yours</h2>
+                        <p className="text-lg text-neutral-400 mb-10 max-w-2xl mx-auto">If your business depends on enquiries, conversations, or consultations — you need this.</p>
 
                         <div className="flex flex-wrap justify-center gap-4">
                             {[
-                                "Clinics & Healthcare",
+                                "Clinics & Healthcare Services",
                                 "Consultants & Coaches",
-                                "Real Estate Agencies",
-                                "Marketing Agencies",
-                                "Legal & Tax Services",
+                                "Real Estate & Property",
+                                "Agencies & Service Providers",
+                                "Immigration, Tax, & Legal",
                                 "Home Service Providers"
                             ].map((item, i) => (
-                                <span key={i} className="px-6 py-3 rounded-full bg-[#020617] border border-white/10 text-white font-bold text-sm md:text-base shadow-lg cursor-default hover:border-brand-primary/50 transition-colors">
+                                <span key={i} className="px-6 py-3 rounded-full bg-[#020617] border border-white/10 text-white font-bold text-sm md:text-base shadow-lg cursor-default hover:border-brand-primary/50 transition-colors animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
                                     ✅ {item}
                                 </span>
                             ))}
@@ -297,14 +299,15 @@ const LeadAutomation: React.FC = () => {
             <section className="py-24 bg-[#0A0F2C]">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
                     <div className="md:w-1/2">
-                        <h2 className="text-4xl font-display font-bold mb-8">What You Get</h2>
+                        <h2 className="text-4xl font-display font-bold mb-8">What Changes After This Is Set Up</h2>
                         <ul className="space-y-6">
                             {[
-                                "Zero missed enquiries (100% Response Rate)",
-                                "Better lead quality (AI filters spam)",
-                                "More booked appointments on your calendar",
-                                "Less manual admin work for you",
-                                "A system that works 24/7/365"
+                                "Enquiries answered instantly — 24/7",
+                                "No more forgotten follow-ups",
+                                "Higher lead quality (bad leads filtered)",
+                                "Faster conversions",
+                                "Less pressure on you or your team",
+                                "A system that scales as you grow"
                             ].map((item, i) => (
                                 <li key={i} className="flex items-center gap-4 text-lg text-neutral-300">
                                     <div className="w-8 h-8 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center shrink-0">
@@ -316,13 +319,13 @@ const LeadAutomation: React.FC = () => {
                         </ul>
                     </div>
                     <div className="md:w-1/2">
-                        <div className="bg-[#020617] border border-white/10 p-8 rounded-2xl shadow-2xl relative">
+                        <div className="bg-[#020617] border border-white/10 p-8 rounded-2xl shadow-2xl relative transition-transform hover:scale-105 duration-300">
                             <div className="absolute -top-6 -right-6 w-20 h-20 bg-brand-primary rounded-full blur-2xl opacity-50"></div>
                             <div className="text-center space-y-2">
                                 <TrendingUp size={48} className="text-brand-primary mx-auto mb-4" />
-                                <h3 className="text-5xl font-black text-white">40%</h3>
-                                <p className="text-neutral-400 font-bold uppercase tracking-wider">Avg. Increase in Lead Conversion</p>
-                                <p className="text-xs text-neutral-600 mt-2">When automation is implemented correctly.</p>
+                                <h3 className="text-5xl font-black text-white">30-50%</h3>
+                                <p className="text-neutral-400 font-bold uppercase tracking-wider">Better Response & Conversion</p>
+                                <p className="text-xs text-neutral-600 mt-2">When AI automation replaces manual handling.</p>
                             </div>
                         </div>
                     </div>
@@ -333,8 +336,8 @@ const LeadAutomation: React.FC = () => {
             <section id="demo" className="py-24 bg-[#020617] relative">
                 <div className="max-w-3xl mx-auto px-6 relative z-10">
                     <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">See the System in Action</h2>
-                        <p className="text-xl text-neutral-400">Book a free demo call. We'll show you exactly how AI can handle your specific business needs.</p>
+                        <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">See Exactly How This Works for Your Business</h2>
+                        <p className="text-xl text-neutral-400">In the demo, we'll show you how AI qualifies leads, routes inquiries, and eliminates manual work. <br /> No sales pressure. Just a live system walkthrough.</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl backdrop-blur-sm">
@@ -416,23 +419,24 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 8. TRUST --- */}
-            <section className="py-16 bg-[#050A1F] border-b border-white/5">
+            <section className="py-24 bg-[#050A1F] border-b border-white/5">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h3 className="text-neutral-500 font-bold uppercase tracking-widest text-sm mb-6">Built by Experts in AI & Growth</h3>
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all">
+                    <h3 className="text-brand-primary font-bold uppercase tracking-widest text-sm mb-6">Built by People Who Understand Business — Not Just AI</h3>
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-8">We Don't Sell Tools. <br /> We Build <span className="text-white">Revenue-Protecting Systems.</span></h2>
+
+                    <p className="text-xl text-neutral-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                        At Social Ninja’s, we combine AI, marketing, and automation to build systems that actually work in real businesses — across India and the UAE.
+                    </p>
+
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-80">
                         <div className="flex items-center gap-3">
-                            <ShieldCheck size={32} className="text-brand-primary" />
-                            <span className="text-xl font-bold">Social Ninja's</span>
+                            <ShieldCheck size={32} className="text-green-500" />
+                            <span className="text-lg font-bold">Battle-Tested Strategies</span>
                         </div>
                         <div className="h-8 w-px bg-white/20 hidden md:block"></div>
                         <div className="flex items-center gap-3">
-                            <Briefcase size={32} className="text-brand-secondary" />
-                            <span className="text-lg font-bold">Service-Business Specialists</span>
-                        </div>
-                        <div className="h-8 w-px bg-white/20 hidden md:block"></div>
-                        <div className="flex items-center gap-3">
-                            <Bot size={32} className="text-blue-500" />
-                            <span className="text-lg font-bold">AI Automation Experts</span>
+                            <Briefcase size={32} className="text-blue-500" />
+                            <span className="text-lg font-bold">Business-First Approach</span>
                         </div>
                     </div>
                 </div>
@@ -466,8 +470,8 @@ const LeadAutomation: React.FC = () => {
             {/* --- 10. FINAL CTA --- */}
             <section className="py-24 bg-gradient-to-t from-brand-primary/10 to-[#020617] text-center">
                 <div className="max-w-4xl mx-auto px-6">
-                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Stop Losing Leads today.</h2>
-                    <p className="text-xl text-neutral-400 mb-10">Let AI handle them for you. Deploy your system this week.</p>
+                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Every Missed Lead Costs You Money.</h2>
+                    <p className="text-xl text-neutral-400 mb-10">Let AI handle enquiries instantly — so you don’t have to.</p>
                     <button onClick={scrollToDemo}>
                         <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_0_50px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform">
                             👉 Book a Free Demo
