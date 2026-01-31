@@ -83,7 +83,7 @@ const LeadAutomation: React.FC = () => {
             <nav className="fixed top-0 w-full z-50 py-6 bg-brand-dark/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <img src="/logo.png" alt="Social Ninja's" className="h-10 w-auto" />
+                        <img src="/logo.png" alt="Social Ninja's" className="h-12 md:h-16 w-auto" />
                         <span className="font-display font-bold text-lg hidden sm:block">Social<span className="text-brand-primary">Ninja's</span></span>
                     </div>
                     <button onClick={scrollToDemo}>
@@ -103,7 +103,7 @@ const LeadAutomation: React.FC = () => {
                         Used by service businesses that can’t afford to miss enquiries
                     </div>
 
-                    <h1 className="font-display text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+                    <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in-up" style={{ animationDelay: '100ms' }}>
                         Your Business Is Losing Leads Right Now. <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-blue-500">AI Can Fix That — Automatically.</span>
                     </h1>
@@ -180,7 +180,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 2. PROBLEM SECTION --- */}
-            <section className="py-24 bg-[#050A1F]">
+            <section className="py-16 md:py-24 bg-[#050A1F]">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Be Honest — <span className="text-red-500">How Many Leads</span> Do You Miss Every Week?</h2>
 
@@ -214,7 +214,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 3. SOLUTION SECTION --- */}
-            <section className="py-24 bg-[#020617] relative">
+            <section className="py-16 md:py-24 bg-[#020617] relative">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
                         <span className="text-brand-primary font-bold tracking-widest text-xs uppercase mb-4 block">The Solution</span>
@@ -237,7 +237,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 4. HOW IT WORKS --- */}
-            <section id="how-it-works" className="py-24 bg-brand-surface border-t border-white/5">
+            <section id="how-it-works" className="py-16 md:py-24 bg-brand-surface border-t border-white/5">
                 <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-16">What Happens When a Lead Comes In</h2>
 
@@ -267,7 +267,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 5. WHO THIS IS FOR --- */}
-            <section className="py-24 bg-[#020617]">
+            <section className="py-16 md:py-24 bg-[#020617]">
                 <div className="max-w-5xl mx-auto px-6">
                     <div className="bg-gradient-to-br from-brand-primary/10 to-blue-600/10 rounded-[3rem] p-8 md:p-16 border border-brand-primary/20 text-center">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">This Is Built for Businesses Like Yours</h2>
@@ -296,7 +296,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 6. BENEFITS --- */}
-            <section className="py-24 bg-[#0A0F2C]">
+            <section className="py-16 md:py-24 bg-[#0A0F2C]">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
                     <div className="md:w-1/2">
                         <h2 className="text-4xl font-display font-bold mb-8">What Changes After This Is Set Up</h2>
@@ -333,7 +333,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 7. DEMO FORM (CRITICAL) --- */}
-            <section id="demo" className="py-24 bg-[#020617] relative">
+            <section id="demo" className="py-16 md:py-24 bg-[#020617] relative">
                 <div className="max-w-3xl mx-auto px-6 relative z-10">
                     <div className="text-center mb-12">
                         <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">See Exactly How This Works for Your Business</h2>
@@ -419,7 +419,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 8. TRUST --- */}
-            <section className="py-24 bg-[#050A1F] border-b border-white/5">
+            <section className="py-16 md:py-24 bg-[#050A1F] border-b border-white/5">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h3 className="text-brand-primary font-bold uppercase tracking-widest text-sm mb-6">Built by People Who Understand Business — Not Just AI</h3>
                     <h2 className="text-3xl md:text-5xl font-display font-bold mb-8">We Don't Sell Tools. <br /> We Build <span className="text-white">Revenue-Protecting Systems.</span></h2>
@@ -443,7 +443,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 9. FAQ --- */}
-            <section className="py-24 bg-[#020617]">
+            <section className="py-16 md:py-24 bg-[#020617]">
                 <div className="max-w-3xl mx-auto px-6">
                     <h2 className="text-3xl font-display font-bold text-center mb-12">Frequently Asked Questions</h2>
                     <div className="space-y-4">
@@ -468,7 +468,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 10. FINAL CTA --- */}
-            <section className="py-24 bg-gradient-to-t from-brand-primary/10 to-[#020617] text-center">
+            <section className="py-16 md:py-24 bg-gradient-to-t from-brand-primary/10 to-[#020617] text-center">
                 <div className="max-w-4xl mx-auto px-6">
                     <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Every Missed Lead Costs You Money.</h2>
                     <p className="text-xl text-neutral-400 mb-10">Let AI handle enquiries instantly — so you don’t have to.</p>
