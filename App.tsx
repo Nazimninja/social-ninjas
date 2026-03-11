@@ -13,7 +13,7 @@ import SchemaMarkup from './components/SchemaMarkup';
 // Lazy Load Pages for Performance Optimization
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
-const AiAutomation = lazy(() => import('./pages/AiAutomation'));
+const GrowthSystems = lazy(() => import('./pages/GrowthSystems'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
@@ -24,6 +24,12 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const LeadAutomation = lazy(() => import('./pages/promo/LeadAutomation'));
+
+const ContentStudio = lazy(() => import('./pages/app/ContentStudioApp.jsx'));
+
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const Admin = lazy(() => import('./pages/Admin'));
 
 // Premium Loading State
 const LoadingFallback = () => (
@@ -70,13 +76,18 @@ const AnimatedRoutes: React.FC = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
-        <Route path="/ai-automation" element={<PageTransition><AiAutomation /></PageTransition>} />
+        <Route path="/growth-systems" element={<PageTransition><GrowthSystems /></PageTransition>} />
         <Route path="/promo/ai-lead-handling" element={<PageTransition><LeadAutomation /></PageTransition>} />
+        <Route path="/app/content-studio" element={<PageTransition><ContentStudio /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/case-studies/:id" element={<PageTransition><CaseStudyDetail /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
+
+        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/blog/:id" element={<PageTransition><BlogPost /></PageTransition>} />
+        <Route path="/admin" element={<PageTransition><Admin /></PageTransition>} />
 
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
@@ -88,7 +99,7 @@ const AnimatedRoutes: React.FC = () => {
 // Main Layout Component to handle conditional rendering
 const MainLayout: React.FC = () => {
   const location = useLocation();
-  const isPromoPage = location.pathname.startsWith('/promo');
+  const isPromoPage = location.pathname.startsWith('/promo') || location.pathname.startsWith('/app/');
 
   return (
     <div className="flex flex-col min-h-screen bg-brand-dark font-sans text-white selection:bg-brand-primary selection:text-brand-dark">

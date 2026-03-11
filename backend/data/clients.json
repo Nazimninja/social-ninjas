@@ -1,0 +1,154 @@
+{
+  "client_1773210321869": {
+    "brandName": "Admin Test",
+    "email": "admin2@tt.com",
+    "phone": "99988877",
+    "audience": "Professional software developers and engineers",
+    "tone": "Funny",
+    "niche": "Testing",
+    "platforms": [
+      "Instagram"
+    ],
+    "planName": "Free Trial",
+    "joinDate": "11/3/2026",
+    "paymentStatus": "lead",
+    "id": "client_1773210321869",
+    "updatedAt": "2026-03-11T06:25:21.869Z"
+  },
+  "client_1773210339633": {
+    "brandName": "Admin Test",
+    "email": "admin2@tt.com",
+    "phone": "99988877",
+    "audience": "Professional software developers and engineers",
+    "tone": "Funny",
+    "niche": "Testing",
+    "platforms": [
+      "Instagram"
+    ],
+    "id": "client_1773210339633",
+    "plan": "trial",
+    "planName": "Free Trial",
+    "color": "#38bdf8",
+    "brand": "client",
+    "darkBg": "#08080e",
+    "joinDate": "11/3/2026",
+    "active": true,
+    "emoji": "🎁",
+    "sub": "Instagram",
+    "updatedAt": "2026-03-11T06:25:39.667Z"
+  },
+  "client_1773213422286": {
+    "brandName": "fitlife",
+    "email": "fit@gmail.com",
+    "phone": "990089900",
+    "audience": "Working professionals 25–40, urban India, want career growth",
+    "tone": "Bold & Confident — No fluff, straight talk",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "Instagram"
+    ],
+    "planName": "Free Trial",
+    "joinDate": "11/3/2026",
+    "paymentStatus": "lead",
+    "id": "client_1773213422286",
+    "updatedAt": "2026-03-11T07:17:02.287Z"
+  },
+  "client_1773213427569": {
+    "brandName": "fitlife",
+    "email": "fit@gmail.com",
+    "phone": "990089900",
+    "audience": "Working professionals 25–40, urban India, want career growth",
+    "tone": "Bold & Confident — No fluff, straight talk",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "Instagram"
+    ],
+    "id": "client_1773213427569",
+    "plan": "trial",
+    "planName": "Free Trial",
+    "color": "#38bdf8",
+    "brand": "client",
+    "darkBg": "#08080e",
+    "joinDate": "11/3/2026",
+    "active": true,
+    "emoji": "🎁",
+    "sub": "Instagram",
+    "updatedAt": "2026-03-11T07:17:07.578Z"
+  },
+  "client_1773215366816": {
+    "brandName": "fitlife",
+    "email": "fit0@gmail.com",
+    "phone": "9900889999",
+    "audience": "Working professionals 25–40, urban India, want career growth",
+    "tone": "Educational & Informative — Teach, don't sell",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "YouTube"
+    ],
+    "planName": "Free Trial",
+    "joinDate": "11/3/2026",
+    "paymentStatus": "lead",
+    "id": "client_1773215366816",
+    "updatedAt": "2026-03-11T07:49:26.816Z"
+  },
+  "client_1773215372689": {
+    "brandName": "fitlife",
+    "email": "fit0@gmail.com",
+    "phone": "9900889999",
+    "audience": "Working professionals 25–40, urban India, want career growth",
+    "tone": "Educational & Informative — Teach, don't sell",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "YouTube"
+    ],
+    "id": "client_1773215372689",
+    "plan": "trial",
+    "planName": "Free Trial",
+    "color": "#38bdf8",
+    "brand": "client",
+    "darkBg": "#020617",
+    "joinDate": "11/3/2026",
+    "active": true,
+    "emoji": "🎁",
+    "sub": "YouTube",
+    "updatedAt": "2026-03-11T07:49:32.693Z"
+  },
+  "client_1773217968648": {
+    "brandName": "9th Gear",
+    "email": "Nazim@gmail.com",
+    "phone": "+918147757479",
+    "audience": "Women 22–35, tier 1 cities, interested in skincare & beauty",
+    "tone": "Bold & Confident — No fluff, straight talk",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "Instagram"
+    ],
+    "planName": "Free Trial",
+    "joinDate": "11/3/2026",
+    "paymentStatus": "lead",
+    "id": "client_1773217968648",
+    "updatedAt": "2026-03-11T08:32:48.648Z"
+  },
+  "client_1773217973960": {
+    "brandName": "9th Gear",
+    "email": "Nazim@gmail.com",
+    "phone": "+918147757479",
+    "audience": "Women 22–35, tier 1 cities, interested in skincare & beauty",
+    "tone": "Bold & Confident — No fluff, straight talk",
+    "niche": "Fitness & Personal Training",
+    "platforms": [
+      "Instagram"
+    ],
+    "id": "client_1773217973960",
+    "plan": "trial",
+    "planName": "Free Trial",
+    "color": "#38bdf8",
+    "brand": "client",
+    "darkBg": "#020617",
+    "joinDate": "11/3/2026",
+    "active": true,
+    "emoji": "🎁",
+    "sub": "Instagram",
+    "updatedAt": "2026-03-11T08:32:53.964Z"
+  }
+}

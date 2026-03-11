@@ -409,7 +409,93 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            {/* --- TESTIMONIALS --- */}
+
+            {/* --- CONTENT STUDIO SHOWCASE --- */}
+            <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden border-t border-white/5">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent pointer-events-none"></div>
+                
+                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="bg-brand-surface/50 border border-white/10 rounded-[2.5rem] p-8 md:p-14 overflow-hidden relative group">
+                        
+                        {/* Abstract Background Glows */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none group-hover:bg-brand-primary/30 transition-colors duration-700"></div>
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/20 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                            
+                            {/* Copy */}
+                            <div className="space-y-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">New Release</span>
+                                </div>
+                                
+                                <h2 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
+                                    Social Ninja's <br/>
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">AI Content Studio</span>
+                                </h2>
+                                
+                                <p className="text-neutral-400 text-lg leading-relaxed max-w-lg">
+                                    Stop staring at a blank screen. Our AI researches live trends in your exact niche, then writes word-for-word Reel scripts, carousel hooks, and captions in 60 seconds.
+                                </p>
+                                
+                                <ul className="space-y-3 pt-2">
+                                    {[
+                                        "Live platform trend research (Insta, YT, LinkedIn)",
+                                        "Content memory — AI never repeats angles",
+                                        "Platform-native hooks & hashtag strategies"
+                                    ].map((trait, i) => (
+                                        <li key={i} className="flex items-center gap-3 text-sm text-neutral-300 font-medium">
+                                            <ShieldCheck size={18} className="text-brand-primary" />
+                                            {trait}
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                                    <a href="/content-studio.html">
+                                        <Button variant="primary" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold shadow-[0_0_30px_rgba(56,189,248,0.2)]">
+                                            Explore The Studio
+                                        </Button>
+                                    </a>
+                                    <Link to="/app/content-studio">
+                                        <Button variant="outline" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
+                                            ? Try 3 Posts Free
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                            
+                            {/* UI Preview Graphic */}
+                            <div className="relative h-[300px] md:h-[400px] w-full rounded-2xl border border-white/10 bg-brand-dark/80 backdrop-blur-sm overflow-hidden shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-700 flex flex-col">
+                                <div className="h-10 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                                </div>
+                                <div className="flex-1 p-6 flex flex-col gap-4 relative overflow-hidden">
+                                    <div className="w-3/4 h-8 bg-white/5 rounded-lg border border-white/5 animate-pulse"></div>
+                                    <div className="w-full h-24 bg-brand-primary/10 rounded-xl border border-brand-primary/20 flex flex-col justify-center px-4">
+                                        <div className="w-1/4 h-2 bg-brand-primary/50 rounded mb-4"></div>
+                                        <div className="w-5/6 h-2 bg-white/20 rounded mb-2"></div>
+                                        <div className="w-4/6 h-2 bg-white/20 rounded mb-2"></div>
+                                        <div className="w-3/4 h-2 bg-white/20 rounded"></div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/5"></div>
+                                        <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/5"></div>
+                                    </div>
+                                    <div className="absolute bottom-0 right-0 p-8">
+                                        <div className="w-12 h-12 bg-brand-primary rounded-full shadow-[0_0_30px_rgba(56,189,248,0.5)] flex items-center justify-center animate-bounce">
+                                            <Zap size={20} className="text-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section className="py-16 md:py-24 bg-brand-dark relative overflow-hidden border-t border-white/5">
                 <div className="absolute inset-0 bg-brand-surface/30"></div>
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -519,3 +605,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+

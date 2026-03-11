@@ -1,0 +1,40 @@
+{
+  "client_1773210321869": {
+    "brandName": "Admin Test",
+    "email": "admin2@tt.com",
+    "phone": "99988877",
+    "audience": "Professional software developers and engineers",
+    "tone": "Funny",
+    "niche": "Testing",
+    "platforms": [
+      "Instagram"
+    ],
+    "planName": "Free Trial",
+    "joinDate": "11/3/2026",
+    "paymentStatus": "lead",
+    "id": "client_1773210321869",
+    "updatedAt": "2026-03-11T06:25:21.869Z"
+  },
+  "client_1773210339633": {
+    "brandName": "Admin Test",
+    "email": "admin2@tt.com",
+    "phone": "99988877",
+    "audience": "Professional software developers and engineers",
+    "tone": "Funny",
+    "niche": "Testing",
+    "platforms": [
+      "Instagram"
+    ],
+    "id": "client_1773210339633",
+    "plan": "trial",
+    "planName": "Free Trial",
+    "color": "#38bdf8",
+    "brand": "client",
+    "darkBg": "#08080e",
+    "joinDate": "11/3/2026",
+    "active": true,
+    "emoji": "🎁",
+    "sub": "Instagram",
+    "updatedAt": "2026-03-11T06:25:39.667Z"
+  }
+}

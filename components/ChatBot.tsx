@@ -160,34 +160,28 @@ const ChatBot: React.FC = () => {
       return;
     }
 
-    // --- AI Chat Logic (Gemini) ---
+    // --- AI Chat Logic ---
     if (step === 'AI_CHAT') {
       try {
-        const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+        const payloadMessages = messages.map(m => ({
+            role: m.role === 'model' ? 'assistant' : 'user',
+            content: m.text
+        })).concat([{ role: 'user', content: `User Context - Name: ${leadData.name}, Goal: ${leadData.goal}\n\nUser Input: ${userMsg}` }]);
 
-        // Context-aware prompt
-        const prompt = `
-                You are a helpful, professional, and concise AI assistant for a digital agency called "Social Ninja's".
-                User Name: ${leadData.name}
-                User Goal: ${leadData.goal}
-                
-                Agency Services: Social Media Management, Video Production, Paid Ads (Meta/Google), AI Automation.
-                Tone: Premium, confident, helpful. Not salesy, but authoritative.
-                
-                The user just asked: "${userMsg}"
-                
-                Provide a helpful answer in 2-3 sentences.
-            `;
-
-        const response = await ai.models.generateContent({
-          model: 'gemini-3-flash-preview', // Using Flash for speed in chat
-          contents: prompt,
+        const res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: payloadMessages })
         });
-
-        setMessages(prev => [...prev, { role: 'model', text: response.text || "I'm having trouble connecting to the server. Please try again." }]);
+        
+        if (!res.ok) throw new Error("API Error");
+        const data = await res.json();
+        const assistText = data.content?.[0]?.text || "Sorry, an error occurred.";
+        
+        setMessages(prev => [...prev, { role: 'model', text: assistText }]);
       } catch (error) {
         console.error(error);
-        setMessages(prev => [...prev, { role: 'model', text: "I'm currently experiencing high traffic. Please try again later or book a call on our contact page." }]);
+        setMessages(prev => [...prev, { role: 'model', text: "I'm currently experiencing high traffic. Please try again later or contact us directly." }]);
       } finally {
         setIsTyping(false);
       }
