@@ -1148,7 +1148,7 @@ function Workspace({profile, hKey}){
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#38bdf8",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
-                <button onClick={() => window.location.href = "#pricing"}
+                <button onClick={() => window.open('https://razorpay.me/@socialninjas', '_blank')}
                   style={{background:"#38bdf8",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
@@ -3018,7 +3018,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
 function PortalClientView({client, onHome}){
   const [view, setView] = useState("dashboard");
   const color = client.color||"#7C3AED";
-  const hKey = `snstudio_portal_${client.id}`;
+  const hKey = `snstudio_hist_${client.id}`;
   return (
     <div>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,flexWrap:"wrap"}}>
@@ -3201,7 +3201,7 @@ export default function App(){
           {clientView==="dashboard"
             ?<ClientDashboard profile={cl} hKey={`snstudio_hist_${clientSelected}`}
                 onGenerateContent={()=>setClientView("content")}/>
-            :<Workspace profile={cl} hKey={`snstudio_client_${clientSelected}`}/>
+            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`}/>
           }
         </div>
     );
