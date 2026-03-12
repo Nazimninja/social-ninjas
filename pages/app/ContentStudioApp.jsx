@@ -35,7 +35,7 @@ const CONFIG = {
   },
 
   // Google Sheets webhook — paste Apps Script URL here
-  sheetsWebhook: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
+  sheetsWebhook: import.meta?.env?.VITE_GOOGLE_SHEET_URL || "",
 };
 
 // ─────────────────────────────────────────────────────────────────

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Mail, CheckCircle, Sparkles, Loader2, AlertCircle, Phone, Globe, Building, User, Link as LinkIcon, AlertTriangle } from 'lucide-react';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
-import { GoogleGenAI } from "@google/genai";
 import { submitToGoogleSheets } from '../services/googleSheets';
 
 // Common Country Codes for the selector
@@ -131,34 +130,23 @@ const Contact: React.FC = () => {
       // We don't stop execution here because we still want to show the AI response
     }
 
-    // 2. Generate AI Insight
+    // 2. Generate AI Insight via backend
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `
-        You are a Senior Growth Strategist at Social Ninja's, a premium digital agency.
-        A potential client has just submitted a request for a strategy call.
-        
-        CLIENT DETAILS:
-        Name: ${formData.name}
-        Company: ${formData.company || "Not specified"}
-        Website/Handle: ${formData.website}
-        Stated Bottleneck: "${formData.message}"
-        
-        TASK:
-        Provide a 2-3 sentence immediate "Preliminary Insight". 
-        Focus on high-level strategy (e.g., funnel optimization, conversion rate optimization).
-        avoid generic advice.
-        
-        TONE: Professional, executive, confident. 
-        OUTPUT: Just the insight.
-      `;
+      const prompt = `You are a Senior Growth Strategist at Social Ninja's.
+A potential client submitted a strategy call request.
+Name: ${formData.name} | Company: ${formData.company || "Not specified"} | Website: ${formData.website}
+Bottleneck: "${formData.message}"
+Give a 2-3 sentence "Preliminary Insight" — specific, strategic, no generic advice. Professional and confident tone.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-pro-preview',
-        contents: prompt,
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [{ role: "user", content: prompt }] })
       });
+      const data = await res.json();
+      const text = data?.content?.[0]?.text || "";
+      setAiResponse(text || `Thank you, ${formData.name}. Our strategy team will review your request and contact you shortly.`);
 
-      setAiResponse(response.text || "Our strategy team has received your request and is reviewing your data now.");
 
     } catch (error) {
       console.error("AI Error:", error);
