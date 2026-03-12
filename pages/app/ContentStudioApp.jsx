@@ -1866,7 +1866,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   const [screen,setScreen]=useState("plans"); // plans|details|payment|profile|trial
   const [plan,setPlan]=useState(null);
   const [form,setForm]=useState({
-    brandName:"",email:"",phone:"",
+    brandName:"",email:"",phone:"",countryCode:"+91",
     audience:"",tone:"",niche:"",
     platforms:[],
   });
@@ -2221,8 +2221,30 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
           <Field label="Email" name="email" type="email" value={form.email}
             onChange={setF} error={errors.email} placeholder="you@email.com" required/>
-          <Field label="WhatsApp / Phone" name="phone" value={form.phone}
-            onChange={setF} error={errors.phone} placeholder="+91 98765 43210"/>
+          <Field label="WhatsApp / Phone" name="phone" error={errors.phone}>
+            <div style={{display:"flex",gap:8}}>
+              <select 
+                value={form.countryCode} 
+                onChange={e=>setF("countryCode",e.target.value)}
+                style={{width:90,background:errors.phone?"#1a060e":"rgba(255,255,255,0.05)",
+                  border:`1px solid ${errors.phone?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                  padding:"10px",color:"#fff",fontSize:13,outline:"none"}}>
+                <option value="+91">🇮🇳 +91</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+65">🇸🇬 +65</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+27">🇿🇦 +27</option>
+              </select>
+              <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
+                placeholder="987654321" type="tel"
+                style={{flex:1,background:errors.phone?"#1a060e":"rgba(255,255,255,0.05)",
+                  border:`1px solid ${errors.phone?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                  padding:"10px 13px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
+            </div>
+          </Field>
         </div>
 
         {/* Niche — smart dropdown */}
@@ -2297,8 +2319,13 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       <div style={{fontSize:48,marginBottom:16}}>📱</div>
       <h2 style={{fontSize:24,fontWeight:800,marginBottom:8}}>Verify your WhatsApp</h2>
       <p style={{color:"rgba(255,255,255,0.5)",fontSize:14,marginBottom:24}}>
-        We've sent a 4-digit verification code to<br/><b style={{color:"#fff"}}>{form.phone || "your phone number"}</b>.
+        We've sent a 4-digit verification code to<br/>
+        <b style={{color:"#fff"}}>{form.phone ? `${form.countryCode} ${form.phone}` : "your phone number"}</b>.
       </p>
+      
+      <div style={{background:"rgba(56,189,248,0.1)", border:"1px dashed rgba(56,189,248,0.3)", borderRadius:8, padding:"12px", marginBottom:24, color:"#7ab8f5", fontSize:12, fontWeight:600}}>
+        🛠 System in Dev Mode: Use code <b style={{color:"#fff", fontSize:14}}>1234</b>
+      </div>
       <input value={otpValue} onChange={e=>setOtpValue(e.target.value)} maxLength={4}
         placeholder="----"
         style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",
