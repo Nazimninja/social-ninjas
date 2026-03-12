@@ -1143,11 +1143,22 @@ function Workspace({profile, hKey}){
           </div>
           <div style={{textAlign:"center",marginTop:28,paddingTop:22,
             borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-            <button onClick={generate}
-              style={{background:`linear-gradient(135deg,${color},${color}88)`,
-                color:"#fff",border:"none",borderRadius:12,padding:"13px 28px",
-                fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
-              ↻ Generate Week {hist.length+1}</button>
+            {trialExhausted ? (
+              <div style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.3)",borderRadius:12,padding:"20px",maxWidth:400,margin:"0 auto"}}>
+                <div style={{fontSize:20,marginBottom:8}}>⚡</div>
+                <div style={{fontSize:14,fontWeight:700,color:"#38bdf8",marginBottom:12}}>Ready for more content?</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
+                <button onClick={() => window.location.href = "#pricing"}
+                  style={{background:"#38bdf8",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
+                  View Plans & Upgrade →</button>
+              </div>
+            ) : (
+              <button onClick={generate}
+                style={{background:`linear-gradient(135deg,${color},${color}88)`,
+                  color:"#fff",border:"none",borderRadius:12,padding:"13px 28px",
+                  fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
+                ↻ Generate Week {hist.length+1}</button>
+            )}
           </div>
         </div>
       )}
@@ -2286,7 +2297,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       <div style={{fontSize:48,marginBottom:16}}>📱</div>
       <h2 style={{fontSize:24,fontWeight:800,marginBottom:8}}>Verify your WhatsApp</h2>
       <p style={{color:"rgba(255,255,255,0.5)",fontSize:14,marginBottom:24}}>
-        We've sent a 4-digit verification code to<br/><b style={{color:"#fff"}}>{form.phone || "your phone number"}</b>.<br/><span style={{fontSize:11,opacity:0.6}}>(Use 1234 for testing)</span>
+        We've sent a 4-digit verification code to<br/><b style={{color:"#fff"}}>{form.phone || "your phone number"}</b>.
       </p>
       <input value={otpValue} onChange={e=>setOtpValue(e.target.value)} maxLength={4}
         placeholder="----"
