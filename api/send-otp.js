@@ -1,3 +1,7 @@
+// OTP via 2Factor.in (FREE — 10,000 OTPs/month free tier)
+// Sign up: https://2factor.in → get API key → add as TWOFACTOR_API_KEY in Vercel
+// If not configured: falls back to dev mode (code 1234)
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -7,34 +11,31 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { phone } = req.body;
-  if (!phone) return res.status(400).json({ error: "Phone number is required." });
+  if (!phone) return res.status(400).json({ error: 'Phone number is required.' });
 
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const verifyServiceSid = process.env.TWILIO_VERIFY_SERVICE_SID;
+  const apiKey = process.env.TWOFACTOR_API_KEY;
 
-  if (!accountSid || !authToken || !verifyServiceSid) {
-    console.log(`[DEV MODE] OTP requested for ${phone}. Use '1234' to verify.`);
-    return res.json({ success: true, mode: "test" });
+  // ── DEV / NO KEY: skip real OTP ──────────────────────────────────
+  if (!apiKey) {
+    console.log(`[DEV] OTP for ${phone} — use 1234 to verify`);
+    return res.json({ success: true, mode: 'dev', sessionId: 'dev-session' });
   }
 
+  // ── PRODUCTION: 2Factor.in SMS OTP ──────────────────────────────
+  // Strip non-digits, remove country code if present
+  const clean = phone.replace(/\D/g, '').replace(/^91/, '');
+
   try {
-    const twilioRes = await fetch(
-      `https://verify.twilio.com/v2/Services/${verifyServiceSid}/Verifications`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64'),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ To: `whatsapp:${phone}`, Channel: 'whatsapp' })
-      }
-    );
-    const data = await twilioRes.json();
-    if (!twilioRes.ok) throw new Error(data.message || 'Twilio error');
-    res.json({ success: true, status: data.status });
-  } catch (error) {
-    console.error("OTP Send Error:", error);
-    res.status(500).json({ error: "Failed to send OTP. Ensure number includes country code." });
+    const url = `https://2factor.in/API/V1/${apiKey}/SMS/${clean}/AUTOGEN`;
+    const r = await fetch(url);
+    const data = await r.json();
+
+    if (data.Status === 'Success') {
+      return res.json({ success: true, sessionId: data.Details });
+    }
+    throw new Error(data.Details || '2Factor error');
+  } catch (err) {
+    console.error('OTP Send Error:', err);
+    return res.status(500).json({ error: 'Failed to send OTP. Please check the phone number.' });
   }
 }

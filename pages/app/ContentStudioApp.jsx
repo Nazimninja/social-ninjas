@@ -121,7 +121,7 @@ const PLANS = [
       { icon: "🎠", text: "Complete carousel decks with CTA slides" },
       { icon: "📌", text: "Competitor gap analysis per generation" },
       { icon: "📲", text: "Every platform — no limits" },
-      { icon: "💬", text: "Dedicated WhatsApp support line" },
+      { icon: "✉️", text: "Priority email support — 24hr response" },
       { icon: "📞", text: "Bi-weekly strategy call — agency founder" },
       { icon: "🔄", text: "Cancel anytime — no contracts" },
     ],
@@ -1941,37 +1941,42 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   const [otpValue, setOtpValue] = useState("");
   const [otpError, setOtpError] = useState("");
   const [verifyingOtp,setVerifyingOtp]=useState(false);
-  const [waCode, setWaCode] = useState("");
+  const [otpSessionId, setOtpSessionId] = useState(""); // 2Factor session ID
 
-  const AGENCY_WHATSAPP = import.meta?.env?.VITE_AGENCY_WHATSAPP || "919100000000"; // Set VITE_AGENCY_WHATSAPP in Vercel env
+  const SUPPORT_EMAIL = "nazim@socialninjas.in";
+  const SUPPORT_INSTAGRAM = "https://www.instagram.com/socialninja.s/";
 
   const submitDetails=async()=>{
     const errs=validateDetails();
     if(Object.keys(errs).length){setErrors(errs);return;}
     setSavingData(true);
     try {
-      // Send OTP via backend (falls back to test mode if Twilio not configured)
       if(form.phone) {
-        await fetch("/api/send-otp", {
+        const r = await fetch("/api/send-otp", {
           method:"POST", headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({phone:form.phone})
+          body:JSON.stringify({phone: form.countryCode + form.phone.replace(/\D/g,"")})
         });
+        const d = await r.json().catch(()=>({}));
+        if(d.sessionId) setOtpSessionId(d.sessionId);
       }
-    } catch(e){ /* non-blocking — proceed to OTP screen anyway */ }
+    } catch(e){ /* non-blocking */ }
     setSavingData(false);
     setScreen("otp");
   };
 
   const verifyOtpAndProceed=async()=>{
-    if(!otpValue.trim()) { setOtpError("Please enter the 4-digit code."); return; }
+    if(!otpValue.trim()) { setOtpError("Please enter the 6-digit code."); return; }
     setVerifyingOtp(true);
     setOtpError("");
     try {
-      // Verify OTP via backend (returns success for code "1234" when Twilio not configured)
       if(form.phone) {
         const res = await fetch("/api/verify-otp", {
           method:"POST", headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({phone:form.phone, code:otpValue.trim()})
+          body:JSON.stringify({
+            phone: form.countryCode + form.phone.replace(/\D/g,""),
+            code: otpValue.trim(),
+            sessionId: otpSessionId
+          })
         });
         if(!res.ok) {
           const err = await res.json().catch(()=>({}));
@@ -2354,9 +2359,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   if(screen==="otp"&&plan) return (
     <div style={{maxWidth:400,margin:"0 auto",padding:"40px 20px",textAlign:"center"}}>
       <div style={{fontSize:48,marginBottom:16}}>📱</div>
-      <h2 style={{fontSize:24,fontWeight:800,marginBottom:8}}>Verify your WhatsApp</h2>
+      <h2 style={{fontSize:24,fontWeight:800,marginBottom:8}}>Verify your phone</h2>
       <p style={{color:"rgba(255,255,255,0.5)",fontSize:14,marginBottom:24}}>
-        We've sent a 4-digit verification code to<br/>
+        We've sent a verification code via SMS to<br/>
         <b style={{color:"#fff"}}>{form.phone ? `${form.countryCode} ${form.phone}` : "your phone number"}</b>.
       </p>
       
@@ -2791,9 +2796,9 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
                             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Price Difference to Upgrade:</div>
                             <div style={{fontSize:24,fontWeight:800,color:pl.color}}>{userGeo.symbol}{diff.toLocaleString()}</div>
                           </div>
-                          <button onClick={() => window.open('https://razorpay.me/@socialninjas', '_blank')}
+                          <button onClick={() => { window.location.hash=`/?plan=${pl.id}`; window.location.reload(); }}
                             style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,color:"#fff",border:"none",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 15px ${pl.color}40`}}>
-                            Pay {userGeo.symbol}{diff.toLocaleString()} to Upgrade →
+                            Upgrade to {pl.name} →
                           </button>
                         </div>
                       );
