@@ -1,5 +1,7 @@
-// Check if a trial already exists for this email/phone
-// Uses Vercel KV if configured, otherwise returns false (local check is fallback)
+// Cross-device trial duplicate check
+// Uses Upstash Redis (free: 10,000 req/day) — https://upstash.com
+// Env vars needed: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
+// Without these: falls back to localStorage-only (same browser check)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -7,43 +9,51 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { email, phone } = req.body;
-  if (!email) return res.status(400).json({ error: 'Email required' });
+  const { email, phone, action } = req.body || {};
 
-  // ── If Vercel KV is configured, check there ──
-  // To enable: add KV_REST_API_URL and KV_REST_API_TOKEN to Vercel env vars
-  // and run: vercel env add KV_REST_API_URL + KV_REST_API_TOKEN
-  const kvUrl = process.env.KV_REST_API_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN;
+  const url   = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  if (kvUrl && kvToken) {
-    try {
-      const headers = { Authorization: `Bearer ${kvToken}` };
-      const cleanEmail = email.toLowerCase().trim();
-      const cleanPhone = phone ? phone.replace(/\D/g, '') : null;
-
-      // Check email
-      const emailRes = await fetch(`${kvUrl}/get/trial:${cleanEmail}`, { headers });
-      const emailData = await emailRes.json();
-      if (emailData.result) return res.json({ exists: true, reason: 'email' });
-
-      // Check phone
-      if (cleanPhone) {
-        const phoneRes = await fetch(`${kvUrl}/get/trial:phone:${cleanPhone}`, { headers });
-        const phoneData = await phoneRes.json();
-        if (phoneData.result) return res.json({ exists: true, reason: 'phone' });
-      }
-
-      return res.json({ exists: false });
-    } catch (e) {
-      console.error('KV check error:', e);
-      // Fall through to return false — local check is still in place
-      return res.json({ exists: false });
-    }
+  // ── No Upstash configured — rely on localStorage only ────────────
+  if (!url || !token) {
+    if (action === 'save') return res.json({ saved: false, mode: 'local-only' });
+    return res.json({ exists: false, mode: 'local-only' });
   }
 
-  // No KV configured — rely on client-side localStorage check
-  return res.json({ exists: false, mode: 'local-only' });
+  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  const cleanEmail = email ? email.toLowerCase().trim() : null;
+  const cleanPhone = phone ? phone.replace(/\D/g, '') : null;
+
+  try {
+    // ── SAVE: called after successful OTP to record the trial ───────
+    if (action === 'save') {
+      if (cleanEmail) {
+        await fetch(`${url}/set/trial:${cleanEmail}/1/EX/31536000`, { method: 'POST', headers });
+      }
+      if (cleanPhone) {
+        await fetch(`${url}/set/trial:phone:${cleanPhone}/1/EX/31536000`, { method: 'POST', headers });
+      }
+      return res.json({ saved: true });
+    }
+
+    // ── CHECK: does this email/phone already have a trial? ──────────
+    if (!cleanEmail) return res.status(400).json({ error: 'Email required' });
+
+    const emailRes = await fetch(`${url}/get/trial:${cleanEmail}`, { headers });
+    const emailData = await emailRes.json();
+    if (emailData.result) return res.json({ exists: true, reason: 'email' });
+
+    if (cleanPhone) {
+      const phoneRes = await fetch(`${url}/get/trial:phone:${cleanPhone}`, { headers });
+      const phoneData = await phoneRes.json();
+      if (phoneData.result) return res.json({ exists: true, reason: 'phone' });
+    }
+
+    return res.json({ exists: false });
+
+  } catch (e) {
+    console.error('Upstash error:', e);
+    return res.json({ exists: false }); // fail open — local check is fallback
+  }
 }

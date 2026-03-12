@@ -2013,7 +2013,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         } catch(e){ /* non-blocking — local check already passed */ }
         trials[Date.now()] = { email: tEmail, phone: form.phone, date: new Date().toISOString() };
         await DB.set("snstudio_trials", trials);
-        // Persist to backend for cross-device tracking
+        // Persist to Upstash Redis for cross-device trial tracking
+        fetch("/api/check-trial", {method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({action:"save", email:tEmail, phone:form.phone})}).catch(()=>{});
         fetch("/api/clients", {method:"POST",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({type:"trial",email:tEmail,phone:form.phone,brandName:form.brandName,
             date:new Date().toISOString(),paymentStatus:"trial"})}).catch(()=>{});
