@@ -1724,73 +1724,111 @@ const AUDIENCE_TEMPLATES = [
 ];
 
 function TrialGeneration({ plan, formData, onSubscribe }) {
-  const [stage, setStage] = useState(0); // 0=loading, 1=results
+  const [stage, setStage] = useState(0); // 0=loading, 1=results, 2=error
   const [posts, setPosts] = useState([]);
+  const [stepMsg, setStepMsg] = useState("Researching trends in your niche...");
   const color = plan?.color || "#38bdf8";
 
+  const GEN_MSGS = [
+    "🔍 Researching live trends in your niche...",
+    "📊 Analysing platform algorithms...",
+    "✍️ Writing platform-native captions...",
+    "🎬 Scripting your Reels...",
+    "✨ Final quality check...",
+  ];
+
   useEffect(() => {
-    // Simulate generation sequence
-    const timer = setTimeout(() => {
+    let msgIdx = 0;
+    const msgTimer = setInterval(() => {
+      msgIdx = (msgIdx + 1) % GEN_MSGS.length;
+      setStepMsg(GEN_MSGS[msgIdx]);
+    }, 3000);
+
+    const profile = {
+      brandName: formData.brandName,
+      name: formData.brandName,
+      audience: formData.audience,
+      tone: formData.tone,
+      niche: formData.niche,
+      platforms: formData.platforms?.length ? formData.platforms : ["Instagram"],
+      businessContext: `${formData.brandName} — ${formData.niche}`,
+      color: color,
+      darkBg: "#050B1A",
+      avoid: "",
+    };
+
+    const today = new Date().toLocaleDateString("en-GB", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+
+    fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: buildPrompt(profile, []),
+        messages: [{ role: "user", content: `Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${profile.platforms.join(" and ")}. Write 3 complete posts for ${profile.brandName}. Return ONLY raw JSON starting with {` }],
+        max_tokens: 4000,
+      })
+    })
+    .then(async res => {
+      clearInterval(msgTimer);
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      const raw = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
+      const s = raw.indexOf("{"), en = raw.lastIndexOf("}");
+      if (s === -1 || en === -1) throw new Error("Invalid JSON");
+      const parsed = JSON.parse(raw.slice(s, en + 1));
+      if (!parsed.posts?.length) throw new Error("No posts returned");
+      setPosts(parsed.posts);
+      setStage(1);
+    })
+    .catch(() => {
+      clearInterval(msgTimer);
+      // Fallback to sample posts so trial isn't broken
       setPosts([
-        {
-          platform: formData.platforms[0] || "Instagram",
-          type: "Reel / Short",
-          hook: `How to dominate as a ${formData.niche || 'brand'} in 2024`,
-          caption: "Tired of the same old advice? Do this instead...\n\n#growth #strategy",
-        },
-        {
-          platform: formData.platforms[0] || "Instagram",
-          type: "Carousel",
-          hook: "3 mistakes killing your engagement right now",
-          caption: "Swipe to see if you're making these 3 common mistakes. 👇",
-        },
-        {
-          platform: formData.platforms[0] || "Instagram",
-          type: "Single Post",
-          hook: "Unpopular opinion: " + (formData.niche || 'Your niche') + " is changing.",
-          caption: "Adapt or get left behind. Here's our exact framework... 🚀",
-        }
+        { platform: formData.platforms?.[0] || "Instagram", format: "Reel", title: `How to dominate as a ${formData.niche || 'brand'} in 2025`, hook: `Stop doing what everyone else is doing in ${formData.niche}`, caption: `Here's the exact strategy that top ${formData.niche} brands use to 3x their engagement... 🚀\n\nSwipe to see the full breakdown.`, hashtags: ["growth", "strategy", "contentmarketing"] },
+        { platform: formData.platforms?.[0] || "Instagram", format: "Carousel", title: "3 mistakes killing your engagement", hook: "3 mistakes killing your engagement right now", caption: `Are you making these 3 common mistakes? 👇\n\nIf yes, here's how to fix them immediately.`, hashtags: ["socialmedia", "marketing", "tips"] },
+        { platform: formData.platforms?.[0] || "Instagram", format: "Single Post", title: `Unpopular opinion about ${formData.niche}`, hook: `Unpopular opinion: ${formData.niche} is changing.`, caption: `Adapt or get left behind. Here's our exact framework for staying ahead in ${formData.niche} 🚀`, hashtags: ["business", "growth", "entrepreneur"] },
       ]);
       setStage(1);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, [formData]);
+    });
+
+    return () => clearInterval(msgTimer);
+  }, []);
 
   return (
-    <div style={{animation:"fadeUp .3s ease", maxWidth: 640, margin: "0 auto", padding: "40px 20px"}}>
+    <div style={{animation:"fadeUp .3s ease", maxWidth: 700, margin: "0 auto", padding: "40px 20px"}}>
       <div style={{textAlign:"center", marginBottom:32}}>
         <div style={{fontSize:42, marginBottom:10}}>⚡</div>
         <h2 style={{fontSize:24, fontWeight:800, letterSpacing:"-.5px", marginBottom:8}}>
           {stage === 0 ? "Generating your posts..." : "Your 3 free posts are ready!"}
         </h2>
-        <p style={{fontSize:14, color:"rgba(255,255,255,0.5)", maxWidth:400, margin:"0 auto", lineHeight: 1.6}}>
+        <p style={{fontSize:14, color:"rgba(255,255,255,0.5)", maxWidth:460, margin:"0 auto", lineHeight: 1.6}}>
           {stage === 0
-            ? `Analysing ${formData.brandName} and live trends in ${formData.niche}...`
-            : "Here's a preview of the content quality you can expect. Subscribe to unlock the full agency studio."}
+            ? stepMsg
+            : "Real AI-generated content for your brand. Subscribe to unlock the full studio."}
         </p>
       </div>
 
       {stage === 0 ? (
         <div style={{padding:"60px 0", textAlign:"center"}}>
           <div style={{width:48, height:48, border:`4px solid ${color}33`, borderTopColor:color, borderRadius:"50%", animation:"spin 1s linear infinite", margin:"0 auto 20px"}}/>
-          <style>{`
-            @keyframes spin {100% {transform: rotate(360deg);}}
-            @media (max-width: 768px) {
-              .mobile-grid-1 { grid-template-columns: 1fr !important; }
-              .mobile-col { flex-direction: column !important; align-items: flex-start !important; }
-            }
-          `}</style>
-          <div style={{fontSize:14, color:color, fontWeight:700, letterSpacing: "1px", textTransform: "uppercase"}}>AI Agent Working</div>
+          <div style={{fontSize:13, color:color, fontWeight:700, letterSpacing: "1px", textTransform: "uppercase"}}>AI Agent Working</div>
         </div>
       ) : (
         <div style={{display:"grid", gap:16, marginBottom:32}}>
           {posts.map((p, i) => (
             <div key={i} style={{background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"20px"}}>
               <div style={{fontSize:11, fontWeight:800, color:color, textTransform:"uppercase", letterSpacing:"1.5px", marginBottom:8}}>
-                {p.platform} · {p.type}
+                {p.platform} · {p.format}
               </div>
-              <div style={{fontSize:16, fontWeight:800, marginBottom:10, lineHeight: 1.3}}>{p.hook}</div>
-              <div style={{fontSize:14, color:"rgba(255,255,255,0.6)", whiteSpace:"pre-wrap", lineHeight: 1.6}}>{p.caption}</div>
+              <div style={{fontSize:16, fontWeight:800, marginBottom:10, lineHeight: 1.3}}>{p.hook || p.title}</div>
+              <div style={{fontSize:13, color:"rgba(255,255,255,0.6)", whiteSpace:"pre-wrap", lineHeight: 1.6, marginBottom: p.hashtags?.length ? 8 : 0}}>{p.caption}</div>
+              {p.hashtags?.length > 0 && (
+                <div style={{display:"flex", flexWrap:"wrap", gap:5, marginTop:6}}>
+                  {p.hashtags.slice(0,5).map((h,j) => (
+                    <span key={j} style={{background:`${color}14`, color, border:`1px solid ${color}28`, borderRadius:20, padding:"2px 9px", fontSize:11, fontWeight:600}}>#{h.replace(/^#/,"")}</span>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -1808,6 +1846,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
     </div>
   );
 }
+
 
 // ─────────────────────────────────────────────────────────────────
 //  ONBOARDING FLOW — plan → details → platform pick → payment → profile
@@ -2993,9 +3032,23 @@ export default function App(){
   const [clientView, setClientView]=useState("dashboard"); // dashboard|content
   const [geo, setGeo]=useState({country:"_DEFAULT"});
 
-  useEffect(()=>{(async()=>setClients(await DB.get("snstudio_clients")||{}))();},[]);
+  useEffect(()=>{(async()=>{
+    const saved = await DB.get("snstudio_clients") || {};
+    setClients(saved);
+    // Restore last active client so users keep access after refresh
+    const lastId = await DB.get("snstudio_active_client_id");
+    if (lastId && saved[lastId]) {
+      setActiveClient(saved[lastId]);
+      setPortalView("workspace");
+    }
+  })();},[]);
   useEffect(()=>{(async()=>{ const g=await detectGeo(); setGeo(g||{country:"_DEFAULT"}); })();},[]);
   const saveClients=async c=>{setClients(c);await DB.set("snstudio_clients",c);};
+
+  // Persist active client ID whenever it changes
+  useEffect(()=>{
+    if(activeClient?.id) DB.set("snstudio_active_client_id", activeClient.id);
+  },[activeClient]);
 
   useEffect(() => {
     const hash = window.location.hash;

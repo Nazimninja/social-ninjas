@@ -76,9 +76,9 @@ const AiProducts: React.FC = () => {
                             </ul>
 
                             <div className="mt-auto relative z-20">
-                                <Link to="/app/content-studio" className="block w-full py-4 rounded-xl bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/30 text-brand-primary font-bold tracking-wider text-sm uppercase text-center hover:bg-brand-primary hover:text-black transition-all flex justify-center items-center gap-2 group/btn">
+                                <a href="/content-studio.html" className="block w-full py-4 rounded-xl bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/30 text-brand-primary font-bold tracking-wider text-sm uppercase text-center hover:bg-brand-primary hover:text-black transition-all flex justify-center items-center gap-2 group/btn">
                                     Launch Studio <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </div>
