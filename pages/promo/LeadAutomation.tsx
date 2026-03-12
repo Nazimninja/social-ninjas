@@ -79,13 +79,20 @@ const LeadAutomation: React.FC = () => {
                 <meta name="description" content="Never miss a lead again. Automate lead handling with AI." />
             </Helmet>
 
-            {/* --- CUSTOM NAVBAR FOR PROMO --- */}
-            <nav className="fixed top-0 w-full z-50 py-6 bg-brand-dark/90 backdrop-blur-xl border-b border-white/5">
+            {/* --- NAVBAR (matches main site) --- */}
+            <nav className="fixed top-0 w-full z-50 py-3 bg-brand-dark/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <img src="/logo.png" alt="Social Ninja's" className="h-12 md:h-16 w-auto" />
-                        <span className="font-display font-bold text-lg hidden sm:block">Social<span className="text-brand-primary">Ninja's</span></span>
-                    </div>
+                    <a href="/" className="flex items-center gap-2">
+                        <img src="/logo.png" alt="Social Ninja's" className="h-16 md:h-20 w-auto object-contain" />
+                        <div className="flex flex-col">
+                            <span className="font-display text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+                                Social<span className="text-brand-primary">Ninja's</span>.
+                            </span>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-primary self-end leading-none" style={{marginTop:'-2px'}}>
+                                AI Agency
+                            </span>
+                        </div>
+                    </a>
                     <button onClick={scrollToDemo}>
                         <Button className="py-2 px-4 md:px-6 text-sm md:text-base font-bold rounded-full">Book Free Demo</Button>
                     </button>
