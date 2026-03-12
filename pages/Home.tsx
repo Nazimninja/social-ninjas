@@ -441,7 +441,7 @@ const Home: React.FC = () => {
                                 <ul className="space-y-3 pt-2">
                                     {[
                                         "Live platform trend research (Insta, YT, LinkedIn)",
-                                        "Content memory — AI never repeats angles",
+                                        "Content memory ï¿½ AI never repeats angles",
                                         "Platform-native hooks & hashtag strategies"
                                     ].map((trait, i) => (
                                         <li key={i} className="flex items-center gap-3 text-sm text-neutral-300 font-medium">
@@ -452,14 +452,14 @@ const Home: React.FC = () => {
                                 </ul>
 
                                 <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                                    <a href="/content-studio.html">
+                                    <a href="/app/content-studio#/?plan=trial">
                                         <Button variant="primary" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold shadow-[0_0_30px_rgba(56,189,248,0.2)]">
                                             Explore The Studio
                                         </Button>
                                     </a>
-                                    <Link to="/app/content-studio">
+                                    <Link to="/app/content-studio#/?plan=trial">
                                         <Button variant="outline" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
-                                            ? Try 3 Posts Free
+                                            âš¡ Try 3 Posts Free
                                         </Button>
                                     </Link>
                                 </div>

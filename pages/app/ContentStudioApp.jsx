@@ -1009,16 +1009,19 @@ function Workspace({profile, hKey}){
             Upgrade now to generate 15–unlimited posts every month — new trends, new topics, every week.
           </p>
           <div className="mobile-grid-1" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
-            {[["₹3,999/mo","Starter","15 posts · 2 platforms"],
-              ["₹6,499/mo","Growth","25 posts · 4 platforms"],
-              ["₹11,999/mo","Pro","Unlimited · All platforms"]].map(([price,name,desc])=>(
-              <a key={name} href={CONFIG.razorpay[name.toLowerCase()]} target="_blank"
+            {[
+              {price:"₹2,999/mo",name:"Starter",desc:"15 posts · 2 platforms",id:"starter"},
+              {price:"₹5,499/mo",name:"Growth",desc:"25 posts · 4 platforms",id:"growth"},
+              {price:"₹8,999/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
+            ].map(({price,name,desc,id})=>(
+              <button key={name}
+                onClick={()=>{ window.location.hash=`/?plan=${id}`; window.location.reload(); }}
                 style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.25)",
-                  borderRadius:13,padding:"14px 8px",textDecoration:"none",display:"block"}}>
+                  borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center"}}>
                 <div style={{fontSize:15,fontWeight:800,color:"#38bdf8",marginBottom:3}}>{price}</div>
                 <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3}}>{name}</div>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4}}>{desc}</div>
-              </a>
+              </button>
             ))}
           </div>
           <p style={{fontSize:12,color:"rgba(255,255,255,0.3)"}}>
@@ -1148,7 +1151,7 @@ function Workspace({profile, hKey}){
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#38bdf8",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
-                <button onClick={() => window.open('https://razorpay.me/@socialninjas', '_blank')}
+                <button onClick={() => { window.location.hash="/?plan=starter"; window.location.reload(); }}
                   style={{background:"#38bdf8",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
@@ -1429,17 +1432,33 @@ function PaymentStep({plan, formData, onVerified}){
   const [pidErr,setPidErr]=useState("");
 
   const confirm=async()=>{
-    if(!pid.trim()||pid.trim().length<10){
-      setPidErr("Enter your Razorpay Payment ID (starts with pay_...)");return;
+    const cleanPid = pid.trim();
+    if(!cleanPid || !cleanPid.startsWith("pay_") || cleanPid.length < 14){
+      setPidErr("Enter a valid Razorpay Payment ID — it starts with pay_ followed by letters and numbers");return;
     }
     setChecking(true); setPidErr("");
-    await pushToClickUp({...formData,planName:plan.name,displayINR:plan.displayINR,
-      paymentId:pid.trim(),joinDate:new Date().toLocaleDateString("en-IN"),
-      paymentStatus:"pending_verification"},
-      CONFIG.clickup.leadsListId);
-    setMode("done");
+    try {
+      const res = await fetch("/api/verify-payment",{
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({paymentId:cleanPid, planId:plan.id, brandName:formData.brandName, email:formData.email})
+      });
+      const data = await res.json();
+      if(!res.ok || !data.verified){
+        setPidErr(data.error || "Payment verification failed. Please check the ID and try again.");
+        setChecking(false); return;
+      }
+      // ✅ Payment verified — push to CRM as active client
+      await pushToClickUp({...formData,planName:plan.name,displayINR:plan.displayINR,
+        paymentId:cleanPid,joinDate:new Date().toLocaleDateString("en-IN"),
+        paymentStatus:"verified"}, CONFIG.clickup.activeListId);
+      await pushToSheets({...formData,planName:plan.name,displayINR:plan.displayINR,
+        paymentId:cleanPid,joinDate:new Date().toLocaleDateString("en-IN"),paymentStatus:"verified"});
+      setMode("done");
+      setTimeout(()=>onVerified(),1200);
+    } catch(e){
+      setPidErr("Network error. Please check your connection and try again.");
+    }
     setChecking(false);
-    setTimeout(()=>onVerified(),1000);
   };
 
   const disc=Math.round((1-plan.priceINR/parseInt(plan.originalINR.replace(/[₹,]/g,"")))*100);
@@ -1924,7 +1943,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   const [verifyingOtp,setVerifyingOtp]=useState(false);
   const [waCode, setWaCode] = useState("");
 
-  const AGENCY_WHATSAPP = "919000000000"; // Replace with agency's real WhatsApp number
+  const AGENCY_WHATSAPP = import.meta?.env?.VITE_AGENCY_WHATSAPP || "919100000000"; // Set VITE_AGENCY_WHATSAPP in Vercel env
 
   const submitDetails=async()=>{
     const errs=validateDetails();
@@ -1969,12 +1988,30 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         const hasEmail = Object.values(trials).some(t => t.email.toLowerCase().trim() === tEmail);
         const hasPhone = tPhone && Object.values(trials).some(t => t.phone && t.phone.replace(/\D/g,'') === tPhone);
         if (hasEmail || hasPhone) {
-          setOtpError("A free trial has already been generated for this email or phone number.");
+          setOtpError("A free trial has already been used for this email or phone number. Please upgrade to continue.");
           setVerifyingOtp(false);
           return;
         }
+        // Check backend too (cross-device duplicate protection)
+        try {
+          const checkRes = await fetch("/api/check-trial", {
+            method:"POST", headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({email:tEmail, phone:form.phone})
+          });
+          if(checkRes.ok){
+            const checkData = await checkRes.json();
+            if(checkData.exists){
+              setOtpError("A free trial has already been used for this email or phone. Please upgrade to continue.");
+              setVerifyingOtp(false); return;
+            }
+          }
+        } catch(e){ /* non-blocking — local check already passed */ }
         trials[Date.now()] = { email: tEmail, phone: form.phone, date: new Date().toISOString() };
         await DB.set("snstudio_trials", trials);
+        // Persist to backend for cross-device tracking
+        fetch("/api/clients", {method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({type:"trial",email:tEmail,phone:form.phone,brandName:form.brandName,
+            date:new Date().toISOString(),paymentStatus:"trial"})}).catch(()=>{});
       }
 
       const leadData = {...form, planName:plan.name, displayINR:plan.displayINR,
@@ -2323,9 +2360,11 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         <b style={{color:"#fff"}}>{form.phone ? `${form.countryCode} ${form.phone}` : "your phone number"}</b>.
       </p>
       
-      <div style={{background:"rgba(56,189,248,0.1)", border:"1px dashed rgba(56,189,248,0.3)", borderRadius:8, padding:"12px", marginBottom:24, color:"#7ab8f5", fontSize:12, fontWeight:600}}>
-        🛠 System in Dev Mode: Use code <b style={{color:"#fff", fontSize:14}}>1234</b>
-      </div>
+      {import.meta?.env?.DEV && (
+        <div style={{background:"rgba(56,189,248,0.08)", border:"1px dashed rgba(56,189,248,0.2)", borderRadius:8, padding:"10px", marginBottom:20, color:"#7ab8f5", fontSize:11, fontWeight:600}}>
+          🛠 Dev Mode: Use code <b style={{color:"#fff"}}>1234</b> · Twilio not configured
+        </div>
+      )}
       <input value={otpValue} onChange={e=>setOtpValue(e.target.value)} maxLength={4}
         placeholder="----"
         style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",

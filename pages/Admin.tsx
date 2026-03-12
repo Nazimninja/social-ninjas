@@ -1,9 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, Save, X } from 'lucide-react';
+import { Plus, Trash2, Edit2, Save, X, Lock } from 'lucide-react';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
 
+// ─── Admin Auth Gate ───────────────────────────────────────────────
+// Password stored in env var VITE_ADMIN_PASSWORD (fallback: sn@admin2026)
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'sn@admin2026';
+const AUTH_KEY = 'sn_admin_auth';
+
+const AdminLogin: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
+    const [pw, setPw] = useState('');
+    const [err, setErr] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const attempt = () => {
+        setLoading(true);
+        setTimeout(() => {
+            if (pw === ADMIN_PASSWORD) {
+                sessionStorage.setItem(AUTH_KEY, '1');
+                onAuth();
+            } else {
+                setErr('Incorrect password. Try again.');
+                setPw('');
+            }
+            setLoading(false);
+        }, 500);
+    };
+
+    return (
+        <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4">
+            <SEO title="Admin Login | Social Ninja's" description="" />
+            <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-8">
+                <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-brand-primary/10 border border-brand-primary/20 mx-auto mb-6">
+                    <Lock size={24} className="text-brand-primary" />
+                </div>
+                <h1 className="text-2xl font-bold text-white text-center mb-1">Admin Access</h1>
+                <p className="text-white/40 text-sm text-center mb-6">Social Ninja's Control Panel</p>
+                <input
+                    type="password"
+                    value={pw}
+                    onChange={e => { setPw(e.target.value); setErr(''); }}
+                    onKeyDown={e => e.key === 'Enter' && attempt()}
+                    placeholder="Enter admin password"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-brand-primary/50 mb-3"
+                    autoFocus
+                />
+                {err && <p className="text-red-400 text-xs mb-3">⚠ {err}</p>}
+                <button
+                    onClick={attempt}
+                    disabled={loading || !pw}
+                    className="w-full bg-brand-primary text-black font-bold rounded-xl py-3 text-sm disabled:opacity-40 hover:opacity-90 transition-all"
+                >
+                    {loading ? 'Checking...' : 'Enter →'}
+                </button>
+            </div>
+        </div>
+    );
+};
+// ──────────────────────────────────────────────────────────────────
+
 const Admin: React.FC = () => {
+    const [authed, setAuthed] = useState(() => sessionStorage.getItem(AUTH_KEY) === '1');
     const [blogs, setBlogs] = useState<any[]>([]);
     const [clients, setClients] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState<'blogs' | 'clients'>('clients');
@@ -81,10 +138,18 @@ const Admin: React.FC = () => {
         } catch(e) { console.error("History fetch error:", e); }
     };
 
+    if (!authed) return <AdminLogin onAuth={() => setAuthed(true)} />;
+
     return (
         <div className="pt-24 min-h-screen bg-[#020617] text-white p-6">
             <SEO title="Admin Console | Social Ninja's" description="Manage clients and blog posts" />
-            
+            <div className="max-w-6xl mx-auto mb-4 flex justify-between items-center">
+                <h1 className="text-xl font-bold">🥷 Admin Console</h1>
+                <button onClick={() => { sessionStorage.removeItem('sn_admin_auth'); setAuthed(false); }}
+                    className="text-xs text-white/30 hover:text-white/60 transition-all border border-white/10 rounded-lg px-3 py-1.5">
+                    🔒 Lock Admin
+                </button>
+            </div>
             <div className="max-w-6xl mx-auto mb-8 flex gap-4">
                <button 
                    onClick={() => setActiveTab('clients')}
