@@ -1879,51 +1879,69 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   const submitDetails=async()=>{
     const errs=validateDetails();
     if(Object.keys(errs).length){setErrors(errs);return;}
-    
-    // Generate a quick verify code locally
-    const code = Math.floor(1000 + Math.random() * 9000).toString();
-    setWaCode(code);
+    setSavingData(true);
+    try {
+      // Send OTP via backend (falls back to test mode if Twilio not configured)
+      if(form.phone) {
+        await fetch("/api/send-otp", {
+          method:"POST", headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({phone:form.phone})
+        });
+      }
+    } catch(e){ /* non-blocking — proceed to OTP screen anyway */ }
+    setSavingData(false);
     setScreen("otp");
   };
 
   const verifyOtpAndProceed=async()=>{
+    if(!otpValue.trim()) { setOtpError("Please enter the 4-digit code."); return; }
     setVerifyingOtp(true);
     setOtpError("");
-    
-    // In this free flow, as soon as they click "I have sent the message", we trust it and let them through.
-    // The agency will have the real WhatsApp message on their phone to cross-verify later!
-    setTimeout(async () => {
-    if(plan.isTrialFlow) {
-      const trials = await DB.get("snstudio_trials") || {};
-      const tEmail = form.email.toLowerCase().trim();
-      const tPhone = form.phone ? form.phone.replace(/\D/g,'') : null;
-      
-      const hasEmail = Object.values(trials).some(t => t.email.toLowerCase().trim() === tEmail);
-      const hasPhone = tPhone && Object.values(trials).some(t => t.phone && t.phone.replace(/\D/g,'') === tPhone);
-      
-      if (hasEmail || hasPhone) {
-        setOtpError("A free trial has already been generated for this email or phone number.");
-        setVerifyingOtp(false);
-        return;
+    try {
+      // Verify OTP via backend (returns success for code "1234" when Twilio not configured)
+      if(form.phone) {
+        const res = await fetch("/api/verify-otp", {
+          method:"POST", headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({phone:form.phone, code:otpValue.trim()})
+        });
+        if(!res.ok) {
+          const err = await res.json().catch(()=>({}));
+          setOtpError(err.error || "Invalid code. Please try again.");
+          setVerifyingOtp(false);
+          return;
+        }
       }
-      
-      trials[Date.now()] = { email: tEmail, phone: form.phone, date: new Date().toISOString() };
-      await DB.set("snstudio_trials", trials);
-    }
 
-    const leadData = {...form,planName:plan.name,displayINR:plan.displayINR,
-      joinDate:new Date().toLocaleDateString("en-IN"),paymentStatus:"lead"};
+      if(plan.isTrialFlow) {
+        const trials = await DB.get("snstudio_trials") || {};
+        const tEmail = form.email.toLowerCase().trim();
+        const tPhone = form.phone ? form.phone.replace(/\D/g,'') : null;
+        const hasEmail = Object.values(trials).some(t => t.email.toLowerCase().trim() === tEmail);
+        const hasPhone = tPhone && Object.values(trials).some(t => t.phone && t.phone.replace(/\D/g,'') === tPhone);
+        if (hasEmail || hasPhone) {
+          setOtpError("A free trial has already been generated for this email or phone number.");
+          setVerifyingOtp(false);
+          return;
+        }
+        trials[Date.now()] = { email: tEmail, phone: form.phone, date: new Date().toISOString() };
+        await DB.set("snstudio_trials", trials);
+      }
 
-    pushToClickUp(leadData, CONFIG.clickup.leadsListId);
-    pushToBackend(leadData);
-      
-    setVerifyingOtp(false);
-    if(plan.isTrialFlow) {
-      setScreen("trial_generation");
-    } else {
-      setScreen("payment");
+      const leadData = {...form, planName:plan.name, displayINR:plan.displayINR,
+        joinDate:new Date().toLocaleDateString("en-IN"), paymentStatus:"lead"};
+      pushToClickUp(leadData, CONFIG.clickup.leadsListId);
+      pushToBackend(leadData);
+
+      setVerifyingOtp(false);
+      if(plan.isTrialFlow) {
+        setScreen("trial_generation");
+      } else {
+        setScreen("payment");
+      }
+    } catch(e) {
+      setOtpError("Network error. Please check your connection and try again.");
+      setVerifyingOtp(false);
     }
-  }, 1500); // Simulate network delay
   };
 
   // ── PLANS SCREEN ──
