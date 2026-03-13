@@ -1614,11 +1614,22 @@ function PaymentStep({plan, formData, onVerified}){
 
   const confirm=async()=>{
     const cleanPid = pid.trim();
-    if(!cleanPid || !cleanPid.startsWith("pay_") || cleanPid.length < 14){
+
+    // ── SECRET TEST BYPASS ── (owner-only, never shown in UI)
+    const isTestBypass = cleanPid === "SN_TEST_2026";
+    if(!isTestBypass && (!cleanPid || !cleanPid.startsWith("pay_") || cleanPid.length < 14)){
       setPidErr("Enter a valid Razorpay Payment ID — it starts with pay_ followed by letters and numbers");return;
     }
     setChecking(true); setPidErr("");
     try {
+      if(isTestBypass){
+        // Skip API call — simulate verified payment for owner testing
+        await new Promise(r=>setTimeout(r,800));
+        setMode("done");
+        setTimeout(()=>onVerified(),1200);
+        setChecking(false);
+        return;
+      }
       const res = await fetch("/api/verify-payment",{
         method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify({paymentId:cleanPid, planId:plan.id, brandName:formData.brandName, email:formData.email})
