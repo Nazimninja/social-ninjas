@@ -13,7 +13,7 @@ const BlogPost: React.FC = () => {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const res = await fetch(`/api/blogs/${id}`);
+                const res = await fetch('/api/data?resource=blogs&id='+id}`);
                 if (res.ok) {
                     const data = await res.json();
                     setBlog(data);

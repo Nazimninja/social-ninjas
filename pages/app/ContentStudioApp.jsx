@@ -412,7 +412,7 @@ async function pushToSheets(data) {
 // ─────────────────────────────────────────────────────────────────
 async function pushToBackend(data) {
   try {
-    await fetch("/api/clients", {
+    await fetch("/api/data?resource=clients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -485,13 +485,15 @@ ${profile.socialAccounts?.instagram||profile.socialAccounts?.linkedin?`- Search 
 Step 2: Write 3 complete, platform-native posts using what you found. Every post must be deeply researched and hyper-specific to "${profile.niche}" — no generic content.
 
 ## CONTENT RULES
-- Every caption must open with a PATTERN INTERRUPT — something that stops the scroll in 0.3 seconds
-- Captions must be platform-native (not copy-pasted between platforms)
-- Scripts must be word-for-word, ready to shoot/record, with [on-screen text] directions
-- Carousel slides must be complete — every slide's heading and body copy written
-- Hooks must create an open loop the brain must close
-- CTAs must be specific and frictionless
-- Content must feel like it was written by a human who deeply understands this audience — not an AI
+- Every caption must open with a PATTERN INTERRUPT — a bold statement, controversial opinion, or specific number that stops the scroll in 0.3 seconds. No greetings, no "Are you...", no questions as openers.
+- Captions must be LONG and valuable — minimum 150 words. Use line breaks every 1-2 sentences. Include specific facts, numbers, or insights. Not fluffy filler.
+- Captions must be platform-native (Instagram caption ≠ LinkedIn post ≠ Twitter thread)
+- Scripts MUST be word-for-word, minimum 180 words, with [DIRECTION: ...] notes for every scene change, text overlay, B-roll cut, and camera action. Write it so someone can read it cold and film immediately.
+- Carousel slides must be complete — EVERY slide's heading AND full body copy written. Minimum 5 slides. Slide 1 = hook, Last slide = strong CTA. Each slide must standalone-valuable.
+- Hooks must create a knowledge gap or open loop the brain is compelled to close
+- Hashtags must be NICHE-SPECIFIC — mix of: 3 broad niche tags, 3 mid-size community tags, 3 micro-niche tags, 1 trending tag. NO generic tags like #love #instagood #viral
+- CTAs must be specific, low-friction, and tied to the post content — not "follow for more" or "link in bio"
+- Content must feel like it was written by a practitioner who lives this niche — insider language, specific examples, real numbers
 
 ## RESPONSE FORMAT
 CRITICAL: Return ONLY raw JSON. Start immediately with { — no markdown fences, no preamble, no explanation.
@@ -585,16 +587,21 @@ function Field({label,name,value,onChange,error,placeholder,type="text",rows,hin
   );
 }
 
-const MONO={fontFamily:"'JetBrains Mono',monospace",fontSize:12.5,color:"#c8d8f0",
-  whiteSpace:"pre-wrap",lineHeight:1.75,background:"#020209",borderRadius:10,
-  padding:"14px 16px",border:"1px solid rgba(255,255,255,0.07)",maxHeight:320,overflowY:"auto",margin:0};
+const MONO={fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:"#c8d8f0",
+  whiteSpace:"pre-wrap",lineHeight:1.85,background:"#020209",borderRadius:10,
+  padding:"14px 16px",border:"1px solid rgba(255,255,255,0.07)",maxHeight:380,overflowY:"auto",margin:0};
+
+// Normalize AI-returned escaped newlines to real newlines
+function fixText(t){ return t ? t.replace(/\\n/g,"\n").replace(/\\t/g,"  ").trim() : t; }
 
 // ─────────────────────────────────────────────────────────────────
 //  POST CARD — all content, no graphics
 // ─────────────────────────────────────────────────────────────────
 function PostCard({post, profile}){
   const color = profile.color||"#38bdf8";
-  const [tab,setTab]=useState("caption");
+  // Default to script tab if post has a script (most useful content)
+  const defaultTab = post.script ? "script" : "caption";
+  const [tab,setTab]=useState(defaultTab);
 
   const hasTabs=[
     {id:"caption",label:"📝 Caption"},
@@ -673,9 +680,9 @@ function PostCard({post, profile}){
               <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",
                 letterSpacing:"1.5px",color:"rgba(255,255,255,0.28)"}}>
                 Caption — {post.platform}</span>
-              <CopyBtn text={post.caption}/>
+              <CopyBtn text={fixText(post.caption)}/>
             </div>
-            <pre style={MONO}>{post.caption}</pre>
+            <pre style={MONO}>{fixText(post.caption)}</pre>
 
             {post.cta&&(
               <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",
@@ -729,9 +736,9 @@ function PostCard({post, profile}){
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:2}}>
                   Read exactly as written · [brackets] = directions for camera/text</div>
               </div>
-              <CopyBtn text={post.script}/>
+              <CopyBtn text={fixText(post.script)}/>
             </div>
-            <pre style={{...MONO,maxHeight:420}}>{post.script}</pre>
+            <pre style={{...MONO,maxHeight:480}}>{fixText(post.script)}</pre>
             <div style={{background:`${color}0a`,border:`1px solid ${color}18`,borderRadius:9,
               padding:"10px 13px",fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6}}>
               💡 <strong style={{color}}>Filming tip:</strong> Film in portrait (9:16). Read from script but pause and look directly at camera for the hook line. First 3 seconds must grab attention.
@@ -910,7 +917,7 @@ const GEN_STEPS=[
   "✨ Final quality check...",
 ];
 
-function Workspace({profile, hKey}){
+function Workspace({profile, hKey, onUpgrade}){
   const color=profile.color||"#38bdf8";
   const [hist,setHist]=useState([]);
   const [gen,setGen]=useState(false);
@@ -963,7 +970,7 @@ function Workspace({profile, hKey}){
       setHist(newH); await DB.set(hKey,newH); setResult(entry);
       
       // Sync to Admin Backend
-      fetch(`/api/history/${profile.id}`, {
+      fetch(`/api/data?resource=history&clientId=${profile.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newH)
@@ -1015,7 +1022,7 @@ function Workspace({profile, hKey}){
               {price:"₹8,999/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
             ].map(({price,name,desc,id})=>(
               <button key={name}
-                onClick={()=>{ window.location.hash=`/?plan=${id}`; window.location.reload(); }}
+                onClick={()=> onUpgrade ? onUpgrade(id) : (window.location.href=`${window.location.origin}${window.location.pathname}?plan=${id}`)}
                 style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.25)",
                   borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center"}}>
                 <div style={{fontSize:15,fontWeight:800,color:"#38bdf8",marginBottom:3}}>{price}</div>
@@ -1151,7 +1158,7 @@ function Workspace({profile, hKey}){
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#38bdf8",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
-                <button onClick={() => { window.location.hash="/?plan=starter"; window.location.reload(); }}
+                <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}${window.location.pathname}?plan=starter`)}
                   style={{background:"#38bdf8",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
@@ -1794,8 +1801,8 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         system: buildPrompt(profile, []),
-        messages: [{ role: "user", content: `Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${profile.platforms.join(" and ")}. Write 3 complete posts for ${profile.brandName}. Return ONLY raw JSON starting with {` }],
-        max_tokens: 4000,
+        messages: [{ role: "user", content: `Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${profile.platforms.join(" and ")}. Write 3 complete posts for ${profile.brandName}. Each post MUST have a full word-for-word script (min 180 words) and complete carousel slides if applicable. Return ONLY raw JSON starting with {` }],
+        max_tokens: 6000,
       })
     })
     .then(async res => {
@@ -2016,7 +2023,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         // Persist to Upstash Redis for cross-device trial tracking
         fetch("/api/check-trial", {method:"POST",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({action:"save", email:tEmail, phone:form.phone})}).catch(()=>{});
-        fetch("/api/clients", {method:"POST",headers:{"Content-Type":"application/json"},
+        fetch("/api/data?resource=clients", {method:"POST",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({type:"trial",email:tEmail,phone:form.phone,brandName:form.brandName,
             date:new Date().toISOString(),paymentStatus:"trial"})}).catch(()=>{});
       }
@@ -2369,13 +2376,13 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       
       {import.meta?.env?.DEV && (
         <div style={{background:"rgba(56,189,248,0.08)", border:"1px dashed rgba(56,189,248,0.2)", borderRadius:8, padding:"10px", marginBottom:20, color:"#7ab8f5", fontSize:11, fontWeight:600}}>
-          🛠 Dev Mode: Use code <b style={{color:"#fff"}}>1234</b> · Twilio not configured
+          🛠 Dev Mode: Use code <b style={{color:"#fff"}}>1234</b> · 2Factor SMS not active in local dev
         </div>
       )}
-      <input value={otpValue} onChange={e=>setOtpValue(e.target.value)} maxLength={4}
-        placeholder="----"
+      <input value={otpValue} onChange={e=>setOtpValue(e.target.value)} maxLength={6}
+        placeholder="------"
         style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",
-        borderRadius:12,padding:"16px",fontSize:24,textAlign:"center",letterSpacing:"12px",marginBottom:8,color:"#fff",outline:"none",fontFamily:"monospace"}}/>
+        borderRadius:12,padding:"16px",fontSize:28,textAlign:"center",letterSpacing:"14px",marginBottom:8,color:"#fff",outline:"none",fontFamily:"monospace"}}/>
       {otpError && <div style={{color:"#fca5a5",fontSize:13,marginBottom:16}}>⚠ {otpError}</div>}
       
       <button onClick={verifyOtpAndProceed} disabled={verifyingOtp}
@@ -2798,7 +2805,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
                             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Price Difference to Upgrade:</div>
                             <div style={{fontSize:24,fontWeight:800,color:pl.color}}>{userGeo.symbol}{diff.toLocaleString()}</div>
                           </div>
-                          <button onClick={() => { window.location.hash=`/?plan=${pl.id}`; window.location.reload(); }}
+                          <button onClick={() => { window.location.href=`${window.location.origin}${window.location.pathname}?plan=${pl.id}`; }}
                             style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,color:"#fff",border:"none",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 15px ${pl.color}40`}}>
                             Upgrade to {pl.name} →
                           </button>
@@ -3114,7 +3121,7 @@ function PortalClientView({client, onHome}){
       </div>
       {view==="dashboard"
         ?<ClientDashboard profile={client} hKey={hKey} onGenerateContent={()=>setView("content")}/>
-        :<Workspace profile={client} hKey={hKey}/>
+        :<Workspace profile={client} hKey={hKey} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}${window.location.pathname}?plan=${planId}`; }}/>
       }
     </div>
   );
@@ -3264,7 +3271,7 @@ export default function App(){
           {clientView==="dashboard"
             ?<ClientDashboard profile={cl} hKey={`snstudio_hist_${clientSelected}`}
                 onGenerateContent={()=>setClientView("content")}/>
-            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`}/>
+            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}${window.location.pathname}?plan=${planId}`; }}/>
           }
         </div>
     );

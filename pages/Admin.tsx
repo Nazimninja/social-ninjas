@@ -76,7 +76,7 @@ const Admin: React.FC = () => {
 
     const fetchBlogs = async () => {
         try {
-            const res = await fetch('/api/blogs');
+            const res = await fetch('/api/data?resource=blogs');
             const data = await res.json();
             setBlogs(data);
         } catch (error) {
@@ -86,7 +86,7 @@ const Admin: React.FC = () => {
 
     const fetchClients = async () => {
         try {
-            const res = await fetch('/api/clients');
+            const res = await fetch('/api/data?resource=clients');
             const data = await res.json();
             setClients(data);
         } catch (error) {
@@ -98,12 +98,12 @@ const Admin: React.FC = () => {
         try {
             const method = currentBlog.id ? 'PUT' : 'POST';
             const url = currentBlog.id 
-                ? `/api/blogs/${currentBlog.id}` 
-                : '/api/blogs';
+                ? '/api/data?resource=blogs&id='+currentBlog.id}` 
+                : '/api/data?resource=blogs';
             
             // Note: The simple backend currently only supports POST for new, but we can simulate PUT by deleting and re-adding or just adding.
             // For this MVP, we just use POST. If editing, we should ideally add PUT to backend, but usually Claude writes new posts.
-            await fetch('/api/blogs', {
+            await fetch('/api/data?resource=blogs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(currentBlog)
@@ -119,7 +119,7 @@ const Admin: React.FC = () => {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Are you sure you want to delete this post?')) return;
         try {
-            await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
+            await fetch('/api/data?resource=blogs&id='+id}`, { method: 'DELETE' });
             fetchBlogs();
         } catch (error) {
             console.error('Failed to delete blog', error);
@@ -130,7 +130,7 @@ const Admin: React.FC = () => {
         setViewClientHist(client);
         setClientHistData([]);
         try {
-            const res = await fetch(`/api/history/${client.id}`);
+            const res = await fetch('/api/data?resource=history&clientId='+client.id);
             if(res.ok) {
                 const data = await res.json();
                 setClientHistData(data);

@@ -12,7 +12,7 @@ const Blog: React.FC = () => {
 
     const fetchBlogs = async () => {
         try {
-            const res = await fetch('/api/blogs');
+            const res = await fetch('/api/data?resource=blogs');
             const data = await res.json();
             setBlogs(data);
         } catch (error) {
