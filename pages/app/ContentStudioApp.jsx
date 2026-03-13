@@ -595,242 +595,425 @@ const MONO={fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:"#c8d8f0",
 function fixText(t){ return t ? t.replace(/\\n/g,"\n").replace(/\\t/g,"  ").trim() : t; }
 
 // ─────────────────────────────────────────────────────────────────
-//  POST CARD — all content, no graphics
+//  HOW TO USE BANNER
 // ─────────────────────────────────────────────────────────────────
-function PostCard({post, profile}){
-  const color = profile.color||"#38bdf8";
-  // Default to script tab if post has a script (most useful content)
-  const defaultTab = post.script ? "script" : "caption";
-  const [tab,setTab]=useState(defaultTab);
+function HowToUseBanner({color, postCount}){
+  const [dismissed, setDismissed] = useState(false);
+  if(dismissed) return null;
+  const steps = [
+    { n:"1", icon:"📋", label:"Copy Caption", desc:"Caption tab → Copy Complete button → paste into Instagram/LinkedIn" },
+    { n:"2", icon:"🎬", label:"Film Your Script", desc:"Script tab → read word-for-word on camera. [Brackets] = directions for you" },
+    { n:"3", icon:"🎠", label:"Design Slides", desc:"Slides tab → copy each slide's heading + body → paste into Canva" },
+    { n:"4", icon:"✅", label:"Post It Right", desc:"Checklist tab → follow each step to maximise reach on posting day" },
+  ];
+  return(
+    <div style={{background:"linear-gradient(135deg,rgba(56,189,248,0.08),rgba(56,189,248,0.03))",
+      border:"1px solid rgba(56,189,248,0.25)",borderRadius:16,padding:"20px 22px",marginBottom:24,position:"relative"}}>
+      <button onClick={()=>setDismissed(true)} title="Dismiss"
+        style={{position:"absolute",top:12,right:14,background:"rgba(255,255,255,0.06)",border:"none",
+          color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:14,lineHeight:1,borderRadius:6,
+          width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+        <span style={{fontSize:20}}>🗺️</span>
+        <div>
+          <div style={{fontSize:14,fontWeight:800,color:"#f1f5f9",letterSpacing:"-.3px"}}>
+            {postCount} posts generated — here is how to use each one</div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginTop:2}}>
+            Click the tabs inside each post card to switch between sections</div>
+        </div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(190px,1fr))",gap:8}}>
+        {steps.map((s,i)=>(
+          <div key={i} style={{background:"rgba(0,0,0,0.3)",borderRadius:12,padding:"12px 14px",
+            border:"1px solid rgba(255,255,255,0.08)",display:"flex",gap:10,alignItems:"flex-start"}}>
+            <div style={{width:28,height:28,borderRadius:8,background:`${color}22`,color,
+              fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              {s.n}</div>
+            <div>
+              <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:3}}>
+                {s.icon} {s.label}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.42)",lineHeight:1.55}}>{s.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  const hasTabs=[
-    {id:"caption",label:"📝 Caption"},
-    ...(post.script?[{id:"script",label:"🎬 Script"}]:[]),
-    ...(post.carousel_slides?.length?[{id:"slides",label:"🎠 Slides"}]:[]),
-    ...(post.thread_tweets?.length?[{id:"thread",label:"🧵 Thread"}]:[]),
-    {id:"checklist",label:"📋 Checklist"},
+// ─────────────────────────────────────────────────────────────────
+//  POST CARD — redesigned for clarity and usability
+// ─────────────────────────────────────────────────────────────────
+function PostCard({post, profile, index}){
+  const color = profile.color||"#38bdf8";
+  const [tab,setTab]=useState("caption");
+  const [copied,setCopied]=useState(false);
+
+  const tabs=[
+    {id:"caption", icon:"📋", label:"Caption", hint:"Copy & paste into your post"},
+    ...(post.script?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
+    ...(post.carousel_slides?.length?[{id:"slides", icon:"🎠", label:"Slides", hint:"Each slide for Canva"}]:[]),
+    ...(post.thread_tweets?.length?[{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}]:[]),
+    {id:"checklist", icon:"✅", label:"Checklist", hint:"Step-by-step posting guide"},
   ];
 
-  const priorityStyle = {
-    "Must Post":    {bg:"#1a0505",border:"#7f1d1d40",col:"#fca5a5",dot:"🔴"},
-    "High Value":   {bg:"#1a1305",border:"#92400e40",col:"#fbbf24",dot:"🟡"},
-    "Good to Post": {bg:"#031a0f",border:"#14532d40",col:"#4ade80",dot:"🟢"},
+  const priorityMap = {
+    "Must Post":    {bg:"#1c0a0a",border:"#ef444430",col:"#fca5a5",badge:"🔴 Must Post"},
+    "High Value":   {bg:"#1c1408",border:"#f59e0b30",col:"#fcd34d",badge:"🟡 High Value"},
+    "Good to Post": {bg:"#0a1c0e",border:"#22c55e30",col:"#86efac",badge:"🟢 Good to Post"},
   };
-  const ps=priorityStyle[post.priority]||priorityStyle["Good to Post"];
+  const ps=priorityMap[post.priority]||priorityMap["Good to Post"];
+
+  const copyAll = () => {
+    const caption = fixText(post.caption)||"";
+    const tags = (post.hashtags||[]).map(h=>`#${h.replace(/^#/,"")}`).join(" ");
+    navigator.clipboard.writeText(`${caption}\n\n${tags}`);
+    setCopied(true); setTimeout(()=>setCopied(false),2200);
+  };
 
   return(
-    <div style={{background:"#020617",border:`1px solid ${color}20`,borderRadius:22,overflow:"hidden"}}>
-      {/* ── HEADER ── */}
-      <div style={{background:`linear-gradient(135deg,${profile.darkBg||"#0d0d20"}CC,#080810)`,
-        padding:"16px 20px",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
-        <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
-          <span style={{background:`${color}18`,color,border:`1px solid ${color}35`,
-            borderRadius:20,padding:"3px 12px",fontSize:11,fontWeight:700}}>{post.platform||"—"}</span>
-          <span style={{background:`${color}18`,color:`${color}cc`,border:`1px solid ${color}25`,
-            borderRadius:20,padding:"3px 12px",fontSize:11,fontWeight:600}}>{post.format}</span>
+    <div style={{background:"#04040e",border:`1px solid ${color}22`,borderRadius:20,overflow:"hidden",
+      boxShadow:`0 4px 32px rgba(0,0,0,0.4)`}}>
+
+      {/* ── HEADER STRIP ── */}
+      <div style={{background:`linear-gradient(135deg,${color}14,${color}06)`,
+        borderBottom:`1px solid ${color}18`,padding:"18px 22px"}}>
+
+        {/* Post number + platform + priority */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+          <div style={{width:28,height:28,borderRadius:8,background:`${color}20`,border:`1px solid ${color}30`,
+            color,fontWeight:900,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {index+1}</div>
+          <span style={{background:`${color}18`,color,border:`1px solid ${color}30`,
+            borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:700,letterSpacing:".3px"}}>
+            {post.platform||"—"}</span>
+          <span style={{background:"rgba(255,255,255,0.07)",color:"rgba(255,255,255,0.6)",
+            borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:600}}>
+            {post.format}</span>
           <span style={{background:ps.bg,border:`1px solid ${ps.border}`,color:ps.col,
-            borderRadius:6,padding:"3px 12px",fontSize:11,fontWeight:700}}>{ps.dot} {post.priority}</span>
-          <span style={{background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.35)",
-            borderRadius:6,padding:"3px 12px",fontSize:11}}>{post.best_day} · {post.best_time}</span>
+            borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:700,marginLeft:"auto"}}>
+            {ps.badge}</span>
         </div>
 
-        <div style={{fontSize:16,fontWeight:700,color:"#f1f5f9",letterSpacing:"-.4px",marginBottom:4}}>
+        {/* Title */}
+        <div style={{fontSize:17,fontWeight:800,color:"#f8fafc",letterSpacing:"-.4px",lineHeight:1.3,marginBottom:10}}>
           {post.title}</div>
 
-        {/* Hook callout */}
+        {/* Hook */}
         {post.hook&&(
-          <div style={{background:`${color}10`,border:`1px solid ${color}25`,borderRadius:10,
-            padding:"8px 12px",marginTop:8}}>
-            <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-              color:`${color}99`,marginRight:8}}>HOOK</span>
-            <span style={{fontSize:13,color:"#e2e8f0",fontWeight:600,fontStyle:"italic"}}>
-              "{post.hook}"</span>
+          <div style={{background:"rgba(0,0,0,0.3)",border:`1px solid ${color}25`,borderRadius:11,
+            padding:"10px 14px",display:"flex",gap:10,alignItems:"flex-start"}}>
+            <div style={{background:`${color}20`,color,borderRadius:6,padding:"2px 8px",
+              fontSize:9,fontWeight:800,textTransform:"uppercase",letterSpacing:"1.5px",
+              whiteSpace:"nowrap",flexShrink:0,marginTop:1}}>HOOK</div>
+            <div style={{fontSize:13,color:"#e2e8f0",fontWeight:600,fontStyle:"italic",lineHeight:1.5}}>
+              "{post.hook}"</div>
           </div>
         )}
 
-        {/* Why now */}
-        {post.why_now&&(
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.38)",marginTop:8,lineHeight:1.5}}>
-            <span style={{color:color,fontWeight:700}}>Why this week: </span>{post.why_now}
-          </div>
-        )}
+        {/* Schedule pill */}
+        <div style={{display:"flex",alignItems:"center",gap:6,marginTop:10}}>
+          <span style={{fontSize:12}}>📅</span>
+          <span style={{fontSize:12,color:"rgba(255,255,255,0.45)",fontWeight:600}}>
+            Post on <span style={{color:"rgba(255,255,255,0.75)"}}>{post.best_day}</span> at <span style={{color:"rgba(255,255,255,0.75)"}}>{post.best_time}</span></span>
+          {post.why_now&&<span style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginLeft:6}}>· {post.why_now}</span>}
+        </div>
       </div>
 
-      {/* ── TABS ── */}
-      <div style={{display:"flex",gap:2,padding:"8px 12px 0",background:"#07070f",
-        overflowX:"auto",scrollbarWidth:"none"}}>
-        {hasTabs.map(t=>(
+      {/* ── TAB BAR ── */}
+      <div style={{background:"#02020c",borderBottom:"1px solid rgba(255,255,255,0.06)",
+        padding:"0 16px",display:"flex",gap:2,overflowX:"auto",scrollbarWidth:"none"}}>
+        {tabs.map(t=>(
           <button key={t.id} onClick={()=>setTab(t.id)}
-            style={{padding:"7px 15px",borderRadius:"9px 9px 0 0",fontSize:12,fontWeight:600,
-              border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"all .15s",
-              background:tab===t.id?color:"rgba(255,255,255,0.04)",
-              color:tab===t.id?"#fff":"rgba(255,255,255,0.4)"}}>
-            {t.label}
+            title={t.hint}
+            style={{padding:"11px 16px",fontSize:12,fontWeight:700,border:"none",cursor:"pointer",
+              whiteSpace:"nowrap",transition:"all .15s",borderBottom:`2px solid ${tab===t.id?color:"transparent"}`,
+              background:"transparent",color:tab===t.id?color:"rgba(255,255,255,0.35)",
+              display:"flex",alignItems:"center",gap:6}}>
+            <span>{t.icon}</span>
+            <span>{t.label}</span>
           </button>
         ))}
       </div>
 
-      {/* ── BODY ── */}
-      <div style={{padding:"18px 20px",background:"#07070f"}}>
-
-        {/* CAPTION TAB */}
+      {/* ── TAB HINT BAR ── */}
+      <div style={{background:"rgba(255,255,255,0.02)",borderBottom:"1px solid rgba(255,255,255,0.04)",
+        padding:"7px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+        <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",display:"flex",alignItems:"center",gap:6}}>
+          <span style={{color,fontWeight:700}}>
+            {tabs.find(t=>t.id===tab)?.icon} {tabs.find(t=>t.id===tab)?.label}:
+          </span>
+          <span>{tabs.find(t=>t.id===tab)?.hint}</span>
+        </div>
         {tab==="caption"&&(
-          <div style={{display:"grid",gap:12}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",
-                letterSpacing:"1.5px",color:"rgba(255,255,255,0.28)"}}>
-                Caption — {post.platform}</span>
-              <CopyBtn text={fixText(post.caption)}/>
-            </div>
-            <pre style={MONO}>{fixText(post.caption)}</pre>
+          <button onClick={copyAll}
+            style={{background:copied?"#052e16":`${color}18`,color:copied?"#4ade80":color,
+              border:`1px solid ${copied?"#166534":color+"40"}`,borderRadius:8,
+              padding:"5px 14px",fontSize:11,fontWeight:700,cursor:"pointer",
+              display:"flex",alignItems:"center",gap:5,transition:"all .2s",whiteSpace:"nowrap"}}>
+            {copied?"✓ Copied!":"⚡ Copy All (Caption + Hashtags)"}
+          </button>
+        )}
+      </div>
 
+      {/* ── BODY ── */}
+      <div style={{padding:"20px 22px",background:"#04040e"}}>
+
+        {/* ════ CAPTION TAB ════ */}
+        {tab==="caption"&&(
+          <div style={{display:"grid",gap:14}}>
+
+            {/* Caption text box */}
+            <div style={{background:"#020209",border:"1px solid rgba(255,255,255,0.09)",borderRadius:13,overflow:"hidden"}}>
+              <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
+                display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+                  color:"rgba(255,255,255,0.3)"}}>📝 Caption text — copy this into your post</span>
+                <CopyBtn text={fixText(post.caption)} label="Copy Caption" sm/>
+              </div>
+              <pre style={MONO}>{fixText(post.caption)}</pre>
+            </div>
+
+            {/* CTA */}
             {post.cta&&(
-              <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",
-                borderRadius:9,padding:"10px 13px",display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",
+                borderRadius:11,padding:"11px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",gap:10}}>
                 <div>
                   <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                    color:"rgba(255,255,255,0.3)",marginBottom:3}}>Call to Action</div>
+                    color:"rgba(255,255,255,0.28)",marginBottom:4}}>💬 Call to Action — add this at the end</div>
                   <div style={{fontSize:13,color:"#f1f5f9",fontWeight:600}}>{post.cta}</div>
                 </div>
                 <CopyBtn text={post.cta} sm/>
               </div>
             )}
 
+            {/* Hashtags */}
             {post.hashtags?.length>0&&(
-              <div>
-                <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                  color:"rgba(255,255,255,0.28)",marginBottom:7}}>Hashtags</div>
-                <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+              <div style={{background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.07)",
+                borderRadius:11,padding:"13px 16px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                  <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
+                    color:"rgba(255,255,255,0.28)"}}>🏷️ Hashtags — paste below your caption</span>
+                  <CopyBtn text={post.hashtags.map(h=>`#${h.replace(/^#/,"")}`).join(" ")}
+                    label="Copy Hashtags" sm/>
+                </div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                   {post.hashtags.map((h,i)=>(
-                    <span key={i} style={{background:`${color}14`,color,border:`1px solid ${color}28`,
-                      borderRadius:20,padding:"3px 11px",fontSize:11,fontWeight:600}}>
+                    <span key={i} style={{background:`${color}12`,color:`${color}dd`,
+                      border:`1px solid ${color}25`,borderRadius:20,padding:"4px 12px",fontSize:11,fontWeight:600}}>
                       #{h.replace(/^#/,"")}</span>
                   ))}
                 </div>
-                <CopyBtn text={post.hashtags.map(h=>`#${h.replace(/^#/,"")}`).join(" ")}
-                  label="Copy All Hashtags" sm/>
               </div>
             )}
 
-            {/* Full copy block */}
-            <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",
-              borderRadius:10,padding:"12px 14px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                  color:"rgba(255,255,255,0.28)"}}>Full Caption + Hashtags (ready to paste)</span>
-                <CopyBtn text={`${post.caption}\n\n${post.hashtags?.map(h=>`#${h.replace(/^#/,"")}`).join(" ")||""}`}
-                  label="Copy Complete" sm/>
-              </div>
-              <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Caption + hashtags formatted and ready to paste directly into {post.platform}</div>
-            </div>
-          </div>
-        )}
-
-        {/* SCRIPT TAB */}
-        {tab==="script"&&post.script&&(
-          <div style={{display:"grid",gap:10}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div>
-                <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                  color:"rgba(255,255,255,0.28)"}}>Word-for-word script</span>
-                <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:2}}>
-                  Read exactly as written · [brackets] = directions for camera/text</div>
-              </div>
-              <CopyBtn text={fixText(post.script)}/>
-            </div>
-            <pre style={{...MONO,maxHeight:480}}>{fixText(post.script)}</pre>
-            <div style={{background:`${color}0a`,border:`1px solid ${color}18`,borderRadius:9,
-              padding:"10px 13px",fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6}}>
-              💡 <strong style={{color}}>Filming tip:</strong> Film in portrait (9:16). Read from script but pause and look directly at camera for the hook line. First 3 seconds must grab attention.
-            </div>
-          </div>
-        )}
-
-        {/* CAROUSEL SLIDES TAB */}
-        {tab==="slides"&&post.carousel_slides?.length&&(
-          <div style={{display:"grid",gap:8}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-              <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                color:"rgba(255,255,255,0.28)"}}>
-                Carousel — {post.carousel_slides.length} slides</span>
-              <CopyBtn text={post.carousel_slides.map(s=>`Slide ${s.slide_num}: ${s.heading}\n${s.body}`).join("\n\n")}
-                label="Copy All Slides"/>
-            </div>
-            {post.carousel_slides.map((s,i)=>(
-              <div key={i} style={{background:"#030309",border:`1px solid ${color}18`,borderRadius:13,padding:"13px 16px"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8}}>
-                    <div style={{width:26,height:26,borderRadius:7,background:`${color}20`,color,
-                      fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                      {s.slide_num}</div>
-                    <span style={{fontSize:13,fontWeight:700,color:"#f1f5f9",letterSpacing:"-.2px"}}>{s.heading}</span>
-                  </div>
-                  <CopyBtn text={`${s.heading}\n${s.body}`} sm/>
+            {/* Ready-to-paste block */}
+            <div style={{background:`${color}08`,border:`1px solid ${color}25`,borderRadius:13,padding:"14px 16px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                <div>
+                  <div style={{fontSize:12,fontWeight:700,color,marginBottom:2}}>⚡ Ready to paste — caption + hashtags combined</div>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>Click the button → open {post.platform} → paste. Done.</div>
                 </div>
-                <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",lineHeight:1.7,marginBottom:s.design_note?8:0}}>
-                  {s.body}</div>
-                {s.design_note&&(
-                  <div style={{fontSize:11,color:`${color}80`,fontStyle:"italic",borderTop:`1px solid ${color}15`,paddingTop:6}}>
-                    🎨 Design note: {s.design_note}</div>
-                )}
+                <button onClick={copyAll}
+                  style={{background:copied?"#052e16":`linear-gradient(135deg,${color},${color}99)`,
+                    color:copied?"#4ade80":"#000",border:"none",borderRadius:10,
+                    padding:"9px 18px",fontSize:12,fontWeight:800,cursor:"pointer",
+                    transition:"all .2s",whiteSpace:"nowrap",flexShrink:0}}>
+                  {copied?"✓ Copied!":"Copy Complete ↗"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ════ SCRIPT TAB ════ */}
+        {tab==="script"&&(
+          <div style={{display:"grid",gap:12}}>
+            {/* Instruction banner */}
+            <div style={{background:"#070f1a",border:"1px solid rgba(56,189,248,0.2)",borderRadius:12,
+              padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:20,flexShrink:0}}>🎬</span>
+              <div>
+                <div style={{fontSize:12,fontWeight:700,color:"#38bdf8",marginBottom:4}}>How to use this script</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open your camera</strong> → film in portrait (9:16 vertical)<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>2. Read each line</strong> exactly as written — then look at camera<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>3. [DIRECTION: ...]</strong> = action for you (don't say these out loud)<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>4. First 3 seconds</strong> = the hook line — nail this, it stops the scroll
+                </div>
+              </div>
+            </div>
+
+            {/* Script body */}
+            {post.script?(
+              <div style={{background:"#020209",border:"1px solid rgba(255,255,255,0.09)",borderRadius:13,overflow:"hidden"}}>
+                <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
+                  display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+                    color:"rgba(255,255,255,0.3)"}}>Word-for-word script · [brackets] = your directions</span>
+                  <CopyBtn text={fixText(post.script)} label="Copy Script" sm/>
+                </div>
+                <pre style={{...MONO,maxHeight:500,fontSize:13,lineHeight:1.9}}>{fixText(post.script)}</pre>
+              </div>
+            ):(
+              <div style={{background:"rgba(255,255,255,0.03)",borderRadius:12,padding:"24px",textAlign:"center",
+                color:"rgba(255,255,255,0.3)",fontSize:13}}>
+                No script generated for this post format. Use the Caption tab instead.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ════ SLIDES TAB ════ */}
+        {tab==="slides"&&(
+          <div style={{display:"grid",gap:10}}>
+            {/* Instruction */}
+            <div style={{background:"#0a0f1a",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
+              padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
+              <span style={{fontSize:20,flexShrink:0}}>🎠</span>
+              <div>
+                <div style={{fontSize:12,fontWeight:700,color:"#c084fc",marginBottom:4}}>How to turn these into a carousel</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open Canva</strong> → search "Instagram Carousel" template<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>2. For each slide</strong> → copy the Heading + Body text → paste in<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>3. Design note</strong> = colour/style suggestion for that slide<br/>
+                  <strong style={{color:"rgba(255,255,255,0.7)"}}>4. Last slide</strong> = always your CTA / follow prompt
+                </div>
+              </div>
+            </div>
+
+            {/* Copy all */}
+            <div style={{display:"flex",justifyContent:"flex-end"}}>
+              <CopyBtn text={(post.carousel_slides||[]).map(s=>`Slide ${s.slide_num}: ${s.heading}\n${s.body}`).join("\n\n")}
+                label={`Copy All ${post.carousel_slides?.length||0} Slides`}/>
+            </div>
+
+            {/* Slide cards */}
+            {(post.carousel_slides||[]).map((s,i)=>(
+              <div key={i} style={{background:"#020209",border:`1px solid rgba(168,85,247,0.18)`,
+                borderRadius:14,overflow:"hidden"}}>
+                <div style={{background:"rgba(168,85,247,0.08)",padding:"10px 16px",
+                  borderBottom:"1px solid rgba(168,85,247,0.12)",
+                  display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{width:28,height:28,borderRadius:8,background:"rgba(168,85,247,0.2)",
+                      color:"#c084fc",fontWeight:800,fontSize:12,display:"flex",
+                      alignItems:"center",justifyContent:"center"}}>
+                      {s.slide_num}</div>
+                    <div>
+                      <div style={{fontSize:13,fontWeight:700,color:"#f1f5f9"}}>{s.heading}</div>
+                      <div style={{fontSize:10,color:"rgba(168,85,247,0.7)",marginTop:1}}>
+                        {i===0?"Opening slide — make this visually bold":
+                         i===(post.carousel_slides.length-1)?"Last slide — strong call to action":"Body slide"}</div>
+                    </div>
+                  </div>
+                  <CopyBtn text={`${s.heading}
+
+${s.body}`} sm/>
+                </div>
+                <div style={{padding:"13px 16px"}}>
+                  <div style={{fontSize:13,color:"rgba(255,255,255,0.7)",lineHeight:1.75,marginBottom:s.design_note?10:0}}>
+                    {s.body}</div>
+                  {s.design_note&&(
+                    <div style={{display:"flex",gap:6,alignItems:"flex-start",
+                      background:"rgba(168,85,247,0.07)",borderRadius:8,padding:"8px 11px",
+                      border:"1px solid rgba(168,85,247,0.15)"}}>
+                      <span style={{fontSize:13}}>🎨</span>
+                      <div>
+                        <div style={{fontSize:10,fontWeight:700,color:"#c084fc",textTransform:"uppercase",
+                          letterSpacing:"1px",marginBottom:2}}>Design note</div>
+                        <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.5}}>{s.design_note}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* THREAD TAB */}
+        {/* ════ THREAD TAB ════ */}
         {tab==="thread"&&post.thread_tweets?.length&&(
           <div style={{display:"grid",gap:8}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-              <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                color:"rgba(255,255,255,0.28)"}}>
-                Thread — {post.thread_tweets.length} tweets</span>
-              <CopyBtn text={post.thread_tweets.map(t=>`${t.num}/ ${t.tweet}`).join("\n\n")}
-                label="Copy Entire Thread"/>
+            <div style={{background:"#0a1018",border:"1px solid rgba(29,161,242,0.2)",borderRadius:12,
+              padding:"12px 16px",display:"flex",gap:10,alignItems:"flex-start",marginBottom:4}}>
+              <span style={{fontSize:18}}>🧵</span>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.6}}>
+                Post tweet <strong style={{color:"rgba(255,255,255,0.7)"}}>1/</strong> first, then reply to it with each next tweet in order.
+                Use the copy button on each tweet to paste one at a time.
+              </div>
             </div>
+            <CopyBtn text={post.thread_tweets.map(t=>`${t.num}/ ${t.tweet}`).join("\n\n")} label="Copy Entire Thread"/>
             {post.thread_tweets.map((t,i)=>(
               <div key={i} style={{display:"flex",gap:10}}>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}}>
-                  <div style={{width:28,height:28,borderRadius:"50%",background:`${color}20`,color,
-                    fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>{t.num}</div>
-                  {i<post.thread_tweets.length-1&&<div style={{width:2,flex:1,background:`${color}15`,margin:"4px 0"}}/>}
+                  <div style={{width:30,height:30,borderRadius:"50%",background:"rgba(29,161,242,0.15)",
+                    color:"#60a5fa",fontWeight:800,fontSize:12,display:"flex",
+                    alignItems:"center",justifyContent:"center"}}>{t.num}</div>
+                  {i<post.thread_tweets.length-1&&(
+                    <div style={{width:2,flex:1,background:"rgba(29,161,242,0.15)",margin:"4px 0"}}/>
+                  )}
                 </div>
-                <div style={{background:"#030309",border:`1px solid rgba(255,255,255,0.07)`,borderRadius:12,
-                  padding:"12px 14px",flex:1,marginBottom:2}}>
-                  <div style={{display:"flex",justifyContent:"space-between",gap:8,marginBottom:6}}>
-                    <span style={{fontSize:11,color:`${color}80`,fontWeight:700}}>{t.tweet.length}/280</span>
+                <div style={{background:"#020209",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,
+                  padding:"12px 15px",flex:1,marginBottom:2}}>
+                  <div style={{display:"flex",justifyContent:"space-between",gap:8,marginBottom:8}}>
+                    <span style={{fontSize:10,color:"rgba(29,161,242,0.7)",fontWeight:700,
+                      background:"rgba(29,161,242,0.1)",borderRadius:5,padding:"2px 8px"}}>
+                      {t.tweet.length}/280 chars</span>
                     <CopyBtn text={t.tweet} sm/>
                   </div>
-                  <div style={{fontSize:13,color:"#e2e8f0",lineHeight:1.7}}>{t.tweet}</div>
+                  <div style={{fontSize:13,color:"#e2e8f0",lineHeight:1.75}}>{t.tweet}</div>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* CHECKLIST TAB */}
+        {/* ════ CHECKLIST TAB ════ */}
         {tab==="checklist"&&(
-          <div style={{display:"grid",gap:9}}>
-            <div style={{background:`${color}0a`,border:`1px solid ${color}18`,borderRadius:11,
-              padding:"12px 16px",textAlign:"center",marginBottom:4}}>
-              <div style={{fontSize:14,fontWeight:700,color,letterSpacing:"-.2px"}}>{post.best_day} · {post.best_time}</div>
-              <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:3}}>Optimal posting time for {post.platform}</div>
+          <div style={{display:"grid",gap:10}}>
+
+            {/* Posting time card */}
+            <div style={{background:`${color}10`,border:`1px solid ${color}25`,borderRadius:13,
+              padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+              <div>
+                <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+                  color:`${color}80`,marginBottom:4}}>📅 When to post this</div>
+                <div style={{fontSize:20,fontWeight:800,color:"#f1f5f9",letterSpacing:"-.4px"}}>
+                  {post.best_day} · {post.best_time}</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:3}}>
+                  Optimal time for {post.platform} · {post.format}
+                </div>
+              </div>
+              <div style={{fontSize:36}}>⏰</div>
             </div>
-            {post.posting_checklist?.map((step,i)=>(
-              <div key={i} style={{display:"flex",gap:11,alignItems:"flex-start",
-                background:"rgba(255,255,255,0.03)",borderRadius:9,padding:"10px 14px"}}>
-                <div style={{width:24,height:24,borderRadius:"50%",background:`${color}20`,color,
-                  fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",
+
+            {/* Steps */}
+            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+              color:"rgba(255,255,255,0.28)",margin:"4px 0 2px"}}>📋 Step-by-step posting checklist</div>
+
+            {(post.posting_checklist||[]).map((step,i)=>(
+              <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",
+                background:"rgba(255,255,255,0.03)",borderRadius:11,padding:"12px 16px",
+                border:"1px solid rgba(255,255,255,0.06)"}}>
+                <div style={{width:26,height:26,borderRadius:8,background:`${color}20`,color,
+                  fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",
                   flexShrink:0,fontFamily:"'JetBrains Mono',monospace"}}>{i+1}</div>
-                <span style={{fontSize:13,color:"rgba(255,255,255,0.62)",lineHeight:1.55}}>{step}</span>
+                <span style={{fontSize:13,color:"rgba(255,255,255,0.7)",lineHeight:1.6}}>{step}</span>
               </div>
             ))}
+
+            {/* Engagement tip */}
             {post.engagement_tip&&(
-              <div style={{background:"#051a0f",border:"1px solid #166534",borderRadius:10,
-                padding:"12px 15px",marginTop:4}}>
-                <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                  color:"#4ade80",marginBottom:5}}>⚡ First-30-mins Engagement Tip</div>
-                <div style={{fontSize:13,color:"#86efac",lineHeight:1.6}}>{post.engagement_tip}</div>
+              <div style={{background:"#051a0e",border:"1px solid #16653430",borderRadius:12,padding:"14px 16px"}}>
+                <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                  <span style={{fontSize:18}}>⚡</span>
+                  <div>
+                    <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
+                      color:"#4ade80",marginBottom:5}}>Do this in the first 30 minutes after posting</div>
+                    <div style={{fontSize:13,color:"#86efac",lineHeight:1.65}}>{post.engagement_tip}</div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -839,6 +1022,7 @@ function PostCard({post, profile}){
     </div>
   );
 }
+
 
 // ─────────────────────────────────────────────────────────────────
 //  TREND RESEARCH CARDS
@@ -846,28 +1030,58 @@ function PostCard({post, profile}){
 function TrendCards({trends, color}){
   if(!trends?.length) return null;
   return(
-    <div style={{marginBottom:22}}>
-      <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-        color:"rgba(255,255,255,0.28)",marginBottom:10}}>🔍 Live Trends Found This Week</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
-        {trends.map((t,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,0.03)",border:`1px solid ${color}14`,
-            borderRadius:13,padding:"13px 14px"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
-              <div style={{fontSize:13,fontWeight:700,color:"#f1f5f9",letterSpacing:"-.2px",lineHeight:1.3,flex:1}}>
-                {t.name}</div>
-              <span style={{fontSize:9,fontWeight:700,marginLeft:6,flexShrink:0,borderRadius:5,
-                padding:"2px 7px",
-                background:t.heat==="Hot"?"#451a1a":t.heat==="Rising"?"#422006":"#0f2a1a",
-                color:t.heat==="Hot"?"#fca5a5":t.heat==="Rising"?"#fdba74":"#4ade80",
-                border:`1px solid ${t.heat==="Hot"?"#7f1d1d40":t.heat==="Rising"?"#92400e40":"#14532d40"}`}}>
-                {t.heat==="Hot"?"🔥 HOT":t.heat==="Rising"?"📈 RISING":"🌱 EMERGING"}
-              </span>
+    <div style={{marginBottom:20}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+        <span style={{fontSize:13}}>🔍</span>
+        <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
+          color:"rgba(255,255,255,0.3)"}}>Live trends found this week in your niche</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:8}}>
+        {trends.map((t,i)=>{
+          const heat = t.heat==="Hot"?{bg:"#1c0808",border:"#ef444428",col:"#fca5a5",tag:"🔥 Hot"}:
+            t.heat==="Rising"?{bg:"#1c1408",border:"#f59e0b28",col:"#fcd34d",tag:"📈 Rising"}:
+            {bg:"#081c0e",border:"#22c55e28",col:"#86efac",tag:"🌱 New"};
+          return(
+            <div key={i} style={{background:heat.bg,border:`1px solid ${heat.border}`,
+              borderRadius:12,padding:"12px 14px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:6,marginBottom:5}}>
+                <div style={{fontSize:13,fontWeight:700,color:"#f1f5f9",lineHeight:1.3,flex:1}}>{t.name}</div>
+                <span style={{fontSize:10,fontWeight:700,color:heat.col,whiteSpace:"nowrap",flexShrink:0,
+                  background:heat.border,borderRadius:5,padding:"2px 7px"}}>{heat.tag}</span>
+              </div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.38)",lineHeight:1.5}}>{t.why}</div>
             </div>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",lineHeight:1.5,marginBottom:4}}>{t.why}</div>
-            {t.platform&&<div style={{fontSize:10,color:`${color}70`,fontWeight:600}}>on {t.platform}</div>}
-            {t.source&&<div style={{fontSize:10,color:"rgba(255,255,255,0.2)",fontStyle:"italic",marginTop:3}}>
-              Source: {t.source}</div>}
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function WeekCal({posts, color}){
+  const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const full=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const byDay={};
+  posts.forEach(p=>{const k=full.find(f=>f===p.best_day)?.slice(0,3);if(k)(byDay[k]=byDay[k]||[]).push(p);});
+  const hasAny = Object.keys(byDay).length > 0;
+  if(!hasAny) return null;
+  return(
+    <div style={{marginBottom:20}}>
+      <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
+        color:"rgba(255,255,255,0.3)",marginBottom:8}}>📅 Your posting schedule this week</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4}}>
+        {days.map(d=>(
+          <div key={d} style={{background:byDay[d]?`${color}0c`:"rgba(255,255,255,0.02)",
+            border:`1px solid ${byDay[d]?color+"28":"rgba(255,255,255,0.05)"}`,
+            borderRadius:10,padding:"7px 5px",minHeight:52,textAlign:"center"}}>
+            <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".8px",
+              color:byDay[d]?color:"rgba(255,255,255,0.22)",marginBottom:5}}>{d}</div>
+            {byDay[d]?.map((p,i)=>(
+              <div key={i} style={{background:`${color}18`,borderRadius:4,
+                padding:"3px 4px",marginBottom:2}}>
+                <div style={{fontSize:8,color,fontWeight:700,lineHeight:1.2}}>{p.format}</div>
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -875,47 +1089,6 @@ function TrendCards({trends, color}){
   );
 }
 
-// ─────────────────────────────────────────────────────────────────
-//  WEEK CALENDAR
-// ─────────────────────────────────────────────────────────────────
-function WeekCal({posts, color}){
-  const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-  const full=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-  const byDay={};
-  posts.forEach(p=>{const k=full.find(f=>f===p.best_day)?.slice(0,3);if(k)(byDay[k]=byDay[k]||[]).push(p);});
-  return(
-    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4,marginBottom:20}}>
-      {days.map(d=>(
-        <div key={d} style={{background:byDay[d]?"rgba(255,255,255,0.04)":"rgba(255,255,255,0.02)",
-          border:`1px solid ${byDay[d]?color+"35":"rgba(255,255,255,0.06)"}`,borderRadius:9,padding:"7px",minHeight:52}}>
-          <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-            color:"rgba(255,255,255,0.3)",marginBottom:4}}>{d}</div>
-          {byDay[d]?.map((p,i)=>(
-            <div key={i} style={{background:`${color}18`,border:`1px solid ${color}25`,borderRadius:4,
-              padding:"3px 5px",marginBottom:2}}>
-              <div style={{fontSize:9,color,fontWeight:700}}>{p.format}</div>
-              <div style={{fontSize:8,color:"rgba(255,255,255,0.32)",fontFamily:"monospace"}}>{p.best_time}</div>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────
-//  WORKSPACE — content generation engine
-// ─────────────────────────────────────────────────────────────────
-const GEN_STEPS=[
-  "🔍 Scanning trending content live...",
-  "📊 Analysing platform algorithms...",
-  "🌍 Finding viral patterns in your niche...",
-  "✍️ Writing platform-native captions...",
-  "🎬 Scripting your Reels and videos...",
-  "🎠 Building carousel decks...",
-  "📌 Researching viral hashtags...",
-  "✨ Final quality check...",
-];
 
 function Workspace({profile, hKey, onUpgrade}){
   const color=profile.color||"#38bdf8";
@@ -1148,8 +1321,9 @@ function Workspace({profile, hKey, onUpgrade}){
           <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
             color:"rgba(255,255,255,0.28)",marginBottom:14}}>
             📝 {result.posts?.length||0} Posts — Platform-native content ready to publish</div>
-          <div style={{display:"grid",gap:16}}>
-            {result.posts?.map((p,i)=><PostCard key={i} post={p} profile={profile}/>)}
+          <HowToUseBanner color={color} postCount={result.posts?.length||0}/>
+          <div style={{display:"grid",gap:20}}>
+            {result.posts?.map((p,i)=><PostCard key={i} post={p} profile={profile} index={i}/>)}
           </div>
           <div style={{textAlign:"center",marginTop:28,paddingTop:22,
             borderTop:"1px solid rgba(255,255,255,0.05)"}}>
