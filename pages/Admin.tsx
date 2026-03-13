@@ -98,7 +98,7 @@ const Admin: React.FC = () => {
         try {
             const method = currentBlog.id ? 'PUT' : 'POST';
             const url = currentBlog.id 
-                ? '/api/data?resource=blogs&id='+currentBlog.id}` 
+                ? `/api/data?resource=blogs&id=${currentBlog.id}` 
                 : '/api/data?resource=blogs';
             
             // Note: The simple backend currently only supports POST for new, but we can simulate PUT by deleting and re-adding or just adding.
@@ -119,7 +119,7 @@ const Admin: React.FC = () => {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Are you sure you want to delete this post?')) return;
         try {
-            await fetch('/api/data?resource=blogs&id='+id}`, { method: 'DELETE' });
+            await fetch(`/api/data?resource=blogs&id=${id}`, { method: 'DELETE' });
             fetchBlogs();
         } catch (error) {
             console.error('Failed to delete blog', error);
