@@ -15,27 +15,39 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.TWOFACTOR_API_KEY;
 
-  // ── DEV / NO KEY: skip real OTP ──────────────────────────────────
+  // ── DEV / NO KEY: skip real OTP ──────────────────────────────
   if (!apiKey) {
     console.log(`[DEV] OTP for ${phone} — use 1234 to verify`);
     return res.json({ success: true, mode: 'dev', sessionId: 'dev-session' });
   }
 
-  // ── PRODUCTION: 2Factor.in SMS OTP ──────────────────────────────
-  // Strip non-digits, remove country code if present
-  const clean = phone.replace(/\D/g, '').replace(/^91/, '');
+  // ── PRODUCTION: 2Factor.in SMS OTP ───────────────────────────
+  // phone arrives as "+919876543210" — strip to 10-digit Indian number
+  const digits = phone.replace(/\D/g, ''); // remove +, spaces, dashes
+  let clean;
+  if (digits.startsWith('91') && digits.length === 12) {
+    clean = digits.slice(2); // strip +91 country code → 10 digits
+  } else if (digits.length === 10) {
+    clean = digits; // already 10 digits
+  } else {
+    clean = digits; // pass through (non-Indian, will fail gracefully)
+  }
+
+  console.log(`[OTP] Sending to: ${clean} (raw: ${phone})`);
 
   try {
     const url = `https://2factor.in/API/V1/${apiKey}/SMS/${clean}/AUTOGEN`;
     const r = await fetch(url);
     const data = await r.json();
 
+    console.log('[2Factor] Response:', JSON.stringify(data));
+
     if (data.Status === 'Success') {
       return res.json({ success: true, sessionId: data.Details });
     }
     throw new Error(data.Details || '2Factor error');
   } catch (err) {
-    console.error('OTP Send Error:', err);
+    console.error('OTP Send Error:', err.message);
     return res.status(500).json({ error: 'Failed to send OTP. Please check the phone number.' });
   }
 }
