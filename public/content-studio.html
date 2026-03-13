@@ -2,1641 +2,660 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Ninja's — AI Content Studio | Dominate Every Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Social Ninja's — AI Content Studio</title>
+<link rel="icon" href="/favicon.png">
+<meta name="description" content="Stop guessing. AI researches what's trending right now, then writes every caption, script, carousel and hashtag set for your brand. Try 3 posts free.">
+<meta property="og:title" content="Social Ninja's — AI Content Studio">
+<meta property="og:description" content="AI-powered social content. Live trend research. Platform-native writing. Try 3 posts free.">
+<meta property="og:image" content="/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root {
-  --ink: #020617;
-  --deep: #0f172a;
-  --panel: #0f172a;
-  --lift:   #12122a;
+  --bg:     #04040c;
+  --panel:  #0b0b1a;
   --edge:   rgba(255,255,255,0.07);
-  --glow: #38bdf8;
-  --glow2: #2dd4bf;
-  --violet: #6d28d9;
-  --ruby:   #dc2626;
-  --jade:   #059669;
-  --amber:  #d97706;
-  --cream:  #f5f0e8;
+  --glow:   #38bdf8;
+  --glow2:  #2dd4bf;
+  --violet: #7c3aed;
   --silver: rgba(255,255,255,0.55);
   --dim:    rgba(255,255,255,0.28);
-  --faint:  rgba(255,255,255,0.07);
-  --r: 14px;
+  --faint:  rgba(255,255,255,0.06);
+  --r:      14px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-body {
-  background: var(--ink);
-  color: #fff;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-h1,h2,h3,h4,h5 { font-family: 'Outfit', sans-serif; }
-::selection { background: var(--glow); color: #fff; }
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: var(--glow); border-radius: 3px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:#fff;font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
 
-/* ═══ 3D CANVAS ═══ */
-#hero-canvas {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-}
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(4,4,12,.96);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--edge);}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-badge{width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#38bdf8,#0D1B3E);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  border:1px solid rgba(56,189,248,.3);}
+.nav-name{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.4px;}
+.nav-name em{font-style:normal;color:var(--glow);}
+.nav-tagline{font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.2em;color:var(--glow);margin-top:-2px;}
+.nav-cta{background:var(--glow);color:#000;font-weight:700;font-size:13px;
+  border-radius:30px;padding:8px 18px;border:none;cursor:pointer;
+  transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
 
-/* ═══ CURSOR ═══ */
-.cursor {
-  position: fixed; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--glow); pointer-events: none; z-index: 9999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
-  transition: transform .15s ease, width .2s, height .2s, opacity .2s;
-}
-.cursor-ring {
-  position: fixed; width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(56,189,248,.5); pointer-events: none; z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform .4s cubic-bezier(.23,1,.32,1), width .3s, height .3s;
-}
-body:hover .cursor { opacity: 1; }
+/* ── HERO ── */
+.hero{max-width:1080px;margin:0 auto;padding:72px 20px 40px;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);
+  border-radius:30px;padding:6px 14px;font-size:12px;font-weight:600;
+  color:var(--glow);margin-bottom:24px;}
+.hero h1{font-family:'Outfit',sans-serif;font-size:clamp(36px,7vw,72px);
+  font-weight:900;letter-spacing:-2px;line-height:1.04;margin-bottom:20px;}
+.hero h1 .g{background:linear-gradient(135deg,var(--glow),var(--glow2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(15px,2.5vw,19px);color:var(--silver);
+  max-width:580px;margin:0 auto 36px;line-height:1.65;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn-primary{background:linear-gradient(135deg,var(--glow),#0ea5e9);color:#000;
+  font-weight:800;font-size:15px;border:none;border-radius:40px;
+  padding:15px 32px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 8px 32px rgba(56,189,248,.35);transition:transform .2s,box-shadow .2s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(56,189,248,.45);}
+.btn-ghost{background:transparent;color:#fff;font-weight:600;font-size:15px;
+  border:1px solid rgba(255,255,255,.15);border-radius:40px;padding:14px 28px;
+  cursor:pointer;transition:border-color .2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);}
 
-/* ═══ NAV ═══ */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 68px; padding: 0 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(2,2,10,0.7);
-  backdrop-filter: blur(28px) saturate(1.5);
-  border-bottom: 1px solid var(--edge);
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 11px; text-decoration: none;
-}
-.logo-mark {
-  width: 40px; height: 40px; border-radius: 11px;
-  background: linear-gradient(135deg, #38bdf8 0%, #0d1b3e 100%);
-  border: 1px solid rgba(56,189,248,.4);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; position: relative; overflow: hidden;
-}
-.logo-mark::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
-}
-.nav-name {
-  font-family: 'Outfit', sans-serif;
-  font-size: 17px; font-weight: 900; letter-spacing: -.5px; color: #fff;
-}
-.nav-name em { font-style: normal; color: var(--glow2); }
-.nav-links {
-  display: flex; gap: 32px; align-items: center; list-style: none;
-}
-.nav-links a {
-  font-size: 13.5px; font-weight: 500; color: var(--silver);
-  text-decoration: none; letter-spacing: -.1px;
-  transition: color .2s;
-}
-.nav-links a:hover { color: #fff; }
-.nav-actions { display: flex; gap: 10px; align-items: center; }
-.btn-nav-ghost {
-  padding: 9px 20px; border-radius: 10px;
-  border: 1px solid var(--edge); background: transparent;
-  color: var(--silver); font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: inherit; text-decoration: none;
-  transition: all .2s;
-}
-.btn-nav-ghost:hover { border-color: rgba(56,189,248,.5); color: #fff; }
-.btn-nav-primary {
-  padding: 9px 22px; border-radius: 10px;
-  background: var(--glow); border: 1px solid rgba(56,189,248,.4);
-  color: #fff; font-size: 13px; font-weight: 700;
-  cursor: pointer; font-family: inherit; text-decoration: none;
-  transition: all .2s; letter-spacing: -.1px;
-  box-shadow: 0 0 24px rgba(56,189,248,.3);
-}
-.btn-nav-primary:hover {
-  background: var(--glow2);
-  box-shadow: 0 0 36px rgba(56,189,248,.5);
-  transform: translateY(-1px);
-}
+/* ── PRODUCT SCREEN MOCKUP ── */
+.mockup-wrap{position:relative;max-width:900px;margin:0 auto 80px;}
+.mockup-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);
+  width:80%;height:60%;background:radial-gradient(ellipse,rgba(56,189,248,.12),transparent 70%);
+  pointer-events:none;}
+.mockup-frame{border-radius:16px;border:1px solid rgba(255,255,255,.1);
+  background:var(--panel);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);}
+.mockup-bar{background:#111124;padding:12px 16px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--edge);}
+.mockup-dots{display:flex;gap:6px;}
+.mockup-dots span{width:10px;height:10px;border-radius:50%;}
+.mockup-url{flex:1;background:rgba(255,255,255,.05);border-radius:6px;padding:5px 12px;
+  font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--dim);}
+.mockup-body{padding:20px;display:grid;grid-template-columns:220px 1fr;gap:16px;min-height:340px;}
+.mockup-sidebar{background:rgba(255,255,255,.03);border-radius:10px;padding:14px;
+  border:1px solid var(--edge);}
+.mockup-sb-brand{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.mockup-sb-dot{width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--glow),#0D1B3E);
+  display:flex;align-items:center;justify-content:center;font-size:14px;}
+.mockup-sb-name{font-size:12px;font-weight:700;}
+.mockup-sb-plan{font-size:10px;color:var(--glow);font-weight:600;}
+.mockup-sb-item{padding:8px 10px;border-radius:7px;font-size:11px;
+  color:var(--dim);margin-bottom:3px;cursor:default;}
+.mockup-sb-item.active{background:rgba(56,189,248,.12);color:var(--glow);font-weight:600;}
+.mockup-main{display:flex;flex-direction:column;gap:12px;}
+.mockup-post{background:rgba(255,255,255,.04);border-radius:10px;
+  border:1px solid var(--edge);padding:14px;animation:fadePost .6s ease both;}
+.mockup-post:nth-child(2){animation-delay:.15s;}
+.mockup-post:nth-child(3){animation-delay:.3s;}
+@keyframes fadePost{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.mockup-post-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.mockup-post-num{font-size:10px;font-weight:700;color:var(--glow);letter-spacing:.5px;}
+.mockup-post-tag{font-size:9px;background:rgba(56,189,248,.1);
+  border:1px solid rgba(56,189,248,.2);border-radius:20px;padding:2px 8px;color:var(--glow);}
+.mockup-post-line{height:8px;border-radius:4px;background:rgba(255,255,255,.08);margin-bottom:5px;}
+.mockup-post-line.w80{width:80%;}
+.mockup-post-line.w60{width:60%;}
+.mockup-post-line.w90{width:90%;}
+.mockup-tabs{display:flex;gap:6px;margin-top:8px;}
+.mockup-tab{font-size:9px;padding:3px 9px;border-radius:20px;
+  background:rgba(255,255,255,.05);color:var(--dim);}
+.mockup-tab.active{background:rgba(56,189,248,.15);color:var(--glow);}
+.mockup-typing{display:flex;align-items:center;gap:6px;
+  font-size:10px;color:var(--dim);margin-top:4px;}
+.typing-dot{width:4px;height:4px;border-radius:50%;background:var(--glow);
+  animation:typingBounce .8s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:.15s;}
+.typing-dot:nth-child(3){animation-delay:.3s;}
+@keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-4px);}}
 
-/* ═══ HERO ═══ */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; overflow: hidden;
-  padding: 140px 48px 80px;
-}
-.hero-vignette {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 55% at 50% 50%, transparent 20%, rgba(2,2,10,.85) 80%);
-  z-index: 1;
-}
-.hero-content { position: relative; z-index: 2; max-width: 840px; }
+/* ── SOCIAL PROOF STRIP ── */
+.proof-strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);
+  padding:16px 20px;margin-bottom:80px;}
+.proof-inner{max-width:1080px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;}
+.proof-stat{text-align:center;}
+.proof-num{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--glow);}
+.proof-lbl{font-size:11px;color:var(--dim);margin-top:1px;}
 
-.badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 16px 6px 6px;
-  background: rgba(56,189,248,.08);
-  border: 1px solid rgba(56,189,248,.25);
-  border-radius: 100px;
-  font-size: 12px; font-weight: 600; color: var(--glow2);
-  letter-spacing: .5px; margin-bottom: 28px;
-  animation: fadeSlideUp .8s ease both;
-}
-.badge-dot {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--glow); display: flex; align-items: center; justify-content: center;
-  font-size: 10px;
-}
-.badge-dot::after {
-  content: ''; position: absolute;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--glow); opacity: .4;
-  animation: ping 1.8s ease infinite;
-}
-@keyframes ping {
-  0% { transform: scale(1); opacity: .4; }
-  100% { transform: scale(2); opacity: 0; }
-}
+/* ── HOW IT WORKS ── */
+.section{max-width:1080px;margin:0 auto;padding:0 20px 80px;}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--glow);margin-bottom:12px;}
+.section-h2{font-family:'Outfit',sans-serif;font-size:clamp(28px,5vw,44px);
+  font-weight:800;letter-spacing:-1px;margin-bottom:48px;line-height:1.1;}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.step-card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+  padding:24px;position:relative;overflow:hidden;}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--glow),transparent);}
+.step-num{width:36px;height:36px;border-radius:10px;
+  background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  color:var(--glow);margin-bottom:14px;}
+.step-title{font-size:15px;font-weight:700;margin-bottom:6px;}
+.step-desc{font-size:13px;color:var(--dim);line-height:1.6;}
 
-h1.hero-h1 {
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 900; line-height: .98;
-  letter-spacing: -3.5px;
-  margin-bottom: 28px;
-  animation: fadeSlideUp .8s ease .1s both;
-}
-.h1-line1 { display: block; color: var(--cream); }
-.h1-line2 {
-  display: block;
-  background: linear-gradient(105deg, var(--glow2) 0%, #a78bfa 50%, var(--glow2) 100%);
-  background-size: 200%;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  animation: shimmer 4s ease infinite;
-}
-@keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+/* ── FEATURES GRID ── */
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.feat-card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+  padding:22px;display:flex;gap:14px;align-items:flex-start;}
+.feat-icon{width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);}
+.feat-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.feat-desc{font-size:12px;color:var(--dim);line-height:1.55;}
 
-.hero-sub {
-  font-size: clamp(16px, 2vw, 19px); color: var(--silver);
-  line-height: 1.7; max-width: 580px; margin: 0 auto 40px;
-  font-weight: 400;
-  animation: fadeSlideUp .8s ease .2s both;
-}
-.hero-sub strong { color: rgba(255,255,255,.85); font-weight: 600; }
+/* ── REVIEWS SLIDESHOW ── */
+.reviews-wrap{position:relative;overflow:hidden;}
+.reviews-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.review-card{min-width:100%;background:var(--panel);border:1px solid var(--edge);
+  border-radius:var(--r);padding:28px;box-sizing:border-box;}
+.review-stars{font-size:14px;margin-bottom:12px;letter-spacing:2px;}
+.review-text{font-size:15px;line-height:1.7;color:rgba(255,255,255,.75);
+  margin-bottom:18px;font-style:italic;}
+.review-author{display:flex;align-items:center;gap:10px;}
+.review-avatar{width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--glow),var(--violet));
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.review-name{font-size:13px;font-weight:700;}
+.review-meta{font-size:11px;color:var(--dim);}
+.review-dots{display:flex;gap:6px;justify-content:center;margin-top:20px;}
+.review-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);
+  cursor:pointer;transition:background .2s,transform .2s;}
+.review-dot.active{background:var(--glow);transform:scale(1.3);}
 
-.hero-ctas {
-  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-  margin-bottom: 56px;
-  animation: fadeSlideUp .8s ease .3s both;
-}
-.btn-hero {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 16px 32px; border-radius: 13px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 15px; font-weight: 800; letter-spacing: -.3px;
-  text-decoration: none; cursor: pointer; border: none;
-  transition: all .25s cubic-bezier(.23,1,.32,1);
-}
-.btn-hero-primary {
-  background: linear-gradient(135deg, var(--glow) 0%, #1a4fa8 100%);
-  color: #fff;
-  box-shadow: 0 4px 32px rgba(56,189,248,.35), 0 1px 0 rgba(255,255,255,.15) inset;
-}
-.btn-hero-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 48px rgba(56,189,248,.5);
-}
-.btn-hero-ghost {
-  background: rgba(255,255,255,.05);
-  color: var(--silver); border: 1px solid var(--edge);
-}
-.btn-hero-ghost:hover {
-  background: rgba(255,255,255,.09); color: #fff;
-  border-color: rgba(255,255,255,.15); transform: translateY(-2px);
-}
-.btn-arrow {
-  font-size: 18px; transition: transform .2s;
-}
-.btn-hero-primary:hover .btn-arrow { transform: translateX(4px); }
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.plan-card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+  padding:24px;position:relative;overflow:hidden;}
+.plan-card.featured{border-color:rgba(56,189,248,.4);
+  background:linear-gradient(180deg,rgba(56,189,248,.07),var(--panel));}
+.plan-card.featured::before{content:'MOST POPULAR';position:absolute;top:16px;right:16px;
+  font-size:9px;font-weight:800;letter-spacing:.12em;color:var(--glow);
+  background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.25);
+  border-radius:20px;padding:3px 9px;}
+.plan-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--dim);margin-bottom:6px;}
+.plan-price{font-family:'Outfit',sans-serif;font-size:36px;font-weight:900;
+  letter-spacing:-1px;margin-bottom:4px;}
+.plan-price span{font-size:15px;font-weight:500;color:var(--dim);}
+.plan-orig{font-size:11px;color:var(--dim);text-decoration:line-through;margin-bottom:16px;}
+.plan-feat{list-style:none;margin-bottom:20px;}
+.plan-feat li{font-size:12px;color:var(--silver);padding:5px 0;
+  border-bottom:1px solid var(--edge);display:flex;align-items:center;gap:7px;}
+.plan-feat li:last-child{border:none;}
+.plan-feat .ck{color:var(--glow2);font-size:10px;}
+.plan-btn{width:100%;padding:12px;border-radius:30px;font-weight:700;font-size:13px;
+  cursor:pointer;border:none;transition:opacity .2s;}
+.plan-btn-primary{background:linear-gradient(135deg,var(--glow),#0ea5e9);color:#000;}
+.plan-btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fff;}
+.plan-btn:hover{opacity:.85;}
+.plan-trial{font-size:11px;color:var(--glow);text-align:center;margin-top:10px;
+  cursor:pointer;}
 
-.hero-trust {
-  display: flex; gap: 28px; justify-content: center; flex-wrap: wrap;
-  animation: fadeSlideUp .8s ease .4s both;
-}
-.trust-item {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 13px; color: var(--dim); font-weight: 500;
-}
-.trust-check { color: var(--jade); font-size: 14px; }
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid var(--edge);}
+.faq-q{width:100%;text-align:left;background:none;border:none;color:#fff;
+  padding:18px 0;font-size:15px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.faq-icon{color:var(--glow);font-size:20px;flex-shrink:0;transition:transform .3s;}
+.faq-q.open .faq-icon{transform:rotate(45deg);}
+.faq-a{display:none;padding-bottom:18px;font-size:14px;color:var(--dim);line-height:1.7;}
+.faq-a.open{display:block;}
 
-/* ═══ FLOATING 3D CARDS (hero decoration) ═══ */
-.float-card {
-  position: absolute; z-index: 2;
-  background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 16px; padding: 14px 18px;
-  backdrop-filter: blur(12px);
-  pointer-events: none;
-}
-.fc-left {
-  left: 3%; top: 35%;
-  animation: floatLeft 6s ease-in-out infinite;
-}
-.fc-right {
-  right: 3%; top: 42%;
-  animation: floatRight 7s ease-in-out infinite;
-}
-.fc-top {
-  right: 8%; top: 20%;
-  animation: floatTop 5s ease-in-out infinite;
-}
-@keyframes floatLeft {
-  0%,100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-16px) rotate(-4deg); }
-}
-@keyframes floatRight {
-  0%,100% { transform: translateY(0) rotate(2deg); }
-  50% { transform: translateY(-12px) rotate(4deg); }
-}
-@keyframes floatTop {
-  0%,100% { transform: translateY(0) rotate(1deg); }
-  50% { transform: translateY(-10px) rotate(-1deg); }
-}
-.fc-stat { font-size: 22px; font-weight: 900; letter-spacing: -1px; }
-.fc-label { font-size: 11px; color: var(--dim); font-weight: 500; margin-top: 2px; }
-.fc-bar { height: 3px; border-radius: 3px; margin-top: 10px; }
+/* ── BOTTOM CTA ── */
+.bottom-cta{background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(124,58,237,.08));
+  border:1px solid rgba(56,189,248,.15);border-radius:20px;
+  padding:48px 32px;text-align:center;margin:0 20px 80px;}
+.bottom-cta h2{font-family:'Outfit',sans-serif;font-size:clamp(26px,5vw,40px);
+  font-weight:800;letter-spacing:-1px;margin-bottom:12px;}
+.bottom-cta p{color:var(--silver);font-size:15px;margin-bottom:28px;}
 
-/* ═══ PROOF BAR ═══ */
-.proof {
-  background: var(--panel);
-  border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge);
-  padding: 28px 48px;
-  display: flex; align-items: center; justify-content: center;
-  gap: 0; flex-wrap: wrap;
-}
-.proof-item {
-  flex: 1; min-width: 140px; max-width: 200px;
-  text-align: center; padding: 10px 20px;
-  border-right: 1px solid var(--edge);
-}
-.proof-item:last-child { border-right: none; }
-.proof-n {
-  font-family: 'Outfit', sans-serif;
-  font-size: 34px; font-weight: 900; letter-spacing: -1.5px;
-  color: var(--glow2); display: block; line-height: 1;
-}
-.proof-l { font-size: 12px; color: var(--dim); margin-top: 5px; font-weight: 500; }
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--edge);padding:28px 20px;
+  max-width:1080px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-brand{display:flex;align-items:center;gap:8px;}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{font-size:12px;color:var(--dim);transition:color .2s;}
+.footer-links a:hover{color:#fff;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.18);}
 
-/* ═══ SECTIONS ═══ */
-section { padding: 120px 48px; }
-.container { max-width: 1080px; margin: 0 auto; }
-.s-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; font-weight: 500; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--glow);
-  margin-bottom: 14px; display: block;
-}
-.s-title {
-  font-size: clamp(32px, 4.5vw, 54px); font-weight: 900;
-  letter-spacing: -2px; line-height: 1.05; margin-bottom: 18px;
-}
-.s-sub {
-  font-size: 17px; color: var(--silver); line-height: 1.75;
-  max-width: 520px; font-weight: 400;
-}
-.centered { text-align: center; }
-.centered .s-sub { margin: 0 auto; }
-
-/* ═══ PROBLEM/SOLUTION ═══ */
-.ps-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-  max-width: 880px; margin: 0 auto;
-}
-.ps-card {
-  border-radius: 20px; padding: 32px 28px; overflow: hidden; position: relative;
-}
-.ps-before {
-  background: #0d0408;
-  border: 1px solid rgba(220,38,38,.14);
-}
-.ps-after {
-  background: #020e09;
-  border: 1px solid rgba(5,150,105,.18);
-}
-.ps-card::before {
-  content: ''; position: absolute;
-  width: 200px; height: 200px; border-radius: 50%;
-  top: -60px; right: -60px;
-  filter: blur(60px); pointer-events: none;
-}
-.ps-before::before { background: rgba(220,38,38,.12); }
-.ps-after::before { background: rgba(5,150,105,.12); }
-.ps-head {
-  font-size: 14px; font-weight: 700; margin-bottom: 20px;
-  display: flex; align-items: center; gap: 9px; letter-spacing: -.2px;
-}
-.ps-before .ps-head { color: #fca5a5; }
-.ps-after .ps-head { color: #6ee7b7; }
-.ps-list { list-style: none; display: grid; gap: 11px; }
-.ps-list li {
-  font-size: 13.5px; color: rgba(255,255,255,.5); line-height: 1.55;
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.ps-before .ps-list li::before { content: '×'; color: rgba(220,38,38,.7); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-.ps-after .ps-list li::before { content: '✓'; color: var(--jade); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
-/* ═══ HOW IT WORKS — 3D TIMELINE ═══ */
-.timeline { position: relative; max-width: 900px; margin: 0 auto; }
-.timeline-line {
-  position: absolute; left: 50%; top: 40px; bottom: 40px;
-  width: 1px; background: linear-gradient(180deg, transparent, var(--glow), var(--glow), transparent);
-  transform: translateX(-50%);
-}
-.tl-step {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 60px; align-items: center; margin-bottom: 60px;
-  position: relative;
-}
-.tl-step:nth-child(even) .tl-content { order: 2; }
-.tl-step:nth-child(even) .tl-visual { order: 1; text-align: right; }
-.tl-node {
-  position: absolute; left: 50%; top: 50%;
-  width: 44px; height: 44px; border-radius: 12px;
-  background: linear-gradient(135deg, var(--glow), var(--violet));
-  border: 3px solid var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  transform: translate(-50%, -50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 700; color: #fff;
-  box-shadow: 0 0 28px rgba(56,189,248,.5);
-  z-index: 2;
-}
-.tl-content {}
-.tl-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; color: var(--glow); letter-spacing: 2px;
-  text-transform: uppercase; margin-bottom: 8px;
-}
-.tl-title { font-size: 22px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 10px; }
-.tl-desc { font-size: 14px; color: var(--silver); line-height: 1.7; }
-.tl-visual {
-  background: var(--panel); border: 1px solid var(--edge);
-  border-radius: 18px; padding: 22px;
-  perspective: 800px;
-}
-.tl-visual-inner {
-  background: var(--lift); border-radius: 12px; padding: 16px;
-  transform: rotateX(5deg) rotateY(-5deg);
-  box-shadow: 4px 8px 24px rgba(0,0,0,.4);
-  transition: transform .4s ease;
-}
-.tl-visual:hover .tl-visual-inner { transform: rotateX(0deg) rotateY(0deg); }
-.tl-visual-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; }
-.tl-visual-content { font-size: 12px; color: var(--silver); line-height: 1.7; }
-
-/* ═══ FEATURES — 3D CARDS ═══ */
-.features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-}
-.feat-card {
-  background: var(--panel); border: 1px solid var(--edge);
-  border-radius: 20px; padding: 28px 24px;
-  transition: transform .3s ease, border-color .2s, box-shadow .3s;
-  cursor: default; position: relative; overflow: hidden;
-  transform-style: preserve-3d;
-}
-.feat-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: 20px;
-  background: linear-gradient(135deg, rgba(255,255,255,.04) 0%, transparent 60%);
-  pointer-events: none;
-}
-.feat-card:hover {
-  transform: translateY(-6px) rotateX(3deg);
-  border-color: rgba(56,189,248,.3);
-  box-shadow: 0 16px 48px rgba(0,0,0,.4), 0 0 0 1px rgba(56,189,248,.15);
-}
-.feat-glow {
-  position: absolute; width: 120px; height: 120px; border-radius: 50%;
-  top: -30px; right: -30px; filter: blur(50px); pointer-events: none;
-  opacity: .5;
-}
-.feat-icon-wrap {
-  width: 48px; height: 48px; border-radius: 13px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; margin-bottom: 16px;
-  position: relative;
-}
-.feat-icon-wrap::after {
-  content: ''; position: absolute; inset: 0; border-radius: 13px;
-  background: linear-gradient(135deg, rgba(255,255,255,.1) 0%, transparent 50%);
-}
-.feat-title { font-size: 16px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 9px; }
-.feat-desc { font-size: 13px; color: var(--silver); line-height: 1.7; margin-bottom: 14px; }
-.feat-chip {
-  display: inline-block; font-size: 10px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 5px;
-}
-
-/* ═══ PLATFORMS ═══ */
-.plat-section { background: var(--panel); }
-.platforms-wrap {
-  position: relative; overflow: hidden; margin-top: 50px;
-}
-.platforms-track {
-  display: flex; gap: 12px;
-  animation: marquee 22s linear infinite;
-  width: max-content;
-}
-.platforms-track-rev {
-  animation-direction: reverse;
-  animation-duration: 26s;
-}
-.plat-pill {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--lift); border: 1px solid var(--edge);
-  border-radius: 100px; padding: 12px 22px;
-  white-space: nowrap; flex-shrink: 0;
-  font-size: 13px; font-weight: 600; color: rgba(255,255,255,.65);
-  transition: all .2s;
-}
-.plat-pill-icon { font-size: 18px; }
-.plat-pill-stat {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--glow); font-weight: 500;
-  background: rgba(56,189,248,.12); border-radius: 4px; padding: 1px 6px;
-}
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ═══ TESTIMONIALS ═══ */
-.t-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  align-items: start;
-}
-.t-card {
-  background: var(--panel); border: 1px solid var(--edge);
-  border-radius: 20px; padding: 28px 24px;
-  position: relative; overflow: hidden;
-  transition: transform .3s ease, box-shadow .3s;
-}
-.t-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
-.t-card.featured {
-  border-color: rgba(56,189,248,.3);
-  background: linear-gradient(145deg, rgba(56,189,248,.06), var(--panel));
-}
-.t-card.featured::before {
-  content: 'FEATURED';
-  position: absolute; top: 18px; right: 18px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px; font-weight: 700; letter-spacing: 2px;
-  color: var(--glow); background: rgba(56,189,248,.12);
-  border: 1px solid rgba(56,189,248,.25); border-radius: 4px; padding: 2px 7px;
-}
-.t-quote-mark { font-size: 52px; line-height: .6; color: var(--glow); opacity: .3; margin-bottom: 16px; font-family: Georgia, serif; }
-.t-quote { font-size: 14px; line-height: 1.75; color: rgba(255,255,255,.6); margin-bottom: 22px; font-style: italic; }
-.t-quote em { font-style: normal; color: #fff; font-weight: 600; }
-.t-stars { color: #fbbf24; font-size: 13px; letter-spacing: 2px; margin-bottom: 12px; }
-.t-author { display: flex; align-items: center; gap: 12px; }
-.t-av {
-  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 900; border: 2px solid;
-}
-.t-name { font-size: 13px; font-weight: 700; letter-spacing: -.2px; }
-.t-role { font-size: 11px; color: var(--dim); margin-top: 2px; }
-.t-metric { margin-left: auto; text-align: right; flex-shrink: 0; }
-.t-met-n { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: -.5px; }
-.t-met-l { font-size: 10px; color: var(--dim); }
-
-/* ═══ SUCCESS STORIES ═══ */
-.stories-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-}
-.story {
-  background: var(--panel); border: 1px solid var(--edge);
-  border-radius: 22px; padding: 32px; overflow: hidden; position: relative;
-  transition: transform .3s ease;
-}
-.story:hover { transform: translateY(-4px); }
-.story::after {
-  content: ''; position: absolute;
-  bottom: -40px; right: -40px;
-  width: 160px; height: 160px; border-radius: 50%;
-  filter: blur(60px); pointer-events: none; opacity: .15;
-}
-.story-niche-tag {
-  display: inline-block; border-radius: 6px; padding: 3px 11px;
-  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-  text-transform: uppercase; margin-bottom: 14px;
-}
-.story-title { font-size: 18px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 10px; line-height: 1.2; }
-.story-ba {
-  display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px;
-  align-items: center; margin-bottom: 18px;
-}
-.ba-box { text-align: center; border-radius: 12px; padding: 12px 16px; }
-.ba-before { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); }
-.ba-after { background: rgba(5,150,105,.07); border: 1px solid rgba(5,150,105,.2); }
-.ba-lbl { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-.ba-before .ba-lbl { color: var(--dim); }
-.ba-after .ba-lbl { color: var(--jade); }
-.ba-val { font-size: 22px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
-.ba-before .ba-val { color: rgba(255,255,255,.3); }
-.ba-after .ba-val { color: #6ee7b7; }
-.ba-sub { font-size: 10px; color: var(--dim); margin-top: 3px; }
-.ba-arrow { font-size: 22px; color: var(--glow); }
-.story-desc { font-size: 13px; color: var(--silver); line-height: 1.7; margin-bottom: 14px; }
-.story-meta { font-size: 11px; color: var(--dim); font-weight: 600; display: flex; align-items: center; gap: 6px; }
-
-/* ═══ PRICING ═══ */
-.pricing-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-  max-width: 1040px; margin: 0 auto; align-items: start;
-}
-@media(max-width:860px){ .pricing-grid{grid-template-columns:1fr;max-width:480px;} }
-.p-card {
-  background: linear-gradient(160deg,#0e0e1c,#080810);
-  border: 1.5px solid rgba(255,255,255,.07);
-  border-radius: 24px; padding: 28px 24px;
-  position: relative; transition: transform .25s, box-shadow .25s;
-}
-.p-card:hover { transform: translateY(-5px); box-shadow: 0 24px 60px rgba(0,0,0,.4); }
-.p-card.featured {
-  background: linear-gradient(160deg,#130e28,#0b0917);
-  border-color: rgba(109,40,217,.4);
-  box-shadow: 0 0 0 1px rgba(109,40,217,.15), 0 20px 60px rgba(109,40,217,.12);
-}
-.p-badge {
-  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-  border-radius: 100px; padding: 4px 20px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: #fff; white-space: nowrap;
-}
-.p-plan-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-weight: 700; letter-spacing: 3px;
-  text-transform: uppercase; margin-bottom: 4px;
-}
-.p-tagline { font-size: 15px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 20px; color: rgba(255,255,255,.85); }
-.p-price-row { display: flex; align-items: baseline; gap: 5px; margin-bottom: 3px; }
-.p-inr { font-size: 44px; font-weight: 900; letter-spacing: -2px; line-height: 1; }
-.p-mo { font-size: 14px; color: var(--dim); }
-.p-orig { font-size: 12px; color: var(--dim); text-decoration: line-through; margin-bottom: 5px; }
-.p-disc {
-  display: inline-block; border-radius: 5px; padding: 2px 9px; margin-bottom: 4px;
-  font-size: 10px; font-weight: 700;
-}
-.p-perpost { font-size: 12px; color: var(--dim); margin-bottom: 20px; }
-.p-div { height: 1px; background: rgba(255,255,255,.06); margin: 16px 0; }
-/* Platform block */
-.p-plat-block {
-  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
-  border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;
-}
-.p-plat-label {
-  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
-  color: rgba(255,255,255,.3); margin-bottom: 9px;
-}
-.p-plat-pills { display: flex; flex-wrap: wrap; gap: 5px; }
-.p-plat-pill {
-  display: inline-flex; align-items: center; gap: 4px;
-  border-radius: 6px; padding: 4px 10px;
-  font-size: 11px; font-weight: 700; white-space: nowrap;
-}
-.p-plat-pill.locked { opacity: .28; }
-/* Features */
-.p-features { list-style: none; display: grid; gap: 9px; margin-bottom: 20px; }
-.p-features li {
-  display: flex; align-items: flex-start; gap: 8px;
-  font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.5;
-}
-.p-features li .fi { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-.p-guarantee {
-  border-radius: 9px; padding: 8px 12px;
-  font-size: 11px; font-weight: 600; margin-bottom: 14px;
-}
-.btn-plan {
-  display: block; width: 100%; text-align: center;
-  padding: 14px; border-radius: 13px;
-  font-size: 15px; font-weight: 800; letter-spacing: -.3px;
-  text-decoration: none; border: none; cursor: pointer;
-  transition: all .2s; font-family: inherit;
-}
-.btn-plan:hover { transform: translateY(-2px); }
-.btn-plan-ghost {
-  display: block; text-align: center; margin-top: 9px;
-  font-size: 12px; color: rgba(255,255,255,.3);
-  text-decoration: none; padding: 6px;
-  transition: color .2s;
-}
-.btn-plan-ghost:hover { color: rgba(255,255,255,.6); }
-
-/* ═══ FAQ ═══ */
-.faq-list { max-width: 740px; margin: 0 auto; display: grid; gap: 10px; }
-.faq {
-  background: var(--panel); border: 1px solid var(--edge);
-  border-radius: 14px; overflow: hidden;
-}
-.faq-q {
-  width: 100%; background: none; border: none; color: #fff;
-  padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;
-  cursor: pointer; font-family: inherit; font-size: 14.5px; font-weight: 700;
-  letter-spacing: -.3px; text-align: left; line-height: 1.4;
-  transition: color .2s;
-}
-.faq-q:hover { color: var(--glow2); }
-.faq-icon {
-  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; margin-left: 16px;
-  background: rgba(56,189,248,.1); color: var(--glow);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 300;
-  transition: transform .35s cubic-bezier(.23,1,.32,1), background .2s;
-}
-.faq.open .faq-icon { transform: rotate(45deg); background: rgba(56,189,248,.22); }
-.faq-a {
-  max-height: 0; overflow: hidden;
-  transition: max-height .4s cubic-bezier(.23,1,.32,1), padding .3s;
-  font-size: 14px; color: rgba(255,255,255,.5); line-height: 1.8; padding: 0 24px;
-}
-.faq.open .faq-a { max-height: 500px; padding: 0 24px 20px; }
-
-/* ═══ CTA SECTION ═══ */
-.cta-wrap {
-  position: relative; overflow: hidden;
-  background: var(--panel); border-top: 1px solid var(--edge);
-  padding: 140px 48px; text-align: center;
-}
-.cta-bg-3d {
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 70% 60% at 30% 50%, rgba(56,189,248,.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 60%, rgba(109,40,217,.08) 0%, transparent 50%);
-}
-.cta-wrap h2 {
-  font-size: clamp(36px, 5.5vw, 68px); font-weight: 900;
-  letter-spacing: -2.5px; line-height: 1.0;
-  margin-bottom: 22px; position: relative;
-}
-.cta-wrap p {
-  font-size: 17px; color: var(--silver); max-width: 460px;
-  margin: 0 auto 38px; line-height: 1.7; position: relative;
-}
-.cta-guarantee {
-  margin-top: 26px; display: flex; align-items: center; justify-content: center;
-  gap: 8px; font-size: 12.5px; color: var(--dim); font-weight: 500;
-}
-.cta-guarantee span { color: var(--jade); }
-
-/* ═══ SOCIAL LINKS ═══ */
-.social-bar {
-  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-  margin-top: 36px; position: relative;
-}
-.social-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 100px;
-  background: var(--lift); border: 1px solid var(--edge);
-  font-size: 13px; font-weight: 600; color: rgba(255,255,255,.6);
-  text-decoration: none; transition: all .22s;
-}
-.social-pill:hover {
-  background: rgba(56,189,248,.12);
-  border-color: rgba(56,189,248,.35);
-  color: #fff; transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(56,189,248,.2);
-}
-.social-pill-icon { font-size: 16px; }
-
-/* ═══ FOOTER ═══ */
-footer {
-  background: var(--deep); border-top: 1px solid var(--edge);
-  padding: 40px 48px;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
-}
-.footer-left { display: flex; align-items: center; gap: 14px; }
-.footer-logo-mark {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: linear-gradient(135deg, #38bdf8, #0d1b3e);
-  border: 1px solid rgba(56,189,248,.3);
-  display: flex; align-items: center; justify-content: center; font-size: 16px;
-}
-.footer-brand { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.45); }
-.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-.footer-links a {
-  font-size: 12.5px; color: var(--dim); text-decoration: none; transition: color .2s;
-}
-.footer-links a:hover { color: rgba(255,255,255,.6); }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,.18); }
-
-/* ═══ ANIMATIONS ═══ */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity .65s ease, transform .65s cubic-bezier(.23,1,.32,1);
-}
-.reveal.in { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: .1s; } .d2 { transition-delay: .18s; }
-.d3 { transition-delay: .26s; } .d4 { transition-delay: .34s; }
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 900px) {
-  section { padding: 80px 24px; }
-  nav { padding: 0 24px; }
-  .nav-links { display: none; }
-  .ps-grid, .features-grid, .t-grid, .stories-grid, .pricing-grid { grid-template-columns: 1fr; }
-  .timeline-line { display: none; }
-  .tl-step { grid-template-columns: 1fr; gap: 20px; }
-  .tl-step:nth-child(even) .tl-content,
-  .tl-step:nth-child(even) .tl-visual { order: unset; text-align: left; }
-  .tl-node { display: none; }
-  .proof { gap: 0; }
-  footer { flex-direction: column; align-items: flex-start; }
-  .fc-left, .fc-right, .fc-top { display: none; }
-  h1.hero-h1 { letter-spacing: -2px; }
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .mockup-body{grid-template-columns:1fr;min-height:auto;}
+  .mockup-sidebar{display:none;}
+  .steps-grid{grid-template-columns:1fr;}
+  .features-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
+  .proof-inner{gap:20px;}
+  .proof-stat{min-width:80px;}
+  .hero{padding:48px 20px 32px;}
+  .bottom-cta{margin:0 12px 60px;padding:36px 20px;}
+  footer{flex-direction:column;align-items:flex-start;}
+  .section{padding-bottom:56px;}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-ghost{width:100%;max-width:320px;justify-content:center;}
+  .mockup-wrap{margin-bottom:48px;}
+  .plan-card.featured::before{display:none;}
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="curR"></div>
-
-<!-- ═══ NAV ═══ -->
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">
-    <img src="/logo.png" alt="Social Ninja's" style="height:64px;width:auto;object-fit:contain;margin-right:-2px;"/>
-    <div style="display:flex;flex-direction:column;">
-      <span class="nav-name" style="line-height:1">Social<em style="color:var(--glow)">Ninja's</em>.</span>
-      <span style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.2em;color:var(--glow);align-self:flex-end;line-height:1;margin-top:-2px">AI Agency</span>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-badge">🥷</div>
+      <div>
+        <div class="nav-name">Social<em>Ninja's</em>.</div>
+        <div class="nav-tagline">AI Content Studio</div>
+      </div>
     </div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="#results" class="btn-nav-ghost">See Results</a>
-    <a href="#pricing" class="btn-nav-primary">Start Free →</a>
+    <button class="nav-cta" onclick="goToApp('trial')">Try Free →</button>
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-vignette"></div>
-
-  <!-- Floating 3D decoration cards -->
-  <div class="float-card fc-left">
-    <div class="fc-stat" style="color:#2dd4bf">40K</div>
-    <div class="fc-label">Reel views · Week 6</div>
-    <div class="fc-bar" style="background:linear-gradient(90deg,#38bdf8,#2dd4bf)"></div>
-  </div>
-  <div class="float-card fc-right">
-    <div class="fc-stat" style="color:#6ee7b7">₹4.2L</div>
-    <div class="fc-label">Organic revenue</div>
-    <div class="fc-bar" style="background:linear-gradient(90deg,#059669,#6ee7b7)"></div>
-  </div>
-  <div class="float-card fc-top" style="font-size:13px;color:rgba(255,255,255,.5)">
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px">Week 3 · Instagram</div>
-    <div style="display:flex;gap:5px;flex-wrap:wrap">
-      <span style="background:rgba(56,189,248,.15);color:#2dd4bf;border-radius:5px;padding:2px 8px;font-size:10px">Reel</span>
-      <span style="background:rgba(56,189,248,.15);color:#2dd4bf;border-radius:5px;padding:2px 8px;font-size:10px">Carousel</span>
-      <span style="background:rgba(56,189,248,.15);color:#2dd4bf;border-radius:5px;padding:2px 8px;font-size:10px">Post</span>
-    </div>
-    <div style="margin-top:8px;font-size:11px">✓ 3 posts ready to publish</div>
-  </div>
-
-  <div class="hero-content">
-    <div class="badge">
-      <span class="badge-dot" style="position:relative">⚡</span>
-      AI Content Studio — Live Trend Research
-    </div>
-
-    <h1 class="hero-h1">
-      <span class="h1-line1">Your content.</span>
-      <span class="h1-line2">Unstoppable.</span>
-    </h1>
-
-    <p class="hero-sub">
-      AI that <strong>researches what's actually trending</strong> on your platform right now — then writes every caption, Reel script, carousel deck, and hashtag set. Platform-native. Never repeated. Ready in 60 seconds.
-    </p>
-
-    <div class="hero-ctas">
-      <button class="btn-hero btn-hero-primary" onclick="goToApp('trial')" style="border:none;cursor:pointer">
-        ⚡ Try 3 Posts Free <span class="btn-arrow">→</span>
-      </button>
-      <a href="#how" class="btn-hero btn-hero-ghost">
-        See How It Works
-      </a>
-    </div>
-
-    <div class="hero-trust">
-      <div class="trust-item"><span class="trust-check">✓</span> Live trend research every session</div>
-      <div class="trust-item"><span class="trust-check">✓</span> Never repeats content</div>
-      <div class="trust-item"><span class="trust-check">✓</span> Word-for-word Reel scripts</div>
-      <div class="trust-item"><span class="trust-check">✓</span> Cancel anytime</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PROOF BAR ═══ -->
-<div class="proof">
-  <div class="proof-item">
-    <span class="proof-n" id="pn1">150+</span>
-    <div class="proof-l">Brands Growing</div>
-  </div>
-  <div class="proof-item">
-    <span class="proof-n">2.4M+</span>
-    <div class="proof-l">Posts Generated</div>
-  </div>
-  <div class="proof-item">
-    <span class="proof-n">9</span>
-    <div class="proof-l">Platforms Supported</div>
-  </div>
-  <div class="proof-item">
-    <span class="proof-n">60s</span>
-    <div class="proof-l">To Generate a Week of Content</div>
-  </div>
-  <div class="proof-item">
-    <span class="proof-n">4.9★</span>
-    <div class="proof-l">Average Client Rating</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⚡ AI-Powered · Live Research · Zero Guesswork</div>
+  <h1>Your brand.<br>Every platform.<br><span class="g">On autopilot.</span></h1>
+  <p class="hero-sub">Stop spending hours writing captions. AI researches what's trending right now for your niche — then writes every caption, script, carousel and hashtag set. You just copy, paste, post.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="goToApp('trial')">⚡ Try 3 Posts Free — No Card</button>
+    <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">See Plans →</button>
   </div>
 </div>
 
-<!-- ═══ PROBLEM / SOLUTION ═══ -->
-<section style="background:var(--panel)">
-  <div class="container">
-    <div class="section-header centered reveal">
-      <span class="s-tag">The Problem</span>
-      <h2 class="s-title">Hours in. Nothing out.</h2>
-      <p class="s-sub">You're not bad at content. You're just doing it the old way.</p>
-    </div>
-    <div class="ps-grid" style="margin-top:52px">
-      <div class="ps-card ps-before reveal">
-        <div class="ps-head">😩 The Old Way</div>
-        <ul class="ps-list">
-          <li>3+ hours staring at a blank screen every week</li>
-          <li>Post something generic, get 40 likes, feel demotivated</li>
-          <li>No idea what's trending — using last month's formats</li>
-          <li>Copy competitors' style, get ignored for being unoriginal</li>
-          <li>Freelancer charges ₹18,000/month for 8 boring posts</li>
-          <li>Inconsistent posting — algorithm punishes your account</li>
-          <li>Captions don't convert because they're not platform-native</li>
-        </ul>
-      </div>
-      <div class="ps-card ps-after reveal d1">
-        <div class="ps-head">🥷 With Social Ninja's</div>
-        <ul class="ps-list">
-          <li>Full week of content generated in under 60 seconds</li>
-          <li>AI searches live trends in YOUR niche before writing a word</li>
-          <li>Every post is platform-native — not copy-pasted between apps</li>
-          <li>Permanent memory — AI tracks every post, never repeats</li>
-          <li>Video-first strategy — Reels scripts, word-for-word</li>
-          <li>Post consistently, build momentum, dominate the algorithm</li>
-          <li>Costs less than one freelance post per month</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ HOW IT WORKS ═══ -->
-<section id="how">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:70px">
-      <span class="s-tag">How It Works</span>
-      <h2 class="s-title">Four steps to content<br>that converts</h2>
-    </div>
-    <div class="timeline">
-      <div class="timeline-line"></div>
-
-      <div class="tl-step reveal">
-        <div class="tl-node">01</div>
-        <div class="tl-content">
-          <div class="tl-num">Step 01</div>
-          <div class="tl-title">Tell us about your brand</div>
-          <p class="tl-desc">Audience, niche, brand voice, platforms. Takes 3 minutes. The more detail you give, the more the AI writes like you — not like everyone else.</p>
+<!-- PRODUCT MOCKUP -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px;">
+  <div class="mockup-wrap">
+    <div class="mockup-glow"></div>
+    <div class="mockup-frame">
+      <div class="mockup-bar">
+        <div class="mockup-dots">
+          <span style="background:#ff5f57"></span>
+          <span style="background:#febc2e"></span>
+          <span style="background:#28c840"></span>
         </div>
-        <div class="tl-visual">
-          <div class="tl-visual-inner">
-            <div class="tl-visual-label">Brand Profile</div>
-            <div style="display:grid;gap:7px">
-              <div style="background:rgba(255,255,255,.05);border-radius:7px;padding:8px 10px;font-size:11px;color:rgba(255,255,255,.5)">Brand: <span style="color:#fff">D2C Skincare · Mumbai</span></div>
-              <div style="background:rgba(255,255,255,.05);border-radius:7px;padding:8px 10px;font-size:11px;color:rgba(255,255,255,.5)">Audience: <span style="color:#fff">Women 25–38, skincare-conscious</span></div>
-              <div style="background:rgba(255,255,255,.05);border-radius:7px;padding:8px 10px;font-size:11px;color:rgba(255,255,255,.5)">Voice: <span style="color:#fff">Expert but warm, science-led</span></div>
-              <div style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);border-radius:7px;padding:8px 10px;font-size:11px;color:#2dd4bf">Platforms: Instagram · LinkedIn</div>
+        <div class="mockup-url">socialninjas.in/app · AI Content Studio · Generating posts...</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="mockup-sb-brand">
+            <div class="mockup-sb-dot">🏋</div>
+            <div>
+              <div class="mockup-sb-name">FitLife Studio</div>
+              <div class="mockup-sb-plan">Growth Plan</div>
             </div>
           </div>
+          <div class="mockup-sb-item active">📊 Dashboard</div>
+          <div class="mockup-sb-item">📝 Generate</div>
+          <div class="mockup-sb-item">📅 History</div>
+          <div class="mockup-sb-item">⚙️ Profile</div>
         </div>
-      </div>
-
-      <div class="tl-step reveal d1">
-        <div class="tl-node">02</div>
-        <div class="tl-visual">
-          <div class="tl-visual-inner">
-            <div class="tl-visual-label">Live Trend Search</div>
-            <div style="display:grid;gap:6px">
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.5)">
-                <span style="background:#dc2626;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;color:#fff">HOT</span>
-                Peptide skin barrier content
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.5)">
-                <span style="background:#d97706;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;color:#fff">↑</span>
-                Glass skin transformation Reels
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.5)">
-                <span style="background:#059669;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;color:#fff">NEW</span>
-                AM/PM skincare routine carousels
-              </div>
+        <div class="mockup-main">
+          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:4px;">
+            ✦ Researching trends · Writing 3 posts · 4 platforms...
+          </div>
+          <div class="mockup-post">
+            <div class="mockup-post-head">
+              <span class="mockup-post-num">POST 01 · INSTAGRAM REEL</span>
+              <span class="mockup-post-tag">🔥 Trending</span>
+            </div>
+            <div class="mockup-post-line w90"></div>
+            <div class="mockup-post-line w80"></div>
+            <div class="mockup-post-line w60"></div>
+            <div class="mockup-tabs">
+              <span class="mockup-tab active">Caption</span>
+              <span class="mockup-tab">Script</span>
+              <span class="mockup-tab">Slides</span>
+              <span class="mockup-tab">Checklist</span>
             </div>
           </div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-num">Step 02</div>
-          <div class="tl-title">AI searches live trends</div>
-          <p class="tl-desc">Before writing a single word, the AI searches the live web for what's actually trending in your niche THIS week. Not templates. Not last month. Now.</p>
-        </div>
-      </div>
-
-      <div class="tl-step reveal d2">
-        <div class="tl-node">03</div>
-        <div class="tl-content">
-          <div class="tl-num">Step 03</div>
-          <div class="tl-title">Platform-native content generated</div>
-          <p class="tl-desc">Reel scripts with camera directions, LinkedIn thought-pieces, Twitter threads, full carousel decks — each one written for how that platform actually works.</p>
-        </div>
-        <div class="tl-visual">
-          <div class="tl-visual-inner">
-            <div class="tl-visual-label">Reel Script — Instagram</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.8">
-              <span style="color:#2dd4bf">[HOOK — 0-3s]</span> "Most skincare brands lie about this—"<br>
-              <span style="color:#2dd4bf">[B-ROLL]</span> Close-up of product texture...<br>
-              <span style="color:#2dd4bf">[CTA]</span> "Save this for your morning routine"
+          <div class="mockup-post">
+            <div class="mockup-post-head">
+              <span class="mockup-post-num">POST 02 · LINKEDIN</span>
+              <span class="mockup-post-tag">📈 Rising</span>
+            </div>
+            <div class="mockup-post-line w80"></div>
+            <div class="mockup-post-line w90"></div>
+            <div class="mockup-post-line w60"></div>
+          </div>
+          <div class="mockup-post" style="opacity:.5;">
+            <div class="mockup-typing">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <span>Writing Post 03 · YouTube Short...</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="tl-step reveal d3">
-        <div class="tl-node">04</div>
-        <div class="tl-visual">
-          <div class="tl-visual-inner">
-            <div class="tl-visual-label">Ready to Post</div>
-            <div style="display:grid;gap:5px">
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="color:#6ee7b7">✓</span><span style="color:rgba(255,255,255,.5)">Caption — 118 words</span></div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="color:#6ee7b7">✓</span><span style="color:rgba(255,255,255,.5)">Script — 45 sec Reel</span></div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="color:#6ee7b7">✓</span><span style="color:rgba(255,255,255,.5)">10 hashtags researched</span></div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="color:#6ee7b7">✓</span><span style="color:rgba(255,255,255,.5)">Best time: Tuesday 6pm</span></div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:11px"><span style="color:#6ee7b7">✓</span><span style="color:rgba(255,255,255,.5)">5-step posting checklist</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-num">Step 04</div>
-          <div class="tl-title">Copy, paste, post. Done.</div>
-          <p class="tl-desc">Caption, hashtags, script, posting checklist, best time — everything is ready. First-30-minute engagement tip included. You just hit post.</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══ FEATURES ═══ -->
-<section id="features" style="background:var(--panel)">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:60px">
-      <span class="s-tag">What You Get</span>
-      <h2 class="s-title">Not just captions.<br>A full content engine.</h2>
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-inner">
+    <div class="proof-stat"><div class="proof-num">7 Platforms</div><div class="proof-lbl">Supported</div></div>
+    <div class="proof-stat"><div class="proof-num">4 Content Types</div><div class="proof-lbl">Per Post</div></div>
+    <div class="proof-stat"><div class="proof-num">Live Research</div><div class="proof-lbl">Every Generate</div></div>
+    <div class="proof-stat"><div class="proof-num">₹267/post</div><div class="proof-lbl">Starter Plan</div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <div class="section-h2">Three steps.<br>That's it.</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Tell it about your brand</div>
+      <div class="step-desc">Enter your niche, audience, tone and goals. One-time setup — the AI remembers your brand voice forever.</div>
     </div>
-    <div class="features-grid">
-      <div class="feat-card reveal">
-        <div class="feat-glow" style="background:#38bdf8"></div>
-        <div class="feat-icon-wrap" style="background:rgba(56,189,248,.15)">🔍</div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">AI researches & writes</div>
+      <div class="step-desc">Live trend research runs on your niche right now. Every post is written fresh — never templated, never repeated.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">Copy, paste, post</div>
+      <div class="step-desc">Caption, script, carousel slides, hashtags and a step-by-step posting checklist — all ready in under 60 seconds.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="section">
+  <div class="section-label">What You Get</div>
+  <div class="section-h2">Everything you need.<br>Nothing you don't.</div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🔍</div>
+      <div>
         <div class="feat-title">Live Trend Research</div>
-        <p class="feat-desc">Searches the live web before every generation. Your content rides current momentum — not last week's formats.</p>
-        <span class="feat-chip" style="background:rgba(56,189,248,.1);color:#2dd4bf">Real-Time Web Search</span>
-      </div>
-      <div class="feat-card reveal d1">
-        <div class="feat-glow" style="background:#dc2626"></div>
-        <div class="feat-icon-wrap" style="background:rgba(220,38,38,.12)">🎬</div>
-        <div class="feat-title">Word-for-Word Video Scripts</div>
-        <p class="feat-desc">Complete Reel and YouTube scripts with [camera directions], text overlays, b-roll notes. Film-ready — no editing needed.</p>
-        <span class="feat-chip" style="background:rgba(220,38,38,.1);color:#fca5a5">Video-First Strategy</span>
-      </div>
-      <div class="feat-card reveal d2">
-        <div class="feat-glow" style="background:#6d28d9"></div>
-        <div class="feat-icon-wrap" style="background:rgba(109,40,217,.15)">🎠</div>
-        <div class="feat-title">Complete Carousel Decks</div>
-        <p class="feat-desc">All 8 slides written — heading, body copy, design note. Slide 1 through CTA. Take straight to Canva.</p>
-        <span class="feat-chip" style="background:rgba(109,40,217,.12);color:#c4b5fd">All Slides Written</span>
-      </div>
-      <div class="feat-card reveal">
-        <div class="feat-glow" style="background:#059669"></div>
-        <div class="feat-icon-wrap" style="background:rgba(5,150,105,.12)">🧵</div>
-        <div class="feat-title">Twitter/X Thread Writer</div>
-        <p class="feat-desc">Full thread — hook tweet, body, CTA — with per-tweet character count. One click, ready to schedule.</p>
-        <span class="feat-chip" style="background:rgba(5,150,105,.1);color:#6ee7b7">Thread Format</span>
-      </div>
-      <div class="feat-card reveal d1">
-        <div class="feat-glow" style="background:#d97706"></div>
-        <div class="feat-icon-wrap" style="background:rgba(217,119,6,.12)">📊</div>
-        <div class="feat-title">Client Growth Dashboard</div>
-        <p class="feat-desc">Visual analytics, growth phase tracking, and personalised weekly AI tips — a consultant built into every account.</p>
-        <span class="feat-chip" style="background:rgba(217,119,6,.1);color:#fbbf24">Weekly AI Analysis</span>
-      </div>
-      <div class="feat-card reveal d2">
-        <div class="feat-glow" style="background:#38bdf8"></div>
-        <div class="feat-icon-wrap" style="background:rgba(56,189,248,.12)">♻️</div>
-        <div class="feat-title">Permanent Content Memory</div>
-        <p class="feat-desc">Tracks every post ever generated. The AI will never repeat a topic, angle, or hook. Guaranteed forever.</p>
-        <span class="feat-chip" style="background:rgba(56,189,248,.1);color:#2dd4bf">Never Repeats</span>
+        <div class="feat-desc">Real-time web research on your niche every time you generate. Posts are always relevant, never stale.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══ PLATFORMS ═══ -->
-<section class="plat-section" id="platforms">
-  <div class="container centered reveal" style="margin-bottom:50px">
-    <span class="s-tag">Platform Intelligence</span>
-    <h2 class="s-title">Native content for<br>every platform you use</h2>
-    <p class="s-sub">Each platform has its own rules. We write like a native — not like someone who copy-pastes between apps.</p>
-  </div>
-  <div class="platforms-wrap">
-    <div class="platforms-track" id="track1">
-      <div class="plat-pill"><span class="plat-pill-icon">📸</span> Instagram <span class="plat-pill-stat">Reels + Carousels</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">▶️</span> YouTube <span class="plat-pill-stat">Scripts + SEO</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">💼</span> LinkedIn <span class="plat-pill-stat">Thought Leadership</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">👤</span> Facebook <span class="plat-pill-stat">Story + Video</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">𝕏</span> Twitter/X <span class="plat-pill-stat">Threads + Hooks</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">🧵</span> Threads <span class="plat-pill-stat">Conversational</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">📌</span> Pinterest <span class="plat-pill-stat">SEO Pins</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">👻</span> Snapchat <span class="plat-pill-stat">Raw Spotlight</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">🎵</span> TikTok <span class="plat-pill-stat">Trend Riding</span></div>
-      <!-- duplicate for seamless loop -->
-      <div class="plat-pill"><span class="plat-pill-icon">📸</span> Instagram <span class="plat-pill-stat">Reels + Carousels</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">▶️</span> YouTube <span class="plat-pill-stat">Scripts + SEO</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">💼</span> LinkedIn <span class="plat-pill-stat">Thought Leadership</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">👤</span> Facebook <span class="plat-pill-stat">Story + Video</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">𝕏</span> Twitter/X <span class="plat-pill-stat">Threads + Hooks</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">🧵</span> Threads <span class="plat-pill-stat">Conversational</span></div>
-    </div>
-    <div class="platforms-track platforms-track-rev" style="margin-top:12px" id="track2">
-      <div class="plat-pill"><span class="plat-pill-icon">🎵</span> TikTok <span class="plat-pill-stat">Viral Sounds</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">📌</span> Pinterest <span class="plat-pill-stat">Evergreen SEO</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">👻</span> Snapchat <span class="plat-pill-stat">Gen Z Reach</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">💼</span> LinkedIn <span class="plat-pill-stat">B2B Leads</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">📸</span> Instagram <span class="plat-pill-stat">3× More Reach</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">▶️</span> YouTube <span class="plat-pill-stat">Shorts + Long</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">𝕏</span> Twitter/X <span class="plat-pill-stat">Authority Threads</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">🧵</span> Threads <span class="plat-pill-stat">Organic Growth</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">🎵</span> TikTok <span class="plat-pill-stat">Viral Sounds</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">📌</span> Pinterest <span class="plat-pill-stat">Evergreen SEO</span></div>
-      <div class="plat-pill"><span class="plat-pill-icon">👻</span> Snapchat <span class="plat-pill-stat">Gen Z Reach</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ TESTIMONIALS ═══ -->
-<section id="results">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:60px">
-      <span class="s-tag">Client Results</span>
-      <h2 class="s-title">Real brands.<br>Real numbers.</h2>
-    </div>
-    <div class="t-grid">
-      <div class="t-card featured reveal">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"We went from 200 average views to <em>40,000 per Reel in 6 weeks.</em> The scripts are insane — told me exactly what to say and when to look at the camera. Instagram DMs for coaching tripled."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4);color:#2dd4bf">RK</div>
-          <div>
-            <div class="t-name">Rohan K.</div>
-            <div class="t-role">Online Fitness Coach, Mumbai</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#6ee7b7">3×</div>
-            <div class="t-met-l">DM Leads</div>
-          </div>
-        </div>
-      </div>
-      <div class="t-card reveal d1">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"Paid a freelancer ₹18,000 for 8 generic posts. Social Ninja's costs less, delivers more, and <em>actually sounds like me.</em> First time I feel like my content has a strategy."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(109,40,217,.15);border-color:rgba(109,40,217,.4);color:#c4b5fd">PS</div>
-          <div>
-            <div class="t-name">Priya S.</div>
-            <div class="t-role">D2C Skincare Brand, Bangalore</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#2dd4bf">2.5×</div>
-            <div class="t-met-l">Reach</div>
-          </div>
-        </div>
-      </div>
-      <div class="t-card reveal d2">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"<em>3 inbound B2B leads in the first 2 weeks</em> just from LinkedIn posts. No ads, no cold outreach. My profile views are up 400%."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(5,150,105,.12);border-color:rgba(5,150,105,.35);color:#6ee7b7">AM</div>
-          <div>
-            <div class="t-name">Arjun M.</div>
-            <div class="t-role">SaaS Founder, Pune</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#fbbf24">400%</div>
-            <div class="t-met-l">Profile Views</div>
-          </div>
-        </div>
-      </div>
-      <div class="t-card reveal">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"YouTube Shorts went from 500 to <em>18,000 average views in 6 weeks.</em> Scripts have a hook that actually works. Used to spend 3 hours per script — now 2 minutes."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(220,38,38,.12);border-color:rgba(220,38,38,.35);color:#fca5a5">NV</div>
-          <div>
-            <div class="t-name">Nisha V.</div>
-            <div class="t-role">EdTech YouTube, Delhi</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#fca5a5">36×</div>
-            <div class="t-met-l">Views</div>
-          </div>
-        </div>
-      </div>
-      <div class="t-card reveal d1">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"I run 4 client accounts solo. Now I generate all 4 in one session. <em>Took on 2 new clients because I have the capacity.</em> This is my unfair advantage."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.35);color:#fbbf24">SR</div>
-          <div>
-            <div class="t-name">Sahil R.</div>
-            <div class="t-role">Solo Social Media Manager</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#fbbf24">+2</div>
-            <div class="t-met-l">New Clients</div>
-          </div>
-        </div>
-      </div>
-      <div class="t-card reveal d2">
-        <div class="t-quote-mark">"</div>
-        <div class="t-stars">★★★★★</div>
-        <p class="t-quote">"The weekly tips told me <em>exactly why my reach was dropping</em> and what to change. Follower growth doubled the next week. Nothing else gives you this."</p>
-        <div class="t-author">
-          <div class="t-av" style="background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.35);color:#2dd4bf">KJ</div>
-          <div>
-            <div class="t-name">Kavya J.</div>
-            <div class="t-role">Real Estate Agency, Hyderabad</div>
-          </div>
-          <div class="t-metric">
-            <div class="t-met-n" style="color:#2dd4bf">2×</div>
-            <div class="t-met-l">Followers/mo</div>
-          </div>
-        </div>
+    <div class="feat-card">
+      <div class="feat-icon">📝</div>
+      <div>
+        <div class="feat-title">Platform-Native Captions</div>
+        <div class="feat-desc">Instagram hooks, LinkedIn thought-leadership, YouTube descriptions — written in each platform's native language.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══ SUCCESS STORIES ═══ -->
-<section style="background:var(--panel)">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:60px">
-      <span class="s-tag">Case Studies</span>
-      <h2 class="s-title">Before. After.<br>The numbers don't lie.</h2>
-    </div>
-    <div class="stories-grid">
-      <div class="story reveal" style="--ac:#38bdf8">
-        <div class="story::after" style="background:var(--glow)"></div>
-        <div class="story-niche-tag" style="background:rgba(56,189,248,.1);color:#2dd4bf">Fitness · Instagram</div>
-        <div class="story-title">From invisible to 40K views in 6 weeks</div>
-        <div class="story-ba">
-          <div class="ba-box ba-before"><div class="ba-lbl">Before</div><div class="ba-val">200</div><div class="ba-sub">avg Reel views</div></div>
-          <div class="ba-arrow">→</div>
-          <div class="ba-box ba-after"><div class="ba-lbl">After</div><div class="ba-val">40K</div><div class="ba-sub">avg Reel views</div></div>
-        </div>
-        <p class="story-desc">Online fitness coach posted 3 AI-scripted Reels/week. Hit 40K average views within 6 weeks. Instagram coaching DMs increased 300%.</p>
-        <div class="story-meta">⏱ 6 weeks · Growth Plan · Instagram</div>
-      </div>
-      <div class="story reveal d1">
-        <div class="story-niche-tag" style="background:rgba(5,150,105,.1);color:#6ee7b7">D2C Brand · Multi-Platform</div>
-        <div class="story-title">₹4.2L organic revenue — zero ad spend</div>
-        <div class="story-ba">
-          <div class="ba-box ba-before"><div class="ba-lbl">Before</div><div class="ba-val">₹0</div><div class="ba-sub">organic sales</div></div>
-          <div class="ba-arrow">→</div>
-          <div class="ba-box ba-after"><div class="ba-lbl">After</div><div class="ba-val">₹4.2L</div><div class="ba-sub">in 90 days</div></div>
-        </div>
-        <p class="story-desc">Skincare D2C ran Instagram + LinkedIn content simultaneously. All organic. Carousel posts drove 68% of conversions.</p>
-        <div class="story-meta">⏱ 90 days · Growth Plan · Instagram + LinkedIn</div>
-      </div>
-      <div class="story reveal">
-        <div class="story-niche-tag" style="background:rgba(109,40,217,.1);color:#c4b5fd">SaaS · LinkedIn</div>
-        <div class="story-title">3 enterprise clients from organic posts only</div>
-        <div class="story-ba">
-          <div class="ba-box ba-before"><div class="ba-lbl">Before</div><div class="ba-val">0</div><div class="ba-sub">inbound leads</div></div>
-          <div class="ba-arrow">→</div>
-          <div class="ba-box ba-after"><div class="ba-lbl">After</div><div class="ba-val">3</div><div class="ba-sub">enterprise deals</div></div>
-        </div>
-        <p class="story-desc">SaaS founder went from zero LinkedIn to 3 enterprise clients in 2 months. Each post averaged 12,000 impressions.</p>
-        <div class="story-meta">⏱ 8 weeks · Starter Plan · LinkedIn</div>
-      </div>
-      <div class="story reveal d1">
-        <div class="story-niche-tag" style="background:rgba(220,38,38,.1);color:#fca5a5">EdTech · YouTube</div>
-        <div class="story-title">0 to 12K subscribers with AI Shorts scripts</div>
-        <div class="story-ba">
-          <div class="ba-box ba-before"><div class="ba-lbl">Before</div><div class="ba-val">0</div><div class="ba-sub">subscribers</div></div>
-          <div class="ba-arrow">→</div>
-          <div class="ba-box ba-after"><div class="ba-lbl">After</div><div class="ba-val">12K</div><div class="ba-sub">subscribers</div></div>
-        </div>
-        <p class="story-desc">EdTech channel reached 12K subscribers in 4 months using AI Shorts scripts. Now monetising at ₹45K/month.</p>
-        <div class="story-meta">⏱ 4 months · Pro Plan · YouTube</div>
+    <div class="feat-card">
+      <div class="feat-icon">🎬</div>
+      <div>
+        <div class="feat-title">Word-for-Word Scripts</div>
+        <div class="feat-desc">Full Reel and Short scripts with [DIRECTION] notes. Open camera, read, film. No scripting effort required.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══ PRICING ═══ -->
-<section id="pricing">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:60px">
-      <span class="s-tag">Simple Pricing</span>
-      <h2 class="s-title">Less than one freelance post.<br>For an entire month.</h2>
-      <p class="s-sub">No contracts. Cancel anytime. First 3 posts generated free — no card needed.</p>
-    </div>
-    <div class="pricing-grid">
-
-      <!-- Starter -->
-      <div class="p-card reveal">
-        <div class="p-plan-name" style="color:#2dd4bf">Starter</div>
-        <div class="p-tagline">Video-first growth</div>
-        <div class="p-price-row">
-          <span class="p-inr" style="color:#2dd4bf">₹2,999</span>
-          <span class="p-mo">/month</span>
-        </div>
-        <div class="p-orig">₹9,999/month</div>
-        <div class="p-disc" style="background:rgba(56,189,248,.12);color:#2dd4bf">60% OFF — Save ₹6,000</div>
-        <div class="p-perpost">₹267/post — less than a cup of coffee</div>
-
-        <!-- Platforms -->
-        <div class="p-plat-block">
-          <div class="p-plat-label">Choose any 2 platforms</div>
-          <div class="p-plat-pills">
-            <span class="p-plat-pill" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#2dd4bf">📸 Instagram</span>
-            <span class="p-plat-pill" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#2dd4bf">▶️ YouTube</span>
-            <span class="p-plat-pill" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#2dd4bf">💼 LinkedIn</span>
-            <span class="p-plat-pill" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#2dd4bf">👤 Facebook</span>
-            <span class="p-plat-pill locked" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35)">𝕏 Twitter/X</span>
-            <span class="p-plat-pill locked" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35)">🧵 Threads</span>
-          </div>
-        </div>
-
-        <div class="p-div"></div>
-        <ul class="p-features">
-          <li><span class="fi">🎬</span> 15 posts/month, video-first</li>
-          <li><span class="fi">📽</span> Full Reel scripts, word-for-word</li>
-          <li><span class="fi">🔍</span> Live web trend research, every session</li>
-          <li><span class="fi">🏷️</span> 10 viral hashtags per post</li>
-          <li><span class="fi">📊</span> Growth dashboard + content history</li>
-          <li><span class="fi">♻️</span> AI memory — never repeats a post</li>
-        </ul>
-        <div class="p-guarantee" style="background:rgba(5,150,105,.07);border:1px solid rgba(5,150,105,.2);color:#6ee7b7">🛡 First 3 posts free — no card required</div>
-        <button class="btn-plan" onclick="goToApp('trial')"
-          style="background:linear-gradient(135deg,#38bdf8,#1a4fa8);color:#fff;box-shadow:0 6px 24px rgba(56,189,248,.3)">
-          ⚡ Try 3 Posts Free →</button>
-        <button onclick="goToApp('starter')" class="btn-plan-ghost" style="border:none;background:transparent;cursor:pointer;width:100%;">
-          Already decided? Subscribe ₹2,999/mo →</button>
-      </div>
-
-      <!-- Growth -->
-      <div class="p-card featured reveal d1">
-        <div class="p-badge" style="background:linear-gradient(135deg,#6d28d9,#4c1d95)">⭐ BEST VALUE</div>
-        <div class="p-plan-name" style="color:#c4b5fd">Growth</div>
-        <div class="p-tagline">Most popular — 4 platforms</div>
-        <div class="p-price-row">
-          <span class="p-inr" style="color:#c4b5fd">₹5,499</span>
-          <span class="p-mo">/month</span>
-        </div>
-        <div class="p-orig">₹18,000/month</div>
-        <div class="p-disc" style="background:rgba(109,40,217,.15);color:#c4b5fd">64% OFF — Save ₹11,501/mo</div>
-        <div class="p-perpost" style="color:rgba(196,181,253,.55)">₹260/post · saves ₹11,501/mo vs a content team</div>
-
-        <!-- Platforms -->
-        <div class="p-plat-block" style="background:rgba(109,40,217,.07);border-color:rgba(109,40,217,.18)">
-          <div class="p-plat-label" style="color:rgba(196,181,253,.5)">Choose any 4 of these 8</div>
-          <div class="p-plat-pills">
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">📸 Instagram</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">▶️ YouTube</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">💼 LinkedIn</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">👤 Facebook</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">𝕏 Twitter/X</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">🧵 Threads</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">📌 Pinterest</span>
-            <span class="p-plat-pill" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.3);color:#c4b5fd">👻 Snapchat</span>
-          </div>
-        </div>
-
-        <div class="p-div" style="background:rgba(109,40,217,.2)"></div>
-        <ul class="p-features">
-          <li><span class="fi">📅</span> 25 posts/month — 6 per week</li>
-          <li><span class="fi">🎬</span> Scripts + carousels + X threads</li>
-          <li><span class="fi">🔍</span> Deep trend research per platform</li>
-          <li><span class="fi">📈</span> Weekly trend report</li>
-          <li><span class="fi">📊</span> Growth dashboard + weekly AI tips</li>
-          <li><span class="fi">⚡</span> Priority 24hr support</li>
-          <li><span class="fi">📞</span> Monthly 30-min strategy call</li>
-        </ul>
-        <div class="p-guarantee" style="background:rgba(5,150,105,.07);border:1px solid rgba(5,150,105,.2);color:#6ee7b7">🛡 First 3 posts free — no card required</div>
-        <button class="btn-plan" onclick="goToApp('trial')"
-          style="background:linear-gradient(135deg,#6d28d9,#4c1d95);color:#fff;box-shadow:0 8px 28px rgba(109,40,217,.35);cursor:pointer;border:none;">
-          ⚡ Try 3 Posts Free →</button>
-        <button onclick="goToApp('growth')" class="btn-plan-ghost" style="border:none;background:transparent;cursor:pointer;width:100%;color:#c4b5fd;">
-          Already decided? Subscribe ₹5,499/mo →</button>
-      </div>
-
-      <!-- Pro -->
-      <div class="p-card reveal d2" style="border-color:rgba(220,38,38,.22)">
-        <div class="p-badge" style="background:linear-gradient(135deg,#dc2626,#991b1b)">AGENCY GRADE</div>
-        <div class="p-plan-name" style="color:#fca5a5">Pro</div>
-        <div class="p-tagline">Unlimited — every platform</div>
-        <div class="p-price-row">
-          <span class="p-inr" style="color:#fca5a5">₹8,999</span>
-          <span class="p-mo">/month</span>
-        </div>
-        <div class="p-orig">₹35,000/month</div>
-        <div class="p-disc" style="background:rgba(220,38,38,.1);color:#fca5a5">66% OFF — Agency output, fraction of cost</div>
-        <div class="p-perpost">Unlimited posts — generate every day</div>
-
-        <!-- Platforms -->
-        <div class="p-plat-block" style="background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.15)">
-          <div class="p-plat-label" style="color:rgba(252,165,165,.4)">All 9 platforms — no limits</div>
-          <div class="p-plat-pills">
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">📸 Instagram</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">▶️ YouTube</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">💼 LinkedIn</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">𝕏 Twitter/X</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">🎵 TikTok</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">🧵 Threads</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">👤 Facebook</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">📌 Pinterest</span>
-            <span class="p-plat-pill" style="background:rgba(252,165,165,.1);border:1px solid rgba(252,165,165,.25);color:#fca5a5">👻 Snapchat</span>
-          </div>
-        </div>
-
-        <div class="p-div"></div>
-        <ul class="p-features">
-          <li><span class="fi">∞</span> Unlimited posts — generate every day</li>
-          <li><span class="fi">🎬</span> Every format — Reels, Shorts, Stories</li>
-          <li><span class="fi">🎠</span> Full carousel decks, all slides written</li>
-          <li><span class="fi">💬</span> WhatsApp priority support</li>
-          <li><span class="fi">📞</span> Bi-weekly strategy call — agency team</li>
-          <li><span class="fi">🔄</span> Cancel anytime, no lock-in</li>
-        </ul>
-        <div class="p-guarantee" style="background:rgba(5,150,105,.07);border:1px solid rgba(5,150,105,.2);color:#6ee7b7">🛡 First 3 posts free — no card required</div>
-        <button class="btn-plan" onclick="goToApp('trial')"
-          style="background:rgba(220,38,38,.15);color:#fca5a5;border:2px solid rgba(220,38,38,.3);cursor:pointer;">
-          ⚡ Try 3 Posts Free →</button>
-        <button onclick="goToApp('pro')" class="btn-plan-ghost" style="border:none;background:transparent;cursor:pointer;width:100%;color:#fca5a5;">
-          Already decided? Subscribe ₹8,999/mo →</button>
+    <div class="feat-card">
+      <div class="feat-icon">🎠</div>
+      <div>
+        <div class="feat-title">Carousel Slide Copy</div>
+        <div class="feat-desc">Every slide's heading, body and CTA — ready to paste into Canva. Includes design notes and colour suggestions.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══ FAQ ═══ -->
-<section id="faq" style="background:var(--panel)">
-  <div class="container">
-    <div class="centered reveal" style="margin-bottom:56px">
-      <span class="s-tag">FAQ</span>
-      <h2 class="s-title">Every question<br>answered.</h2>
+    <div class="feat-card">
+      <div class="feat-icon">#️⃣</div>
+      <div>
+        <div class="feat-title">Hashtag Strategy</div>
+        <div class="feat-desc">Niche-specific mix of broad, mid and micro hashtags. Never generic. Always researched for your exact content.</div>
+      </div>
     </div>
-    <div class="faq-list">
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Do I need content experience? <span class="faq-icon">+</span></button><div class="faq-a">Not at all. Tell us your brand, audience, and what you sell. The AI researches and writes everything. If you can fill out a form, you can use Social Ninja's. Most clients go from sign-up to their first week of content in under 10 minutes.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">What does "live trend research" actually mean? <span class="faq-icon">+</span></button><div class="faq-a">Before writing a word, the AI searches the web to find what's trending this week in your niche on your chosen platform. So if something went viral in your space on Monday, your content generated Tuesday will ride that trend. Most tools use static templates — ours searches live every single session.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Will the content actually sound like my brand? <span class="faq-icon">+</span></button><div class="faq-a">Yes. The AI is trained on your specific voice, audience, niche, and business context. Two brands in the same industry get completely different content. Plus, the system has permanent memory — it tracks every post you've ever generated and will never repeat a topic or angle.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">What's different between the plans? <span class="faq-icon">+</span></button><div class="faq-a">Starter: 15 posts/month across 2 platforms — ideal for testing. Growth: 25 posts across 4 platforms + monthly strategy call — best value for growing brands. Pro: unlimited posts on every platform — for agencies and brands that want to dominate. All plans include live research, scripts, and the growth dashboard.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Which platforms are supported? <span class="faq-icon">+</span></button><div class="faq-a">Instagram, Facebook, YouTube, LinkedIn, Twitter/X, Threads, Pinterest, Snapchat, TikTok. Each platform gets its own native format — Instagram gets Reel scripts, LinkedIn gets thought-leader posts, YouTube gets SEO-optimised titles and scripts, Twitter/X gets full thread structures. We never copy-paste between platforms.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime? <span class="faq-icon">+</span></button><div class="faq-a">Yes. All plans are month-to-month. No contracts, no lock-in. Starter gives you 3 free posts before you pay. Growth has a full 7-day refund. Pro cancels anytime via WhatsApp or email. Zero friction, zero questions.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">How does payment work? <span class="faq-icon">+</span></button><div class="faq-a">Monthly subscription via Razorpay — India's most trusted payment gateway. UPI, cards, net banking, and wallets all accepted. After payment you get instant access to your content studio and client dashboard.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Will this work for my niche? <span class="faq-icon">+</span></button><div class="faq-a">Yes. We've generated content for fitness coaches, real estate agencies, SaaS startups, D2C brands, restaurants, EdTech channels, legal firms, and more. The more specific your niche, the better the AI performs — it searches live for exactly what's working in your space right now.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">What is the client growth dashboard? <span class="faq-icon">+</span></button><div class="faq-a">Every paying client gets a personal dashboard with: total posts generated, weeks active, platform breakdown, content history, growth phase tracking, and personalised weekly AI growth tips. The AI analyses your content pattern and gives specific actionable advice every week — like having a growth consultant built in.</div></div>
-      <div class="faq"><button class="faq-q" onclick="toggleFaq(this)">Is this only for India? <span class="faq-icon">+</span></button><div class="faq-a">No. We serve brands globally — India, UAE, UK, US, Singapore, Australia. Content is written in English and localised for your market. Payment in INR for Indian clients. We currently have active clients in Mumbai, Dubai, London, and Singapore.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FINAL CTA ═══ -->
-<div class="cta-wrap">
-  <div class="cta-bg-3d"></div>
-  <div style="position:relative">
-    <span class="s-tag" style="display:block;text-align:center;margin-bottom:20px">One Last Thing</span>
-    <h2>Your competitors are posting<br><span style="background:linear-gradient(105deg,#2dd4bf,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent">right now.</span></h2>
-    <p>Every day without content is a day they win. Start with 3 free posts — see exactly what AI-researched, platform-native content looks like for YOUR brand before you pay anything.</p>
-    <button class="btn-hero btn-hero-primary" onclick="goToApp('trial')" style="display:inline-flex;border:none;cursor:pointer">⚡ Try 3 Free Posts — No Card Required <span class="btn-arrow">→</span></button>
-    <div class="cta-guarantee">
-      <span>✓</span> No credit card for free posts &nbsp;·&nbsp;
-      <span>✓</span> Cancel anytime &nbsp;·&nbsp;
-      <span>✓</span> 7-day refund on Growth plan
-    </div>
-
-    <!-- Social Links -->
-    <div class="social-bar">
-      <a href="https://www.instagram.com/social.ninjas.in/" target="_blank" class="social-pill">
-        <span class="social-pill-icon">📸</span> Instagram
-      </a>
-      <a href="https://www.instagram.com/nazim_ninja/" target="_blank" class="social-pill">
-        <span class="social-pill-icon">🥷</span> @nazim_ninja
-      </a>
-      <a href="/cdn-cgi/l/email-protection#99f1fcf5f5f6d9eaf6faf0f8f5f7f0f7f3f8eab7f0f7" class="social-pill">
-        <span class="social-pill-icon">✉️</span> Email Us
-      </a>
-      <a href="https://www.youtube.com/@9thGearCars" target="_blank" class="social-pill">
-        <span class="social-pill-icon">▶️</span> YouTube
-      </a>
-      <a href="https://www.linkedin.com/in/nazim-pasha/" target="_blank" class="social-pill">
-        <span class="social-pill-icon">💼</span> LinkedIn
-      </a>
-      <a href="https://threads.net/@nazim_ninja" target="_blank" class="social-pill">
-        <span class="social-pill-icon">🧵</span> Threads
-      </a>
+    <div class="feat-card">
+      <div class="feat-icon">✅</div>
+      <div>
+        <div class="feat-title">Posting Checklist</div>
+        <div class="feat-desc">Optimal posting time, step-by-step instructions and a 30-min engagement tip. Execute perfectly every time.</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- REVIEWS SLIDESHOW -->
+<div class="section">
+  <div class="section-label">What Clients Say</div>
+  <div class="section-h2">Real results.<br>Real brands.</div>
+  <div class="reviews-wrap" id="reviewsWrap">
+    <div class="reviews-track" id="reviewsTrack">
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Paid a freelancer ₹18,000 for 8 generic posts. Social Ninja's costs less, delivers more, and actually sounds like me. First time I feel like my content has a real strategy behind it."</p>
+        <div class="review-author">
+          <div class="review-avatar">P</div>
+          <div>
+            <div class="review-name">Priya Mehta</div>
+            <div class="review-meta">Skincare brand · Mumbai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Went from 2K to 18K followers in 3 months. The scripts are unreal — I literally just read them on camera and the engagement went through the roof. My clients ask how I make such good content."</p>
+        <div class="review-author">
+          <div class="review-avatar">R</div>
+          <div>
+            <div class="review-name">Rahul Sharma</div>
+            <div class="review-meta">Fitness coach · Delhi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"We run 4 platforms and were spending 15 hours a week on content. Now it takes 30 minutes. The carousel copy alone saves us ₹12,000/month on our designer's time."</p>
+        <div class="review-author">
+          <div class="review-avatar">A</div>
+          <div>
+            <div class="review-name">Ananya & Team</div>
+            <div class="review-meta">D2C fashion brand · Bangalore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The live research feature is what sold me. Every week the posts feel fresh because the AI actually looks at what's trending right now, not some template from 6 months ago."</p>
+        <div class="review-author">
+          <div class="review-avatar">K</div>
+          <div>
+            <div class="review-name">Karthik Nair</div>
+            <div class="review-meta">EdTech founder · Chennai</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="review-dots" id="reviewDots"></div>
+</div>
+
+<!-- PRICING -->
+<div class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <div class="section-h2">Start free.<br>Scale when ready.</div>
+  <div class="pricing-grid">
+
+    <div class="plan-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">₹2,999<span>/mo</span></div>
+      <div class="plan-orig">₹9,999/month</div>
+      <ul class="plan-feat">
+        <li><span class="ck">✓</span>15 posts / month</li>
+        <li><span class="ck">✓</span>2 platforms</li>
+        <li><span class="ck">✓</span>Caption + Script + Slides</li>
+        <li><span class="ck">✓</span>Hashtag strategy</li>
+        <li><span class="ck">✓</span>Posting checklist</li>
+      </ul>
+      <button class="plan-btn plan-btn-ghost" onclick="goToApp('starter')">Get Started →</button>
+      <div class="plan-trial" onclick="goToApp('trial')">Try 3 posts free first</div>
+    </div>
+
+    <div class="plan-card featured">
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">₹5,499<span>/mo</span></div>
+      <div class="plan-orig">₹14,999/month</div>
+      <ul class="plan-feat">
+        <li><span class="ck">✓</span>25 posts / month</li>
+        <li><span class="ck">✓</span>4 platforms</li>
+        <li><span class="ck">✓</span>Everything in Starter</li>
+        <li><span class="ck">✓</span>Thread writer</li>
+        <li><span class="ck">✓</span>Monthly strategy call</li>
+      </ul>
+      <button class="plan-btn plan-btn-primary" onclick="goToApp('growth')">Get Started →</button>
+      <div class="plan-trial" onclick="goToApp('trial')">Try 3 posts free first</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">₹8,999<span>/mo</span></div>
+      <div class="plan-orig">₹24,999/month</div>
+      <ul class="plan-feat">
+        <li><span class="ck">✓</span>Unlimited posts</li>
+        <li><span class="ck">✓</span>All 7 platforms</li>
+        <li><span class="ck">✓</span>Everything in Growth</li>
+        <li><span class="ck">✓</span>Priority email support</li>
+        <li><span class="ck">✓</span>Agency multi-brand</li>
+      </ul>
+      <button class="plan-btn plan-btn-ghost" onclick="goToApp('pro')">Get Started →</button>
+      <div class="plan-trial" onclick="goToApp('trial')">Try 3 posts free first</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="section-label">FAQ</div>
+  <div class="section-h2" style="margin-bottom:24px;">Common questions.</div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">What's included in the free trial? <span class="faq-icon">+</span></button>
+    <div class="faq-a">You get 3 fully generated posts — real captions, scripts, carousel slides and hashtags — for your actual brand. No card required, no catch. After 3 posts you'll see the upgrade options.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">Does it really research live trends? <span class="faq-icon">+</span></button>
+    <div class="faq-a">Yes. Every time you generate, the AI runs live web research on your niche before writing. This means your posts reflect what's actually trending right now — not templates from 6 months ago.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">What platforms are supported? <span class="faq-icon">+</span></button>
+    <div class="faq-a">Instagram, YouTube, LinkedIn, Facebook, Twitter/X, Threads and Pinterest. Starter supports 2, Growth supports 4, Pro supports all 7.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">What's different between the plans? <span class="faq-icon">+</span></button>
+    <div class="faq-a">Starter: 15 posts across 2 platforms — ideal for solo founders. Growth: 25 posts across 4 platforms + monthly strategy call — best value for growing brands. Pro: unlimited posts on all platforms + priority support — for agencies and brands that want to dominate.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime? <span class="faq-icon">+</span></button>
+    <div class="faq-a">Yes. All plans are month-to-month. No contracts, no lock-in. Cancel anytime via email at hello@socialninjas.in. Zero friction.</div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div style="max-width:1080px;margin:0 auto;">
+  <div class="bottom-cta">
+    <h2>Ready to stop guessing?</h2>
+    <p>Try 3 posts free. No card. See exactly what your brand's AI content looks like.</p>
+    <button class="btn-primary" onclick="goToApp('trial')" style="font-size:16px;padding:16px 36px;">
+      ⚡ Start Free — 3 Posts, No Card
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-left">
-    <div class="footer-logo-mark">🥷</div>
-    <div class="footer-brand">Social Ninja's · AI Automations Division<br>
-      <span style="font-size:11px;color:rgba(255,255,255,.2)">Bangalore, India · Serving India · UAE · US · UK · SG · AU</span>
+  <div class="footer-brand">
+    <div class="nav-badge" style="width:28px;height:28px;border-radius:8px;font-size:14px;">🥷</div>
+    <div>
+      <div style="font-size:13px;font-weight:700;">Social Ninja's</div>
+      <div style="font-size:10px;color:var(--dim);">AI Automations Division</div>
     </div>
   </div>
   <div class="footer-links">
-    <a href="#how">How It Works</a>
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://wa.me/8147757479" target="_blank">WhatsApp</a>
-    <a href="https://www.instagram.com/social.ninjas.in/" target="_blank">Instagram</a>
-    <a href="https://www.instagram.com/nazim_ninja/" target="_blank">@nazim_ninja</a>
+    <a href="mailto:hello@socialninjas.in">hello@socialninjas.in</a>
+    <a href="https://www.instagram.com/socialninja.s/" target="_blank">@socialninja.s</a>
+    <a href="https://socialninjas.in" target="_blank">socialninjas.in</a>
   </div>
-  <div class="footer-copy">© 2025 Social Ninja's. All rights reserved.</div>
+  <div class="footer-copy">© 2026 Social Ninja's. All rights reserved.</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ═══ CUSTOM CURSOR ═══ */
-const cur = document.getElementById('cur');
-const curR = document.getElementById('curR');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-});
-(function animCursor(){
-  rx += (mx-rx)*.12; ry += (my-ry)*.12;
-  curR.style.left=rx+'px'; curR.style.top=ry+'px';
-  requestAnimationFrame(animCursor);
-})();
-document.querySelectorAll('a,button,.feat-card,.t-card,.p-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ cur.style.width='22px'; cur.style.height='22px'; curR.style.width='60px'; curR.style.height='60px'; });
-  el.addEventListener('mouseleave',()=>{ cur.style.width='14px'; cur.style.height='14px'; curR.style.width='40px'; curR.style.height='40px'; });
-});
-
-/* ═══ THREE.JS HERO PARTICLE FIELD ═══ */
-(function initThree(){
-  const canvas = document.getElementById('hero-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
-  camera.position.z = 6;
-
-  function resize(){
-    const w=canvas.parentElement.clientWidth, h=canvas.parentElement.clientHeight;
-    renderer.setSize(w,h,false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    camera.aspect=w/h; camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Particle field
-  const N = 2200;
-  const pos = new Float32Array(N*3);
-  const col = new Float32Array(N*3);
-  const sizes = new Float32Array(N);
-  for(let i=0;i<N;i++){
-    const r = 12 + Math.random()*8;
-    const theta = Math.random()*Math.PI*2;
-    const phi = Math.acos(2*Math.random()-1);
-    pos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
-    pos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
-    pos[i*3+2] = r*Math.cos(phi);
-    const t = Math.random();
-    if(t < 0.6) { col[i*3]=0.22; col[i*3+1]=0.48; col[i*3+2]=0.83; }
-    else if(t<0.85) { col[i*3]=0.43; col[i*3+1]=0.16; col[i*3+2]=0.85; }
-    else { col[i*3]=0.97; col[i*3+1]=1.0; col[i*3+2]=0.97; }
-    sizes[i] = 0.5 + Math.random()*2.0;
-  }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  geo.setAttribute('color', new THREE.BufferAttribute(col,3));
-  geo.setAttribute('size', new THREE.BufferAttribute(sizes,1));
-
-  const mat = new THREE.PointsMaterial({
-    size: 0.06, vertexColors: true, transparent: true, opacity: 0.65,
-    sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false,
-  });
-  const particles = new THREE.Points(geo, mat);
-  scene.add(particles);
-
-  // Connecting lines (sparse)
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x3a7bd5, transparent: true, opacity: 0.06,
-    blending: THREE.AdditiveBlending, depthWrite: false
-  });
-  const lineGeo = new THREE.BufferGeometry();
-  const lp = [];
-  for(let i=0;i<60;i++){
-    const a = Math.floor(Math.random()*N), b = Math.floor(Math.random()*N);
-    lp.push(pos[a*3],pos[a*3+1],pos[a*3+2], pos[b*3],pos[b*3+1],pos[b*3+2]);
-  }
-  lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lp),3));
-  scene.add(new THREE.LineSegments(lineGeo, lineMat));
-
-  // Mouse parallax
-  let targetX=0, targetY=0, currentX=0, currentY=0;
-  document.addEventListener('mousemove', e=>{
-    targetX = (e.clientX/window.innerWidth - 0.5) * 1.2;
-    targetY = (e.clientY/window.innerHeight - 0.5) * 0.8;
-  });
-
-  let t=0;
-  (function animate(){
-    requestAnimationFrame(animate);
-    t += 0.003;
-    currentX += (targetX-currentX)*0.04;
-    currentY += (targetY-currentY)*0.04;
-    particles.rotation.y = t*0.06 + currentX*0.3;
-    particles.rotation.x = Math.sin(t*0.04)*0.15 + currentY*0.2;
-    particles.rotation.z = Math.sin(t*0.03)*0.05;
-    renderer.render(scene, camera);
-  })();
-})();
-
-/* ═══ SCROLL REVEAL ═══ */
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); }});
-}, {threshold: 0.1});
-reveals.forEach(r=>ro.observe(r));
-
-/* ═══ FAQ ═══ */
-function toggleFaq(btn){
-  const item=btn.closest('.faq');
-  const was=item.classList.contains('open');
-  document.querySelectorAll('.faq.open').forEach(i=>i.classList.remove('open'));
-  if(!was) item.classList.add('open');
-}
-
-/* ═══ 3D CARD TILT ═══ */
-document.querySelectorAll('.feat-card,.p-card,.t-card').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-0.5;
-    const y=(e.clientY-r.top)/r.height-0.5;
-    card.style.transform=`translateY(-6px) rotateX(${-y*10}deg) rotateY(${x*10}deg)`;
-  });
-  card.addEventListener('mouseleave',()=>{
-    card.style.transform='';
-  });
-});
-
-/* ═══ SMOOTH SCROLL ═══ */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
-  });
-});
-</script>
-
-
 <script src="/content-studio.js"></script>
+<script>
+// Reviews slideshow
+(function(){
+  const track = document.getElementById('reviewsTrack');
+  const wrap  = document.getElementById('reviewsWrap');
+  const dotsEl= document.getElementById('reviewDots');
+  const cards = track.querySelectorAll('.review-card');
+  let cur = 0;
+  let timer;
+
+  // Create dots
+  cards.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'review-dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n){
+    cur = n;
+    track.style.transform = `translateX(-${cur * 100}%)`;
+    dotsEl.querySelectorAll('.review-dot').forEach((d,i) => 
+      d.classList.toggle('active', i===cur));
+    clearInterval(timer);
+    timer = setInterval(next, 4500);
+  }
+
+  function next(){ goTo((cur+1) % cards.length); }
+  timer = setInterval(next, 4500);
+
+  // Touch/swipe support
+  let startX = 0;
+  wrap.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 40) diff > 0 ? next() : goTo((cur-1+cards.length)%cards.length);
+  }, {passive:true});
+})();
+
+// FAQ toggle
+function toggleFaq(btn){
+  const a = btn.nextElementSibling;
+  const isOpen = a.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(el=>el.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(el=>el.classList.remove('open'));
+  if(!isOpen){ a.classList.add('open'); btn.classList.add('open'); }
+}
+</script>
+</body>
+</html>

@@ -321,16 +321,7 @@ const MY_PROFILES = {
     niche:"luxury used cars Bangalore, BMW Mercedes Audi pre-owned, Koramangala, premium automobiles",
     businessContext:"9th Gear is a luxury pre-owned car dealership in Koramangala, Bangalore. We sell certified BMW, Mercedes, Audi, Porsche.",
   },
-  nazim:  {
-    id:"nazim", name:"@nazim_ninja", sub:"Instagram", emoji:"👤",
-    color:"#10b981", darkBg:"#010d08", brand:"sn",
-    platforms:["Instagram"],
-    audience:"Global founders, gym-goers, marketers, ambitious 22–35 who want to build",
-    tone:"Authentic hustle. Gym + marketing + luxury cars. Raw always beats polished.",
-    avoid:"No corporate tone. Be real. Show process not just results.",
-    niche:"gym fitness founder life, marketing tips, luxury cars, agency building, personal brand",
-    businessContext:"@nazim_ninja is Nazim's personal brand — blending gym, marketing strategy, luxury cars, and agency life.",
-  },
+
 };
 
 // ─────────────────────────────────────────────────────────────────
@@ -2135,7 +2126,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   const [verifyingOtp,setVerifyingOtp]=useState(false);
   const [otpSessionId, setOtpSessionId] = useState(""); // 2Factor session ID
 
-  const SUPPORT_EMAIL = "nazim@socialninjas.in";
+  const SUPPORT_EMAIL = "hello@socialninjas.in";
   const SUPPORT_INSTAGRAM = "https://www.instagram.com/socialninja.s/";
 
   const submitDetails=async()=>{
@@ -2236,7 +2227,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       {/* Hero */}
       <div style={{textAlign:"center",marginBottom:40}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:12}}>
-          <img src="/logo.png" alt={CONFIG.brandName} style={{height:64,width:"auto",objectFit:"contain"}}/>
+          <div style={{width:44,height:44,borderRadius:12,background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",border:"1px solid #38bdf840",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>🥷</div>
           <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
             <span style={{fontFamily:"Outfit, sans-serif",fontSize:22,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",lineHeight:1}}>Social<em style={{fontStyle:"normal",color:CONFIG.accentColor}}>Ninja's</em>.</span>
             <span style={{fontSize:9,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.2em",color:CONFIG.accentColor,alignSelf:"flex-end",lineHeight:1,marginTop:-2}}>AI Agency</span>
@@ -3367,21 +3358,58 @@ export default function App(){
     a{text-decoration:none;}
     [contenteditable]{outline:none;}
     
-    /* MOBILE RESPONSIVENESS OVERRIDES */
+    /* ── MOBILE FIRST ── */
     @media (max-width: 768px) {
+      /* layout helpers */
       .mobile-col { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
       .mobile-wrap { flex-wrap: wrap !important; }
       .mobile-grid-1 { grid-template-columns: 1fr !important; }
-      .mobile-padding { padding: 16px !important; }
+      .mobile-padding { padding: 14px !important; }
       .mobile-btn { padding: 12px 16px !important; font-size: 13px !important; width: 100% !important; }
       .mobile-text-sm { font-size: 12px !important; }
+      /* prevent horizontal overflow */
+      html,body { overflow-x: hidden !important; max-width: 100vw !important; }
+      /* cards full width */
+      .sn-card { max-width: 100% !important; width: 100% !important; }
+      /* headings scale down */
+      h1 { font-size: clamp(22px, 7vw, 40px) !important; }
+      h2 { font-size: clamp(18px, 5.5vw, 32px) !important; }
+      h3 { font-size: clamp(15px, 4.5vw, 22px) !important; }
+      /* inputs / buttons full width on mobile */
+      input[type=text], input[type=email], input[type=tel], select, textarea {
+        width: 100% !important; min-width: 0 !important;
+      }
+      /* tab bars scroll horizontally */
+      .sn-tabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; 
+                 scrollbar-width: none !important; white-space: nowrap !important; }
+      .sn-tabs::-webkit-scrollbar { display: none !important; }
+      /* plan cards stack */
+      .plans-grid { grid-template-columns: 1fr !important; max-width: 420px !important; margin: 0 auto !important; }
+      /* post cards full width */
+      .post-card { border-radius: 12px !important; }
+      /* fix any fixed widths in forms */
+      .details-row { flex-direction: column !important; gap: 10px !important; }
+      .phone-row { flex-direction: row !important; gap: 8px !important; }
+      /* payment step */
+      .payment-box { padding: 20px 16px !important; }
+      /* workspace sidebar hidden on mobile — only main content */
+      .ws-sidebar { display: none !important; }
+      .ws-main { padding: 14px !important; }
+      /* generation results */
+      .gen-grid { grid-template-columns: 1fr !important; }
+      /* nav */
+      .nav-inner { padding: 0 14px !important; }
+    }
+    @media (max-width: 400px) {
+      h1 { font-size: 20px !important; }
+      .mobile-padding { padding: 12px !important; }
     }
   </style>`;
 
   const NAV=(
     <nav style={{background:"rgba(4,4,12,0.97)",backdropFilter:"blur(24px)",
       borderBottom:"1px solid rgba(255,255,255,0.07)",position:"sticky",top:0,zIndex:50}}>
-      <div style={{maxWidth:1040,margin:"0 auto",padding:"0 20px",height:56,
+      <div className="nav-inner" style={{maxWidth:1040,margin:"0 auto",padding:"0 20px",height:56,
         display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <div style={{width:34,height:34,borderRadius:9,
