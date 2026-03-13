@@ -1,7 +1,14 @@
-// Cross-device trial duplicate check
-// Uses Upstash Redis (free: 10,000 req/day) — https://upstash.com
-// Env vars needed: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
-// Without these: falls back to localStorage-only (same browser check)
+// Cross-device trial duplicate check using Upstash Redis
+// Free tier: 10,000 requests/day — https://upstash.com
+//
+// Setup (2 minutes):
+// 1. upstash.com → Sign up free → Create Database
+// 2. Name: sn-trials | Type: Regional | Region: AP-South-1 (Mumbai)
+// 3. After creation → click the database → scroll to "REST API" section
+// 4. Copy "UPSTASH_REDIS_REST_URL" and "UPSTASH_REDIS_REST_TOKEN" shown there
+// 5. Add both to Vercel env vars → Redeploy
+//
+// Without these vars: gracefully falls back to localStorage (same-device only)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,32 +22,40 @@ export default async function handler(req, res) {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  // ── No Upstash configured — rely on localStorage only ────────────
+  // ── No Upstash configured — localStorage fallback ────────────
   if (!url || !token) {
     if (action === 'save') return res.json({ saved: false, mode: 'local-only' });
     return res.json({ exists: false, mode: 'local-only' });
   }
 
-  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+  const ONE_YEAR = 31536000; // seconds
   const cleanEmail = email ? email.toLowerCase().trim() : null;
   const cleanPhone = phone ? phone.replace(/\D/g, '') : null;
 
   try {
-    // ── SAVE: called after successful OTP to record the trial ───────
+    // ── SAVE: record the trial after OTP success ──────────────
     if (action === 'save') {
       if (cleanEmail) {
-        await fetch(`${url}/set/trial:${cleanEmail}/1/EX/31536000`, { method: 'POST', headers });
+        await fetch(`${url}/set/trial:email:${cleanEmail}/1/ex/${ONE_YEAR}`, {
+          method: 'POST', headers
+        });
       }
       if (cleanPhone) {
-        await fetch(`${url}/set/trial:phone:${cleanPhone}/1/EX/31536000`, { method: 'POST', headers });
+        await fetch(`${url}/set/trial:phone:${cleanPhone}/1/ex/${ONE_YEAR}`, {
+          method: 'POST', headers
+        });
       }
       return res.json({ saved: true });
     }
 
-    // ── CHECK: does this email/phone already have a trial? ──────────
+    // ── CHECK: has this email/phone had a trial? ───────────────
     if (!cleanEmail) return res.status(400).json({ error: 'Email required' });
 
-    const emailRes = await fetch(`${url}/get/trial:${cleanEmail}`, { headers });
+    const emailRes = await fetch(`${url}/get/trial:email:${cleanEmail}`, { headers });
     const emailData = await emailRes.json();
     if (emailData.result) return res.json({ exists: true, reason: 'email' });
 
@@ -53,7 +68,7 @@ export default async function handler(req, res) {
     return res.json({ exists: false });
 
   } catch (e) {
-    console.error('Upstash error:', e);
+    console.error('Upstash error:', e.message);
     return res.json({ exists: false }); // fail open — local check is fallback
   }
 }
