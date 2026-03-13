@@ -2403,8 +2403,10 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       const id = `client_${Date.now()}`;
       const enriched = {
         ...form, id, plan: "trial", planName: "Free Trial",
+        isTrial: true,
         color: "#38bdf8", brand: "client", darkBg: "#020617",
         joinDate: new Date().toLocaleDateString("en-IN"), active: true, emoji: "🎁",
+        platforms: form.platforms?.length ? form.platforms : ["Instagram"],
         sub: form.platforms?.[0] || "Instagram",
       };
       

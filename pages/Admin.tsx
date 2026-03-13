@@ -86,9 +86,14 @@ const Admin: React.FC = () => {
 
     const fetchClients = async () => {
         try {
-            const res = await fetch('/api/data?resource=clients');
-            const data = await res.json();
-            setClients(data);
+            // Client data lives in localStorage (same as ContentStudioApp)
+            // Also try the API stub for any server-synced records
+            const localRaw = localStorage.getItem('snstudio_clients');
+            const localClients: Record<string, any> = localRaw ? JSON.parse(localRaw) : {};
+            const clientArray = Object.values(localClients);
+            // Sort newest first
+            clientArray.sort((a: any, b: any) => (b.id || '').localeCompare(a.id || ''));
+            setClients(clientArray);
         } catch (error) {
             console.error('Failed to fetch clients', error);
         }
@@ -130,6 +135,14 @@ const Admin: React.FC = () => {
         setViewClientHist(client);
         setClientHistData([]);
         try {
+            // History lives in localStorage under snstudio_hist_${id}
+            const histRaw = localStorage.getItem(`snstudio_hist_${client.id}`);
+            if (histRaw) {
+                const data = JSON.parse(histRaw);
+                setClientHistData(Array.isArray(data) ? data : []);
+                return;
+            }
+            // Fallback: try API
             const res = await fetch('/api/data?resource=history&clientId='+client.id);
             if(res.ok) {
                 const data = await res.json();
