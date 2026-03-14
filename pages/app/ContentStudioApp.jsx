@@ -539,8 +539,8 @@ function CopyBtn({text,label="Copy",sm,full}){
   const [ok,setOk]=useState(false);
   return(
     <button onClick={()=>{navigator.clipboard.writeText(text);setOk(true);setTimeout(()=>setOk(false),2000);}}
-      style={{background:ok?"#052e16":"rgba(255,255,255,0.07)",
-        color:ok?"#4ade80":"rgba(255,255,255,0.6)",
+      style={{background:ok?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.055)",
+        color:ok?"#34d399":"rgba(255,255,255,0.6)",
         border:`1px solid ${ok?"#166534":"rgba(255,255,255,0.12)"}`,
         borderRadius:7,padding:sm?"4px 10px":"7px 15px",fontSize:sm?11:12,
         fontWeight:600,cursor:"pointer",transition:"all .15s",
@@ -663,8 +663,7 @@ function PostCard({post, profile, index}){
   };
 
   return(
-    <div style={{background:"#04040e",border:`1px solid ${color}22`,borderRadius:20,overflow:"hidden",
-      boxShadow:`0 4px 32px rgba(0,0,0,0.4)`}}>
+    <div style={{background:"rgba(8,14,26,0.85)",border:`1px solid ${color}20`,borderRadius:20,overflow:"hidden",backdropFilter:"blur(32px) saturate(180%)",WebkitBackdropFilter:"blur(32px) saturate(180%)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.06),0 8px 32px rgba(0,0,0,0.3)`}}>
 
       {/* ── HEADER STRIP ── */}
       <div style={{background:`linear-gradient(135deg,${color}14,${color}06)`,
@@ -712,8 +711,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{background:"#02020c",borderBottom:"1px solid rgba(255,255,255,0.06)",
-        padding:"0 16px",display:"flex",gap:2,overflowX:"auto",scrollbarWidth:"none"}}>
+      <div style={{background:"rgba(0,0,0,0.2)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"0 16px",display:"flex",gap:2,overflowX:"auto",scrollbarWidth:"none"}}>
         {tabs.map(t=>(
           <button key={t.id} onClick={()=>setTab(t.id)}
             title={t.hint}
@@ -748,14 +746,14 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── BODY ── */}
-      <div style={{padding:"20px 22px",background:"#04040e"}}>
+      <div style={{padding:"20px 22px",background:"rgba(8,12,22,0.7)"}}>
 
         {/* ════ CAPTION TAB ════ */}
         {tab==="caption"&&(
           <div style={{display:"grid",gap:14}}>
 
             {/* Caption text box */}
-            <div style={{background:"#020209",border:"1px solid rgba(255,255,255,0.09)",borderRadius:13,overflow:"hidden"}}>
+            <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,overflow:"hidden"}}>
               <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
                 display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
@@ -837,7 +835,7 @@ function PostCard({post, profile, index}){
 
             {/* Script body */}
             {post.script?(
-              <div style={{background:"#020209",border:"1px solid rgba(255,255,255,0.09)",borderRadius:13,overflow:"hidden"}}>
+              <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,overflow:"hidden"}}>
                 <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
                   display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
@@ -2364,8 +2362,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
                 🛡 {pl.guarantee}</div>
               {true?(
                 <button onClick={()=>{setPlan({...pl, isTrialFlow: false});setScreen("details");}}
-                  style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,
-                    color:"#fff",border:"none",borderRadius:11,padding:"13px",
+                  style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}99)`,color:"#fff",border:"none",borderRadius:50,padding:"13px",boxShadow:`0 8px 24px ${pl.color}40,inset 0 1px 0 rgba(255,255,255,0.18)`,
                     fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
                   Select {pl.name} →
                 </button>
@@ -2387,8 +2384,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         {[["150+","Brands Growing","India · UAE · US · UK"],
           ["2.4M+","Posts Created","Across all niches"],
           ["4.9★","Client Rating","Verified reviews"]].map(([n,l,s])=>(
-          <div key={n} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",
-            borderRadius:14,padding:"18px",textAlign:"center"}}>
+          <div key={n} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderRadius:14,padding:"18px",textAlign:"center",boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
             <div style={{fontSize:28,fontWeight:800,color:CONFIG.accentColor,letterSpacing:"-.8px"}}>{n}</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,0.7)",fontWeight:600,letterSpacing:"-.2px"}}>{l}</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.33)",marginTop:2}}>{s}</div>
@@ -2406,8 +2402,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           ["What does 'live trend research' mean?","Before writing your content, the AI searches the web to find what's actually trending this week in your niche — so every post rides current momentum, not last month's trends."],
           ["Is the content really unique?","Yes. The AI has permanent memory — it tracks every post generated and never repeats a topic or angle."],
         ].map(([q,a])=>(
-          <div key={q} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",
-            borderRadius:12,padding:"14px 16px",marginBottom:8}}>
+          <div key={q} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",backdropFilter:"blur(20px)",borderRadius:12,padding:"14px 16px",marginBottom:8}}>
             <div style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.75)",marginBottom:5,letterSpacing:"-.2px"}}>{q}</div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.38)",lineHeight:1.6}}>{a}</div>
           </div>
@@ -2420,9 +2415,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   if(screen==="details"&&plan) return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"28px 20px"}}>
       <button onClick={()=>setScreen("plans")}
-        style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.09)",
-          color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"6px 13px",fontSize:12,
-          cursor:"pointer",marginBottom:20,fontWeight:600}}>← Back to Plans</button>
+        style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
 
       {/* Plan badge */}
       <div style={{background:`${plan.color}12`,border:`1px solid ${plan.color}28`,borderRadius:12,
@@ -2438,7 +2431,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           Change</button>
       </div>
 
-      <h2 style={{fontSize:20,fontWeight:800,letterSpacing:"-.5px",marginBottom:4}}>Your brand details</h2>
+      <h2 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:28,fontWeight:400,letterSpacing:"-.5px",marginBottom:4,lineHeight:1.1}}>Your brand details</h2>
       <p style={{color:"rgba(255,255,255,0.35)",fontSize:13,marginBottom:20,lineHeight:1.6}}>
         This trains the AI to write specifically for your brand and audience. Be detailed — the more context, the better the content.</p>
 
@@ -3427,10 +3420,16 @@ export default function App(){
   );
 
   const wrap=children=>(
-    <div style={{background:"#08101f",minHeight:"100vh",color:"rgba(255,255,255,0.95)"}}>
+    <div style={{background:"#08101f",minHeight:"100vh",color:"rgba(255,255,255,0.95)",position:"relative",overflow:"hidden"}}>
+      {/* Ambient background */}
+      <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
+        <div style={{position:"absolute",width:700,height:700,borderRadius:"50%",filter:"blur(130px)",opacity:.22,top:"-20%",left:"-10%",background:"radial-gradient(circle,rgba(37,99,235,.35),transparent 70%)"}}></div>
+        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",filter:"blur(120px)",opacity:.16,top:"15%",right:"-5%",background:"radial-gradient(circle,rgba(79,158,255,.3),transparent 70%)"}}></div>
+        <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",filter:"blur(110px)",opacity:.14,bottom:"10%",left:"25%",background:"radial-gradient(circle,rgba(16,185,129,.25),transparent 70%)"}}></div>
+      </div>
       <div dangerouslySetInnerHTML={{__html:CSS}}/>
       {NAV}
-      <div className="mobile-padding" style={{maxWidth:1040,margin:"0 auto",padding:"24px 20px",animation:"fadeUp .3s ease"}}>
+      <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"28px 20px",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
         {children}
       </div>
     </div>
