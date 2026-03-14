@@ -138,7 +138,7 @@ const LeadAutomation: React.FC = () => {
                             {/* Fake Chat UI */}
                             <div className="w-full md:w-1/2 bg-[#020617] rounded-xl p-4 border border-white/5 space-y-4">
                                 <div className="flex items-center gap-3 border-b border-white/5 pb-3">
-                                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                                     <span className="text-xs text-neutral-500 ml-2">Live Chat Widget</span>
@@ -189,33 +189,33 @@ const LeadAutomation: React.FC = () => {
             {/* --- 2. PROBLEM SECTION --- */}
             <section className="py-16 md:py-24 bg-[#050A1F]">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Be Honest — <span className="text-red-500">How Many Leads</span> Do You Miss Every Week?</h2>
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Be Honest — <span className="text-amber-400">How Many Leads</span> Do You Miss Every Week?</h2>
 
                     <div className="grid md:grid-cols-2 gap-8 text-left">
-                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
-                            <Clock className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-colors group">
+                            <Clock className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
                             <h3 className="text-xl font-bold mb-2">You're Busy or Offline</h3>
                             <p className="text-neutral-400">Customers message when you're sleeping or working. They expected an instant reply.</p>
                         </div>
-                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
-                            <Bot className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-colors group">
+                            <Bot className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
                             <h3 className="text-xl font-bold mb-2">Delayed Replies</h3>
                             <p className="text-neutral-400">WhatsApp and Instagram DMs sit unread for hours. Hot leads turn cold.</p>
                         </div>
-                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
-                            <AlertCircle className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-colors group">
+                            <AlertCircle className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
                             <h3 className="text-xl font-bold mb-2">No Follow-Up</h3>
                             <p className="text-neutral-400">You reply once, but if they don't answer, does anyone follow up 3 more times? Probably not.</p>
                         </div>
-                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-red-500/30 transition-colors group">
-                            <MessageSquare className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-colors group">
+                            <MessageSquare className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
                             <h3 className="text-xl font-bold mb-2">Scattered Messages</h3>
                             <p className="text-neutral-400">Leads are everywhere — Email, Insta, WhatsApp. It's impossible to track manually.</p>
                         </div>
                     </div>
 
-                    <p className="mt-12 text-xl font-bold text-white bg-red-500/10 inline-block px-6 py-3 rounded-lg border border-red-500/20">
-                        ⚠️ You're paying for ads. <span className="text-red-400">Missing leads = Wasting money.</span>
+                    <p className="mt-12 text-xl font-bold text-white bg-amber-500/10 inline-block px-6 py-3 rounded-lg border border-amber-500/20">
+                        ⚠️ You're paying for ads. <span className="text-amber-400">Missing leads = Wasting money.</span>
                     </p>
                 </div>
             </section>

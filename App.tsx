@@ -33,14 +33,14 @@ const Admin = lazy(() => import('./pages/Admin'));
 
 // Premium Loading State
 const LoadingFallback = () => (
-  <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center gap-6">
+  <div className="sn-loader">
     <div className="relative w-20 h-20">
       <div className="absolute inset-0 rounded-full border-2 border-brand-primary/20"></div>
       <div className="absolute inset-0 rounded-full border-2 border-brand-primary border-t-transparent animate-spin"></div>
       <div className="absolute inset-6 rounded-full bg-brand-primary/20 animate-pulse"></div>
     </div>
     <div className="flex flex-col items-center gap-2">
-      <span className="text-white font-display font-bold tracking-widest text-sm animate-pulse">SOCIAL NINJA'S</span>
+      <span style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontWeight:700,letterSpacing:"0.12em",fontSize:13,color:"rgba(255,255,255,0.9)"}}>SOCIAL NINJA'S</span>
       <span className="text-brand-primary text-[10px] uppercase tracking-[0.3em]">System Loading</span>
     </div>
   </div>

@@ -14,7 +14,7 @@ import { useState, useEffect, useRef } from "react";
 const CONFIG = {
   brandName:    "Social Ninja's",
   brandTagline: "AI Content Studio",
-  accentColor:  "#4f9eff",
+  accentColor:  "#5ba4f5",
 
   // ✅ YOUR SINGLE RAZORPAY LINK — all plans pay here
   // For subscriptions: create 3 subscription plans in Razorpay dashboard
@@ -52,7 +52,7 @@ const PLANS = [
     postsPerWeek: 4,
     postsPerMonth: 15,
     platformCount: 2,
-    color: "#4f9eff",
+    color: "#5ba4f5",
     badge: null,
     platformOptions: ["Instagram", "Facebook", "YouTube", "LinkedIn", "Twitter/X", "Threads"],
     features: [
@@ -293,7 +293,7 @@ const PLATFORM_DNA = {
 const MY_PROFILES = {
   sn_ig:  {
     id:"sn_ig", name:"Social Ninja's", sub:"Instagram", emoji:"🥷",
-    color:"#4f9eff", darkBg:"#050B1A", brand:"sn",
+    color:"#5ba4f5", darkBg:"#050B1A", brand:"sn",
     platforms:["Instagram"],
     audience:"Global founders, D2C CMOs, startup heads — US/UK/UAE/SG/AU",
     tone:"Confident, data-led, direct. Results-obsessed agency voice. No fluff.",
@@ -303,7 +303,7 @@ const MY_PROFILES = {
   },
   sn_li:  {
     id:"sn_li", name:"Social Ninja's", sub:"LinkedIn", emoji:"🥷",
-    color:"#4f9eff", darkBg:"#050B1A", brand:"sn",
+    color:"#5ba4f5", darkBg:"#050B1A", brand:"sn",
     platforms:["LinkedIn"],
     audience:"Global B2B — CMOs, growth leads, D2C founders, startup heads",
     tone:"Thought leader. Data-heavy. McKinsey insight, direct founder delivery.",
@@ -554,25 +554,25 @@ function Field({label,name,value,onChange,error,placeholder,type="text",rows,hin
   return(
     <div>
       <label style={{fontSize:11,fontWeight:700,
-        color:error?"#fca5a5":"rgba(255,255,255,0.4)",
+        color:error?"#e8b86d":"rgba(255,255,255,0.4)",
         textTransform:"uppercase",letterSpacing:"1px",display:"block",marginBottom:6}}>
         {label}{required&&<span style={{color:"#E31313",marginLeft:3}}>*</span>}
       </label>
       {children||( rows
         ?<textarea value={value} onChange={e=>onChange(name,e.target.value)}
           placeholder={placeholder} rows={rows}
-          style={{width:"100%",background:error?"#1a060e":"rgba(255,255,255,0.05)",
-            border:`1px solid ${error?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+          style={{width:"100%",background:error?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+            border:`1px solid ${error?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
             padding:"10px 13px",color:"#fff",fontSize:13,resize:"vertical",outline:"none",
             boxSizing:"border-box",lineHeight:1.65,fontFamily:"inherit"}}/>
         :<input value={value} onChange={e=>onChange(name,e.target.value)}
           placeholder={placeholder} type={type}
-          style={{width:"100%",background:error?"#1a060e":"rgba(255,255,255,0.05)",
-            border:`1px solid ${error?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+          style={{width:"100%",background:error?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+            border:`1px solid ${error?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
             padding:"10px 13px",color:"#fff",fontSize:13,outline:"none",
             boxSizing:"border-box",fontFamily:"inherit"}}/>
       )}
-      {error&&<div style={{fontSize:11,color:"#fca5a5",marginTop:4}}>⚠ {error}</div>}
+      {error&&<div style={{fontSize:11,color:"#e8b86d",marginTop:4}}>⚠ {error}</div>}
       {hint&&!error&&<div style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginTop:4}}>{hint}</div>}
     </div>
   );
@@ -636,7 +636,7 @@ function HowToUseBanner({color, postCount}){
 //  POST CARD — redesigned for clarity and usability
 // ─────────────────────────────────────────────────────────────────
 function PostCard({post, profile, index}){
-  const color = profile.color||"#4f9eff";
+  const color = profile.color||"#5ba4f5";
   const [tab,setTab]=useState("caption");
   const [copied,setCopied]=useState(false);
 
@@ -649,7 +649,7 @@ function PostCard({post, profile, index}){
   ];
 
   const priorityMap = {
-    "Must Post":    {bg:"#1c0a0a",border:"#ef444430",col:"#fca5a5",badge:"🔴 Must Post"},
+    "Must Post":    {bg:"rgba(28,22,8,0.9)",border:"#e8b86d30",col:"#e8b86d",badge:"🔴 Must Post"},
     "High Value":   {bg:"#1c1408",border:"#f59e0b30",col:"#fcd34d",badge:"🟡 High Value"},
     "Good to Post": {bg:"#0a1c0e",border:"#22c55e30",col:"#86efac",badge:"🟢 Good to Post"},
   };
@@ -823,7 +823,7 @@ function PostCard({post, profile, index}){
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
               <span style={{fontSize:20,flexShrink:0}}>🎬</span>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:"#4f9eff",marginBottom:4}}>How to use this script</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",marginBottom:4}}>How to use this script</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open your camera</strong> → film in portrait (9:16 vertical)<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>2. Read each line</strong> exactly as written — then look at camera<br/>
@@ -1027,7 +1027,7 @@ function TrendCards({trends, color}){
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:8}}>
         {trends.map((t,i)=>{
-          const heat = t.heat==="Hot"?{bg:"#1c0808",border:"#ef444428",col:"#fca5a5",tag:"🔥 Hot"}:
+          const heat = t.heat==="Hot"?{bg:"rgba(30,24,8,0.9)",border:"#e8b86d28",col:"#e8b86d",tag:"🔥 Hot"}:
             t.heat==="Rising"?{bg:"#1c1408",border:"#f59e0b28",col:"#fcd34d",tag:"📈 Rising"}:
             {bg:"#081c0e",border:"#22c55e28",col:"#86efac",tag:"🌱 New"};
           return(
@@ -1080,7 +1080,7 @@ function WeekCal({posts, color}){
 
 
 function Workspace({profile, hKey, onUpgrade}){
-  const color=profile.color||"#4f9eff";
+  const color=profile.color||"#5ba4f5";
   const [hist,setHist]=useState([]);
   const [gen,setGen]=useState(false);
   const [result,setResult]=useState(null);
@@ -1151,7 +1151,7 @@ function Workspace({profile, hKey, onUpgrade}){
           marginBottom:16,display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
           <div style={{flex:1}}>
             <div style={{fontSize:13,fontWeight:700,letterSpacing:"-.2px",marginBottom:3}}>
-              ⚡ Free Trial — <span style={{color:"#4f9eff"}}>{trialRemaining} post{trialRemaining!==1?"s":""} remaining</span>
+              ⚡ Free Trial — <span style={{color:"#5ba4f5"}}>{trialRemaining} post{trialRemaining!==1?"s":""} remaining</span>
             </div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>
               No card needed. Upgrade after to unlock more posts, platforms and weekly tips.
@@ -1184,10 +1184,10 @@ function Workspace({profile, hKey, onUpgrade}){
               {price:"₹8,999/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
             ].map(({price,name,desc,id})=>(
               <button key={name}
-                onClick={()=> onUpgrade ? onUpgrade(id) : (window.location.href=`${window.location.origin}${window.location.pathname}?plan=${id}`)}
+                onClick={()=> onUpgrade ? onUpgrade(id) : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=${id}`)}
                 style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.25)",
                   borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center"}}>
-                <div style={{fontSize:15,fontWeight:800,color:"#4f9eff",marginBottom:3}}>{price}</div>
+                <div style={{fontSize:15,fontWeight:800,color:"#5ba4f5",marginBottom:3}}>{price}</div>
                 <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3}}>{name}</div>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4}}>{desc}</div>
               </button>
@@ -1270,9 +1270,9 @@ function Workspace({profile, hKey, onUpgrade}){
 
       {/* Error */}
       {err&&(
-        <div style={{background:"#110508",border:"1px solid #7f1d1d",borderRadius:13,
+        <div style={{background:"#110508",border:"1px solid #78510a",borderRadius:13,
           padding:"16px 20px",marginBottom:20}}>
-          <p style={{color:"#fca5a5",margin:"0 0 4px",fontWeight:700,fontSize:14}}>
+          <p style={{color:"#e8b86d",margin:"0 0 4px",fontWeight:700,fontSize:14}}>
             {err==="RATE_LIMIT"?"⏳ Rate limit reached":"⚠️ Generation failed"}</p>
           <p style={{color:"#fda4af",margin:"0 0 12px",fontSize:13}}>
             {err==="RATE_LIMIT"
@@ -1280,7 +1280,7 @@ function Workspace({profile, hKey, onUpgrade}){
               :err}</p>
           <div style={{display:"flex",gap:8}}>
             {err!=="RATE_LIMIT"&&(
-              <button onClick={generate} style={{background:"#7f1d1d",color:"#fff",border:"none",
+              <button onClick={generate} style={{background:"#78510a",color:"#fff",border:"none",
                 borderRadius:8,padding:"7px 14px",fontSize:12,fontWeight:700,cursor:"pointer"}}>
                 ↻ Try Again</button>
             )}
@@ -1319,10 +1319,10 @@ function Workspace({profile, hKey, onUpgrade}){
             {trialExhausted ? (
               <div style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.3)",borderRadius:12,padding:"20px",maxWidth:400,margin:"0 auto"}}>
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
-                <div style={{fontSize:14,fontWeight:700,color:"#4f9eff",marginBottom:12}}>Ready for more content?</div>
+                <div style={{fontSize:14,fontWeight:700,color:"#5ba4f5",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
-                <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}${window.location.pathname}?plan=starter`)}
-                  style={{background:"#4f9eff",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
+                <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=starter`)}
+                  style={{background:"#5ba4f5",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
             ) : (
@@ -1419,7 +1419,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
     onComplete(enriched);
   };
 
-  const COLORS=["#4f9eff","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
+  const COLORS=["#5ba4f5","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
 
   return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"28px 20px"}}>
@@ -1469,7 +1469,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
         {/* ── SOCIAL ACCOUNTS ── */}
         <div style={{background:"rgba(56,189,248,0.06)",border:"1px solid rgba(56,189,248,0.18)",
           borderRadius:14,padding:"18px 16px"}}>
-          <div style={{fontSize:12,fontWeight:700,color:"#4f9eff",textTransform:"uppercase",
+          <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",textTransform:"uppercase",
             letterSpacing:"1.5px",marginBottom:4}}>🔗 Connect Your Social Accounts</div>
           <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:14,lineHeight:1.6}}>
             The AI will analyse your actual accounts — what's working, what's missing, gaps vs competitors — and tailor every piece of content to improve your specific presence.
@@ -1713,10 +1713,10 @@ function PaymentStep({plan, formData, onVerified}){
           <input value={pid} onChange={e=>{setPid(e.target.value);setPidErr("");}}
             placeholder="pay_XXXXXXXXXXXXXXXX"
             style={{width:"100%",background:"rgba(255,255,255,0.06)",
-              border:`1px solid ${pidErr?"#991b1b":"rgba(255,255,255,0.12)"}`,borderRadius:10,
+              border:`1px solid ${pidErr?"#92620a":"rgba(255,255,255,0.12)"}`,borderRadius:10,
               padding:"11px 13px",color:"#fff",fontSize:13,outline:"none",
               boxSizing:"border-box",fontFamily:"'JetBrains Mono',monospace",marginBottom:pidErr?6:10}}/>
-          {pidErr&&<div style={{fontSize:11,color:"#fca5a5",marginBottom:10}}>⚠ {pidErr}</div>}
+          {pidErr&&<div style={{fontSize:11,color:"#e8b86d",marginBottom:10}}>⚠ {pidErr}</div>}
           <button onClick={confirm} disabled={checking}
             style={{width:"100%",background:checking?"rgba(255,255,255,0.05)":
               `linear-gradient(135deg,${plan.color},${plan.color}88)`,
@@ -1767,12 +1767,12 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
   const select=(v)=>{onChange(v);setQ("");setOpen(false);};
   return(
     <div ref={ref} style={{position:"relative",marginBottom:14}}>
-      <label style={{display:"block",fontSize:11,fontWeight:700,color:error?"#fca5a5":"rgba(255,255,255,0.4)",
+      <label style={{display:"block",fontSize:11,fontWeight:700,color:error?"#e8b86d":"rgba(255,255,255,0.4)",
         textTransform:"uppercase",letterSpacing:"1px",marginBottom:5}}>
         {label}{required&&<span style={{color:"#E31313"}}> *</span>}
       </label>
       <div onClick={()=>setOpen(o=>!o)} style={{
-        background:"rgba(255,255,255,0.05)",border:`1px solid ${error?"#dc2626":open?"rgba(56,189,248,0.6)":"rgba(255,255,255,0.1)"}`,
+        background:"rgba(255,255,255,0.05)",border:`1px solid ${error?"#c49b3a":open?"rgba(56,189,248,0.6)":"rgba(255,255,255,0.1)"}`,
         borderRadius:10,padding:"10px 14px",fontSize:14,color:value?"#fff":"rgba(255,255,255,0.3)",
         cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",minHeight:42,
         transition:"border .15s"}}>
@@ -1800,7 +1800,7 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
                   transition:"background .1s"}}
                 onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
                 onMouseOut={e=>e.currentTarget.style.background=value===o?"rgba(56,189,248,0.15)":"transparent"}>
-                {value===o&&<span style={{color:"#4f9eff",marginRight:8}}>✓</span>}{o}
+                {value===o&&<span style={{color:"#5ba4f5",marginRight:8}}>✓</span>}{o}
               </div>
             ))}
             {allowCustom&&q&&!options.includes(q)&&(
@@ -1820,7 +1820,7 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
         </div>
       )}
       {hint&&!error&&<div style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginTop:4}}>{hint}</div>}
-      {error&&<div style={{fontSize:11,color:"#fca5a5",marginTop:4}}>⚠ {error}</div>}
+      {error&&<div style={{fontSize:11,color:"#e8b86d",marginTop:4}}>⚠ {error}</div>}
     </div>
   );
 }
@@ -1869,7 +1869,7 @@ function CompetitorInput({value, onChange}){
             borderRadius:10,padding:"10px 14px",fontSize:13,color:"#fff",outline:"none"}}/>
         <button onClick={add}
           style={{background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.3)",
-            color:"#4f9eff",borderRadius:10,padding:"10px 16px",fontSize:13,
+            color:"#5ba4f5",borderRadius:10,padding:"10px 16px",fontSize:13,
             fontWeight:700,cursor:"pointer",flexShrink:0}}>+ Add</button>
       </div>
       <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:4}}>
@@ -1938,7 +1938,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
   const [stage, setStage] = useState(0); // 0=loading, 1=results, 2=error
   const [posts, setPosts] = useState([]);
   const [stepMsg, setStepMsg] = useState("Researching trends in your niche...");
-  const color = plan?.color || "#4f9eff";
+  const color = plan?.color || "#5ba4f5";
 
   const GEN_MSGS = [
     "🔍 Researching live trends in your niche...",
@@ -2079,7 +2079,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       const urlParams = new URLSearchParams(hash.split("?")[1]);
       const planParam = urlParams.get("plan");
       if (planParam === "trial") {
-        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#4f9eff", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
+        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
         setScreen("details");
       } else if (planParam) {
         const selectedPlan = PLANS.find(p => p.id === planParam);
@@ -2248,7 +2248,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           ))}
         </div>
         <button onClick={()=>{
-          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#4f9eff", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
+          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
           setScreen("details");
         }} style={{marginTop:24, background:`linear-gradient(135deg,#38bdf8,#38bdf888)`,color:"#fff",border:"none",borderRadius:14,padding:"14px 28px",fontSize:15,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px",boxShadow:`0 8px 30px #38bdf844`}}>
           ⚡ Try 3 Posts Free — No Card Needed
@@ -2431,7 +2431,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           Change</button>
       </div>
 
-      <h2 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:28,fontWeight:400,letterSpacing:"-.5px",marginBottom:4,lineHeight:1.1}}>Your brand details</h2>
+      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:28,fontWeight:400,letterSpacing:"-.5px",marginBottom:4,lineHeight:1.1}}>Your brand details</h2>
       <p style={{color:"rgba(255,255,255,0.35)",fontSize:13,marginBottom:20,lineHeight:1.6}}>
         This trains the AI to write specifically for your brand and audience. Be detailed — the more context, the better the content.</p>
 
@@ -2446,8 +2446,8 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
               <select 
                 value={form.countryCode} 
                 onChange={e=>setF("countryCode",e.target.value)}
-                style={{width:90,background:errors.phone?"#1a060e":"rgba(255,255,255,0.05)",
-                  border:`1px solid ${errors.phone?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                style={{width:90,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                  border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
                   padding:"10px",color:"#fff",fontSize:13,outline:"none"}}>
                 <option value="+91">🇮🇳 +91</option>
                 <option value="+1">🇺🇸 +1</option>
@@ -2460,8 +2460,8 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
               </select>
               <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
                 placeholder="987654321" type="tel"
-                style={{flex:1,background:errors.phone?"#1a060e":"rgba(255,255,255,0.05)",
-                  border:`1px solid ${errors.phone?"#991b1b":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                style={{flex:1,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                  border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
                   padding:"10px 13px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
             </div>
           </Field>
@@ -2484,7 +2484,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
 
         {/* ── PLATFORM SELECTOR ── */}
         <div>
-          <div style={{fontSize:11,fontWeight:700,color:errors.platforms?"#fca5a5":"rgba(255,255,255,0.4)",
+          <div style={{fontSize:11,fontWeight:700,color:errors.platforms?"#e8b86d":"rgba(255,255,255,0.4)",
             textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>
             Choose Platform{plan.platformCount!==1?"s":""} <span style={{color:"#E31313"}}>*</span>
           </div>
@@ -2515,7 +2515,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
               );
             })}
           </div>
-          {errors.platforms&&<div style={{fontSize:11,color:"#fca5a5",marginTop:6}}>⚠ {errors.platforms}</div>}
+          {errors.platforms&&<div style={{fontSize:11,color:"#e8b86d",marginTop:6}}>⚠ {errors.platforms}</div>}
           {form.platforms.length>0&&!errors.platforms&&(
             <div style={{marginTop:8,fontSize:11,color:`${plan.color}99`}}>
               ✓ AI will write native content for: {form.platforms.join(", ")}</div>
@@ -2537,7 +2537,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   if(screen==="otp"&&plan) return (
     <div style={{maxWidth:400,margin:"0 auto",padding:"40px 20px",textAlign:"center"}}>
       <div style={{fontSize:48,marginBottom:16}}>📱</div>
-      <h2 style={{fontSize:24,fontWeight:800,marginBottom:8}}>Verify your phone</h2>
+      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:700,marginBottom:8,letterSpacing:"-0.5px"}}>Verify your phone</h2>
       <p style={{color:"rgba(255,255,255,0.5)",fontSize:14,marginBottom:24}}>
         We've sent a verification code via SMS to<br/>
         <b style={{color:"#fff"}}>{form.phone ? `${form.countryCode} ${form.phone}` : "your phone number"}</b>.
@@ -2552,12 +2552,12 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
         placeholder="------"
         style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",
         borderRadius:12,padding:"16px",fontSize:28,textAlign:"center",letterSpacing:"14px",marginBottom:8,color:"#fff",outline:"none",fontFamily:"monospace"}}/>
-      {otpError && <div style={{color:"#fca5a5",fontSize:13,marginBottom:16}}>⚠ {otpError}</div>}
+      {otpError && <div style={{color:"#e8b86d",fontSize:13,marginBottom:16}}>⚠ {otpError}</div>}
       
       <button onClick={verifyOtpAndProceed} disabled={verifyingOtp}
-        style={{width:"100%",background:`linear-gradient(135deg,#25D366,#128C7E)`,
+        style={{width:"100%",background:`linear-gradient(135deg,#1d4ed8,#5ba4f5)`,
           color:"#fff",border:"none",borderRadius:12,padding:"16px",marginTop:16,
-          fontSize:16,fontWeight:700,cursor:verifyingOtp?"not-allowed":"pointer",boxShadow:"0 8px 24px rgba(37,211,102,0.25)",transition:"all .2s"}}>
+          fontSize:16,fontWeight:700,cursor:verifyingOtp?"not-allowed":"pointer",boxShadow:"0 8px 24px rgba(91,164,245,0.28)",transition:"all .2s"}}>
         {verifyingOtp ? "Verifying code..." : "Verify & Continue →"}
       </button>
       <button onClick={()=>setScreen("details")} disabled={verifyingOtp}
@@ -2573,7 +2573,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       const enriched = {
         ...form, id, plan: "trial", planName: "Free Trial",
         isTrial: true,
-        color: "#4f9eff", brand: "client", darkBg: "#020617",
+        color: "#5ba4f5", brand: "client", darkBg: "#020617",
         joinDate: new Date().toLocaleDateString("en-IN"), active: true, emoji: "🎁",
         platforms: form.platforms?.length ? form.platforms : ["Instagram"],
         sub: form.platforms?.[0] || "Instagram",
@@ -2763,7 +2763,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
     );
   };
 
-  const phaseColor = {Building:"#4f9eff",Momentum:"#f59e0b",Scaling:"#7C3AED",Dominating:"#E31313"};
+  const phaseColor = {Building:"#5ba4f5",Momentum:"#f59e0b",Scaling:"#7C3AED",Dominating:"#E31313"};
   const pc = phaseColor[tips?.growth_phase]||color;
 
   const TABS = [
@@ -2851,7 +2851,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
       {/* ── INFOGRAPHIC STATS ── */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
         {[
-          {label:"Posts Created",value:totalPosts,sub:"all time",icon:"📝",color:"#4f9eff"},
+          {label:"Posts Created",value:totalPosts,sub:"all time",icon:"📝",color:"#5ba4f5"},
           {label:"Weeks Active",value:totalWeeks,sub:"content weeks",icon:"📅",color:"#7C3AED"},
           {label:"Platforms",value:platforms.length,sub:"active",icon:"📲",color:"#10b981"},
           {label:"This Week",value:hist[hist.length-1]?.posts?.length||0,sub:"posts ready",icon:"🎯",color:color},
@@ -2976,7 +2976,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
                             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Price Difference to Upgrade:</div>
                             <div style={{fontSize:24,fontWeight:800,color:pl.color}}>{userGeo.symbol}{diff.toLocaleString()}</div>
                           </div>
-                          <button onClick={() => { window.location.href=`${window.location.origin}${window.location.pathname}?plan=${pl.id}`; }}
+                          <button onClick={() => { window.location.href=`${window.location.origin}/#/app/content-studio?plan=${pl.id}`; }}
                             style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,color:"#fff",border:"none",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 15px ${pl.color}40`}}>
                             Upgrade to {pl.name} →
                           </button>
@@ -3039,7 +3039,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
               {[
                 {label:"💪 Strengths",items:tips.account_analysis.strengths,col:"#10b981",bg:"#052e16"},
                 {label:"🚧 Gaps",items:tips.account_analysis.gaps,col:"#f59e0b",bg:"#1c1203"},
-                {label:"⚡ Quick Wins",items:tips.account_analysis.quick_wins,col:"#4f9eff",bg:"#0a1628"},
+                {label:"⚡ Quick Wins",items:tips.account_analysis.quick_wins,col:"#5ba4f5",bg:"#0a1628"},
               ].map(({label,items,col,bg})=>(
                 <div key={label} style={{background:bg,border:`1px solid ${col}25`,borderRadius:14,padding:"14px 15px"}}>
                   <div style={{fontSize:11,fontWeight:700,color:col,textTransform:"uppercase",
@@ -3146,19 +3146,19 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
           )}
           {tips?.weekly_tips?.map((tip,i)=>(
             <div key={i} style={{background:"#020617",border:`1px solid ${
-              tip.priority==="High"?"#7f1d1d40":"rgba(255,255,255,0.07)"}`,borderRadius:14,padding:"16px 18px"}}>
+              tip.priority==="High"?"#78510a40":"rgba(255,255,255,0.07)"}`,borderRadius:14,padding:"16px 18px"}}>
               <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
                 <div style={{width:32,height:32,borderRadius:9,
-                  background:tip.priority==="High"?"#7f1d1d":"rgba(255,255,255,0.07)",
+                  background:tip.priority==="High"?"#78510a":"rgba(255,255,255,0.07)",
                   display:"flex",alignItems:"center",justifyContent:"center",
-                  fontSize:13,fontWeight:800,color:tip.priority==="High"?"#fca5a5":"rgba(255,255,255,0.4)",
+                  fontSize:13,fontWeight:800,color:tip.priority==="High"?"#e8b86d":"rgba(255,255,255,0.4)",
                   flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,flexWrap:"wrap"}}>
                     <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px"}}>{tip.title}</div>
                     <span style={{fontSize:10,fontWeight:700,borderRadius:5,padding:"2px 8px",
-                      background:tip.priority==="High"?"#7f1d1d":"rgba(255,255,255,0.07)",
-                      color:tip.priority==="High"?"#fca5a5":"rgba(255,255,255,0.4)"}}>
+                      background:tip.priority==="High"?"#78510a":"rgba(255,255,255,0.07)",
+                      color:tip.priority==="High"?"#e8b86d":"rgba(255,255,255,0.4)"}}>
                       {tip.priority==="High"?"🔴 High Priority":"🟡 Medium"}</span>
                     {tip.impact&&<span style={{fontSize:11,color:"#4ade80",fontWeight:600}}>
                       📈 {tip.impact}</span>}
@@ -3292,7 +3292,7 @@ function PortalClientView({client, onHome}){
       </div>
       {view==="dashboard"
         ?<ClientDashboard profile={client} hKey={hKey} onGenerateContent={()=>setView("content")}/>
-        :<Workspace profile={client} hKey={hKey} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}${window.location.pathname}?plan=${planId}`; }}/>
+        :<Workspace profile={client} hKey={hKey} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
       }
     </div>
   );
@@ -3338,52 +3338,81 @@ export default function App(){
   }, []);
 
   const CSS=`<style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
-    :root{--blue:#4f9eff;--blue2:#2563eb;--mint:#34d399;--vio:#818cf8;--g1:rgba(255,255,255,.055);--g2:rgba(255,255,255,.09);--g3:rgba(255,255,255,.04);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.62);--t3:rgba(255,255,255,.36);--t4:rgba(255,255,255,.18);}
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+    :root{--blue:#5ba4f5;--blue2:#2563eb;--mint:#34d399;--vio:#818cf8;--g1:rgba(255,255,255,.055);--g2:rgba(255,255,255,.09);--g3:rgba(255,255,255,.04);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.62);--t3:rgba(255,255,255,.36);--t4:rgba(255,255,255,.18);}
     *{box-sizing:border-box;margin:0;padding:0;}
-    html,body,*{font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
-    body{background:#08101f;color:rgba(255,255,255,.95);}
+    html,body,*{font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;} h1,h2,h3,h4{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:-.03em;line-height:1.06;}
+    body{background:#07101e;color:rgba(255,255,255,.96);}
     ::-webkit-scrollbar{width:4px;height:4px;}
     ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
     @keyframes spin{to{transform:rotate(360deg);}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(79,158,255,0.4)}50%{box-shadow:0 0 0 8px rgba(79,158,255,0)}}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(91,164,245,0.4)}50%{box-shadow:0 0 0 8px rgba(91,164,245,0)}}
     h1,h2,h3{letter-spacing:-.4px;line-height:1.15;}
     input,textarea,select,button{font-family:'DM Sans',system-ui,sans-serif!important;}
     input,textarea,select{color:rgba(255,255,255,.92);}
     a{text-decoration:none;}[contenteditable]{outline:none;}
     .sn-glass{background:rgba(255,255,255,.055);backdrop-filter:blur(36px) saturate(180%);-webkit-backdrop-filter:blur(36px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 32px rgba(0,0,0,.2);}
     .sn-input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:rgba(255,255,255,.92);padding:12px 14px;font-size:14px;width:100%;transition:all .2s;outline:none;}
-    .sn-input:focus{border-color:rgba(79,158,255,.45);background:rgba(79,158,255,.06);box-shadow:0 0 0 3px rgba(79,158,255,.1);}
+    .sn-input:focus{border-color:rgba(91,164,245,.45);background:rgba(91,164,245,.06);box-shadow:0 0 0 3px rgba(91,164,245,.1);}
     .sn-input::placeholder{color:rgba(255,255,255,.28);}
-    .sn-btn-primary{background:linear-gradient(135deg,#2563eb,#4f9eff);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(79,158,255,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:all .22s;font-family:'DM Sans',system-ui,sans-serif;letter-spacing:-.1px;}
-    .sn-btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 12px 32px rgba(79,158,255,.4);}
+    .sn-btn-primary{background:linear-gradient(135deg,#2563eb,#5ba4f5);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(91,164,245,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:all .22s;font-family:'DM Sans',system-ui,sans-serif;letter-spacing:-.1px;}
+    .sn-btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 12px 32px rgba(91,164,245,.4);}
     .sn-btn-ghost{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:50px;padding:12px 22px;font-size:14px;font-weight:400;cursor:pointer;transition:all .2s;font-family:'DM Sans',system-ui,sans-serif;backdrop-filter:blur(20px);}
     .sn-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);color:#fff;}
     .sn-btn-icon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',system-ui,sans-serif;}
-    .sn-btn-icon:hover{background:rgba(79,158,255,.12);border-color:rgba(79,158,255,.25);color:#4f9eff;}
-    .sn-btn-icon.active{background:rgba(79,158,255,.15);border-color:rgba(79,158,255,.3);color:#4f9eff;}
+    .sn-btn-icon:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
+    .sn-btn-icon.active{background:rgba(91,164,245,.15);border-color:rgba(91,164,245,.3);color:#5ba4f5;}
     .plan-card-glass{background:rgba(255,255,255,.04);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px;position:relative;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
-    .plan-card-glass:hover{transform:translateY(-3px);border-color:rgba(79,158,255,.2);box-shadow:0 16px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
-    .plan-card-hl{border-color:rgba(79,158,255,.3)!important;background:linear-gradient(165deg,rgba(37,99,235,.12) 0%,rgba(8,16,31,.96) 50%)!important;box-shadow:0 0 0 1px rgba(79,158,255,.1),0 20px 50px rgba(79,158,255,.1),inset 0 1px 0 rgba(79,158,255,.18)!important;}
+    .plan-card-glass:hover{transform:translateY(-3px);border-color:rgba(91,164,245,.2);box-shadow:0 16px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
+    .plan-card-hl{border-color:rgba(91,164,245,.3)!important;background:linear-gradient(165deg,rgba(37,99,235,.12) 0%,rgba(8,16,31,.96) 50%)!important;box-shadow:0 0 0 1px rgba(91,164,245,.1),0 20px 50px rgba(91,164,245,.1),inset 0 1px 0 rgba(91,164,245,.18)!important;}
     .post-card{background:rgba(255,255,255,.04);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);position:relative;}
-    .post-card:hover{border-color:rgba(79,158,255,.2);box-shadow:0 12px 36px rgba(0,0,0,.25);}
+    .post-card:hover{border-color:rgba(91,164,245,.2);box-shadow:0 12px 36px rgba(0,0,0,.25);}
     .sn-tabbar{display:flex;gap:4px;background:rgba(255,255,255,.04);border-radius:14px;padding:4px;border:1px solid rgba(255,255,255,.07);}
     .sn-tab{padding:8px 16px;border-radius:11px;font-size:13px;font-weight:400;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:'DM Sans',system-ui,sans-serif;white-space:nowrap;}
-    .sn-tab.active{background:rgba(79,158,255,.15);color:#4f9eff;font-weight:500;border:1px solid rgba(79,158,255,.22);}
+    .sn-tab.active{background:rgba(91,164,245,.15);color:#5ba4f5;font-weight:500;border:1px solid rgba(91,164,245,.22);}
     .sn-tab:hover:not(.active){background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);}
-    .sn-badge-blue{background:rgba(79,158,255,.1);border:1px solid rgba(79,158,255,.2);color:#4f9eff;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
+    .sn-badge-blue{background:rgba(91,164,245,.1);border:1px solid rgba(91,164,245,.2);color:#5ba4f5;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
     .sn-badge-green{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:#34d399;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
-    .sn-badge-red{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.18);color:#f87171;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
+    .sn-badge-red{background:rgba(232,184,109,.1);border:1px solid rgba(196,155,58,.18);color:#e8b86d;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
     .sn-divider{height:1px;background:rgba(255,255,255,.07);margin:16px 0;}
-    .sn-h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;letter-spacing:-.5px;line-height:1.12;color:rgba(255,255,255,.95);}
+    .sn-h1{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;letter-spacing:-.5px;line-height:1.12;color:rgba(255,255,255,.95);}
     .sn-h2{font-size:19px;font-weight:500;letter-spacing:-.3px;color:rgba(255,255,255,.9);}
     .sn-body{font-size:14px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.68;}
     .copy-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.55);transition:all .2s;display:inline-flex;align-items:center;gap:6px;font-family:'DM Sans',system-ui,sans-serif;}
-    .copy-btn:hover{background:rgba(79,158,255,.12);border-color:rgba(79,158,255,.25);color:#4f9eff;}
+    .copy-btn:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
     .copy-btn.copied{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.25);color:#34d399;}
-    @media(max-width:768px){.mobile-col{flex-direction:column!important;align-items:stretch!important;gap:12px!important;}.mobile-wrap{flex-wrap:wrap!important;}.mobile-grid-1{grid-template-columns:1fr!important;}.mobile-padding{padding:14px!important;}.mobile-btn{padding:12px 16px!important;font-size:13px!important;width:100%!important;}html,body{overflow-x:hidden!important;max-width:100vw!important;}.sn-card{max-width:100%!important;width:100%!important;}h1{font-size:clamp(22px,7vw,36px)!important;}h2{font-size:clamp(17px,5vw,28px)!important;}input[type=text],input[type=email],input[type=tel],select,textarea{width:100%!important;min-width:0!important;}.sn-tabs,.sn-tabbar{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;white-space:nowrap!important;}.sn-tabs::-webkit-scrollbar,.sn-tabbar::-webkit-scrollbar{display:none!important;}.plans-grid{grid-template-columns:1fr!important;max-width:400px!important;margin:0 auto!important;}.ws-sidebar{display:none!important;}.ws-main{padding:14px!important;}.nav-inner{padding:0 14px!important;}.gen-grid{grid-template-columns:1fr!important;}.details-row{flex-direction:column!important;gap:10px!important;}.phone-row{flex-direction:row!important;gap:8px!important;}}
-    @media(max-width:400px){h1{font-size:20px!important;}.mobile-padding{padding:12px!important;}}
+    @media(max-width:768px){
+      .mobile-col{flex-direction:column!important;align-items:stretch!important;gap:12px!important;}
+      .mobile-wrap{flex-wrap:wrap!important;}
+      .mobile-grid-1{grid-template-columns:1fr!important;}
+      .mobile-padding{padding:14px!important;}
+      .mobile-btn{padding:13px 16px!important;font-size:14px!important;width:100%!important;}
+      html,body{overflow-x:hidden!important;max-width:100vw!important;}
+      .sn-card{max-width:100%!important;width:100%!important;}
+      h1{font-size:clamp(24px,8vw,38px)!important;letter-spacing:-1px!important;}
+      h2{font-size:clamp(20px,5.5vw,30px)!important;}
+      h3{font-size:clamp(16px,4vw,22px)!important;}
+      input,textarea,select{width:100%!important;min-width:0!important;font-size:16px!important;}
+      .sn-tabs,.sn-tabbar{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;white-space:nowrap!important;}
+      .sn-tabs::-webkit-scrollbar,.sn-tabbar::-webkit-scrollbar{display:none!important;}
+      .plans-grid{grid-template-columns:1fr!important;max-width:100%!important;margin:0 auto!important;padding:0 4px!important;}
+      .plan-card-glass{padding:22px!important;}
+      .ws-sidebar{display:none!important;}
+      .ws-main{padding:14px!important;}
+      .nav-inner{padding:0 14px!important;}
+      .gen-grid{grid-template-columns:1fr!important;}
+      .details-row{flex-direction:column!important;gap:10px!important;}
+      .phone-row{flex-direction:row!important;gap:8px!important;}
+      .post-card{border-radius:14px!important;}
+      .sn-btn-primary,.sn-btn-ghost{width:100%!important;text-align:center!important;justify-content:center!important;}
+      .sn-glass{padding:16px!important;}
+    }
+    @media(max-width:480px){
+      h1{font-size:clamp(22px,7vw,32px)!important;}
+      .mobile-padding{padding:12px!important;}
+      .plan-card-glass{padding:18px!important;}
+    }
   </style>`;
 
   const NAV=(
@@ -3394,13 +3423,13 @@ export default function App(){
         display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:36,height:36,borderRadius:"50%",overflow:"hidden",flexShrink:0,
-            border:"1.5px solid rgba(79,158,255,0.38)",boxShadow:"0 0 16px rgba(79,158,255,0.2)",
-            background:"#08101f"}}>
+            border:"1.5px solid rgba(91,164,245,0.38)",boxShadow:"0 0 16px rgba(91,164,245,0.2)",
+            background:"#07101e"}}>
             <img src={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAWrUlEQVR42u2byZNd133fP2e407tv6nlEY55IgiDAQbJIcZBk2ZIsyRU7cWwl5X8gC1VlkThexJtsUiVroZU3SVUcVypSRbKUWNbkSLZIUaBIiiAmAgTYQAPdr4fX3W9+dzrnZPEglVKVVFESQNJS/zZ31dXnft7vd37T9wrAsWe/sMk9BHsA9wDuAdwDuGd7APcA7gHcA7hnewD3AO4B/DUz/d44hgCpkcpHSI0QCqRECIlzFuccEoc1OdYZsAXO5uDce+Hk79I0RiiECpA6RKgApX2cE1hrMUWGMxnk+d048RC+RnseQilsYXDG4FyBM0NcMQRnfz0ACqkRqoTQIegAKQRSSGxhyNMhOgipT89Tn5qlMjGJVh7dVpPdjVV2Gmvk/S4EIWFYAiEwNgOTY4sEm/VGnvkrCVBIhCqhvQgnFVYIpJQ4JzFpSn1qhuOPPsXciTOEE3MEUYxfitCeQgqQNqe31WD5x+e4+IPv0mzcRkchCIFwAozBOQdmgElaOGd+dQAKHSFUCYQCDEJ7oAKsKVBIHnn6Yxx49GmsH5MXFmMKBA4v0GitUJ7G8wOiUkytVoOsx4/+9ku8+PW/xkkBzqGFJLcFSmpsnmIG29i8/48boBAC4VVBRYAB5xBSIJSPQxF6mmc//UeImeN0Oh2yPCcIQvzAR3maqBThBwFaSaTWCAFSSYI4plat0Ln+On/5+f9AkiVo7SGsw5gCECihKJIWxaB5X31EAX92v5KE8seQKgAcQkqQCiE9pAoo0pTf/tTvEYwvcPXaDRwQBAFSgr2bXbVSKCHRSqOEREqB1BqspdduMzG3yOTUJBfP/QCpPZxzWCdBSMAhdYRQPjYf3jeI8v54nkZHMwhVwjmBkB4IHyl9tF8izywPnXmc+tx+Ll+8QBSGlEoxRZqRJCl5no8qFOdw1lIUOXlRUOQFJssRFnw/YG21wYknP8yjH/wQeZKD8AmDMtovIbwSKIkMyoRjSwip/5EAFBJZmkaoACEl0g9xSqM8D6c0xgri2hhPPPkUV65eR2mNcjl3rr5Od7cJziJwKOGwpsAagy0KwKCVRDhYefMaK1ffIIpLNFtdPvCxTxNGZZA+hVTIsAReiPXKCB2ALiHjWYSQ7/0Q9uNZhI6w1oBSCM9DSM3U7AwHjxyicWudYw+eYGx6lrWNJqbIuX7hPEQVnPLpJzmZgWFqyC0kuSHJLUlakGQFWV7gRREX/uGbCCxTC4uoMKa1vsrGxjp+XMZIwb/4w0/yxBOP8PJr13AmRUoJQuPucWK5p34tvSpClwCLkwKtFU54WKHodlMG2RYyLrN44ABraw2UF9DcXGNh/yJLh/YxUSszMz3FxHidMPCo1cqEYYhxkKQFaeFoDVLaGeiPfpzvf/UrVKYXmd2/n4MPnuLyxQsYk1MUBmsc6TBBSUBKHAIZ1sBkmGT3vQdQSA/pVUalie+jnUAgcVLj64BhbiAf4EcR9Xqd7p01uq02z55e4PQDB5mZqjExVqVSjihFEaU4orG+jTFdojDiwLE5oijCCUluoRAn+Lv5lC985QUm5mapT0wReorCOjwv5L/9929Q5EOELcA6hJPgLDKoY/MBzqTvLYA6GEdKjXEWKSUWDycUUigQEi8IybKEUhSipCQ3ApkP8EXMYNBjtyVw1jFMc6oVw9XlBs1mlzxLOXzkAIvCozPM0VqjpES5hI8/c5a/ff4SW+tNYi8iDGOGuUMphTVDFA6ExKKw1o4SsZCo0iRFd+2eZGZ5b0I3RvnVUYkhFYNhgVQenu+jlI8VCoTAC0rEcY3hMKU/GOIrR2EFrVaPZJiSZTlSCLI856UfXUBgGR+vk6T5KJkYi7OOvDD0hjm5ijh+YJrG7RWUFxJX6vhSY6zBOvC0h1Z6lDyExAmJVArpl5Fe/DOl8LsMUPtVnBRk+IzPzPPY+x/FORDSR/seo9JMkBcF5XIZIaDb7eJJy1itzMxknempOlMTVerVCCVhdnqMZNjD03DyyAKlUBFHmlIgiQNJNRw9J8uKpLWD7/tEUYlh0ifwfY4dO4wd+SBOSjw/REoPJz0QChnV757evbshLHSE82NQHs4KyuUqDxxe4tLlG1iT4VRIEEYYY5A2x7kCi0O6jOtvXGF7u8V4vUq1ViYsRQSBT+Qr6rUKWivu7PS4trYLUpNkFiE1cRyTO8lOd8D5H/4Yv7ZElhcILUEpnNQ0NndBqtEhraVcLZNnKf3+EBjdhcLbxuXDX6ox+4UACiHujuIcMqwhggrK+ZTKJVYb2/zV//gW2lN4XoATknq9ym67A1JgbUGv08UYh8raTBWaa1ffIkGyf2oOz4to55IChQ4CSqUYTwmq5Zh9U1WsSbm51WSmBL93epHl5ps04iX6/R4yiKhPTlFYR7fTQQqF0hItBd0kwxUG5XkI5yiMQQZ1TD4EBFKORmn33QM9zyPPc4QQgERGY4AizSTDJKFSiZEKrC0ohEAEATu9/iiZKI88N3Rau0jtU4tj9lc1LnX0TUqFLT515kEeObSApzTt4ZA4DNi3OE9tYoKXr97g6y9e46RpcTKo8vTSUV5fGGdNCJJhHyl9hPBAGPyogslTnHBIq7C2QHiaZDjEJQPCOIagiumt/xSeUgpjzP0BKKXEWsv7nvoQ7Z0mF86/gvQivMo8WbfLH//B02zuDPibb5wjHq8Q+opcSgoVoiXgUpRUCKnJsxztBeReRJGmVKfnCXTESy89z0qrx/sP7+MTjz7IZDmitbnDrWaP125v8KXvvMDY+Bj/+rOfJWyu0u4lDK1Eez7pMMMYR5IWGKmRnocUCoHA932ybEC30+WxRx7g+NIkX/za34+Snxdi8iG/+dGP8txzz/Hv/uRPUEpizNvzxrfdiYzC1hGWKnzkE7/LoN2k7cow+RAPzmiOLkiefHiRmZLkjfWUXmYo1WscPHKQ9m4X7QTOGHzPRwtLYixu2ObxuTInDi6hJubYHjiqpZDm6hrLV65weK7OwUP7ee3Fl2h1OtSWTqKqU/yT3/04T546yFxZ8ZUXLrNZOYIvYWt1DSs8vLFJKJXx/IAwCNlNHCqM+fhhzftOTPHE2aOsNba4tZkhii7vf99ZvvilL/KNr3+dc+fOjcqgtxnOP/etqT2f3/n9zyAx9Auf8ysZg7VL1OU2j09Innr8NG1viv/6w02Wu46FmQrb602UHfW2CFiYrZMXOe1WmyeqQz5yeJLJWsQASVFkbOz02DUljj31HEfOnGYq30E2rmGHAyq1GpPjNQIJV5pD/tVf/Zhi+gQ26bH21jLCL8HRk+SVGqLXY9hLmc2a/OHsFkfDNi9eXua1luXWcJKUmE9+8BgffvoJ9s1N86lPfpLBYNTqube5b/m5emEhBNYYdna2OfnQGZRLmRvTDF3Era0hSW+b7sZtJgLLh87sp3Dw48u3kDgCKQCDE6C0R+hBa7fDclewWoS0RIl+OM6lbJIfDSY4n45zMa1zmwmeXxe8nk7Q9KfZJebSRp9vXu/yny6mrGx2iOMKO+sNBplFTC1hZhfIPY80KPP0dME/ja5SHtzh9soKl7YMz+/MMLPvEL//4RMcXJrj6NEj/Om//TfcvLl8d0r+9n3q5/bAn4TyvgOHeeYjH0NrgUGyvLLNuVevUEoaPDFrWZisMzm3xGoxxnevddhpdQgCD5RG6oCpasDO+go7WxtQmUaUaig/xlMSjcULfCYX9nHkwVPElSqtdo92p0+v02LY6yC1hy6GuCTBjys01jew/hhMLDDwY2qB43cqK5zsX6LX3WZza4PnB/t4MzrL2VnBo0s+Bw8uMj03xxc+9znO/eCFn97z930aI6SkvbtDU8yy78BByjpnaWGGMw8dZ8vUeW2lTb+9Sd7epiJzpusBqQxpp6CEwAqPwmqU6ZOlCVJIAiUJJJAOyActBs01tm/foLm6xk5zh2G3CzbH15JyXCJQktadt/CjmK3WgCyoIab3008sh8UOnyldZKn/Bu3tVS41unxbPEW68H6eXsg4Mek4cGAffnma//i5v+D1l773c91792ScJYTA1o9woxWgnGFhoszSwiRPPHwYEY7z+nZEq7VL2rrDoNeh7BWE5SpdWyIsVajFHgPKmGGbIuljnSMftLHG4JzF8yOCUoUwrhLGFZQfUBQFyWBIr7XL7upN0iQl98rMjkX0VA1bqvOMt8wn1Cv4vdtsbDb4QWucc2OfYm56mlP+MvNjHg+dOcOVlS5//hf/k621FUTW/OkU/J0BKCQ4R1AeI54+xI1Gm0YrQZkBtUjy8LEFDizOsmZmeGujjRxukvR2KbpbhKHH/PQYAwl6/+NMj0V0Nu5gshThBQgpUL6P8ny8oIQXlhB+gMlTsjQh6bZIOy3yQZuJw6doBbMsets8OCk4vv1DztpLDLrbrO50+N/ZA2zMPcsDcZtFucLx44epTC3y5b+7xFe/e5kgrkP/Nnl/E4R4JwHefXgxojyDIqOVGJbbis7A4Lsh47FkriZIVIVNM0bS3cYlLQa9HbLeNllpllroaN68wrC1hTAZrkhxQmKMG93MUuKkQkiJMYaktUlv4xb5oMXUwROcPPsYR04e4a1LF3i02mTRNmhub3C9Lfi+PUU0tZ8D5jqzNcnJ02dZT0r8l6/+iBvLDWoTk3jxBNnmFcxw+50GOPpnUin8yhwmT9ACEB5rfZ/VnSFJv4VHQmC7hIFPGu+nm6aM18t02rtk7U122zmt7SYuHyBchrMFJG0wA2yRY7IheX+X/s4avdXLmHTI+NJhFk6eZWrfQfwwolaOGJ7/G15+5Rwnz5zlxRsDrnnHmIphgh0OHz3GxOIhvvPyCi9c3sJkKUpppABXDEg3LmCz/jsM8CdzjCLBq0zhEGghEHmCUpp2L2FlN6dnFLVAYvpNZNZiYmYeVyQ0Npp4sw9T5IagFGEsOKmR2gcdQtZBZC2cLTBCMKFajM8f4tCH/oiFYw9QG59CSc2g28M4wb6zT3Pl5ecJAo/JQw8x3Fnl0PwkR06cYqU54H9973XurO/guxRsQX1yCic1Nu2TNM7fVTO84wAFOIsKq+TW49j+OZRSdAYZgachL+jFS+xGs6giJ5aG7uoFbm/2iI9/HCd9XJ5g0yFOKErTBxEIwvoM0cwxaiXBTD1g/+IcU7P7mHzyM1TrdZTJqY5P0ly9w/qtWyg/wI/LHHjsI/zwm3/N4VKHx37jOfqywvfOXeH85WUoMrTLsXlKkRv2LYzT7Seku6tkzavv1lLp7i/mBF5pkt2dFv1hjjQZ+XAA1qFMzqDTZdfEjAcpq7dukhWSuDZHODGPwzLYfAub5QTxOONLx7HZgMrMfqr7HmTS61EOfMyxjxHX6xT9DuXaGElmWb3+Bhs3LhJUJgjCmNj1aTdWuH37NnFtnK89f4Pu7g7COWxRIKwZKR6EZb2xgS0K7O51isHOLxy+92QrZ4sUHY6B0KNWzRa4IgeT4pIBwuSook+7sQwTp5hYWKJmN0n7XWw8w3D9TQRQoAjLVcaXjpPtrOFVpijiOdLqAcL6NIPdJnF1DOMEm9ttdhp36K2+AdEY6dZNTo5nHH/sg7z0xg43r19GemVyY/iXf/BRhsmQjfUtPK2wpkBLgcYw2Lg4unffvbWmAGdwQiN0dHd2acmShCJLkaLA5kNsltBNBUcPzODHMWXfEHTeYHt9lSSxiNI4k4dP0d9p4PuaUn2atLWFXxkjKJdJuruUqnUcUDiJDmOCcpXt5cvY1jJy88eMTS3w8ONPcOOtm9xudNCehzEFpUjTaGzS6/UQGKy1CCHJu2sU/c1feqR/T/bCzqSoaBzhLEUy5OiRfczNTrDZWEcKA0WO1oK52XG6u1vMhwNCbVjd6qNrB/BdlzRNCevTtLfW6bbbOKkYFo5Oq02R5+xsNen0hqRJQtLeZiZMMYWlvXaN2XqAJ6E6NUd3kLN6pwE2R+K4cf0Wg34PJeWob3UW4Qqy3eu/tPfdo62cAJNie5vIeAaXJ5RjnzCKMHmGVAIlLBqw/SYi6SHHS6zsGHa94zwwW+bBuTpSByAFmT5Er9OjkB7ve+wIE2N1fvjKFbyozNx4yKGFcQ4tTnFiqc6ffaHDX14+QLdYI2zv8vorr6J0CcVdAaaQhIGHsw6cw1qLc5AP17FFck+0VfcA4OgAxWAdrUp4Qcir514DKQjCcKRnwVGKNHp8iXZ5jPI8/PGJI/zpl96gFEqu3rjDkUMLHDm0wNzMOGlhWb65yrOPLLBvbppTixGBp5idnSJJC7Z2B3z5e9e409X4lRr//CNHeLVRIA8/TSxz1EvnGQ6SUX9b3NUNOjdSsdqMor9+TxZK91zeJnQJFc+PRv139yZCKXJjmZgYozK7nwcWpvjMfJ8wlPz5Kx02hrC2NSCOA3yX4gnLBx6epxwILl+9xVi1xLPPPIEIx/jWq6sQVOmmgkJFVColLn/va3z2YUne6/OSPsq2qvP6C9/F0wIhBTub22g1GlEJ4cg7t+6pbvCeqm1cMcAOt0bhYgqcMzhb4ClBq9WmcfElDnfPE0+P8++/8gobnYShN8X8yceo7DtBuP8MidP81rOPc/r0KV69OeBrLyzT6eccWppg9dYyevIAM0sHmF+YJqxUmX/oMT7/7euIUswj9jrXvvMl+v0eg36fQW+IUgLrChCWYrBxz0WX91xc5EyKQICOkFoBoyGscAYrNS/d7vHlc2+yNlRopZBSILRPXK/TXLnGBw95/LNPP8fzF9ZpqP3IMCa2O3z6tz9A3t7mH57/EUdPP8qw16W/vcHG8nXuNLb47pVVXljeJdUhAktRpNgiBznyxGLQxA6b91yddV9EcybdRgqwagIBCHFXYClAIMmdJPQEC9PjXDh/DmcstQMPsrN2m/nHniIKA27dbpB3hni2z9WrtxEoDh09yPXP/2fyNEFXxlFhBaUDtMuw2h+JmooM5xi1li6nsAKTtrCDrfujI+V+Snz9OtIfQyqFw4EzCKlHmhmpKdfG6aSOMK6g/ZDh5jIMd/mt33yS185f5PbWKItXvZxn3n+a719uEk4uUp6cozS5iPRLpJtvceXvv4qnuHt1mLuDHIl1BjvcvqdqrHcUIIBQEdKfQGg9UpyKUYIxxhIEmvF6zHY7R3gRWZqgg5C030N4EV5UG+2f0xbp1jJEdeLJBcJylWqtwrHFKi/+4GV6vS6+p7HGjhRYUlOYDDNs4vLe/Xy9+/+lkjNDTNJA+nWkLiNxowLWWOYXD+KJHPJNQr+DLQm2uhlEEUJKXN7DOofSAeHccULXQfSXWZiY4+wDC8wefpgbt7cZXHwZ1Ei+hhCYrI0Zbt+TQvld98D/2xtDpK6C8Hn8Nx6nPLPESqNDoAxWKLLmG6zfadBPLFoJnFBYBEIIjBOMlX1k3iaYOMjk0jFkdYbDCzWaKzd5/tvfQouUdLCDKwbv1Cu9s9/KOZNgTEJ1bJpWu8VOP2Ph5BPkzeu01t+k19omG7RxBRQ/mZBIMZL1WUc/FygJ/cFlsmzI0umn2V1rE1br1KvQXL3zS3a273EP/NmBtgLicplKpUKWJgz6fVJRweCjlAKhcELgBAhG4ktwCJcj7QBpE6rlMlEY0m1v0xmkFMa+46/07n1s+P+OcYRUP306Ie5OfBip9+8W5qO77b1x7HcVoPiZQab7BdaKv+zf/+p54P9v6n2PGv9fQ4Dvfdv75H8P4B7APYB7APdsD+AewD2AewD3bA/gHsA9gHsA92wP4B7APYB7APfsbdr/AYdav9kDgXzXAAAAAElFTkSuQmCC`} alt="Social Ninja's" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
           </div>
           <div>
             <div style={{fontSize:16,fontWeight:600,letterSpacing:"-.3px",lineHeight:1.1,fontFamily:"'DM Sans',sans-serif"}}>
-              Social<span style={{color:"#4f9eff"}}>Ninja's</span>.
+              Social<span style={{color:"#5ba4f5"}}>Ninja's</span>.
             </div>
             <div style={{fontSize:"8.5px",fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",
               color:"rgba(255,255,255,0.32)",lineHeight:1,marginTop:2}}>{CONFIG.brandTagline}</div>
@@ -3420,16 +3449,16 @@ export default function App(){
   );
 
   const wrap=children=>(
-    <div style={{background:"#08101f",minHeight:"100vh",color:"rgba(255,255,255,0.95)",position:"relative",overflow:"hidden"}}>
+    <div style={{background:"#07101e",minHeight:"100vh",color:"rgba(255,255,255,0.95)",position:"relative",overflow:"hidden"}}>
       {/* Ambient background */}
       <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
         <div style={{position:"absolute",width:700,height:700,borderRadius:"50%",filter:"blur(130px)",opacity:.22,top:"-20%",left:"-10%",background:"radial-gradient(circle,rgba(37,99,235,.35),transparent 70%)"}}></div>
-        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",filter:"blur(120px)",opacity:.16,top:"15%",right:"-5%",background:"radial-gradient(circle,rgba(79,158,255,.3),transparent 70%)"}}></div>
+        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",filter:"blur(120px)",opacity:.16,top:"15%",right:"-5%",background:"radial-gradient(circle,rgba(91,164,245,.3),transparent 70%)"}}></div>
         <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",filter:"blur(110px)",opacity:.14,bottom:"10%",left:"25%",background:"radial-gradient(circle,rgba(16,185,129,.25),transparent 70%)"}}></div>
       </div>
       <div dangerouslySetInnerHTML={{__html:CSS}}/>
       {NAV}
-      <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"28px 20px",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
+      <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"clamp(16px,3vw,28px) clamp(14px,2vw,20px)",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
         {children}
       </div>
     </div>
@@ -3476,7 +3505,7 @@ export default function App(){
           {clientView==="dashboard"
             ?<ClientDashboard profile={cl} hKey={`snstudio_hist_${clientSelected}`}
                 onGenerateContent={()=>setClientView("content")}/>
-            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}${window.location.pathname}?plan=${planId}`; }}/>
+            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
           }
         </div>
     );

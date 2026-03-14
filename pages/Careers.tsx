@@ -254,12 +254,12 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="text"
-                                                className={`w-full bg-brand-dark border ${errors.name ? 'border-red-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-brand-dark border ${errors.name ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
                                                 placeholder="Your full name"
                                                 value={formData.name}
                                                 onChange={(e) => handleChange('name', e.target.value)}
                                             />
-                                            {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                                            {errors.name && <p className="text-amber-400 text-xs mt-1">{errors.name}</p>}
                                         </div>
 
                                         {/* Email */}
@@ -269,12 +269,12 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="email"
-                                                className={`w-full bg-brand-dark border ${errors.email ? 'border-red-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-brand-dark border ${errors.email ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
                                                 placeholder="you@example.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleChange('email', e.target.value)}
                                             />
-                                            {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                                            {errors.email && <p className="text-amber-400 text-xs mt-1">{errors.email}</p>}
                                         </div>
                                     </div>
 
@@ -286,12 +286,12 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="tel"
-                                                className={`w-full bg-brand-dark border ${errors.phone ? 'border-red-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-brand-dark border ${errors.phone ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
                                                 placeholder="+91 00000 00000"
                                                 value={formData.phone}
                                                 onChange={(e) => handleChange('phone', e.target.value)}
                                             />
-                                            {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
+                                            {errors.phone && <p className="text-amber-400 text-xs mt-1">{errors.phone}</p>}
                                         </div>
 
                                         {/* Position Select */}
@@ -301,7 +301,7 @@ const Careers: React.FC = () => {
                                             </label>
                                             <div className="relative">
                                                 <select
-                                                    className={`w-full bg-brand-dark border ${errors.role ? 'border-red-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors appearance-none cursor-pointer`}
+                                                    className={`w-full bg-brand-dark border ${errors.role ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors appearance-none cursor-pointer`}
                                                     value={formData.role}
                                                     onChange={(e) => handleChange('role', e.target.value)}
                                                 >
@@ -315,7 +315,7 @@ const Careers: React.FC = () => {
                                                     <ArrowRight size={14} className="rotate-90" />
                                                 </div>
                                             </div>
-                                            {errors.role && <p className="text-red-400 text-xs mt-1">{errors.role}</p>}
+                                            {errors.role && <p className="text-amber-400 text-xs mt-1">{errors.role}</p>}
                                         </div>
                                     </div>
 
@@ -326,12 +326,12 @@ const Careers: React.FC = () => {
                                         </label>
                                         <input
                                             type="url"
-                                            className={`w-full bg-brand-dark border ${errors.portfolio ? 'border-red-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                            className={`w-full bg-brand-dark border ${errors.portfolio ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
                                             placeholder="https://linkedin.com/in/yourprofile"
                                             value={formData.portfolio}
                                             onChange={(e) => handleChange('portfolio', e.target.value)}
                                         />
-                                        {errors.portfolio && <p className="text-red-400 text-xs mt-1">{errors.portfolio}</p>}
+                                        {errors.portfolio && <p className="text-amber-400 text-xs mt-1">{errors.portfolio}</p>}
                                     </div>
 
                                     {/* Message / Cover Letter */}

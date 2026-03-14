@@ -45,7 +45,7 @@ const AdminLogin: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-brand-primary/50 mb-3"
                     autoFocus
                 />
-                {err && <p className="text-red-400 text-xs mb-3">⚠ {err}</p>}
+                {err && <p className="text-amber-400 text-xs mb-3">⚠ {err}</p>}
                 <button
                     onClick={attempt}
                     disabled={loading || !pw}
@@ -296,7 +296,7 @@ const Admin: React.FC = () => {
                                     <div className="flex items-center gap-3">
                                         <button 
                                             onClick={() => handleDelete(blog.id)}
-                                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                                            className="p-2 text-neutral-400 hover:text-amber-400 hover:bg-amber-400/10 rounded-lg transition-colors"
                                             title="Delete Post"
                                         >
                                             <Trash2 size={20} />

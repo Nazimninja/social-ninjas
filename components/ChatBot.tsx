@@ -205,7 +205,7 @@ const ChatBot: React.FC = () => {
       >
         <MessageSquare size={24} className="fill-current" />
         {/* Notification Dot */}
-        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-brand-dark animate-pulse"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-amber-500 rounded-full border-2 border-brand-dark animate-pulse"></span>
       </button>
 
       {/* Chat Window Container */}

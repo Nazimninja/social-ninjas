@@ -52,10 +52,10 @@ const Contact: React.FC = () => {
     <div style={{marginBottom:18}}>
       <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
         {Icon&&<Icon size={12}/>}{label}
-        {errors[name]&&<span style={{color:'#f87171',fontSize:10,marginLeft:'auto'}}>{errors[name]}</span>}
+        {errors[name]&&<span style={{color:'var(--gold)',fontSize:10,marginLeft:'auto',fontWeight:500}}>{errors[name]}</span>}
       </label>
       <input type={type} value={(form as any)[name]} onChange={e=>set(name,e.target.value)} placeholder={placeholder}
-        className="field" style={{borderColor:errors[name]?'rgba(239,68,68,0.5)':'',background:errors[name]?'rgba(239,68,68,0.06)':''}}/>
+        className="field" style={{borderColor:errors[name]?'rgba(232,184,109,0.5)':'',background:errors[name]?'rgba(232,184,109,0.06)':''}}/>
     </div>
   );
 
@@ -66,7 +66,7 @@ const Contact: React.FC = () => {
         <div style={{width:72,height:72,borderRadius:'50%',background:'rgba(52,211,153,0.12)',border:'1px solid rgba(52,211,153,0.3)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',boxShadow:'0 0 32px rgba(52,211,153,0.2)'}}>
           <CheckCircle size={32} color="#34d399"/>
         </div>
-        <h2 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:36,fontWeight:400,letterSpacing:'-1px',color:'rgba(255,255,255,0.96)',marginBottom:12}}>Message received.</h2>
+        <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:36,fontWeight:400,letterSpacing:'-1px',color:'rgba(255,255,255,0.96)',marginBottom:12}}>Message received.</h2>
         <p style={{fontSize:15,fontWeight:300,color:'rgba(255,255,255,0.5)',lineHeight:1.7}}>We'll review your brief and get back within 24 hours with a tailored growth plan.</p>
       </div>
     </div>
@@ -83,10 +83,10 @@ const Contact: React.FC = () => {
           {/* LEFT */}
           <div>
             <div className="eyebrow reveal">Get In Touch</div>
-            <h1 className="reveal d1" style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'rgba(255,255,255,0.96)'}}>
-              Ready to<br/><em style={{color:'#4f9eff'}}>scale?</em>
+            <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'rgba(255,255,255,0.96)'}}>
+              Let's build your<br/><em style={{background:'linear-gradient(135deg,#5ba4f5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
             </h1>
-            <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'rgba(255,255,255,0.5)',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Tell us about your brand and growth goals. We'll build a custom strategy within 24 hours.</p>
+            <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'rgba(255,255,255,0.5)',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
 
             <div className="reveal d3" style={{display:'flex',flexDirection:'column',gap:18}}>
               {[
@@ -95,8 +95,8 @@ const Contact: React.FC = () => {
                 {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
               ].map(({icon:Ico,label,val,href})=>(
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:14}}>
-                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(79,158,255,0.07)',border:'1px solid rgba(79,158,255,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <Ico size={18} color="#4f9eff" strokeWidth={1.5}/>
+                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(91,164,245,0.07)',border:'1px solid rgba(91,164,245,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    <Ico size={18} color="#5ba4f5" strokeWidth={1.5}/>
                   </div>
                   <div>
                     <div style={{fontSize:11,color:'rgba(255,255,255,0.35)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
@@ -123,7 +123,7 @@ const Contact: React.FC = () => {
               <div style={{padding:'20px 28px',borderBottom:'1px solid rgba(255,255,255,0.07)',display:'flex',alignItems:'center',gap:8}}>
                 {[1,2,3].map(s=>(
                   <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(79,158,255,0.15)':'rgba(255,255,255,0.05)',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(79,158,255,0.3)':'rgba(255,255,255,0.1)'}`,color:s<step?'#34d399':s===step?'#4f9eff':'rgba(255,255,255,0.35)',fontFamily:"'JetBrains Mono',monospace"}}>
+                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'rgba(255,255,255,0.05)',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'rgba(255,255,255,0.1)'}`,color:s<step?'#34d399':s===step?'#5ba4f5':'rgba(255,255,255,0.35)',fontFamily:"'JetBrains Mono',monospace"}}>
                       {s<step?'✓':s}
                     </div>
                     {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'rgba(255,255,255,0.06)',transition:'background .4s'}}/>}
@@ -135,7 +135,7 @@ const Contact: React.FC = () => {
               <form onSubmit={submit} style={{padding:28}}>
                 {step===1&&(
                   <div>
-                    <h3 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
                     <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Tell us about yourself.</p>
                     <Field label="Full Name" name="name" placeholder="Jane Smith" icon={User}/>
                     <Field label="Work Email" name="email" type="email" placeholder="jane@company.com" icon={Mail}/>
@@ -144,7 +144,7 @@ const Contact: React.FC = () => {
                 )}
                 {step===2&&(
                   <div>
-                    <h3 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
                     <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Help us understand your current setup.</p>
                     <Field label="Website / Social Handle" name="website" placeholder="acme.com or @acme" icon={Globe}/>
                     <div style={{marginBottom:18}}>
@@ -158,26 +158,26 @@ const Contact: React.FC = () => {
                 )}
                 {step===3&&(
                   <div>
-                    <h3 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
                     <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Be specific — this shapes our strategy.</p>
                     <div style={{marginBottom:18}}>
                       <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         <Phone size={12}/>Phone
-                        {errors.phone&&<span style={{color:'#f87171',fontSize:10,marginLeft:'auto'}}>{errors.phone}</span>}
+                        {errors.phone&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.phone}</span>}
                       </label>
                       <div style={{display:'flex',gap:8}}>
                         <select value={form.cc} onChange={e=>set('cc',e.target.value)} className="field" style={{width:90,flexShrink:0,appearance:'none',cursor:'pointer',padding:'13px 10px'}}>
                           {CC.map(c=><option key={c.code+c.f} value={c.code}>{c.f} {c.code}</option>)}
                         </select>
-                        <input value={form.phone} onChange={e=>set('phone',e.target.value)} placeholder="Your number" type="tel" className="field" style={{flex:1,borderColor:errors.phone?'rgba(239,68,68,0.5)':''}}/>
+                        <input value={form.phone} onChange={e=>set('phone',e.target.value)} placeholder="Your number" type="tel" className="field" style={{flex:1,borderColor:errors.phone?'rgba(232,184,109,0.5)':''}}/>
                       </div>
                     </div>
                     <div style={{marginBottom:18}}>
                       <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         Your Bottleneck
-                        {errors.message&&<span style={{color:'#f87171',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
+                        {errors.message&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
                       </label>
-                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific — our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(239,68,68,0.5)':''}}/>
+                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific — our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
                     </div>
                   </div>
                 )}

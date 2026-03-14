@@ -12,9 +12,9 @@ const ContactWidget: React.FC = () => {
           {/* Email */}
           <a
             href="mailto:nazim@socialninjas.in"
-            className="flex items-center gap-2 bg-[#0f172a] border border-white/10 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg hover:border-brand-primary/40 transition-all whitespace-nowrap"
+            style={{display:"flex",alignItems:"center",gap:8,background:"rgba(11,20,34,0.92)",backdropFilter:"blur(24px)",border:"1px solid rgba(91,164,245,0.2)",color:"rgba(255,255,255,0.85)",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
           >
-            <Mail size={14} className="text-brand-primary" />
+            <Mail size={14} style={{color:"#5ba4f5"}} />
             nazim@socialninjas.in
           </a>
           {/* Instagram */}
@@ -22,7 +22,7 @@ const ContactWidget: React.FC = () => {
             href="https://www.instagram.com/socialninja.s/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#0f172a] border border-white/10 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg hover:border-pink-500/40 transition-all whitespace-nowrap"
+            className="flex items-center gap-2 bg-[#07101e] border border-white/10 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg hover:border-pink-500/40 transition-all whitespace-nowrap"
           >
             <Instagram size={14} className="text-pink-400" />
             @socialninja.s

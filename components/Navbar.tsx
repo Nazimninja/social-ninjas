@@ -46,15 +46,15 @@ const Navbar: React.FC = () => {
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', position: 'relative', zIndex: 50 }}>
           <div style={{
             width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', flexShrink: 0,
-            border: '1.5px solid rgba(79,158,255,0.38)',
-            boxShadow: '0 0 16px rgba(79,158,255,0.2), inset 0 1px 0 rgba(255,255,255,0.12)',
-            background: '#08101f',
+            border: '1.5px solid rgba(91,164,245,0.38)',
+            boxShadow: '0 0 16px rgba(91,164,245,0.2), inset 0 1px 0 rgba(255,255,255,0.12)',
+            background: '#07101e',
           }}>
             <img src={`data:image/png;base64,${logoB64}`} alt="Social Ninja's" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div>
             <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 17, fontWeight: 600, letterSpacing: '-0.3px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
-              Social<span style={{ color: '#4f9eff' }}>Ninja's</span>.
+              Social<span style={{ color: '#5ba4f5' }}>Ninja's</span>.
             </div>
             <div style={{ fontSize: '8.5px', fontWeight: 400, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)', lineHeight: 1 }}>
               AI Agency
@@ -83,14 +83,14 @@ const Navbar: React.FC = () => {
             <button style={{
               fontFamily: "'DM Sans', system-ui, sans-serif",
               fontSize: 13.5, fontWeight: 600, color: '#fff',
-              background: 'linear-gradient(135deg, #2563eb, #4f9eff)',
+              background: 'linear-gradient(135deg, #2563eb, #5ba4f5)',
               border: 'none', borderRadius: 50, padding: '9px 22px',
               cursor: 'pointer', letterSpacing: '-0.1px',
-              boxShadow: '0 4px 20px rgba(79,158,255,0.32), inset 0 1px 0 rgba(255,255,255,0.2)',
+              boxShadow: '0 4px 20px rgba(91,164,245,0.32), inset 0 1px 0 rgba(255,255,255,0.2)',
               transition: 'all 0.22s',
             }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.transform = 'translateY(-1px)'; (e.target as HTMLElement).style.boxShadow = '0 8px 28px rgba(79,158,255,0.42)'; }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.transform = ''; (e.target as HTMLElement).style.boxShadow = '0 4px 20px rgba(79,158,255,0.32)'; }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.transform = 'translateY(-1px)'; (e.target as HTMLElement).style.boxShadow = '0 8px 28px rgba(91,164,245,0.42)'; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.transform = ''; (e.target as HTMLElement).style.boxShadow = '0 4px 20px rgba(91,164,245,0.32)'; }}
             >
               Book Strategy Call
             </button>
@@ -119,8 +119,8 @@ const Navbar: React.FC = () => {
         opacity: isOpen ? 1 : 0,
       }}>
         {/* Ambient */}
-        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(37,99,235,0.2),transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }}></div>
-        <div style={{ position: 'absolute', bottom: '10%', left: '-10%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle,rgba(79,158,255,0.15),transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }}></div>
+        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(29,78,216,0.2),transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }}></div>
+        <div style={{ position: 'absolute', bottom: '10%', left: '-10%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle,rgba(91,164,245,0.15),transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }}></div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'relative', zIndex: 1 }}>
           {navLinks.map((link, idx) => (
@@ -129,10 +129,10 @@ const Navbar: React.FC = () => {
               to={link.path}
               onClick={() => setIsOpen(false)}
               style={{
-                fontFamily: "'Instrument Serif', Georgia, serif",
-                fontSize: 38, fontWeight: 400, letterSpacing: '-1px',
+                fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
+                fontSize: 38, fontWeight: 700, letterSpacing: '-1px',
                 textDecoration: 'none', lineHeight: 1.15,
-                color: location.pathname === link.path ? '#4f9eff' : 'rgba(255,255,255,0.9)',
+                color: location.pathname === link.path ? '#5ba4f5' : 'rgba(255,255,255,0.9)',
                 transition: `all 0.5s ease ${100 + idx * 60}ms`,
                 transform: isOpen ? 'translateX(0)' : 'translateX(40px)',
                 opacity: isOpen ? 1 : 0,
@@ -148,10 +148,10 @@ const Navbar: React.FC = () => {
           <Link to="/contact" onClick={() => setIsOpen(false)} style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '16px', borderRadius: 50,
-              background: 'linear-gradient(135deg, #2563eb, #4f9eff)',
+              background: 'linear-gradient(135deg, #2563eb, #5ba4f5)',
               color: '#fff', border: 'none', fontSize: 16, fontWeight: 500, cursor: 'pointer',
               fontFamily: "'DM Sans', system-ui, sans-serif",
-              boxShadow: '0 12px 36px rgba(79,158,255,0.35), inset 0 1px 0 rgba(255,255,255,0.18)',
+              boxShadow: '0 12px 36px rgba(91,164,245,0.35), inset 0 1px 0 rgba(255,255,255,0.18)',
             }}>
               Book Strategy Call
             </button>
