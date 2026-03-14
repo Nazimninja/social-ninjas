@@ -1,608 +1,310 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, ShieldCheck, Star, Rocket, ChevronRight, BarChart3, PieChart, Activity, Zap, Bot, Cpu } from 'lucide-react';
-import Button from '../components/Button';
+import { TrendingUp, ArrowRight, ShieldCheck, Star, Rocket, BarChart3, Zap, Bot, Cpu, Activity } from 'lucide-react';
 import SEO from '../components/SEO';
-import ScrollReveal from '../components/ScrollReveal';
-import InstagramFeed from '../components/InstagramFeed';
+
+/* ── Scroll Reveal Hook ── */
+function useReveal() {
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
 
 const Home: React.FC = () => {
-    // Testimonial Carousel State
-    const [currentTestimonial, setCurrentTestimonial] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+  useReveal();
+  const [currentT, setCurrentT] = useState(0);
+  const [hovered, setHovered] = useState(false);
 
-    const testimonials = [
-        {
-            name: "Gordy Hirsch",
-            role: "Director of Creative Services",
-            company: "CareRev",
-            image: "https://randomuser.me/api/portraits/men/32.jpg",
-            impact: "300% Lead Volume",
-            text: "Honestly, I was skeptical about hiring another agency. But the team just gets it. We didn't just get 'leads'—we got actual qualified sales calls. The volume tripled in a month. It’s rare to find partners who care this much.",
-            stars: 5
-        },
-        {
-            name: "Fatima Al-Maktoum",
-            role: "Head of Marketing",
-            company: "Al-Futtaim",
-            image: "https://randomuser.me/api/portraits/women/65.jpg",
-            impact: "4.5x ROAS",
-            text: "We've worked with the big global agencies, but Social Ninja's operates differently. No fluff reports. Just 'here's what we spent, here's what we made'. They treat our budget like it's their own money. The ROI speaks for itself.",
-            stars: 5
-        },
-        {
-            name: "Vikram Singh",
-            role: "Founder",
-            company: "Velocity Logistics",
-            image: "https://randomuser.me/api/portraits/men/86.jpg",
-            impact: "$250k Net Profit",
-            text: "We were stuck at a plateau for months. The team came in, audited our ad account, and found leaks we didn't know existed. Two weeks later, our CPA dropped by 40%. They literally saved our Q4 targets.",
-            stars: 5
-        },
-        {
-            name: "Sarah Jenkins",
-            role: "Founder",
-            company: "Lumina Skin",
-            image: "https://randomuser.me/api/portraits/women/44.jpg",
-            impact: "Scale to $50k/mo",
-            text: "Creative burnout is real. We were churning out ads that flopped constantly. Their creative team stepped in and produced videos that actually stopped the scroll. Our ROAS went from 1.8 to 4.2 in just 60 days.",
-            stars: 5
-        },
-        {
-            name: "Mike Ross",
-            role: "VP of Sales",
-            company: "SaaSify",
-            image: "https://randomuser.me/api/portraits/men/22.jpg",
-            impact: "Auto-Booked Demos",
-            text: "Most agencies just send you a spreadsheet of emails that never pick up the phone. These guys set up an AI qualification system for us. Now my sales team only talks to people who actually want to buy. Game changer.",
-            stars: 5
-        },
-        {
-            name: "Arjun Mehta",
-            role: "Managing Director",
-            company: "Skyline Real Estate",
-            image: "https://randomuser.me/api/portraits/men/54.jpg",
-            impact: "High-Ticket Sales",
-            text: "I don't care about likes. I care about closings. They built a funnel that nurtured leads automatically. I wake up to booked appointments on my calendar. It feels like magic, but I know it's just really good engineering.",
-            stars: 5
-        }
-    ];
+  const testimonials = [
+    { name: "Gordy Hirsch",    role: "Director of Creative",   company: "CareRev",            impact: "300% Lead Volume", text: "We didn't just get 'leads' — we got actual qualified sales calls. Volume tripled in a month. It's rare to find partners who care this much.", stars: 5 },
+    { name: "Fatima Al-Maktoum", role: "Head of Marketing",   company: "Al-Futtaim",         impact: "4.5× ROAS",        text: "No fluff reports. Just 'here's what we spent, here's what we made'. They treat our budget like it's their own money. The ROI speaks for itself.", stars: 5 },
+    { name: "Vikram Singh",    role: "Founder",                company: "Velocity Logistics",  impact: "$250k Net Profit", text: "Two weeks later, our CPA dropped by 40%. They literally saved our Q4 targets.", stars: 5 },
+    { name: "Sarah Jenkins",   role: "Founder",                company: "Lumina Skin",         impact: "4.2× ROAS",        text: "Their creative team produced videos that actually stopped the scroll. ROAS went from 1.8 to 4.2 in just 60 days.", stars: 5 },
+    { name: "Mike Ross",       role: "VP of Sales",            company: "SaaSify",             impact: "Auto-Booked Demos", text: "Now my sales team only talks to people who actually want to buy. Game changer.", stars: 5 },
+  ];
 
-    // Auto-advance carousel with hover pause
-    useEffect(() => {
-        if (isHovered) return;
-        const timer = setInterval(() => {
-            setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-        }, 8000);
-        return () => clearInterval(timer);
-    }, [isHovered, currentTestimonial]);
+  useEffect(() => {
+    if (hovered) return;
+    const t = setInterval(() => setCurrentT(p => (p + 1) % testimonials.length), 7000);
+    return () => clearInterval(t);
+  }, [hovered, currentT]);
 
-    const handlePrev = () => {
-        setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    };
+  return (
+    <div className="page-bg overflow-x-hidden" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" /><div className="amb-4" />
+      <SEO title="Social Ninja's | AI-Powered Growth Agency" description="We scale brands through elite creative production, AI automation, and mathematical media buying." keywords="performance marketing agency, AI automation, social media management" />
 
-    const handleNext = () => {
-        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    };
+      {/* ── HERO ── */}
+      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 80, paddingBottom: 60, overflow: 'hidden' }}>
+        <div className="hero-grid" />
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', width: '100%', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
 
-    return (
-        <main className="overflow-x-hidden selection:bg-brand-primary selection:text-brand-dark bg-brand-dark">
-            <SEO
-                title="Social Ninja's | Premium Digital Growth & Performance Marketing Agency"
-                description="We scale brands through elite content production, AI automation, and mathematical media buying. Experience the ROI-focused growth infrastructure for 1% brands."
-                keywords="performance marketing agency, digital growth partner, social media management, AI business automation, premium video production, ROI digital agency"
-            />
+            {/* LEFT */}
+            <div>
+              <div className="reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px', borderRadius: 50, background: 'rgba(79,158,255,0.08)', border: '1px solid rgba(79,158,255,0.2)', fontSize: 11, fontWeight: 600, color: '#4f9eff', marginBottom: 28, letterSpacing: '0.03em' }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d399', boxShadow: '0 0 8px #34d399', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+                AI-First Marketing Agency
+              </div>
 
-            {/* --- HERO SECTION RE-ENGINEERED --- */}
-            <section className="relative min-h-[90vh] lg:min-h-[100dvh] flex items-center pt-24 pb-12 lg:pt-20 lg:pb-0 overflow-hidden">
+              <h1 className="reveal d1" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 'clamp(42px, 6vw, 76px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-1px', marginBottom: 10, color: 'rgba(255,255,255,0.96)' }}>
+                The AI-Powered
+              </h1>
+              <h1 className="reveal d1" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 'clamp(42px, 6vw, 76px)', fontWeight: 400, lineHeight: 1.02, letterSpacing: '-1px', marginBottom: 24, background: 'linear-gradient(135deg, #4f9eff, #a5c8ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <em>Growth Engine.</em>
+              </h1>
 
-                {/* Subtle Background Glows (No more messy noise) */}
-                <div className="absolute top-0 left-1/4 w-[80vw] h-[80vw] md:w-[500px] md:h-[500px] bg-brand-primary/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
-                <div className="absolute bottom-0 right-1/4 w-[80vw] h-[80vw] md:w-[500px] md:h-[500px] bg-brand-secondary/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none"></div>
+              <p className="reveal d2" style={{ fontSize: 'clamp(15px, 1.8vw, 18px)', fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.72, maxWidth: 480, marginBottom: 40 }}>
+                Social Ninja's combines elite creative production with 24/7 AI Sales Agents to scale brands <strong style={{ color: 'rgba(255,255,255,0.88)', fontWeight: 500 }}>worldwide</strong>. The future of marketing is automated.
+              </p>
 
-                <div className="max-w-7xl mx-auto px-6 w-full relative z-10 h-full">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <div className="reveal d3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 48 }}>
+                <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Deploy AI Growth <ArrowRight size={16} /></button></Link>
+                <Link to="/services"><button className="btn-ghost" style={{ fontSize: 15 }}>View AI Systems →</button></Link>
+              </div>
 
-                        {/* LEFT COLUMN: Authoritative Copy (Span 7 cols for more breathing room) */}
-                        <div className="lg:col-span-7 flex flex-col justify-center relative z-20">
+              <div className="reveal d4" style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+                {[['4.8×','Avg ROAS'], ['$40M+','Ad Spend Managed'], ['97%','Retention Rate']].map(([n,l]) => (
+                  <div key={l}>
+                    <div style={{ fontFamily: "'DM Sans'", fontSize: 26, fontWeight: 600, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.8px', lineHeight: 1 }}>{n}</div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.05em', marginTop: 3 }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                            {/* Premium Tag */}
-                            <div className="inline-flex items-center gap-2 self-start px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 mb-6 md:mb-8 backdrop-blur-md animate-fade-in-up">
-                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary animate-pulse"></div>
-                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-300">AI-First Marketing Agency</span>
-                            </div>
-
-                            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] md:leading-[1.05] tracking-tight mb-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                                The AI-Powered <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-white to-brand-secondary">Growth Engine.</span>
-                            </h1>
-
-                            <p className="text-base sm:text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-xl mb-8 md:mb-10 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                                Social Ninja’s combines elite creative production with 24/7 AI Sales Agents to scale brands <span className="text-white font-medium">worldwide</span>. The future of marketing is automated.
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4 sm:gap-6 animate-fade-in-up md:ml-32" style={{ animationDelay: '300ms' }}>
-                                <Link to="/contact" className="w-full sm:w-auto">
-                                    <Button variant="primary" className="w-full sm:w-auto rounded-full px-8 py-4 md:px-10 md:py-5 text-sm md:text-base font-bold shadow-[0_0_40px_rgba(56,189,248,0.15)] hover:shadow-[0_0_60px_rgba(56,189,248,0.3)]">
-                                        Deploy AI Growth
-                                    </Button>
-                                </Link>
-                                <Link to="/ai-automation" className="w-full sm:w-auto px-6 py-4 text-sm font-bold text-white border border-white/10 rounded-full hover:bg-white/5 transition-all flex items-center justify-center sm:justify-start gap-2 group">
-                                    View AI Systems <ChevronRight size={16} className="text-brand-primary group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                            </div>
-
-                            {/* Trust Indicators - Tighter & Aligned */}
-                            <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12 animate-fade-in-up md:ml-32" style={{ animationDelay: '400ms' }}>
-
-                                {/* Meta Partner */}
-                                <div className="flex items-center gap-4 group">
-                                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-brand-primary group-hover:bg-brand-primary/10 group-hover:border-brand-primary/20 transition-all duration-300">
-                                        <Bot size={20} strokeWidth={1.5} />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">AI Integrated</p>
-                                        <p className="text-[10px] text-neutral-500 font-medium">Next-Gen Automation</p>
-                                    </div>
-                                </div>
-
-                                {/* Divider */}
-                                <div className="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
-
-                                {/* Regional Authority */}
-                                <div className="flex items-center gap-4 group">
-                                    <div className="flex -space-x-3">
-                                        <div className="w-10 h-10 rounded-full bg-brand-surface border-2 border-brand-dark flex items-center justify-center text-lg z-20 shadow-lg group-hover:translate-x-1 transition-transform duration-300" title="Global">
-                                            <span className="drop-shadow-md filter grayscale-0">🌍</span>
-                                        </div>
-                                        <div className="w-10 h-10 rounded-full bg-brand-surface border-2 border-brand-dark flex items-center justify-center text-lg z-10 shadow-lg group-hover:translate-x-2 transition-transform duration-300 delay-75" title="Scale">
-                                            <span className="drop-shadow-md filter grayscale-0">🚀</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-white uppercase tracking-wider mb-0.5">Worldwide Focus</p>
-                                        <p className="text-[10px] text-neutral-500 font-medium">Global Expertise. Infinite Scale.</p>
-                                    </div>
-                                </div>
-
-                            </div>
+            {/* RIGHT — Dashboard card */}
+            <div className="reveal-r d2" style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: '100%', maxWidth: 400, animation: 'float 8s ease-in-out infinite' }}>
+                <div className="glass-card" style={{ borderRadius: 24, padding: 0, overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(79,158,255,0.08)' }}>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ display: 'flex', gap: 6 }}><span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} /><span style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e' }} /><span style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} /></div>
+                    <div style={{ flex: 1, textAlign: 'center', fontSize: 10.5, fontFamily: "'JetBrains Mono',monospace", color: 'rgba(255,255,255,0.3)' }}>AI System Active</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d399', boxShadow: '0 0 6px #34d399' }} /><span style={{ fontSize: 10, color: '#34d399', fontWeight: 600 }}>Live</span></div>
+                  </div>
+                  <div style={{ padding: '24px 22px' }}>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 4, letterSpacing: '0.08em', textTransform: 'uppercase' }}>AI-Attributed Revenue</div>
+                    <div style={{ fontFamily: "'DM Sans'", fontSize: 48, fontWeight: 600, letterSpacing: '-2px', color: '#fff', lineHeight: 1, marginBottom: 24 }}>$4.2M<span style={{ color: '#4f9eff', fontSize: 28 }}>+</span></div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {[['🤖','Leads Qualified','14,203','#4f9eff'], ['📈','Growth Rate','+128%','#34d399'], ['⚡','Avg Response','0.8s','#818cf8']].map(([ic,l,v,c]) => (
+                        <div key={l} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, padding: '11px 14px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <div style={{ width: 30, height: 30, borderRadius: 8, background: `${c}15`, border: `1px solid ${c}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>{ic}</div>
+                            <span style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.7)' }}>{l}</span>
+                          </div>
+                          <span style={{ fontFamily: "'JetBrains Mono'", fontSize: 14, fontWeight: 500, color: c as string }}>{v}</span>
                         </div>
-
-                        {/* RIGHT COLUMN: Cohesive Abstract Composition (Span 5 cols) */}
-                        <div className="lg:col-span-5 relative h-[350px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center lg:justify-end perspective-1000 mt-12 lg:mt-0 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-
-                            {/* Visual Container - The "Revenue Engine" */}
-                            <div className="relative w-full max-w-[320px] md:max-w-[400px] lg:max-w-[450px] aspect-[4/5] transform scale-100 md:scale-100">
-
-                                {/* 1. Background Blur Plate */}
-                                <div className="absolute inset-0 bg-brand-primary/5 rounded-[40px] blur-3xl transform rotate-6"></div>
-
-                                {/* 2. Main Glass Card - The Dashboard */}
-                                <div className="absolute inset-4 md:inset-10 bg-brand-surface/80 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-2xl overflow-hidden flex flex-col z-10 animate-float">
-                                    {/* Header of Card */}
-                                    <div className="h-14 md:h-16 border-b border-white/5 flex items-center px-4 md:px-6 justify-between">
-                                        <div className="flex gap-2">
-                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/50"></div>
-                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500/50"></div>
-                                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500/50"></div>
-                                        </div>
-                                        <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                                            AI System Active
-                                        </div>
-                                    </div>
-
-                                    {/* Body of Card */}
-                                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-between relative">
-                                        {/* Chart Line Decor */}
-                                        <div className="absolute top-20 left-0 right-0 h-32 opacity-20 pointer-events-none">
-                                            <svg viewBox="0 0 100 40" className="w-full h-full fill-none stroke-brand-primary stroke-[0.5]">
-                                                <path d="M0 35 Q 20 30, 40 15 T 100 5" />
-                                            </svg>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-neutral-400 text-[10px] md:text-xs font-bold uppercase mb-1">AI-Attributed Revenue</p>
-                                            <h3 className="text-3xl md:text-4xl font-display font-bold text-white">$4.2M<span className="text-brand-primary text-xl">+</span></h3>
-                                        </div>
-
-                                        <div className="space-y-3 md:space-y-4">
-                                            <div className="bg-white/5 rounded-xl p-3 md:p-4 flex items-center justify-between border border-white/5">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-1.5 md:p-2 rounded-lg bg-brand-primary/20 text-brand-primary"><Bot size={16} /></div>
-                                                    <span className="text-xs md:text-sm font-bold text-white">Leads Qualified</span>
-                                                </div>
-                                                <span className="text-brand-primary font-bold text-sm md:text-base">14,203</span>
-                                            </div>
-                                            <div className="bg-white/5 rounded-xl p-3 md:p-4 flex items-center justify-between border border-white/5">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-1.5 md:p-2 rounded-lg bg-brand-secondary/20 text-brand-secondary"><TrendingUp size={16} /></div>
-                                                    <span className="text-xs md:text-sm font-bold text-white">Growth</span>
-                                                </div>
-                                                <span className="text-brand-secondary font-bold text-sm md:text-base">+128%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* 3. Floating Elements for Depth */}
-
-                                {/* Top Right Sphere */}
-                                <div className="absolute top-2 -right-2 md:top-12 md:-right-6 w-16 h-16 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary shadow-2xl z-20 animate-float-delayed flex items-center justify-center border border-white/10">
-                                    <Rocket className="text-white w-6 h-6 md:w-10 md:h-10 transform -rotate-45" strokeWidth={1.5} />
-                                </div>
-
-                                {/* Bottom Left Badge */}
-                                <div className="absolute bottom-6 -left-2 md:bottom-12 md:-left-8 bg-brand-dark/90 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-2xl shadow-xl z-30 animate-float flex items-center gap-3 md:gap-4">
-                                    <div className="flex -space-x-2 md:-space-x-3">
-                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark" alt="Client" />
-                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark" alt="Client" />
-                                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brand-dark bg-brand-secondary flex items-center justify-center text-[8px] md:text-[10px] font-bold text-white">50+</div>
-                                    </div>
-                                    <div>
-                                        <p className="text-white text-[10px] md:text-xs font-bold">Active Clients</p>
-                                        <p className="text-neutral-500 text-[9px] md:text-[10px]">Worldwide</p>
-                                    </div>
-                                </div>
-
-                                {/* Decorative Geometric Elements behind */}
-                                <div className="absolute top-[20%] -left-[10%] w-24 h-24 md:w-32 md:h-32 border border-white/5 rounded-full z-0"></div>
-                                <div className="absolute bottom-[10%] -right-[5%] w-32 h-32 md:w-48 md:h-48 border border-dashed border-white/10 rounded-full z-0 animate-spin-slow"></div>
-
-                            </div>
-
-                        </div>
+                      ))}
                     </div>
-                </div>
-            </section>
-
-            {/* --- TRUST TICKER (Cleaned Up) --- */}
-            <section className="py-6 bg-brand-dark border-y border-white/5 overflow-hidden">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8">
-                    <p className="text-xs font-bold uppercase tracking-widest text-neutral-500 whitespace-nowrap">Trusted by 100+ Brands:</p>
-                    <div className="flex-1 overflow-hidden w-full relative">
-                        <div className="flex gap-24 animate-scroll whitespace-nowrap items-center">
-                            {["AcmeCorp", "Nebula", "BoxInc", "GlobalTech", "Velocity", "Fusion", "Vertex", "Oasis"].map((brand, i) => (
-                                <span key={i} className="font-display font-bold text-3xl text-white/90">{brand}</span>
-                            ))}
-                            {["AcmeCorp", "Nebula", "BoxInc", "GlobalTech", "Velocity", "Fusion", "Vertex", "Oasis"].map((brand, i) => (
-                                <span key={`dup-${i}`} className="font-display font-bold text-3xl text-white/90">{brand}</span>
-                            ))}
-                        </div>
-                        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-brand-dark to-transparent z-10"></div>
-                        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-brand-dark to-transparent z-10"></div>
+                    <div style={{ marginTop: 20, padding: '12px 14px', background: 'rgba(79,158,255,0.06)', border: '1px solid rgba(79,158,255,0.14)', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ display: 'flex', gap: -8 }}>
+                        {['#ff6b6b','#4f9eff','#34d399'].map((c,i) => <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: '2px solid rgba(8,16,31,0.9)', marginLeft: i > 0 ? -8 : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>{String.fromCharCode(65+i)}</div>)}
+                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(79,158,255,0.3)', border: '2px solid rgba(8,16,31,0.9)', marginLeft: -8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: '#4f9eff' }}>50+</div>
+                      </div>
+                      <div><div style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.88)' }}>Active Clients</div><div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>Worldwide</div></div>
                     </div>
+                  </div>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* --- SERVICES --- */}
-            <section className="py-16 md:py-24 bg-brand-dark relative">
-                <div className="max-w-7xl mx-auto px-6">
-                    <ScrollReveal>
-                        <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-6">
-                            <div className="max-w-2xl">
-                                <span className="text-brand-primary font-bold tracking-widest text-xs uppercase mb-4 block">Our Expertise</span>
-                                <h2 className="font-display text-4xl font-bold text-white">AI-First Growth Systems</h2>
-                            </div>
-                            <Link to="/services">
-                                <Button variant="outline" className="rounded-full px-8">View All Services</Button>
-                            </Link>
-                        </div>
-                    </ScrollReveal>
+      {/* ── TICKER ── */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '16px 0', overflow: 'hidden', background: 'rgba(8,16,31,0.6)', position: 'relative', zIndex: 1 }}>
+        <div className="ticker-track" style={{ display: 'flex', gap: 56, width: 'max-content' }}>
+          {['AcmeCorp','Nebula','BoxInc','GlobalTech','Velocity','Fusion','Vertex','Oasis','Horizon','Pulse','AcmeCorp','Nebula','BoxInc','GlobalTech','Velocity','Fusion','Vertex','Oasis','Horizon','Pulse'].map((b,i) => (
+            <span key={i} style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 28, fontWeight: 400, color: 'rgba(255,255,255,0.22)', whiteSpace: 'nowrap', fontStyle: 'italic' }}>{b}</span>
+          ))}
+        </div>
+      </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            { icon: Activity, title: "AI & Automation", outcome: "Efficiency & Speed", desc: "Intelligent chatbots and workflows that handle sales 24/7.", bg: "from-green-500/10 to-teal-500/5", delay: '0ms' },
-                            { icon: Rocket, title: "Performance Marketing", outcome: "Revenue & ROAS", desc: "Data-driven ad campaigns on Meta & Google enriched with AI insights.", bg: "from-blue-500/10 to-purple-500/5", delay: '100ms' },
-                            { icon: Zap, title: "Creative Studio", outcome: "Authority & Retention", desc: "High-converting designs optimized by performance data.", bg: "from-purple-500/10 to-pink-500/5", delay: '200ms' }
-                        ].map((item, i) => (
-                            <ScrollReveal key={i} delay={item.delay}>
-                                <Link to="/services">
-                                    <div className="group relative bg-brand-surface border border-white/5 p-8 rounded-3xl transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] overflow-hidden h-full flex flex-col cursor-pointer">
-                                        {/* Dynamic Gradient Background */}
-                                        <div className={`absolute inset-0 bg-gradient-to-br ${item.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out`}></div>
-                                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-0 group-hover:opacity-10 transition-opacity duration-700"></div>
+      {/* ── SERVICES ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '88px 28px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 52, gap: 20, flexWrap: 'wrap' }}>
+          <div>
+            <div className="eyebrow reveal">Our Expertise</div>
+            <h2 className="reveal d1" style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 'clamp(28px,4vw,52px)', fontWeight: 400, letterSpacing: '-1px', color: 'rgba(255,255,255,0.95)', marginBottom: 0, lineHeight: 1.08 }}>AI-First Growth Systems</h2>
+          </div>
+          <Link to="/services" className="reveal d2"><button className="btn-ghost">View All Services →</button></Link>
+        </div>
 
-                                        <div className="relative z-10 flex-1">
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div className="w-14 h-14 bg-brand-dark rounded-2xl border border-white/10 flex items-center justify-center text-brand-primary transition-all duration-500 group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-brand-dark shadow-lg">
-                                                    <item.icon size={28} strokeWidth={1.5} />
-                                                </div>
-                                                <div className="px-3 py-1.5 rounded-full bg-brand-dark border border-white/5 text-[10px] font-bold uppercase tracking-wider text-brand-primary group-hover:bg-white group-hover:text-brand-dark transition-colors">
-                                                    {item.outcome}
-                                                </div>
-                                            </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+          {[
+            { icon: '🤖', title: 'AI & Automation',       sub: 'Efficiency & Speed',  desc: 'Intelligent chatbots and workflows that handle sales qualification 24/7 — while you sleep.', d: 'd1' },
+            { icon: '🚀', title: 'Performance Marketing', sub: 'Revenue & ROAS',       desc: 'Data-driven ad campaigns on Meta & Google enriched with AI insights for maximum return.', d: 'd2' },
+            { icon: '⚡', title: 'Creative Studio',       sub: 'Authority & Retention', desc: 'High-converting designs and video content optimised by performance data — not guesswork.', d: 'd3' },
+          ].map((s, i) => (
+            <Link key={i} to="/services" style={{ textDecoration: 'none' }}>
+              <div className={`glass-card reveal ${s.d}`} style={{ padding: 28, height: '100%', cursor: 'pointer', borderRadius: 22 }}>
+                <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 18 }}>{s.icon}</div>
+                <div style={{ fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 8 }}>{s.sub}</div>
+                <h3 style={{ fontSize: 18, fontWeight: 500, color: 'rgba(255,255,255,0.92)', letterSpacing: '-0.3px', marginBottom: 10, lineHeight: 1.25, fontFamily: "'DM Sans',sans-serif" }}>{s.title}</h3>
+                <p style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.48)', lineHeight: 1.65 }}>{s.desc}</p>
+                <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500, color: '#4f9eff' }}>Learn More <ArrowRight size={14} /></div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
 
-                                            <h3 className="text-white font-display text-2xl font-bold mb-3 group-hover:text-brand-primary transition-colors">{item.title}</h3>
-                                            <p className="text-neutral-400 leading-relaxed text-sm mb-6 group-hover:text-neutral-300 transition-colors">{item.desc}</p>
-                                        </div>
+      {/* ── AI SPOTLIGHT ── */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '88px 28px', position: 'relative', zIndex: 1, background: 'rgba(4,8,18,0.6)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
+            <div className="reveal-l">
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 50, background: 'rgba(79,158,255,0.08)', border: '1px solid rgba(79,158,255,0.18)', fontSize: 11, fontWeight: 600, color: '#4f9eff', marginBottom: 24 }}>
+                <Bot size={13} /> The AI Advantage
+              </div>
+              <h2 style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 'clamp(32px,5vw,58px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.05, marginBottom: 20, color: 'rgba(255,255,255,0.95)' }}>
+                Your competitors sleep.<br /><em style={{ color: '#4f9eff' }}>Your AI Agent doesn't.</em>
+              </h2>
+              <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.7, marginBottom: 32, borderLeft: '2px solid rgba(79,158,255,0.3)', paddingLeft: 20 }}>
+                70% of leads are lost due to slow response times. Deploy intelligent agents that qualify, book, and close 24/7.
+              </p>
+              <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Deploy AI Workforce <ArrowRight size={16} /></button></Link>
+            </div>
+            <div className="reveal-r d2">
+              <div className="glass-card" style={{ borderRadius: 22, padding: 28, animation: 'float 9s ease-in-out infinite' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, paddingBottom: 18, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><Cpu size={20} color="#4f9eff" /><span style={{ fontWeight: 500, color: 'rgba(255,255,255,0.88)' }}>Neural Core</span></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><span style={{ width: 7, height: 7, borderRadius: '50%', background: '#34d399', boxShadow: '0 0 8px #34d399' }} /><span style={{ fontSize: 11, color: '#34d399', fontWeight: 600 }}>ACTIVE</span></div>
+                </div>
+                {[['Leads Processed Today','142','rgba(255,255,255,0.7)'], ['Meetings Booked','18','#4f9eff'], ['Avg. Response Time','0.8s','#34d399']].map(([l,v,c]) => (
+                  <div key={l} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: '12px 14px', marginBottom: 10 }}>
+                    <span style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.55)' }}>{l}</span>
+                    <span style={{ fontFamily: "'JetBrains Mono'", fontSize: 15, fontWeight: 500, color: c as string }}>{v}</span>
+                  </div>
+                ))}
+                <div style={{ marginTop: 6, textAlign: 'center', fontSize: 10, fontFamily: "'JetBrains Mono'", color: 'rgba(255,255,255,0.22)' }}>SYSTEM OPERATIONAL · V2.4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                                        <div className="relative z-10 mt-auto flex items-center gap-2 text-sm font-bold text-white opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                                            Learn More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            </ScrollReveal>
-                        ))}
+      {/* ── CONTENT STUDIO PROMO ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '88px 28px', position: 'relative', zIndex: 1 }}>
+        <div className="glass-card reveal" style={{ borderRadius: 28, padding: 0, overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, alignItems: 'stretch' }} className="hero-grid-cols">
+            <div style={{ padding: '48px 44px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 13px', borderRadius: 50, background: 'rgba(79,158,255,0.1)', border: '1px solid rgba(79,158,255,0.2)', fontSize: 10.5, fontWeight: 600, color: '#4f9eff', marginBottom: 22, letterSpacing: '0.04em' }}>New Release</div>
+              <h2 style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 400, letterSpacing: '-0.8px', lineHeight: 1.1, marginBottom: 16, color: 'rgba(255,255,255,0.95)' }}>
+                Social Ninja's<br /><em style={{ color: '#4f9eff' }}>AI Content Studio</em>
+              </h2>
+              <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.7, marginBottom: 28, maxWidth: 420 }}>
+                Stop staring at a blank screen. Our AI researches live trends in your exact niche, then writes Reel scripts, carousel hooks, and captions in 60 seconds.
+              </p>
+              {['Live platform trend research (Insta, YT, LinkedIn)', 'Content memory — AI never repeats angles', 'Platform-native hooks & hashtag strategies'].map((t,i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, fontSize: 13, color: 'rgba(255,255,255,0.68)', fontWeight: 400 }}>
+                  <ShieldCheck size={16} color="#4f9eff" />{t}
+                </div>
+              ))}
+              <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
+                <a href="/app/content-studio#/?plan=trial"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px' }}>Explore The Studio</button></a>
+                <a href="/app/content-studio#/?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
+              </div>
+            </div>
+            <div style={{ background: 'rgba(0,0,0,0.2)', borderLeft: '1px solid rgba(255,255,255,0.07)', padding: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 14, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ display: 'flex', gap: 5 }}>{['#ff5f57','#febc2e','#28c840'].map((c,i) => <span key={i} style={{ width: 9, height: 9, borderRadius: '50%', background: c }} />)}</div>
+                <span style={{ fontSize: 10.5, fontFamily: "'JetBrains Mono'", color: 'rgba(255,255,255,0.3)' }}>socialninjas.in/app · Generating posts...</span>
+              </div>
+              {[{n:'POST 01 · REEL',t:'Trending',w:['92%','78%','62%']},{n:'POST 02 · LINKEDIN',t:'Rising',w:['85%','90%','68%']}].map((p,i) => (
+                <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 14, animation: `fadeUp .5s ease ${i*0.12}s both` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <span style={{ fontSize: 8.5, fontWeight: 600, color: '#4f9eff', letterSpacing: '0.04em' }}>{p.n}</span>
+                    <span style={{ fontSize: 7.5, padding: '2px 7px', borderRadius: 8, background: 'rgba(79,158,255,0.1)', color: '#4f9eff', border: '1px solid rgba(79,158,255,0.15)' }}>{p.t}</span>
+                  </div>
+                  {p.w.map((w,j) => <div key={j} style={{ height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.08)', marginBottom: 4, width: w }} />)}
+                  <div style={{ display: 'flex', gap: 4, marginTop: 7 }}>
+                    {['Caption','Script','Slides','Checklist'].map((tab,j) => <span key={j} style={{ fontSize: 8.5, padding: '2px 7px', borderRadius: 14, background: j===0?'rgba(79,158,255,0.12)':'rgba(255,255,255,0.04)', color: j===0?'#4f9eff':'rgba(255,255,255,0.3)', border: j===0?'1px solid rgba(79,158,255,0.18)':'1px solid transparent' }}>{tab}</span>)}
+                  </div>
+                </div>
+              ))}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', opacity: 0.55 }}>
+                {[0,1,2].map(i => <span key={i} style={{ width: 4, height: 4, borderRadius: '50%', background: '#4f9eff', animation: `pulse ${0.8 + i*0.15}s ease-in-out infinite` }} />)}
+                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontFamily: "'JetBrains Mono'" }}>Writing Post 03 · YouTube Short...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── TESTIMONIALS ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
+          <div className="reveal-l">
+            <div className="eyebrow">Market Validation</div>
+            <h2 style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 400, letterSpacing: '-1px', lineHeight: 1.08, marginBottom: 20, color: 'rgba(255,255,255,0.95)' }}>
+              Trust is our currency.<br /><em style={{ color: 'rgba(255,255,255,0.4)' }}>Results are the proof.</em>
+            </h2>
+            <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, marginBottom: 32, maxWidth: 380 }}>Measurable revenue impact, every engagement. See what happens when ambition meets execution.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              {[['4.9/5','Client Rating','⭐'], ['97%','Retention Rate','📈'], ['150+','Active Brands','🌍'], ['$40M+','Ad Spend','💰']].map(([n,l,ic]) => (
+                <div key={l} className="glass-card" style={{ padding: '18px 20px', borderRadius: 16 }}>
+                  <div style={{ fontSize: 22, marginBottom: 4 }}>{ic}</div>
+                  <div style={{ fontFamily: "'DM Sans'", fontSize: 22, fontWeight: 600, color: '#fff', letterSpacing: '-0.8px', lineHeight: 1 }}>{n}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 3, letterSpacing: '0.04em' }}>{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="reveal-r d1" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+            <div className="glass-card" style={{ borderRadius: 26, padding: 0, overflow: 'hidden', minHeight: 360, position: 'relative' }}>
+              {testimonials.map((t, i) => (
+                <div key={i} style={{ position: i === 0 ? 'relative' : 'absolute', inset: 0, padding: '36px 36px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)', opacity: i === currentT ? 1 : 0, transform: i === currentT ? 'translateX(0)' : 'translateX(40px)', pointerEvents: i === currentT ? 'auto' : 'none', zIndex: i === currentT ? 2 : 1 }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                      <div style={{ display: 'flex', gap: 3 }}>{[...Array(t.stars)].map((_,j) => <Star key={j} size={13} fill="#4f9eff" color="#4f9eff" />)}</div>
+                      <div style={{ fontSize: 10, padding: '3px 10px', borderRadius: 50, background: 'rgba(79,158,255,0.1)', border: '1px solid rgba(79,158,255,0.2)', color: '#4f9eff', fontWeight: 600 }}>{t.impact}</div>
                     </div>
+                    <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 24 }}>"{t.text}"</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'linear-gradient(135deg,#2563eb,#4f9eff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 600, flexShrink: 0 }}>{t.name[0]}</div>
+                    <div><div style={{ fontWeight: 500, fontSize: 14, color: 'rgba(255,255,255,0.9)' }}>{t.name}</div><div style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 1 }}>{t.role}, {t.company}</div></div>
+                  </div>
                 </div>
-            </section>
+              ))}
+              <div style={{ position: 'absolute', bottom: 22, right: 28, display: 'flex', gap: 6, zIndex: 10 }}>
+                {testimonials.map((_,i) => <button key={i} onClick={() => setCurrentT(i)} style={{ height: 4, borderRadius: 2, background: i === currentT ? '#4f9eff' : 'rgba(255,255,255,0.2)', width: i === currentT ? 24 : 8, border: 'none', cursor: 'pointer', transition: 'all 0.3s' }} />)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            {/* --- NEW AI REVOLUTION SPOTLIGHT SECTION --- */}
-            <section className="relative py-16 md:py-24 bg-[#000] border-y border-white/10 overflow-hidden group">
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
-                {/* Animated Mesh Grid */}
-                <div className="absolute inset-0 opacity-20 pointer-events-none"
-                    style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(56,189,248,0.2) 1px, transparent 0)`,
-                        backgroundSize: '40px 40px'
-                    }}>
-                </div>
+      {/* ── CTA ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 28, padding: '88px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07), 0 0 80px rgba(79,158,255,0.05)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(79,158,255,0.35), transparent)' }} />
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 600, height: 280, background: 'radial-gradient(ellipse, rgba(79,158,255,0.09), transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h2 style={{ fontFamily: "'Instrument Serif',Georgia,serif", fontSize: 'clamp(30px,5vw,58px)', fontWeight: 400, letterSpacing: '-1.5px', lineHeight: 1.06, marginBottom: 14, color: 'rgba(255,255,255,0.96)' }}>
+              Ready to <em style={{ color: '#4f9eff' }}>dominate?</em>
+            </h2>
+            <p style={{ fontSize: 17, fontWeight: 300, color: 'rgba(255,255,255,0.5)', marginBottom: 36, maxWidth: 480, margin: '0 auto 36px' }}>Stop leaving revenue on the table. Partner with the agency that treats your budget like their own.</p>
+            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 16, padding: '17px 40px' }}>Book Your Strategy Call</button></Link>
+          </div>
+        </div>
+      </div>
 
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
-                        {/* Left: Copy */}
-                        <div className="max-w-2xl">
-                            <ScrollReveal>
-                                <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-brand-primary/10 border border-brand-primary/20">
-                                    <Bot size={14} className="text-brand-primary" />
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">The AI Advantage</span>
-                                </div>
-                                <h2 className="font-display text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                                    Your competitors sleep. <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">Your AI Agent doesn't.</span>
-                                </h2>
-                                <p className="text-xl text-neutral-400 font-light leading-relaxed mb-8 border-l-2 border-white/10 pl-6">
-                                    70% of leads are lost due to slow response times. Deploy intelligent agents that qualify, book, and close 24/7.
-                                </p>
-                                <Link to="/ai-automation">
-                                    <Button variant="primary" className="rounded-full px-10 py-5 text-lg font-bold shadow-[0_0_30px_rgba(56,189,248,0.3)]">
-                                        Deploy AI Workforce <ArrowRight className="ml-2 w-5 h-5" />
-                                    </Button>
-                                </Link>
-                            </ScrollReveal>
-                        </div>
-
-                        {/* Right: Visual */}
-                        <div className="relative">
-                            <ScrollReveal delay="200ms">
-                                <div className="w-[350px] md:w-[450px] aspect-square relative">
-                                    {/* Pulsing Core */}
-                                    <div className="absolute inset-0 bg-brand-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
-
-                                    <div className="relative bg-brand-dark border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden">
-                                        <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
-                                            <div className="flex items-center gap-3">
-                                                <Cpu className="text-brand-primary" size={24} />
-                                                <span className="text-white font-bold">Neural Core</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                                <span className="text-xs text-green-500 font-bold uppercase tracking-wider">Active</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-4">
-                                            <div className="bg-white/5 p-4 rounded-lg flex justify-between items-center">
-                                                <span className="text-neutral-400 text-sm">Leads Processed (Today)</span>
-                                                <span className="text-white font-mono font-bold">142</span>
-                                            </div>
-                                            <div className="bg-white/5 p-4 rounded-lg flex justify-between items-center">
-                                                <span className="text-neutral-400 text-sm">Meetings Booked</span>
-                                                <span className="text-brand-primary font-mono font-bold text-xl">18</span>
-                                            </div>
-                                            <div className="bg-white/5 p-4 rounded-lg flex justify-between items-center">
-                                                <span className="text-neutral-400 text-sm">Avg. Response Time</span>
-                                                <span className="text-green-400 font-mono font-bold">0.8s</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="mt-8 pt-6 border-t border-white/5">
-                                            <p className="text-xs text-neutral-500 font-mono text-center">SYSTEM OPERATIONAL • V2.4</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ScrollReveal>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            {/* --- CONTENT STUDIO SHOWCASE --- */}
-            <section className="relative py-16 md:py-24 bg-brand-dark overflow-hidden border-t border-white/5">
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 to-transparent pointer-events-none"></div>
-                
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="bg-brand-surface/50 border border-white/10 rounded-[2.5rem] p-8 md:p-14 overflow-hidden relative group">
-                        
-                        {/* Abstract Background Glows */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none group-hover:bg-brand-primary/30 transition-colors duration-700"></div>
-                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/20 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-                            
-                            {/* Copy */}
-                            <div className="space-y-6">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-primary">New Release</span>
-                                </div>
-                                
-                                <h2 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
-                                    Social Ninja's <br/>
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">AI Content Studio</span>
-                                </h2>
-                                
-                                <p className="text-neutral-400 text-lg leading-relaxed max-w-lg">
-                                    Stop staring at a blank screen. Our AI researches live trends in your exact niche, then writes word-for-word Reel scripts, carousel hooks, and captions in 60 seconds.
-                                </p>
-                                
-                                <ul className="space-y-3 pt-2">
-                                    {[
-                                        "Live platform trend research (Insta, YT, LinkedIn)",
-                                        "Content memory � AI never repeats angles",
-                                        "Platform-native hooks & hashtag strategies"
-                                    ].map((trait, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-sm text-neutral-300 font-medium">
-                                            <ShieldCheck size={18} className="text-brand-primary" />
-                                            {trait}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                                    <a href="/app/content-studio#/?plan=trial">
-                                        <Button variant="primary" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold shadow-[0_0_30px_rgba(56,189,248,0.2)]">
-                                            Explore The Studio
-                                        </Button>
-                                    </a>
-                                    <Link to="/app/content-studio#/?plan=trial">
-                                        <Button variant="outline" className="w-full sm:w-auto rounded-full px-8 py-4 font-bold bg-white/5 border-white/10 hover:bg-white/10 transition-colors">
-                                            ⚡ Try 3 Posts Free
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </div>
-                            
-                            {/* UI Preview Graphic */}
-                            <div className="relative h-[300px] md:h-[400px] w-full rounded-2xl border border-white/10 bg-brand-dark/80 backdrop-blur-sm overflow-hidden shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-700 flex flex-col">
-                                <div className="h-10 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
-                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
-                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
-                                </div>
-                                <div className="flex-1 p-6 flex flex-col gap-4 relative overflow-hidden">
-                                    <div className="w-3/4 h-8 bg-white/5 rounded-lg border border-white/5 animate-pulse"></div>
-                                    <div className="w-full h-24 bg-brand-primary/10 rounded-xl border border-brand-primary/20 flex flex-col justify-center px-4">
-                                        <div className="w-1/4 h-2 bg-brand-primary/50 rounded mb-4"></div>
-                                        <div className="w-5/6 h-2 bg-white/20 rounded mb-2"></div>
-                                        <div className="w-4/6 h-2 bg-white/20 rounded mb-2"></div>
-                                        <div className="w-3/4 h-2 bg-white/20 rounded"></div>
-                                    </div>
-                                    <div className="flex gap-4">
-                                        <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/5"></div>
-                                        <div className="flex-1 h-32 bg-white/5 rounded-xl border border-white/5"></div>
-                                    </div>
-                                    <div className="absolute bottom-0 right-0 p-8">
-                                        <div className="w-12 h-12 bg-brand-primary rounded-full shadow-[0_0_30px_rgba(56,189,248,0.5)] flex items-center justify-center animate-bounce">
-                                            <Zap size={20} className="text-white" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section className="py-16 md:py-24 bg-brand-dark relative overflow-hidden border-t border-white/5">
-                <div className="absolute inset-0 bg-brand-surface/30"></div>
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <ScrollReveal>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-
-                            {/* Left Column */}
-                            <div className="space-y-8">
-                                <div>
-                                    <span className="text-brand-primary font-bold tracking-[0.3em] text-xs uppercase mb-4 block">Market Validation</span>
-                                    <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                                        Trust is our currency. <br />
-                                        <span className="text-neutral-500">Results are the proof.</span>
-                                    </h2>
-                                    <p className="text-neutral-400 text-lg leading-relaxed max-w-md">
-                                        We don't just ask for trust; we earn it through measurable revenue impact. See what happens when ambition meets execution.
-                                    </p>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="bg-brand-dark border border-white/5 p-6 rounded-2xl">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <Star className="text-yellow-400 fill-yellow-400" size={20} />
-                                            <span className="text-white font-bold text-xl">4.9/5</span>
-                                        </div>
-                                        <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">Client Rating</p>
-                                    </div>
-                                    <div className="bg-brand-dark border border-white/5 p-6 rounded-2xl">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <TrendingUp className="text-brand-primary" size={20} />
-                                            <span className="text-white font-bold text-xl">97%</span>
-                                        </div>
-                                        <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">Retention Rate</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Right Column: Interactive Testimonial Card */}
-                            <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                                <div className="bg-brand-dark border border-white/10 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden min-h-[500px] md:h-[450px] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(56,189,248,0.15)] group">
-                                    {testimonials.map((t, i) => (
-                                        <div
-                                            key={i}
-                                            className={`absolute inset-0 p-8 md:p-12 flex flex-col justify-between transition-all duration-700 ease-in-out transform ${i === currentTestimonial
-                                                ? 'opacity-100 translate-x-0 z-10'
-                                                : 'opacity-0 translate-x-12 z-0 pointer-events-none'
-                                                }`}
-                                        >
-                                            <div>
-                                                <div className="flex justify-between items-start mb-8">
-                                                    <div className="flex gap-1">
-                                                        {[...Array(t.stars)].map((_, idx) => (
-                                                            <Star key={idx} size={16} className="text-yellow-400 fill-yellow-400" />
-                                                        ))}
-                                                    </div>
-                                                    <div className="bg-brand-primary/10 border border-brand-primary/20 text-brand-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                                        {t.impact}
-                                                    </div>
-                                                </div>
-                                                <p className="text-xl md:text-2xl text-white font-medium leading-relaxed mb-8">"{t.text}"</p>
-                                            </div>
-
-                                            <div className="flex items-center gap-4 mt-auto pt-8 border-t border-white/5">
-                                                <img src={t.image} alt={t.name} className="w-16 h-16 rounded-full border-2 border-brand-primary/20 object-cover shadow-lg" />
-                                                <div>
-                                                    <h4 className="font-bold text-white text-base leading-none mb-1">{t.name}</h4>
-                                                    <p className="text-xs text-neutral-400 uppercase tracking-wider font-bold">{t.role}, {t.company}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-
-                                    {/* Dots */}
-                                    <div className="absolute bottom-8 right-12 flex gap-2 z-20">
-                                        {testimonials.map((_, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() => setCurrentTestimonial(idx)}
-                                                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentTestimonial ? 'w-8 bg-brand-primary' : 'w-2 bg-white/20 hover:bg-white/40'}`}
-                                                aria-label={`Go to slide ${idx + 1}`}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ScrollReveal>
-                </div>
-            </section>
-
-            {/* --- CTA --- */}
-            <section className="relative py-16 md:py-24 flex items-center justify-center bg-brand-dark border-t border-white/5">
-                <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
-                    <ScrollReveal>
-                        <h2 className="font-display text-5xl md:text-6xl font-bold text-white mb-8">Ready to dominate?</h2>
-                        <p className="text-xl text-neutral-300 mb-12 max-w-2xl mx-auto font-light">Stop leaving revenue on the table. Partner with the agency that treats your budget like their own.</p>
-                        <Link to="/contact">
-                            <Button variant="primary" className="text-lg px-12 py-5 rounded-full font-bold shadow-2xl shadow-brand-primary/30 hover:scale-105 transition-transform">Book Your Strategy Call</Button>
-                        </Link>
-                    </ScrollReveal>
-                </div>
-            </section>
-
-            <InstagramFeed />
-        </main>
-    );
+      <style>{`
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:40px!important;} }
+        @media(max-width:640px){ .section{padding:60px 18px!important;} }
+      `}</style>
+    </div>
+  );
 };
 
 export default Home;
-
