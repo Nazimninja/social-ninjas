@@ -45,11 +45,11 @@ const Footer: React.FC = () => {
             <h4 style={{color:"rgba(255,255,255,0.88)",fontWeight:500,marginBottom:24,fontSize:13,letterSpacing:"-.1px"}}>Services</h4>
             <ul className="space-y-4">
               {[
-                { label: 'Social Media Management', path: '/services#social' },
-                { label: 'Performance Ads (Paid Media)', path: '/services#ads' },
-                { label: 'Video Production', path: '/services#video' },
-                { label: 'AI Automation', path: '/growth-systems' },
-                { label: 'Web & SEO', path: '/services#web' },
+                { label: 'Performance Marketing', path: '/services' },
+                { label: 'AI & Automation', path: '/growth-systems' },
+                { label: 'Creative Studio', path: '/services' },
+                { label: 'Social Media Management', path: '/services' },
+                { label: 'AI Content Studio', path: '/#/app/content-studio' },
 
               ].map((item, i) => (
                 <li key={i}>

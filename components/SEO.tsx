@@ -20,14 +20,14 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = 'https://social-ninjas.vercel.app/og-image.png?v=2',
+  image = 'https://socialninjas.in/og-image.png',
   type = 'website',
   article
 }) => {
   const location = useLocation();
-  const canonicalUrl = `https://social-ninjas.vercel.app${location.pathname}`;
-  const siteTitle = "Social Ninja's | #1 Performance Marketing Agency for High-Growth Brands";
-  const defaultDescription = "Stop burning cash. Social Ninja's engineers predictable revenue systems for brands in India & UAE. We combine AI automation, elite content, and paid media to drive 3-10x ROAS.";
+  const canonicalUrl = `https://socialninjas.in${location.pathname}`;
+  const siteTitle = "Social Ninja's | AI-Powered Performance Marketing Agency";
+  const defaultDescription = "Social Ninja's combines AI automation, elite content production, and data-driven paid media to scale brands worldwide. From ₹2,999/month — try free.";
 
   const fullTitle = title ? `${title} | Social Ninja's` : siteTitle;
 
@@ -36,6 +36,7 @@ const SEO: React.FC<SEOProps> = ({
       {/* Basic Metadata */}
       <title>{fullTitle}</title>
       <meta name="description" content={description || defaultDescription} />
+      <meta name="keywords" content={`${siteTitle}, performance marketing India, AI content generator, social media management, digital marketing agency`} />
       <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph / Facebook */}

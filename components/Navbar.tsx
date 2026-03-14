@@ -22,9 +22,9 @@ const Navbar: React.FC = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { label: 'Home', path: '/' },
     { label: 'Services', path: '/services' },
-    { label: 'Growth Systems', path: '/growth-systems' },
+    { label: 'AI Products', path: '/ai-products' },
+    { label: 'Blog', path: '/blog' },
     { label: 'About', path: '/about' },
   ];
 

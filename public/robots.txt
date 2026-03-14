@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
-Disallow: /private/
-Disallow: /admin/
 
 Sitemap: https://socialninjas.in/sitemap.xml
+
+# Block admin
+Disallow: /admin
+Disallow: /#/admin
