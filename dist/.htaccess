@@ -1,0 +1,23 @@
+Options -MultiViews -Indexes
+RewriteEngine On
+
+# Serve index.html for all routes (SPA fallback)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /index.html [L]
+
+# Cache images/fonts/assets for 1 year
+<FilesMatch "\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|js|css)$">
+  Header set Cache-Control "max-age=31536000, public"
+  Header unset ETag
+</FilesMatch>
+
+# No cache for HTML
+<FilesMatch "\.html$">
+  Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
+</IfModule>
