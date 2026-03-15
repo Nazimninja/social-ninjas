@@ -137,7 +137,7 @@ const AIProducts: React.FC = () => {
       {/* PRODUCTS */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', display: 'flex', flexDirection: 'column', gap: 80, position: 'relative', zIndex: 1 }}>
         {products.map((p, i) => (
-          <div key={p.id} id={p.id} className={`reveal`} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }} className={`product-grid reveal`}>
+          <div key={p.id} id={p.id} className="product-grid reveal" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
 
             {/* Left — product info */}
             <div style={{ order: i % 2 === 0 ? 0 : 1 }}>

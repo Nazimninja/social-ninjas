@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { ArrowLeft, Clock, Tag, Share2 } from 'lucide-react';
+import { ArrowLeft, Clock, Tag, Share2, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const categoryColors: Record<string,string> = {
