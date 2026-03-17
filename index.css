@@ -175,6 +175,11 @@
   background: rgba(91,164,245,0.06);
   box-shadow: 0 0 0 3px rgba(91,164,245,0.12);
 }
+/* Ensure dropdown options are dark */
+select.field option {
+  background-color: var(--bg);
+  color: var(--t1);
+}
 .field::placeholder { color: rgba(255,255,255,0.26); }
 .field-error {
   border-color: rgba(232,184,109,0.5) !important;

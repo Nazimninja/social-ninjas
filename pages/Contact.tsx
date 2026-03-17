@@ -16,6 +16,17 @@ function useReveal() {
   },[]);
 }
 
+const Field=({label,name,type='text',placeholder,icon:Icon,form,errors,set}:{label:string,name:string,type?:string,placeholder?:string,icon?:any,form:any,errors:any,set:any})=>(
+  <div style={{marginBottom:18}}>
+    <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
+      {Icon&&<Icon size={12}/>}{label}
+      {errors[name]&&<span style={{color:'var(--gold)',fontSize:10,marginLeft:'auto',fontWeight:500}}>{errors[name]}</span>}
+    </label>
+    <input type={type} value={(form as any)[name]} onChange={e=>set(name,e.target.value)} placeholder={placeholder}
+      className="field" style={{borderColor:errors[name]?'rgba(232,184,109,0.5)':'',background:errors[name]?'rgba(232,184,109,0.06)':''}}/>
+  </div>
+);
+
 const Contact: React.FC = () => {
   useReveal();
   const [step,setStep]=useState(1);
@@ -42,22 +53,11 @@ const Contact: React.FC = () => {
     if(!validate(3))return;
     setLoading(true);
     try{
-      await submitToGoogleSheets({...form,source:'contact-form'});
+      await submitToGoogleSheets({...form, type: 'Leads', source:'contact-form'});
       setDone(true);
     }catch(err){ setErrors({message:'Something went wrong. Please try again.'}); }
     setLoading(false);
   };
-
-  const Field=({label,name,type='text',placeholder,icon:Icon}:{label:string,name:string,type?:string,placeholder?:string,icon?:any})=>(
-    <div style={{marginBottom:18}}>
-      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
-        {Icon&&<Icon size={12}/>}{label}
-        {errors[name]&&<span style={{color:'var(--gold)',fontSize:10,marginLeft:'auto',fontWeight:500}}>{errors[name]}</span>}
-      </label>
-      <input type={type} value={(form as any)[name]} onChange={e=>set(name,e.target.value)} placeholder={placeholder}
-        className="field" style={{borderColor:errors[name]?'rgba(232,184,109,0.5)':'',background:errors[name]?'rgba(232,184,109,0.06)':''}}/>
-    </div>
-  );
 
   if(done) return (
     <div className="page-bg" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh'}}>
@@ -137,16 +137,16 @@ const Contact: React.FC = () => {
                   <div>
                     <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
                     <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Tell us about yourself.</p>
-                    <Field label="Full Name" name="name" placeholder="Jane Smith" icon={User}/>
-                    <Field label="Work Email" name="email" type="email" placeholder="jane@company.com" icon={Mail}/>
-                    <Field label="Company" name="company" placeholder="Acme Inc" icon={Building}/>
+                    <Field label="Full Name" name="name" placeholder="Jane Smith" icon={User} form={form} errors={errors} set={set}/>
+                    <Field label="Work Email" name="email" type="email" placeholder="jane@company.com" icon={Mail} form={form} errors={errors} set={set}/>
+                    <Field label="Company" name="company" placeholder="Acme Inc" icon={Building} form={form} errors={errors} set={set}/>
                   </div>
                 )}
                 {step===2&&(
                   <div>
                     <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
                     <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Help us understand your current setup.</p>
-                    <Field label="Website / Social Handle" name="website" placeholder="acme.com or @acme" icon={Globe}/>
+                    <Field label="Website / Social Handle" name="website" placeholder="acme.com or @acme" icon={Globe} form={form} errors={errors} set={set}/>
                     <div style={{marginBottom:18}}>
                       <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
                       <select value={form.company} onChange={e=>set('company',e.target.value)} className="field" style={{appearance:'none',cursor:'pointer'}}>

@@ -4,11 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, Clock, Tag, Share2, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
 
-const categoryColors: Record<string,string> = {
-  'AI & Automation': '#5ba4f5', 'Content Strategy': '#2fcf8e',
-  'Performance Marketing': '#9b8ef0', 'SEO & Growth': '#e8b86d',
-  'Social Media': '#f472b6', 'Insights': '#7a9bbf',
-};
+import { POSTS, categoryColors } from '../data/blogPosts';
 
 const BlogPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,13 +14,18 @@ const BlogPost: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
+    
+    // First check local static posts
+    const localPost = POSTS.find(p => p.id === id);
+    
     Promise.all([
       fetch(`/api/data?resource=blogs&id=${id}`).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch('/api/data?resource=blogs').then(r => r.json()).catch(() => []),
-    ]).then(([post, all]) => {
-      setPost(post);
-      if (post && Array.isArray(all)) {
-        setRelated(all.filter((p:any) => p.id !== post.id && p.category === post.category).slice(0, 3));
+    ]).then(([apiPost, all]) => {
+      const finalPost = localPost || apiPost;
+      setPost(finalPost);
+      if (finalPost && Array.isArray(all)) {
+        setRelated(all.filter((p:any) => p.id !== finalPost.id && p.category === finalPost.category).slice(0, 3));
       }
       setLoading(false);
     });
