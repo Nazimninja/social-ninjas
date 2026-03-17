@@ -35,7 +35,7 @@
     background-color: var(--bg);
     color: var(--t1);
     overflow-x: hidden;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Outfit', 'DM Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
@@ -45,7 +45,7 @@
 
   input, textarea, select {
     font-size: 16px !important;
-    font-family: 'DM Sans', system-ui, sans-serif !important;
+    font-family: 'Outfit', 'DM Sans', system-ui, sans-serif !important;
   }
 
   h1, h2, h3, h4 {

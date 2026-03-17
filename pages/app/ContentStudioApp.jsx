@@ -640,6 +640,23 @@ function PostCard({post, profile, index}){
   const [tab,setTab]=useState("caption");
   const [copied,setCopied]=useState(false);
 
+  // Map distinct colours to each platform to make them stand out
+  const getPlatformColor = (platform) => {
+    switch (platform?.toLowerCase()) {
+      case "instagram": return { bg: "#E1306C", text: "#fff" };
+      case "linkedin": return { bg: "#0077B5", text: "#fff" };
+      case "youtube": return { bg: "#FF0000", text: "#fff" };
+      case "twitter/x": return { bg: "#1DA1F2", text: "#fff" };
+      case "twitter": return { bg: "#1DA1F2", text: "#fff" };
+      case "facebook": return { bg: "#1877F2", text: "#fff" };
+      case "tiktok": return { bg: "#00f2fe", text: "#000" };
+      default: return { bg: color, text: "#fff" };
+    }
+  };
+
+  const pColor = getPlatformColor(post.platform);
+
+
   const tabs=[
     {id:"caption", icon:"📋", label:"Caption", hint:"Copy & paste into your post"},
     ...(post.script?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
@@ -674,8 +691,8 @@ function PostCard({post, profile, index}){
           <div style={{width:28,height:28,borderRadius:8,background:`${color}20`,border:`1px solid ${color}30`,
             color,fontWeight:900,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>
             {index+1}</div>
-          <span style={{background:`${color}18`,color,border:`1px solid ${color}30`,
-            borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:700,letterSpacing:".3px"}}>
+          <span style={{background:pColor.bg,color:pColor.text,boxShadow:`0 0 10px ${pColor.bg}40`,
+            borderRadius:6,padding:"4px 10px",fontSize:11,fontWeight:800,textTransform:"uppercase",letterSpacing:"1px"}}>
             {post.platform||"—"}</span>
           <span style={{background:"rgba(255,255,255,0.07)",color:"rgba(255,255,255,0.6)",
             borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:600}}>
@@ -1186,34 +1203,23 @@ function Workspace({profile, hKey, onUpgrade}){
               {price:"₹8,999/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
             ].map(({price,name,desc,id})=>(
               <button key={name}
-                onClick={()=> onUpgrade ? onUpgrade(id) : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=${id}`)}
+                onClick={()=> { 
+                  if(typeof onUpgrade === 'function') onUpgrade(id); 
+                  else window.location.href=`${window.location.origin}/#/app/content-studio?plan=${id}`; 
+                }}
                 style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.25)",
-                  borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center"}}>
-                <div style={{fontSize:15,fontWeight:800,color:"#5ba4f5",marginBottom:3}}>{price}</div>
-                <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3}}>{name}</div>
-                <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4}}>{desc}</div>
+                  borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center",transition:"all .2s"}}
+                  onMouseOver={(e)=>e.currentTarget.style.background="rgba(56,189,248,0.2)"}
+                  onMouseOut={(e)=>e.currentTarget.style.background="rgba(56,189,248,0.1)"}>
+                <div style={{fontSize:15,fontWeight:800,color:"#5ba4f5",marginBottom:3,pointerEvents:"none"}}>{price}</div>
+                <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3,pointerEvents:"none"}}>{name}</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4,pointerEvents:"none"}}>{desc}</div>
               </button>
             ))}
           </div>
           <p style={{fontSize:12,color:"rgba(255,255,255,0.3)"}}>
             Scroll down to view your 3 generated posts anytime ↓
           </p>
-        </div>
-      )}
-      {/* Week history pills */}
-      {hist.length>=1&&(
-        <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap",alignItems:"center"}}>
-          <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-            color:"rgba(255,255,255,0.22)"}}>History:</span>
-          {hist.map((w,i)=>(
-            <button key={i} onClick={()=>{setResult(w);setErr(null);}}
-              style={{padding:"4px 15px",borderRadius:20,fontSize:12,fontWeight:600,
-                border:`1px solid ${color}40`,transition:"all .15s",
-                background:result?.week===w.week?color:`${color}10`,
-                color:result?.week===w.week?"#fff":color,cursor:"pointer"}}>
-              W{w.week} <span style={{opacity:.7,fontSize:10}}>· {w.posts?.length||0} posts</span>
-            </button>
-          ))}
         </div>
       )}
 
@@ -1300,11 +1306,32 @@ function Workspace({profile, hKey, onUpgrade}){
       {/* Results */}
       {result&&!gen&&(
         <div>
+          {/* Week history pills (Interactive Navigation) inside Content generation area */}
+          {hist.length>=1&&(
+            <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap",alignItems:"center",
+              background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",
+              padding:"10px 14px",borderRadius:12}}>
+              <span style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+                color:"rgba(255,255,255,0.3)"}}>View Week:</span>
+              {hist.map((w,i)=>(
+                <button key={i} onClick={()=>{setResult(w);setErr(null);}}
+                  style={{padding:"6px 16px",borderRadius:8,fontSize:13,fontWeight:600,
+                    border:result?.week===w.week?`1px solid ${color}`:"1px solid rgba(255,255,255,0.1)",
+                    transition:"all .2s",
+                    background:result?.week===w.week?color:"rgba(255,255,255,0.05)",
+                    color:result?.week===w.week?"#fff":"rgba(255,255,255,0.7)",cursor:"pointer",
+                    boxShadow:result?.week===w.week?`0 4px 12px ${color}40`:"none"}}>
+                  Week {w.week || (i + 1)}
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="mobile-col" style={{display:"flex",alignItems:"center",gap:10,marginTop:12}}>
             <div style={{height:1,flex:1,background:`${color}12`}}/>
             <div style={{background:color,color:"#fff",borderRadius:20,padding:"4px 16px",
               fontSize:11,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase"}}>
-              Week {result.week} · {result.date}</div>
+              Week {result.week || (hist.indexOf(result)+1)} · {result.date}</div>
             <div style={{height:1,flex:1,background:`${color}12`}}/>
           </div>
           {result.posts?.length>0&&<WeekCal posts={result.posts} color={color}/>}
@@ -1997,9 +2024,68 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       clearInterval(msgTimer);
       // Fallback to sample posts so trial isn't broken
       setPosts([
-        { platform: formData.platforms?.[0] || "Instagram", format: "Reel", title: `How to dominate as a ${formData.niche || 'brand'} in 2025`, hook: `Stop doing what everyone else is doing in ${formData.niche}`, caption: `Here's the exact strategy that top ${formData.niche} brands use to 3x their engagement... 🚀\n\nSwipe to see the full breakdown.`, hashtags: ["growth", "strategy", "contentmarketing"], priority: "Must Post", best_day: "Tuesday", best_time: "9am", posting_checklist: ["Add trending audio", "Ensure subtitles are on", "Reply to comments in first 30 mins"], engagement_tip: "Ask a controversial question in the comments to boost engagement." },
-        { platform: formData.platforms?.[0] || "Instagram", format: "Carousel", title: "3 mistakes killing your engagement", hook: "3 mistakes killing your engagement right now", caption: `Are you making these 3 common mistakes? 👇\n\nIf yes, here's how to fix them immediately.`, hashtags: ["socialmedia", "marketing", "tips"], priority: "High Value", best_day: "Thursday", best_time: "12pm", carousel_slides: [{slide_num:1, heading:"Mistake 1", body:"Not posting consistently"}, {slide_num:2, heading:"Mistake 2", body:"Ignoring comments"}, {slide_num:3, heading:"Mistake 3", body:"Only selling, never giving value"}], posting_checklist: ["Add alt text to images", "Tag relevant brands", "Share to story"], engagement_tip: "Like the last 3 posts of everyone who comments." },
-        { platform: formData.platforms?.[0] || "Instagram", format: "Single Post", title: `Unpopular opinion about ${formData.niche}`, hook: `Unpopular opinion: ${formData.niche} is changing.`, caption: `Adapt or get left behind. Here's our exact framework for staying ahead in ${formData.niche} 🚀`, hashtags: ["business", "growth", "entrepreneur"], priority: "Good to Post", best_day: "Saturday", best_time: "10am", posting_checklist: ["Tag location", "Use niche hashtags", "Pin the post"], engagement_tip: "DM the post to 5 industry peers." },
+        {
+          platform: formData.platforms?.[0] || "Instagram",
+          format: "Reel",
+          title: `3 things ${formData.niche || 'top brands'} never tell you`,
+          hook: `3 things every successful ${formData.niche || 'brand'} does that nobody talks about`,
+          caption: `Nobody in ${formData.niche || 'your space'} is telling you this. \u00b7\u00b7\u00b7\n\nHere are the 3 things the top 1% do every single week that the rest ignore completely:\n\n1️⃣ They post for ONE specific person, not for everyone\n2️⃣ They lead every video with the result, then show the process\n3️⃣ They reply to comments in the first 30 minutes — every time\n\nThe algorithm rewards activity, not perfection.\n\nSave this. Read it before you post next time.`,
+          cta: "Tag someone who needs to see this ↓",
+          hashtags: [formData.niche?.toLowerCase().replace(/\s/g,"") || "contentcreator", "socialmediatips", "growyourbusiness", "contentmarketing", "instagramtips", "reelstrategy", "digitalmarketing", "brandbuilding", "entrepreneur", "businessgrowth"],
+          priority: "Must Post",
+          best_day: "Tuesday",
+          best_time: "9am",
+          why_now: "Early-week content gets highest organic reach",
+          script: `[DIRECTION: Open to camera, direct eye contact. No intro. Start speaking immediately.]\n\nNobody in ${formData.niche || 'this space'} is going to tell you what I'm about to say.\n\n[DIRECTION: Hold up 3 fingers, counting down as you speak]\n\nThere are 3 things the top creators and brands do every single week — and the majority of people never do any of them.\n\nNumber one: They post for ONE specific person. Not everyone. ONE person.\n\n[DIRECTION: Point at camera] When you write your next caption, picture one real human and write it to them directly. Watch your engagement double.\n\nNumber two: They lead with the result, then show the process. Not "here's how I did it" — they open with "here's what you'll get."\n\n[DIRECTION: Step in closer to camera, lower voice slightly]\n\nNumber three: They reply to every comment in the first 30 minutes. Every. Single. Time. The algorithm treats your post like a conversation. Be part of it.\n\n[DIRECTION: Look directly into camera, pause for 1 second]\n\nSave this video. You'll want to come back to it.`,
+          carousel_slides: [
+            {slide_num:1, heading:`3 Things Top ${formData.niche || 'Brands'} Never Tell You`, body:"The strategies that actually drive growth — swipe to see all 3.", design_note:"Bold headline on dark background. Brand colour accent on '3'. Clean, minimal."},
+            {slide_num:2, heading:"#1: Post for ONE person", body:"Stop trying to reach everyone. Picture your ideal customer and write every caption like it's a DM to them specifically. Specificity converts.", design_note:"Icon of a single person target. Split between muted and highlighted text."},
+            {slide_num:3, heading:"#2: Lead with the RESULT", body:"Don't open with \"here's how I did it.\" Open with \"here's what you'll achieve.\" People act on outcomes, not processes.", design_note:"Arrow pointing up-right. Result = highlighted. Process = faded."},
+            {slide_num:4, heading:"#3: Reply in the first 30 mins", body:"The algorithm reads early engagement as a signal of quality. Reply to every comment in the first half hour. It changes reach dramatically.", design_note:"Clock icon showing 30 minutes. Urgent, warm colour."},
+            {slide_num:5, heading:"Save this and post it this week.", body:"Follow for weekly content strategy. These 3 things cost zero — but most people never do them.", design_note:"Strong CTA. Brand logo bottom right. Contrast background."}
+          ],
+          posting_checklist: ["Film in good natural side-lighting, portrait mode (9:16)", "Add captions/subtitles in CapCut or Instagram native tool", "Use trending audio under 30s at 8–20% volume", "Post between 8–10am on Tuesday for best reach", "Reply to every comment within the first 30 minutes"],
+          engagement_tip: "Pin a comment like \"Which of these 3 do you already do?\" immediately after posting. It primes the comment section and boosts algorithm ranking."
+        },
+        {
+          platform: formData.platforms?.[0] || "Instagram",
+          format: "Carousel",
+          title: `The ${formData.niche || 'content'} content calendar that actually works`,
+          hook: `Your content calendar is the reason you're not growing`,
+          caption: `Here's the brutal truth about why most ${formData.niche || 'business'} content doesn't convert. \u2193\n\nIt's not the graphics.\nIt's not the algorithm.\nIt's not even the hashtags.\n\nIt's that there's NO system behind it.\n\nWe mapped out a 5-post weekly structure that works for ${formData.niche || 'any niche'} — swipe through to steal it.\n\nEvery post has a purpose.\nEvery post builds on the last.\nNone of them feel like ads.\n\nSave this carousel — you'll use it every week.`,
+          cta: "Drop a 🔥 in the comments if you want the full monthly template",
+          hashtags: ["contentcalendar", formData.niche?.toLowerCase().replace(/[^a-z]/g,"") || "contentcreator", "socialmediatips", "contentplanning", "digitalmarketing", "instagrammarketing", "marketingstrategy"],
+          priority: "High Value",
+          best_day: "Thursday",
+          best_time: "12pm",
+          why_now: "Mid-week carousel posts receive highest save rates",
+          carousel_slides: [
+            {slide_num:1, heading:"The 5-Post Weekly System for " + (formData.niche || "Any Business"), body:"Stop posting randomly. Every slot in your week has a job. Swipe to see the exact structure.", design_note:"Strong contrasting headline. Week calendar grid graphic. Dark BG with brand colour accent."},
+            {slide_num:2, heading:"Monday: Education Post", body:"Teach something specific and useful. Show your expertise without selling. This builds trust and saves rate. Example: '3 things about [niche] that most people get wrong.'", design_note:"📚 icon. Blue/cool colour scheme. Clean text layout."},
+            {slide_num:3, heading:"Tuesday: Reel / Video", body:"Video gets 3× more reach than static. Post a talking-head, how-to, or trend-based Reel. Even 15 seconds of value counts.", design_note:"🎬 icon. Energetic warm colour tone. Bold typography."},
+            {slide_num:4, heading:"Thursday: Social Proof or Story", body:"Share a result, testimonial, or behind-the-scenes moment. This converts followers into buyers. Real > polished.", design_note:"⭐ star or speech bubble icon. Warm, human tone."},
+            {slide_num:5, heading:"Saturday: Engagement Bait", body:"A question, poll, or this-or-that post. Not for reach — for depth. Comments and DMs tell the algorithm this content resonates.", design_note:"💬 icon. Playful, light design."},
+            {slide_num:6, heading:"Save this. Use it every week.", body:"Follow for more systems that grow " + (formData.niche || "your business") + " without burning out.", design_note:"CTA slide. Bold save icon. Brand logo and handle. High contrast."}
+          ],
+          posting_checklist: ["Design slides in Canva using 1080×1080px format", "Keep each slide to 1 core idea only", "Slide 1 must work as a standalone image (shown in grid)", "Add your handle watermark on every slide", "Post on Thursday 12pm for maximum save rate"],
+          engagement_tip: "Save carousels get reshared. Pin a comment asking followers \"Which slide hit hardest?\" to force people back to the beginning and re-read."
+        },
+        {
+          platform: formData.platforms?.[0] || "Instagram",
+          format: "Reel",
+          title: `Why ${formData.niche || 'your industry'} is harder than it looks`,
+          hook: `Everyone thinks ${formData.niche || 'this'} is easy. Here's what they're not seeing.`,
+          caption: `Everyone thinks ${formData.niche || 'running a brand'} looks easy from the outside. \u00b7\u00b7\u00b7\n\nThey see the posts.\nThey don't see the 6am mornings.\nThe failed launches.\nThe content that got 3 likes.\n\nHere's what actually separates the brands that grow from the ones that disappear:\n\n✔️ Consistency over perfection\n✔️ Showing up even when nothing is working\n✔️ Treating every post as a test, not a statement\n\nThe brands winning in ${formData.niche || 'your space'} right now aren't the most talented.\n\nThey're the most consistent.\n\nAre you one of them? 👇`,
+          cta: "Follow if you're building something real in ${formData.niche || 'this space'}",
+          hashtags: ["entrepreneurmindset", formData.niche?.toLowerCase().replace(/[^a-z]/g,"") || "entrepreneur", "businessgrowth", "contentcreator", "buildingabrand", "motivation"],
+          priority: "Good to Post",
+          best_day: "Saturday",
+          best_time: "10am",
+          why_now: "Weekend motivational content receives high shares and saves",
+          script: `[DIRECTION: Start walking towards the camera or seated at desk. Casual, unscripted feel. No music intro.]\n\nEveryone thinks ${formData.niche || 'doing this'} is easy.\n\n[DIRECTION: Pause. Slight smile. Look directly at camera.]\n\nThey see the polished posts. They don't see what it actually takes.\n\nThe 6am mornings when you'd rather do anything else.\nThe content you spent 3 hours on that got 4 likes.\nThe week you almost quit.\n\n[DIRECTION: Step closer to camera, drop voice slightly]\n\nBut here's what I've learned.\n\nThe brands that win in ${formData.niche || 'this space'} aren't the most talented.\n\nThey're not the best looking.\nThey don't have the biggest budgets.\n\n[DIRECTION: Point at camera, hold for 1 second]\n\nThey're the most consistent.\n\nIf you're still showing up — you're already ahead of 80% of people who started when you did.\n\n[DIRECTION: Smile, relax. Lower energy finish.]\n\nKeep going.`,
+          posting_checklist: ["Film in natural light, minimal background clutter", "Keep total length under 45 seconds", "Add motivational background music at 15% volume", "Add 1-2 text overlays for key lines", "Post Saturday morning 9–11am when people are browsing"],
+          engagement_tip: "Ask in your Stories the same day: 'Are you still showing up even when it's hard? Reply YES.' Screenshot the replies and post them next week as social proof."
+        },
       ]);
       setStage(1);
     });
@@ -2417,7 +2503,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
   if(screen==="details"&&plan) return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"28px 20px"}}>
       <button onClick={()=>setScreen("plans")}
-        style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
+        style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'Outfit', 'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
 
       {/* Plan badge */}
       <div style={{background:`${plan.color}12`,border:`1px solid ${plan.color}28`,borderRadius:12,
@@ -2451,14 +2537,14 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
                 style={{width:90,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
                   border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
                   padding:"10px",color:"#fff",fontSize:13,outline:"none"}}>
-                <option value="+91">🇮🇳 +91</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+971">🇦🇪 +971</option>
-                <option value="+61">🇦🇺 +61</option>
-                <option value="+65">🇸🇬 +65</option>
-                <option value="+49">🇩🇪 +49</option>
-                <option value="+27">🇿🇦 +27</option>
+                <option value="+91" style={{background:"#08101f",color:"#fff"}}>🇮🇳 +91</option>
+                <option value="+1" style={{background:"#08101f",color:"#fff"}}>🇺🇸 +1</option>
+                <option value="+44" style={{background:"#08101f",color:"#fff"}}>🇬🇧 +44</option>
+                <option value="+971" style={{background:"#08101f",color:"#fff"}}>🇦🇪 +971</option>
+                <option value="+61" style={{background:"#08101f",color:"#fff"}}>🇦🇺 +61</option>
+                <option value="+65" style={{background:"#08101f",color:"#fff"}}>🇸🇬 +65</option>
+                <option value="+49" style={{background:"#08101f",color:"#fff"}}>🇩🇪 +49</option>
+                <option value="+27" style={{background:"#08101f",color:"#fff"}}>🇿🇦 +27</option>
               </select>
               <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
                 placeholder="987654321" type="tel"
@@ -2770,10 +2856,10 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
 
   const TABS = [
     {id:"overview", label:"📊 Overview"},
-    {id:"upgrade", label:"🚀 Upgrade Plan"},
     {id:"tips", label:"💡 Weekly Tips"},
     {id:"platforms", label:"📲 Platform Tips"},
-    {id:"history", label:"📅 Content History"},
+    {id:"content", label:"📝 Ongoing Content"},
+    {id:"history", label:"📅 Previous History"},
   ];
 
   return (
@@ -2828,24 +2914,12 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
 
           {/* Action buttons */}
           <div style={{display:"flex",flexDirection:"column",gap:8,flexShrink:0}}>
-            {profile.plan === "trial" ? (
-              <button onClick={() => setActiveTab("upgrade")}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"10px 18px",fontSize:13,fontWeight:700,
-                  cursor:"pointer",letterSpacing:"-.2px",whiteSpace:"nowrap"}}>
-                🚀 Upgrade to Generate</button>
-            ) : (
-              <button onClick={onGenerateContent}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"10px 18px",fontSize:13,fontWeight:700,
-                  cursor:"pointer",letterSpacing:"-.2px",whiteSpace:"nowrap"}}>
-                ⚡ Generate Content</button>
-            )}
             <button onClick={fetchTips} disabled={loadingTips}
-              style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",
-                color:"rgba(255,255,255,0.7)",borderRadius:10,padding:"10px 18px",
-                fontSize:13,fontWeight:600,cursor:loadingTips?"not-allowed":"pointer",whiteSpace:"nowrap"}}>
-              {loadingTips?"Analysing...":"🔄 Refresh Tips"}</button>
+              style={{background:"rgba(255,255,255,0.08)",border:`1px solid ${color}30`,
+                color:"rgba(255,255,255,0.8)",borderRadius:10,padding:"9px 18px",
+                fontSize:13,fontWeight:600,cursor:loadingTips?"not-allowed":"pointer",whiteSpace:"nowrap",
+                transition:"all .15s"}}>
+              {loadingTips?"⏳ Analysing...":"🔄 Refresh Analysis"}</button>
           </div>
         </div>
       </div>
@@ -2906,15 +2980,37 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
         </div>
       )}
 
+      {/* ── COMPACT UPGRADE BANNER ── */}
+      {(profile.plan==="trial" || !profile.plan) && (
+        <div style={{background:"linear-gradient(135deg,rgba(56,189,248,0.1),rgba(56,189,248,0.04))",
+          border:"1px solid rgba(56,189,248,0.28)",borderRadius:12,padding:"10px 16px",
+          marginBottom:14,display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+          <span style={{fontSize:16}}>⚡</span>
+          <div style={{flex:1,minWidth:180}}>
+            <span style={{fontSize:13,fontWeight:700,color:"#f1f5f9"}}>You're on Free Trial — </span>
+            <span style={{fontSize:13,color:"rgba(255,255,255,0.5)"}}>Upgrade to unlock 15–unlimited posts/month</span>
+          </div>
+          <a href={`${window.location.origin}/#/app/content-studio?plan=starter`}
+            style={{background:"linear-gradient(135deg,#38bdf8,#1d4ed8)",color:"#fff",
+              border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,
+              cursor:"pointer",textDecoration:"none",whiteSpace:"nowrap",flexShrink:0,
+              boxShadow:"0 4px 14px rgba(56,189,248,0.3)"}}>
+            View Plans →</a>
+        </div>
+      )}
+
       {/* ── TABS ── */}
       <div style={{display:"flex",gap:3,background:"rgba(255,255,255,0.04)",borderRadius:12,
-        padding:4,marginBottom:16,overflowX:"auto",scrollbarWidth:"none"}}>
+        padding:4,marginBottom:16,overflowX:"auto",scrollbarWidth:"none",
+        border:"1px solid rgba(255,255,255,0.06)"}}>
         {TABS.map(t=>(
           <button key={t.id} onClick={()=>setActiveTab(t.id)}
-            style={{padding:"7px 16px",borderRadius:9,fontSize:12,fontWeight:600,
-              border:"none",cursor:"pointer",whiteSpace:"nowrap",transition:"all .15s",
+            style={{padding:"8px 16px",borderRadius:9,fontSize:12,fontWeight:activeTab===t.id?700:500,
+              border:activeTab===t.id?`1px solid ${color}40`:"1px solid transparent",
+              cursor:"pointer",whiteSpace:"nowrap",transition:"all .2s",
               background:activeTab===t.id?color:"transparent",
-              color:activeTab===t.id?"#fff":"rgba(255,255,255,0.42)"}}>
+              color:activeTab===t.id?"#ffffff":"rgba(255,255,255,0.45)",
+              boxShadow:activeTab===t.id?`0 2px 10px ${color}35`:"none"}}>
             {t.label}</button>
         ))}
       </div>
@@ -2948,53 +3044,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
             </div>
           </div>
 
-          {/* ── UPGRADE TAB ── */}
-          {activeTab==="upgrade"&&(()=>{
-            const currentPlanIndex = PLANS.findIndex(p => p.id === profile.plan);
-            const geoObj = JSON.parse(sessionStorage.getItem("sn_geo") || '{"country":"IN"}');
-            const userGeo = GEO_PRICING[geoObj.country] || GEO_PRICING["_DEFAULT"];
-            const currentPrice = currentPlanIndex >= 0 ? userGeo.rates[currentPlanIndex] : 0;
-            
-            return(
-              <div style={{animation:"fadeUp .3s ease"}}>
-                <div style={{background:"#020617",border:`1px solid ${color}30`,borderRadius:16,padding:"24px",textAlign:"center"}}>
-                  <h3 style={{fontSize:20,fontWeight:800,marginBottom:8}}>Ready to Scale?</h3>
-                  <p style={{fontSize:14,color:"rgba(255,255,255,0.6)",marginBottom:24}}>Upgrade your plan to unlock more posts, more platforms, and faster growth.</p>
-                  
-                  <div style={{display:"grid",gap:16,gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))"}}>
-                    {PLANS.map((pl, idx) => {
-                      if (idx <= currentPlanIndex) return null;
-                      const plPrice = userGeo.rates[idx];
-                      const diff = plPrice - currentPrice;
-                      return (
-                        <div key={pl.id} style={{background:"rgba(255,255,255,0.03)",border:`1px solid ${pl.color}40`,borderRadius:14,padding:"20px",textAlign:"left",boxShadow:`0 4px 20px ${pl.color}15`}}>
-                          <div style={{fontSize:10,fontWeight:800,color:pl.color,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>{pl.name}</div>
-                          <div style={{fontSize:18,fontWeight:800,marginBottom:10}}>{pl.tagline}</div>
-                          <div style={{fontSize:13,color:"rgba(255,255,255,0.5)",marginBottom:16}}>
-                            ✓ {pl.postsPerMonth === 999 ? "Unlimited" : pl.postsPerMonth} posts/mo<br/>
-                            ✓ {pl.platformCount === 999 ? "All" : pl.platformCount} platforms
-                          </div>
-                          <div style={{marginBottom:16}}>
-                            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Price Difference to Upgrade:</div>
-                            <div style={{fontSize:24,fontWeight:800,color:pl.color}}>{userGeo.symbol}{diff.toLocaleString()}</div>
-                          </div>
-                          <button onClick={() => { window.location.href=`${window.location.origin}/#/app/content-studio?plan=${pl.id}`; }}
-                            style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,color:"#fff",border:"none",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:`0 4px 15px ${pl.color}40`}}>
-                            Upgrade to {pl.name} →
-                          </button>
-                        </div>
-                      );
-                    })}
-                    {currentPlanIndex >= PLANS.length - 1 && (
-                      <div style={{color:"rgba(255,255,255,0.5)",fontSize:15,fontStyle:"italic",padding:"20px",textAlign:"center",gridColumn:"1/-1"}}>
-                        You are already on the highest tier plan! 🚀 Take over the world.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
+
 
           {/* ── SOCIAL ACCOUNTS PANEL ── */}
           {profile.socialAccounts&&Object.values(profile.socialAccounts).some(v=>v)&&(
@@ -3208,20 +3258,75 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
         </div>
       )}
 
-      {/* ── CONTENT HISTORY TAB ── */}
-      {activeTab==="history"&&(
-        <div style={{display:"grid",gap:10}}>
+      {/* ── ONGOING CONTENT TAB ── */}
+      {activeTab==="content"&&(
+        <div style={{display:"grid",gap:32}}>
           {hist.length===0&&(
-            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
+            <div style={{textAlign:"center",padding:"48px 20px",background:"rgba(255,255,255,0.02)",
               borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginBottom:10}}>No content generated yet</div>
-              <button onClick={onGenerateContent}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"10px 22px",fontSize:13,fontWeight:700,cursor:"pointer"}}>
-                ⚡ Generate First Week</button>
+              <div style={{fontSize:36,marginBottom:12}}>📝</div>
+              <div style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.45)",marginBottom:8}}>No content generated yet</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,0.28)",marginBottom:16}}>
+                Scroll down to the Content Generator section below to create your first week of posts</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.2)"}}>↓ Content Generator is right below on this page</div>
             </div>
           )}
-          {hist.slice().reverse().map((w,i)=>(
+          {hist.length>0&&(()=>{
+            const latest = hist[hist.length-1];
+            return (
+              <div style={{animation:"fadeUp .3s ease"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
+                  <div style={{height:1,flex:1,background:`${color}15`}}/>
+                  <div style={{background:color,color:"#fff",borderRadius:20,padding:"4px 16px",
+                    fontSize:11,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase"}}>
+                    Week {latest.week} · {latest.date}
+                  </div>
+                  <div style={{height:1,flex:1,background:`${color}15`}}/>
+                </div>
+                {latest.posts?.length>0&&<WeekCal posts={latest.posts} color={color}/>}
+                <TrendCards trends={latest.trends} color={color}/>
+                <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
+                  color:"rgba(255,255,255,0.28)",marginBottom:14}}>
+                  📝 {latest.posts?.length||0} Posts — Platform-native content ready to publish
+                </div>
+                <div style={{display:"grid",gap:20}}>
+                  {latest.posts?.map((p,i)=><PostCard key={i} post={p} profile={profile} index={i}/>)}
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Generator embedded directly in Ongoing Content */}
+          <div style={{paddingTop:28,borderTop:"1px solid rgba(255,255,255,0.08)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
+              <div style={{height:1,flex:1,background:`${color}12`}}/>
+              <div style={{display:"flex",alignItems:"center",gap:8,
+                background:`${color}12`,border:`1px solid ${color}28`,borderRadius:24,
+                padding:"7px 20px"}}>
+                <span style={{fontSize:15}}>⚡</span>
+                <span style={{fontSize:13,fontWeight:700,color,letterSpacing:"-.2px"}}>Content Generator</span>
+              </div>
+              <div style={{height:1,flex:1,background:`${color}12`}}/>
+            </div>
+            <Workspace profile={profile} hKey={hKey}
+              onUpgrade={(planId)=>window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`}/>
+          </div>
+        </div>
+      )}
+
+      {/* ── PREVIOUS HISTORY TAB ── */}
+      {activeTab==="history"&&(
+        <div style={{display:"grid",gap:10}}>
+          {hist.length<=1&&(
+            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
+              borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
+              <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginBottom:6}}>Previous weeks appear here</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.2)"}}>
+                {hist.length===0?"No content generated yet":"Generate more weeks to see history here"}
+              </div>
+            </div>
+          )}
+          {hist.slice(0,-1).reverse().map((w,i)=>(
             <div key={i} style={{background:"#020617",border:`1px solid rgba(255,255,255,0.07)`,
               borderRadius:14,padding:"16px 18px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
@@ -3256,15 +3361,15 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
 
 
 // ─────────────────────────────────────────────────────────────────
-//  PORTAL CLIENT VIEW — dashboard + content with tab toggle
+//  PORTAL CLIENT VIEW — unified single-page layout
 // ─────────────────────────────────────────────────────────────────
 function PortalClientView({client, onHome}){
-  const [view, setView] = useState("dashboard");
   const color = client.color||"#7C3AED";
   const hKey = `snstudio_hist_${client.id}`;
   return (
     <div>
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,flexWrap:"wrap"}}>
+      {/* ── TOP NAV ── */}
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20,flexWrap:"wrap"}}>
         <button onClick={onHome}
           style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
             color:"rgba(255,255,255,0.55)",borderRadius:9,padding:"7px 13px",fontSize:13,
@@ -3281,21 +3386,10 @@ function PortalClientView({client, onHome}){
         </div>
         <span style={{fontSize:11,background:"#052e16",color:"#4ade80",border:"1px solid #166534",
           borderRadius:6,padding:"3px 10px",fontWeight:700}}>✓ {client.planName} · Active</span>
-        <div style={{display:"flex",gap:2,background:"rgba(255,255,255,0.05)",borderRadius:9,padding:3}}>
-          {[["dashboard","📊 My Profile"],["content","⚡ Generate"]].map(([v,l])=>(
-            <button key={v} onClick={()=>setView(v)}
-              style={{padding:"5px 14px",borderRadius:7,fontSize:12,fontWeight:600,border:"none",
-                cursor:"pointer",transition:"all .15s",
-                background:view===v?color:"transparent",
-                color:view===v?"#fff":"rgba(255,255,255,0.4)"}}>
-              {l}</button>
-          ))}
-        </div>
       </div>
-      {view==="dashboard"
-        ?<ClientDashboard profile={client} hKey={hKey} onGenerateContent={()=>setView("content")}/>
-        :<Workspace profile={client} hKey={hKey} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
-      }
+
+      {/* ── PROFILE DASHBOARD SECTION ── */}
+      <ClientDashboard profile={client} hKey={hKey} onGenerateContent={null}/>
     </div>
   );
 }
@@ -3343,7 +3437,7 @@ export default function App(){
     @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
     :root{--blue:#5ba4f5;--blue2:#2563eb;--mint:#34d399;--vio:#818cf8;--g1:rgba(255,255,255,.055);--g2:rgba(255,255,255,.09);--g3:rgba(255,255,255,.04);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.62);--t3:rgba(255,255,255,.36);--t4:rgba(255,255,255,.18);}
     *{box-sizing:border-box;margin:0;padding:0;}
-    html,body,*{font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;} h1,h2,h3,h4{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:-.03em;line-height:1.06;}
+    html,body,*{font-family:'Outfit','DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;} h1,h2,h3,h4{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:-.03em;line-height:1.06;}
     body{background:#07101e;color:rgba(255,255,255,.96);}
     ::-webkit-scrollbar{width:4px;height:4px;}
     ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
@@ -3351,18 +3445,18 @@ export default function App(){
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
     @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(91,164,245,0.4)}50%{box-shadow:0 0 0 8px rgba(91,164,245,0)}}
     h1,h2,h3{letter-spacing:-.4px;line-height:1.15;}
-    input,textarea,select,button{font-family:'DM Sans',system-ui,sans-serif!important;}
+    input,textarea,select,button{font-family:'Outfit','DM Sans',system-ui,sans-serif!important;}
     input,textarea,select{color:rgba(255,255,255,.92);}
     a{text-decoration:none;}[contenteditable]{outline:none;}
     .sn-glass{background:rgba(255,255,255,.055);backdrop-filter:blur(36px) saturate(180%);-webkit-backdrop-filter:blur(36px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 32px rgba(0,0,0,.2);}
     .sn-input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:rgba(255,255,255,.92);padding:12px 14px;font-size:14px;width:100%;transition:all .2s;outline:none;}
     .sn-input:focus{border-color:rgba(91,164,245,.45);background:rgba(91,164,245,.06);box-shadow:0 0 0 3px rgba(91,164,245,.1);}
     .sn-input::placeholder{color:rgba(255,255,255,.28);}
-    .sn-btn-primary{background:linear-gradient(135deg,#2563eb,#5ba4f5);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(91,164,245,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:all .22s;font-family:'DM Sans',system-ui,sans-serif;letter-spacing:-.1px;}
+    .sn-btn-primary{background:linear-gradient(135deg,#2563eb,#5ba4f5);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(91,164,245,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:all .22s;font-family:'Outfit','DM Sans',system-ui,sans-serif;letter-spacing:-.1px;}
     .sn-btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 12px 32px rgba(91,164,245,.4);}
-    .sn-btn-ghost{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:50px;padding:12px 22px;font-size:14px;font-weight:400;cursor:pointer;transition:all .2s;font-family:'DM Sans',system-ui,sans-serif;backdrop-filter:blur(20px);}
+    .sn-btn-ghost{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:50px;padding:12px 22px;font-size:14px;font-weight:400;cursor:pointer;transition:all .2s;font-family:'Outfit','DM Sans',system-ui,sans-serif;backdrop-filter:blur(20px);}
     .sn-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);color:#fff;}
-    .sn-btn-icon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',system-ui,sans-serif;}
+    .sn-btn-icon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);display:inline-flex;align-items:center;gap:7px;font-family:'Outfit','DM Sans',system-ui,sans-serif;}
     .sn-btn-icon:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
     .sn-btn-icon.active{background:rgba(91,164,245,.15);border-color:rgba(91,164,245,.3);color:#5ba4f5;}
     .plan-card-glass{background:rgba(255,255,255,.04);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px;position:relative;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
@@ -3371,7 +3465,7 @@ export default function App(){
     .post-card{background:rgba(255,255,255,.04);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);position:relative;}
     .post-card:hover{border-color:rgba(91,164,245,.2);box-shadow:0 12px 36px rgba(0,0,0,.25);}
     .sn-tabbar{display:flex;gap:4px;background:rgba(255,255,255,.04);border-radius:14px;padding:4px;border:1px solid rgba(255,255,255,.07);}
-    .sn-tab{padding:8px 16px;border-radius:11px;font-size:13px;font-weight:400;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:'DM Sans',system-ui,sans-serif;white-space:nowrap;}
+    .sn-tab{padding:8px 16px;border-radius:11px;font-size:13px;font-weight:400;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:'Outfit','DM Sans',system-ui,sans-serif;white-space:nowrap;}
     .sn-tab.active{background:rgba(91,164,245,.15);color:#5ba4f5;font-weight:500;border:1px solid rgba(91,164,245,.22);}
     .sn-tab:hover:not(.active){background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);}
     .sn-badge-blue{background:rgba(91,164,245,.1);border:1px solid rgba(91,164,245,.2);color:#5ba4f5;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
@@ -3381,7 +3475,7 @@ export default function App(){
     .sn-h1{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;letter-spacing:-.5px;line-height:1.12;color:rgba(255,255,255,.95);}
     .sn-h2{font-size:19px;font-weight:500;letter-spacing:-.3px;color:rgba(255,255,255,.9);}
     .sn-body{font-size:14px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.68;}
-    .copy-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.55);transition:all .2s;display:inline-flex;align-items:center;gap:6px;font-family:'DM Sans',system-ui,sans-serif;}
+    .copy-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.55);transition:all .2s;display:inline-flex;align-items:center;gap:6px;font-family:'Outfit','DM Sans',system-ui,sans-serif;}
     .copy-btn:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
     .copy-btn.copied{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.25);color:#34d399;}
     @media(max-width:768px){
@@ -3441,7 +3535,7 @@ export default function App(){
           {tab === "dashboard" && (
             <button onClick={()=>{setTab("portal");setClientSelected(null);}}
               style={{padding:"6px 16px",borderRadius:10,fontSize:12.5,fontWeight:400,border:"none",
-                cursor:"pointer",transition:"all .15s",letterSpacing:"-.1px",fontFamily:"'DM Sans',sans-serif",
+                cursor:"pointer",transition:"all .15s",letterSpacing:"-.1px",fontFamily:"'Outfit', 'DM Sans',sans-serif",
                 background:"transparent",color:"rgba(255,255,255,0.45)"}}>
               ← Back to Portal</button>
           )}
@@ -3472,43 +3566,43 @@ export default function App(){
   // ── DASHBOARD (Replaces standalone client view) ──────────────────
   if(tab==="dashboard" && clientSelected){
     const cl=clients[clientSelected];
+    const clColor = cl?.color||"#7C3AED";
     return wrap(
         <div>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,flexWrap:"wrap"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20,flexWrap:"wrap"}}>
             <button onClick={()=>{setClientSelected(null);setTab("portal");}}
               style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
                 color:"rgba(255,255,255,0.55)",borderRadius:9,padding:"7px 13px",fontSize:13,
                 cursor:"pointer",fontWeight:600}}>← Back</button>
             {cl?.logoPreview
               ?<img src={cl.logoPreview} alt="logo" style={{width:36,height:36,borderRadius:10,objectFit:"contain",background:"#fff",padding:2}}/>
-              :<div style={{width:36,height:36,borderRadius:10,background:`${cl?.color||"#7C3AED"}18`,
+              :<div style={{width:36,height:36,borderRadius:10,background:`${clColor}18`,
                 display:"flex",alignItems:"center",justifyContent:"center",fontSize:17}}>🏢</div>}
             <div style={{flex:1}}>
               <div style={{fontSize:15,fontWeight:700,letterSpacing:"-.3px"}}>
                 {cl?.brandName}
-                <span style={{color:cl?.color||"#7C3AED",fontSize:12}}> · {(cl?.platforms||[cl?.sub]).join(", ")}</span>
+                <span style={{color:clColor,fontSize:12}}> · {(cl?.platforms||[cl?.sub]).join(", ")}</span>
               </div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:1}}>{cl?.audience}</div>
             </div>
             <span style={{fontSize:11,background:"#052e16",color:"#4ade80",border:"1px solid #166534",
               borderRadius:6,padding:"3px 10px",fontWeight:700}}>{cl?.planName} · ✓ Active</span>
-            {/* View toggle */}
-            <div style={{display:"flex",gap:2,background:"rgba(255,255,255,0.05)",borderRadius:9,padding:3}}>
-              {[["dashboard","📊 Profile"],["content","⚡ Content"]].map(([v,l])=>(
-                <button key={v} onClick={()=>setClientView(v)}
-                  style={{padding:"5px 13px",borderRadius:7,fontSize:12,fontWeight:600,border:"none",
-                    cursor:"pointer",transition:"all .15s",
-                    background:clientView===v?cl?.color||"#7C3AED":"transparent",
-                    color:clientView===v?"#fff":"rgba(255,255,255,0.4)"}}>
-                  {l}</button>
-              ))}
-            </div>
           </div>
-          {clientView==="dashboard"
-            ?<ClientDashboard profile={cl} hKey={`snstudio_hist_${clientSelected}`}
-                onGenerateContent={()=>setClientView("content")}/>
-            :<Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`} onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
-          }
+          <ClientDashboard profile={cl} hKey={`snstudio_hist_${clientSelected}`} onGenerateContent={null}/>
+          <div style={{marginTop:32,paddingTop:28,borderTop:"1px solid rgba(255,255,255,0.06)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
+              <div style={{height:1,flex:1,background:`${clColor}12`}}/>
+              <div style={{display:"flex",alignItems:"center",gap:8,
+                background:`${clColor}12`,border:`1px solid ${clColor}28`,borderRadius:24,
+                padding:"7px 20px"}}>
+                <span style={{fontSize:15}}>⚡</span>
+                <span style={{fontSize:13,fontWeight:700,color:clColor,letterSpacing:"-.2px"}}>Content Generator</span>
+              </div>
+              <div style={{height:1,flex:1,background:`${clColor}12`}}/>
+            </div>
+            <Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`}
+              onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
+          </div>
         </div>
     );
   }

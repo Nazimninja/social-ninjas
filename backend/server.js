@@ -306,52 +306,67 @@ Do NOT reveal you are an AI from Anthropic, you are 'Social Ninja's AI Assistant
 });
 
 // ─────────────────────────────────────────────────────────────────
-// WHATSAPP OTP (TWILIO)
+// SMS OTP (2Factor.in)
 // ─────────────────────────────────────────────────────────────────
-const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
-    ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
-    : null;
-const verifyServiceSid = process.env.TWILIO_VERIFY_SERVICE_SID;
-
 app.post('/api/send-otp', async (req, res) => {
     try {
         const { phone } = req.body;
         if (!phone) return res.status(400).json({ error: "Phone number is required." });
 
-        if (!twilioClient || !verifyServiceSid) {
+        const apiKey = process.env.TWOFACTOR_API_KEY;
+
+        if (!apiKey) {
             console.log(`[DEV MODE] OTP requested for ${phone}. Use '1234' to verify.`);
-            return res.json({ success: true, mode: "test" });
+            return res.json({ success: true, mode: "test", sessionId: "dev-session" });
         }
 
-        // Send via WhatsApp (requires Twilio Verify configured for WhatsApp)
-        const verification = await twilioClient.verify.v2.services(verifyServiceSid)
-            .verifications.create({ to: `whatsapp:${phone}`, channel: 'whatsapp' });
-            
-        res.json({ success: true, status: verification.status });
+        const digits = phone.replace(/\D/g, '');
+        let clean;
+        if (digits.startsWith('91') && digits.length === 12) {
+            clean = digits.slice(2);
+        } else if (digits.length === 10) {
+            clean = digits;
+        } else {
+            clean = digits;
+        }
+
+        console.log(`[OTP] Sending to: ${clean}`);
+
+        const url = `https://2factor.in/API/V1/${apiKey}/SMS/${clean}/AUTOGEN`;
+        const r = await fetch(url);
+        const data = await r.json();
+
+        if (data.Status === 'Success') {
+            return res.json({ success: true, sessionId: data.Details });
+        }
+        res.status(400).json({ error: data.Details || 'Failed to send OTP' });
     } catch (error) {
         console.error("OTP Send Error:", error);
-        res.status(500).json({ error: "Failed to send OTP. Ensure number includes country code." });
+        res.status(500).json({ error: "Failed to send OTP. Please check the phone number." });
     }
 });
 
 app.post('/api/verify-otp', async (req, res) => {
     try {
-        const { phone, code } = req.body;
+        const { phone, code, sessionId } = req.body;
         if (!phone || !code) return res.status(400).json({ error: "Phone and code required." });
 
-        if (!twilioClient || !verifyServiceSid) {
+        const apiKey = process.env.TWOFACTOR_API_KEY;
+
+        if (!apiKey) {
             if (code === "1234") return res.json({ success: true, status: "approved" });
             return res.status(400).json({ error: "Invalid test code. Use 1234." });
         }
 
-        const verification_check = await twilioClient.verify.v2.services(verifyServiceSid)
-            .verificationChecks.create({ to: `whatsapp:${phone}`, code });
-            
-        if (verification_check.status === "approved") {
-            res.json({ success: true, status: "approved" });
-        } else {
-            res.status(400).json({ error: "Invalid or expired verification code." });
+        const sid = sessionId || 'missing';
+        const url = `https://2factor.in/API/V1/${apiKey}/SMS/VERIFY/${sid}/${code}`;
+        const r = await fetch(url);
+        const data = await r.json();
+
+        if (data.Status === 'Success' && data.Details === 'OTP Matched') {
+            return res.json({ success: true, status: "approved" });
         }
+        res.status(400).json({ error: "Invalid or expired code. Please try again." });
     } catch (error) {
         console.error("OTP Verify Error:", error);
         res.status(500).json({ error: "Failed to verify OTP with provider." });

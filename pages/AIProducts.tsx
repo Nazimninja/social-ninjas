@@ -23,8 +23,8 @@ const products = [
     tagline: 'Your brand\'s always-on content team.',
     desc: 'Research what\'s trending in your niche today, then write every caption, script, carousel and hashtag set — platform-native, brand-specific, in 60 seconds. Used by 150+ brands.',
     color: '#5ba4f5',
-    href: '/#/app/content-studio?plan=trial',
-    hrefLabel: 'Try 3 Posts Free →',
+    href: 'https://contentstudio.socialninjas.in/',
+    hrefLabel: 'Explore Content Studio →',
     secondary: '/services',
     secondaryLabel: 'See Agency Plans',
     stats: [['150+','Active Brands'], ['7','Platforms'], ['2.4M+','Posts Generated'], ['60s','Per Generate']],
@@ -107,7 +107,7 @@ const AIProducts: React.FC = () => {
   useReveal();
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div className="page-bg" style={{ fontFamily: "'Outfit', 'DM Sans', system-ui, sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
       <SEO
         title="AI Products | Social Ninja's — Built for Brands That Scale"
@@ -128,8 +128,8 @@ const AIProducts: React.FC = () => {
             A growing suite of AI-powered tools that replace the repetitive work in your marketing stack — so you can focus on strategy and growth.
           </p>
           <div className="reveal d3" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/#/app/content-studio?plan=trial"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></a>
-            <Link to="/contact"><button className="btn-ghost" style={{ fontSize: 15 }}>Join Product Waitlist →</button></Link>
+            <a href="https://contentstudio.socialninjas.in/"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px', fontFamily: "'Outfit', 'DM Sans', system-ui, sans-serif" }}>⚡ Try Content Studio Free</button></a>
+            <Link to="/contact"><button className="btn-ghost" style={{ fontSize: 15, fontFamily: "'Outfit', 'DM Sans', system-ui, sans-serif" }}>Join Product Waitlist →</button></Link>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ const AIProducts: React.FC = () => {
               </div>
 
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <a href={p.href}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.hrefLabel}</button></a>
+                <Link to={p.href}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.hrefLabel}</button></Link>
                 {p.secondary && <Link to={p.secondary}><button className="btn-ghost" style={{ fontSize: 14 }}>{p.secondaryLabel}</button></Link>}
               </div>
             </div>
@@ -220,7 +220,7 @@ const AIProducts: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 30px' }}>Join Waitlist →</button></Link>
-            <a href="/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 15 }}>Try Content Studio Free</button></a>
+            <a href="https://contentstudio.socialninjas.in/"><button className="btn-ghost" style={{ fontSize: 15 }}>Try Content Studio Free</button></a>
           </div>
         </div>
       </div>

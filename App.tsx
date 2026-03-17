@@ -23,8 +23,10 @@ const Careers = lazy(() => import('./pages/Careers'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const LeadAutomation = lazy(() => import('./pages/promo/LeadAutomation'));
 const AIProducts = lazy(() => import('./pages/AIProducts'));
+const AIProductLanding = lazy(() => import('./pages/AIProductLanding'));
 
 const ContentStudio = lazy(() => import('./pages/app/ContentStudioApp.jsx'));
 
@@ -77,9 +79,11 @@ const AnimatedRoutes: React.FC = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/services/:id" element={<PageTransition><ServiceDetail /></PageTransition>} />
         <Route path="/growth-systems" element={<PageTransition><GrowthSystems /></PageTransition>} />
         <Route path="/promo/ai-lead-handling" element={<PageTransition><LeadAutomation /></PageTransition>} />
         <Route path="/ai-products" element={<PageTransition><AIProducts /></PageTransition>} />
+        <Route path="/ai-products/:id" element={<PageTransition><AIProductLanding /></PageTransition>} />
         <Route path="/app/content-studio" element={<PageTransition><ContentStudio /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />

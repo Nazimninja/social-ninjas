@@ -13,36 +13,42 @@ function useReveal() {
 
 const services = [
   {
+    id: 'ai-automation',
     icon:'🤖', title:'AI & Automation', color:'#5ba4f5',
     desc:'Intelligent chatbots and automated workflows that handle lead qualification, follow-ups, and sales 24/7 — while your team focuses on closing.',
     features:['24/7 AI Sales Chatbots','Automated Lead Follow-ups','CRM Integration & Scoring','Workflow Optimisation','Custom AI Agent Build'],
     outcome:'14× faster lead response',
   },
   {
+    id: 'performance-marketing',
     icon:'🚀', title:'Performance Marketing', color:'#818cf8',
     desc:'Data-driven paid campaigns on Meta & Google, enriched with AI insights and creative intelligence for maximum ROAS.',
     features:['Meta & Google Ad Campaigns','AI-Powered Audience Targeting','Creative Testing at Scale','Conversion Rate Optimisation','Weekly Performance Reports'],
     outcome:'Average 4.5× ROAS across clients',
   },
   {
+    id: 'creative-studio',
     icon:'🎬', title:'Creative Studio', color:'#34d399',
     desc:'High-converting video content, designs and copy — all optimised by real performance data, not just gut feeling.',
     features:['UGC & Branded Video Production','Performance-Led Ad Creatives','Motion Graphics & Reels','Landing Page Design','Copy & Messaging Strategy'],
     outcome:'3× engagement lift vs generic content',
   },
   {
+    id: 'social-media',
     icon:'📱', title:'Social Media Management', color:'#f59e0b',
     desc:'Full-service social media management that grows community, drives engagement, and converts followers into customers.',
     features:['Daily Content Strategy','Platform-Native Copywriting','Community Management','Hashtag & SEO Research','Monthly Analytics Reports'],
     outcome:'2× organic reach in 90 days',
   },
   {
+    id: 'web-seo',
     icon:'🌐', title:'Web & SEO', color:'#ec4899',
     desc:'Conversion-optimised websites and data-driven SEO that turn visitors into leads — built for speed and performance.',
     features:['High-Converting Web Design','Technical SEO Audits','Content SEO Strategy','Page Speed Optimisation','Lead Gen Landing Pages'],
     outcome:'Top-3 ranking within 6 months',
   },
   {
+    id: 'growth-consulting',
     icon:'📊', title:'Growth Consulting', color:'#a78bfa',
     desc:'Strategic advisory for founders who want to build systematic, scalable growth engines — not random marketing activities.',
     features:['Revenue Growth Audits','Funnel Architecture','Team Coaching & Upskilling','90-Day Sprint Planning','Board-Level Reporting'],
@@ -70,7 +76,7 @@ const Services: React.FC = () => {
           </p>
           <div className="reveal d3" style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
             <Link to="/contact"><button className="btn-primary" style={{fontSize:15,padding:'15px 30px'}}>Book Strategy Call</button></Link>
-            <a href="/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{fontSize:15}}>Try AI Studio Free →</button></a>
+            <a href="https://contentstudio.socialninjas.in/"><button className="btn-ghost" style={{fontSize:15}}>Try AI Studio Free →</button></a>
           </div>
         </div>
       </div>
@@ -95,9 +101,9 @@ const Services: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <Link to="/contact" style={{textDecoration:'none'}}>
+              <Link to={`/services/${s.id}`} style={{textDecoration:'none'}}>
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,fontSize:13,fontWeight:500,color:s.color}}>
-                  Get Started <ArrowRight size={14}/>
+                  Learn More <ArrowRight size={14}/>
                 </div>
               </Link>
             </div>

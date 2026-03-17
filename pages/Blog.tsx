@@ -79,7 +79,7 @@ const POSTS = [
       },
     ],
     cta: 'Try 3 AI Posts Free →',
-    ctaHref: '/#/app/content-studio?plan=trial',
+    ctaHref: 'https://contentstudio.socialninjas.in/',
   },
   {
     id: 'roas-myth',
@@ -126,53 +126,37 @@ const categoryColors: Record<string, string> = {
   'Performance Marketing': '#9b8ef0',
 };
 
-/* ── Interactive Blog Card Component ── */
+/* ── Standard Blog Card Component ── */
 const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: boolean }> = ({ post, index, featured }) => {
-  const [expanded, setExpanded] = useState(featured ? true : false);
-  const [activeSection, setActiveSection] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const timerRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (!expanded) return;
-    setProgress(0);
-    timerRef.current = setInterval(() => {
-      setProgress(p => {
-        if (p >= 100) {
-          setActiveSection(s => (s + 1) % post.sections.length);
-          return 0;
-        }
-        return p + 1;
-      });
-    }, 60);
-    return () => clearInterval(timerRef.current);
-  }, [expanded, activeSection, post.sections.length]);
-
-  const sec = post.sections[activeSection];
-
   return (
-    <div
-      className={`glass-card reveal d${index + 1}`}
-      style={{
-        borderRadius: 24,
-        overflow: 'hidden',
-        border: expanded ? `1px solid ${post.color}30` : '1px solid rgba(255,255,255,0.08)',
-        transition: 'all 0.4s',
-        boxShadow: expanded ? `0 20px 60px rgba(0,0,0,0.35), 0 0 0 1px ${post.color}18` : undefined,
-      }}
-    >
-      {/* Header — always visible */}
+    <Link to={`/blog/${post.id}`} style={{ textDecoration: 'none' }}>
       <div
-        onClick={() => setExpanded(e => !e)}
+        className={`glass-card reveal d${index + 1}`}
         style={{
-          padding: '28px 30px 24px',
+          borderRadius: 24,
+          padding: '28px 30px',
+          overflow: 'hidden',
+          border: '1px solid rgba(255,255,255,0.08)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           cursor: 'pointer',
-          background: expanded ? `linear-gradient(135deg, ${post.color}10, transparent)` : 'transparent',
-          transition: 'background 0.3s',
+          background: 'rgba(255,255,255,0.02)',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-4px)';
+          e.currentTarget.style.border = `1px solid ${post.color}40`;
+          e.currentTarget.style.background = `linear-gradient(135deg, ${post.color}15, rgba(255,255,255,0.02))`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'none';
+          e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
+          e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-          <div style={{ flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flex: 1, marginBottom: 20 }}>
+          <div>
             {/* Category + meta */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: `${post.color}14`, border: `1px solid ${post.color}28`, borderRadius: 50, padding: '4px 12px', fontSize: 11, fontWeight: 600, color: post.color }}>
@@ -183,111 +167,34 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
               </div>
               <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.3)' }}>{post.date}</div>
             </div>
+            
             {/* Title */}
             <h2 style={{
               fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
-              fontSize: featured ? 'clamp(20px,2.8vw,28px)' : 'clamp(17px,2.2vw,22px)',
-              fontWeight: 800, letterSpacing: '-0.8px', lineHeight: 1.18,
-              color: 'rgba(255,255,255,0.96)', marginBottom: 12,
+              fontSize: featured ? 'clamp(22px,3vw,32px)' : 'clamp(18px,2.2vw,24px)',
+              fontWeight: 800, letterSpacing: '-0.5px', lineHeight: 1.2,
+              color: 'rgba(255,255,255,0.95)', marginBottom: 14,
             }}>{post.title}</h2>
+            
             {/* Excerpt */}
-            <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.65 }}>{post.excerpt}</p>
+            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>{post.excerpt}</p>
           </div>
+          
           {/* Stat badge */}
-          <div style={{ flexShrink: 0, textAlign: 'center', background: `${post.color}10`, border: `1px solid ${post.color}22`, borderRadius: 16, padding: '14px 18px', minWidth: 80 }}>
-            <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 22, fontWeight: 800, color: post.color, letterSpacing: '-1px', lineHeight: 1 }}>{post.stat.value}</div>
-            <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,0.38)', marginTop: 5, lineHeight: 1.4 }}>{post.stat.label}</div>
-          </div>
-        </div>
-
-        {/* Expand toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 18, fontSize: 12.5, fontWeight: 500, color: expanded ? post.color : 'rgba(255,255,255,0.4)', transition: 'color .2s' }}>
-          {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-          {expanded ? 'Close' : 'Read full breakdown'}
-        </div>
-      </div>
-
-      {/* Expandable content */}
-      <div style={{
-        maxHeight: expanded ? 1000 : 0,
-        overflow: 'hidden',
-        transition: 'max-height 0.5s cubic-bezier(0.4,0,0.2,1)',
-      }}>
-        <div style={{ borderTop: `1px solid ${post.color}18`, background: 'rgba(0,0,0,0.2)' }}>
-
-          {/* Section tabs */}
-          <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.07)', overflowX: 'auto', scrollbarWidth: 'none' }}>
-            {post.sections.map((s, i) => (
-              <button
-                key={i}
-                onClick={() => { setActiveSection(i); setProgress(0); }}
-                style={{
-                  flex: 1, minWidth: 100, padding: '12px 16px', border: 'none', cursor: 'pointer',
-                  background: activeSection === i ? `${post.color}12` : 'transparent',
-                  color: activeSection === i ? post.color : 'rgba(255,255,255,0.38)',
-                  fontSize: 12, fontWeight: activeSection === i ? 600 : 400,
-                  fontFamily: "'DM Sans',system-ui",
-                  borderBottom: `2px solid ${activeSection === i ? post.color : 'transparent'}`,
-                  transition: 'all .2s', whiteSpace: 'nowrap',
-                }}
-              >
-                {String(i + 1).padStart(2, '0')} {s.heading.split(':')[0].split('—')[0].trim().substring(0, 20)}
-              </button>
-            ))}
-          </div>
-
-          {/* Progress bar */}
-          <div style={{ height: 2, background: 'rgba(255,255,255,0.05)' }}>
-            <div style={{ height: '100%', width: `${progress}%`, background: post.color, transition: 'width 0.1s linear', borderRadius: 2 }} />
-          </div>
-
-          {/* Section content */}
-          <div style={{ padding: '28px 30px' }}>
-            <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 17, fontWeight: 700, color: 'rgba(255,255,255,0.92)', marginBottom: 14, letterSpacing: '-0.4px' }}>{sec.heading}</h3>
-            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.62)', lineHeight: 1.75, marginBottom: sec.list || sec.highlight ? 18 : 0 }}>{sec.body}</p>
-
-            {sec.list && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: sec.highlight ? 18 : 0 }}>
-                {sec.list.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13.5, color: 'rgba(255,255,255,0.65)', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 11, padding: '10px 14px' }}>
-                    <span style={{ color: post.color, fontWeight: 700, flexShrink: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 12 }}>{String(i + 1).padStart(2, '0')}</span>
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {sec.highlight && (
-              <div style={{ background: `${sec.highlightColor}10`, border: `1px solid ${sec.highlightColor}25`, borderRadius: 13, padding: '14px 18px', borderLeft: `3px solid ${sec.highlightColor}` }}>
-                <p style={{ fontSize: 14, fontWeight: 500, color: sec.highlightColor, lineHeight: 1.6, margin: 0 }}>💡 {sec.highlight}</p>
-              </div>
-            )}
-          </div>
-
-          {/* CTA */}
-          <div style={{ padding: '0 30px 28px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-            <a href={post.ctaHref} style={{ textDecoration: 'none' }}>
-              <button style={{
-                display: 'inline-flex', alignItems: 'center', gap: 7,
-                background: `linear-gradient(135deg, ${post.color}cc, ${post.color})`,
-                color: '#fff', border: 'none', borderRadius: 50,
-                padding: '11px 22px', fontSize: 13.5, fontWeight: 500,
-                cursor: 'pointer', fontFamily: "'DM Sans',system-ui",
-                boxShadow: `0 6px 20px ${post.color}30`,
-                transition: 'all .2s',
-              }}>
-                {post.cta} <ArrowRight size={14} />
-              </button>
-            </a>
-            <div style={{ display: 'flex', gap: 6, fontSize: 11.5, color: 'rgba(255,255,255,0.3)' }}>
-              {post.sections.map((_, i) => (
-                <span key={i} style={{ width: i === activeSection ? 20 : 6, height: 6, borderRadius: 3, background: i === activeSection ? post.color : 'rgba(255,255,255,0.18)', transition: 'all .3s', cursor: 'pointer' }} onClick={() => { setActiveSection(i); setProgress(0); }} />
-              ))}
+          {featured && post.stat && (
+            <div style={{ flexShrink: 0, textAlign: 'center', background: `${post.color}10`, border: `1px solid ${post.color}22`, borderRadius: 16, padding: '16px 20px', minWidth: 90, display: ['none', 'block'] as any }}>
+              <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 26, fontWeight: 800, color: post.color, letterSpacing: '-1px', lineHeight: 1 }}>{post.stat.value}</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 6, lineHeight: 1.4 }}>{post.stat.label}</div>
             </div>
-          </div>
+          )}
+        </div>
+
+        {/* Read more link */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: post.color, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
+          Read full article <ArrowRight size={14} />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -411,7 +318,7 @@ const Blog: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 26px' }}>Book Free Audit →</button></Link>
-            <a href="/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
+            <a href="https://contentstudio.socialninjas.in/"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
           </div>
         </div>
       </div>

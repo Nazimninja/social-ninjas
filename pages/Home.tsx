@@ -137,11 +137,11 @@ const Home: React.FC = () => {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
           {[
-            { icon: '🤖', title: 'AI & Automation',       sub: 'Efficiency & Speed',  desc: '24/7 AI agents that qualify leads, book calls, and follow up automatically. You wake up to a full calendar.', d: 'd1' },
-            { icon: '🚀', title: 'Performance Marketing', sub: 'Revenue & ROAS',       desc: 'Meta & Google campaigns built on creative intelligence and data. Average 4.5× ROAS across our client portfolio.', d: 'd2' },
-            { icon: '⚡', title: 'Creative Studio',       sub: 'Authority & Retention', desc: 'Scroll-stopping video content and ads, powered by real performance data. Not gut feelings — results.', d: 'd3' },
+            { icon: '🤖', title: 'AI & Automation',       sub: 'Efficiency & Speed',  desc: '24/7 AI agents that qualify leads, book calls, and follow up automatically. You wake up to a full calendar.', d: 'd1', route: 'ai-automation' },
+            { icon: '🚀', title: 'Performance Marketing', sub: 'Revenue & ROAS',       desc: 'Meta & Google campaigns built on creative intelligence and data. Average 4.5× ROAS across our client portfolio.', d: 'd2', route: 'performance-marketing' },
+            { icon: '⚡', title: 'Creative Studio',       sub: 'Authority & Retention', desc: 'Scroll-stopping video content and ads, powered by real performance data. Not gut feelings — results.', d: 'd3', route: 'creative-studio' },
           ].map((s, i) => (
-            <Link key={i} to="/services" style={{ textDecoration: 'none' }}>
+            <Link key={i} to={`/services/${s.route}`} style={{ textDecoration: 'none' }}>
               <div className={`glass-card reveal ${s.d}`} style={{ padding: 28, height: '100%', cursor: 'pointer', borderRadius: 22 }}>
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 18 }}>{s.icon}</div>
                 <div style={{ fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 8 }}>{s.sub}</div>
@@ -207,8 +207,8 @@ const Home: React.FC = () => {
                 </div>
               ))}
               <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
-                <a href="/#/app/content-studio?plan=trial"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px' }}>Explore The Studio</button></a>
-                <a href="/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
+                <a href="https://contentstudio.socialninjas.in/"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px' }}>Explore The Studio</button></a>
+                <a href="https://contentstudio.socialninjas.in/#pricing"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
               </div>
             </div>
             <div style={{ background: 'rgba(0,0,0,0.2)', borderLeft: '1px solid rgba(255,255,255,0.07)', padding: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>

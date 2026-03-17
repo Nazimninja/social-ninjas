@@ -150,7 +150,7 @@ const BlogPost: React.FC = () => {
           <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 24 }}>Book a free 30-minute strategy session — we'll apply these frameworks to your business.</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '12px 24px' }}>Book Free Session →</button></Link>
-            <a href="/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Studio</button></a>
+            <a href="https://contentstudio.socialninjas.in/"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Studio</button></a>
           </div>
         </div>
       </div>
