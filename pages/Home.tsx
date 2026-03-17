@@ -79,7 +79,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* RIGHT — Dashboard card */}
-            <div className="reveal-r d2" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="reveal-r d2 hero-dashboard" style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ width: '100%', maxWidth: 400, animation: 'float 8s ease-in-out infinite' }}>
                 <div className="glass-card" style={{ borderRadius: 24, padding: 0, overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(91,164,245,0.08)' }}>
                   <div style={{ background: 'rgba(0,0,0,0.3)', padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
           <Link to="/services" className="reveal d2"><button className="btn-ghost">View All Services →</button></Link>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="services-grid">
           {[
             { icon: '🤖', title: 'AI & Automation',       sub: 'Efficiency & Speed',  desc: '24/7 AI agents that qualify leads, book calls, and follow up automatically. You wake up to a full calendar.', d: 'd1', route: 'ai-automation' },
             { icon: '🚀', title: 'Performance Marketing', sub: 'Revenue & ROAS',       desc: 'Meta & Google campaigns built on creative intelligence and data. Average 4.5× ROAS across our client portfolio.', d: 'd2', route: 'performance-marketing' },
@@ -300,7 +300,8 @@ const Home: React.FC = () => {
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
         @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-        @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:40px!important;} }
+        @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:40px!important;} .hero-dashboard{display:none!important;} }
+        @media(max-width:768px){ .services-grid{grid-template-columns:1fr!important;} }
         @media(max-width:640px){ .section{padding:60px 18px!important;} }
       `}</style>
     </div>

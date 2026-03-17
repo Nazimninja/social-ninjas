@@ -107,12 +107,13 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu */}
       <div style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(8,16,31,0.97)',
+        background: '#08101f',
         backdropFilter: 'blur(48px)',
-        zIndex: 40, display: 'flex', flexDirection: 'column', padding: '88px 28px 40px',
+        zIndex: 60, display: 'flex', flexDirection: 'column', padding: '88px 28px 40px',
         transition: 'all 0.45s cubic-bezier(0.32,0.72,0,1)',
         transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
         opacity: isOpen ? 1 : 0,
+        pointerEvents: isOpen ? 'auto' : 'none',
       }}>
         {/* Ambient */}
         <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(29,78,216,0.2),transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }}></div>

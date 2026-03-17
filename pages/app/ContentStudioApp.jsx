@@ -2526,33 +2526,37 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       <div style={{display:"grid",gap:14}}>
         <Field label="Brand / Business Name" name="brandName" value={form.brandName}
           onChange={setF} error={errors.brandName} placeholder="e.g. FitLife Studio, Priya's Skincare" required/>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          <Field label="Email" name="email" type="email" value={form.email}
-            onChange={setF} error={errors.email} placeholder="you@email.com" required/>
-          <Field label="WhatsApp / Phone" name="phone" error={errors.phone}>
-            <div style={{display:"flex",gap:8}}>
-              <select 
-                value={form.countryCode} 
-                onChange={e=>setF("countryCode",e.target.value)}
-                style={{width:90,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
-                  border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
-                  padding:"10px",color:"#fff",fontSize:13,outline:"none"}}>
-                <option value="+91" style={{background:"#08101f",color:"#fff"}}>🇮🇳 +91</option>
-                <option value="+1" style={{background:"#08101f",color:"#fff"}}>🇺🇸 +1</option>
-                <option value="+44" style={{background:"#08101f",color:"#fff"}}>🇬🇧 +44</option>
-                <option value="+971" style={{background:"#08101f",color:"#fff"}}>🇦🇪 +971</option>
-                <option value="+61" style={{background:"#08101f",color:"#fff"}}>🇦🇺 +61</option>
-                <option value="+65" style={{background:"#08101f",color:"#fff"}}>🇸🇬 +65</option>
-                <option value="+49" style={{background:"#08101f",color:"#fff"}}>🇩🇪 +49</option>
-                <option value="+27" style={{background:"#08101f",color:"#fff"}}>🇿🇦 +27</option>
-              </select>
-              <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
-                placeholder="987654321" type="tel"
-                style={{flex:1,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
-                  border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
-                  padding:"10px 13px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
-            </div>
-          </Field>
+        <div style={{display:"flex",flexWrap:"wrap",gap:12}}>
+          <div style={{flex:"1 1 160px",minWidth:0}}>
+            <Field label="Email" name="email" type="email" value={form.email}
+              onChange={setF} error={errors.email} placeholder="you@email.com" required/>
+          </div>
+          <div style={{flex:"1 1 160px",minWidth:0}}>
+            <Field label="WhatsApp / Phone" name="phone" error={errors.phone}>
+              <div style={{display:"flex",gap:6}}>
+                <select 
+                  value={form.countryCode} 
+                  onChange={e=>setF("countryCode",e.target.value)}
+                  style={{width:76,flexShrink:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                    border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                    padding:"10px 4px",color:"#fff",fontSize:12,outline:"none"}}>
+                  <option value="+91" style={{background:"#08101f",color:"#fff"}}>🇮🇳 +91</option>
+                  <option value="+1" style={{background:"#08101f",color:"#fff"}}>🇺🇸 +1</option>
+                  <option value="+44" style={{background:"#08101f",color:"#fff"}}>🇬🇧 +44</option>
+                  <option value="+971" style={{background:"#08101f",color:"#fff"}}>🇦🇪 +971</option>
+                  <option value="+61" style={{background:"#08101f",color:"#fff"}}>🇦🇺 +61</option>
+                  <option value="+65" style={{background:"#08101f",color:"#fff"}}>🇸🇬 +65</option>
+                  <option value="+49" style={{background:"#08101f",color:"#fff"}}>🇩🇪 +49</option>
+                  <option value="+27" style={{background:"#08101f",color:"#fff"}}>🇿🇦 +27</option>
+                </select>
+                <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
+                  placeholder="98765 43210" type="tel"
+                  style={{flex:1,minWidth:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                    border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                    padding:"10px 11px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
+              </div>
+            </Field>
+          </div>
         </div>
 
         {/* Niche — smart dropdown */}

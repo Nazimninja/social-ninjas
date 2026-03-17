@@ -169,7 +169,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
             </div>
             
             {/* Title */}
-            <h2 style={{
+            <h2 className="blog-title" style={{
               fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
               fontSize: featured ? 'clamp(22px,3vw,32px)' : 'clamp(18px,2.2vw,24px)',
               fontWeight: 800, letterSpacing: '-0.5px', lineHeight: 1.2,
@@ -325,6 +325,7 @@ const Blog: React.FC = () => {
 
       <style>{`
         @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:36px!important;} .hero-grid-cols>div:last-child{display:none;} }
+        @media(max-width:768px){ .blog-title{font-size:clamp(17px,4.5vw,22px)!important;} }
         @media(max-width:640px){ .api-grid{grid-template-columns:1fr!important;} }
       `}</style>
     </div>
