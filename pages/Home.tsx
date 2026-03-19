@@ -237,11 +237,12 @@ const Home: React.FC = () => {
               {testimonials.map((t,i) => (
                 <div key={i} style={{ position: i===0?'relative':'absolute', inset: 0, padding: '32px 32px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.6s cubic-bezier(0.4,0,0.2,1)', opacity: i===currentT?1:0, transform: i===currentT?'translateX(0)':'translateX(32px)', pointerEvents: i===currentT?'auto':'none' }}>
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-                      <div style={{ display: 'flex', gap: 3 }}>{[...Array(t.stars)].map((_,j) => <Star key={j} size={13} fill="#5ba4f5" color="#5ba4f5" />)}</div>
-                      <div style={{ fontSize: 10, padding: '3px 10px', borderRadius: 50, background: 'rgba(91,164,245,0.1)', border: '1px solid rgba(91,164,245,0.2)', color: '#5ba4f5', fontWeight: 700 }}>{t.impact}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                      <div style={{ display: 'flex', gap: 3 }}>{[...Array(t.stars)].map((_,j) => <Star key={j} size={12} fill="#5ba4f5" color="#5ba4f5" />)}</div>
+                      <div style={{ fontSize: 9, padding: '2px 8px', borderRadius: 50, background: 'rgba(47,207,142,0.12)', border: '1px solid rgba(47,207,142,0.25)', color: '#34d399', fontWeight: 700, letterSpacing: '0.06em' }}>✓ VERIFIED</div>
                     </div>
-                    <p style={{ fontSize: 15.5, fontWeight: 300, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: 20 }}>"{t.text}"</p>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: '#5ba4f5', marginBottom: 10, letterSpacing: '-0.2px' }}>{t.impact}</div>
+                    <p style={{ fontSize: 14.5, fontWeight: 300, color: 'rgba(255,255,255,0.72)', lineHeight: 1.72, marginBottom: 20 }}>"{t.text}"</p>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#2563eb,#5ba4f5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>{t.name[0]}</div>

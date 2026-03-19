@@ -49,8 +49,8 @@ body{background:var(--bg);overflow-x:hidden}
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:999;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(8,16,31,.78);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);transition:background .3s}
 .nl{display:flex;align-items:center;gap:12px;text-decoration:none}
-.nm{width:56px;height:56px;flex-shrink:0;overflow:visible;background:transparent}
-.nm img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 14px rgba(91,164,245,.5))}
+.nm{width:48px;height:48px;flex-shrink:0;overflow:visible;background:transparent;display:flex;align-items:center;justify-content:center}
+.nm img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(91,164,245,.5))}
 .nb{font-family:var(--fd);font-size:17px;font-weight:600;letter-spacing:-.3px;color:var(--t1);line-height:1.1}
 .nb em{font-style:normal;color:var(--blue)}
 .nsb{font-size:8.5px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);line-height:1}
@@ -420,7 +420,101 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:32px 40px;display:flex
 <div class="sec" id="how"><div class="tl-grid" id="how-it-works"><div class="reveal"><div class="ey">The Process</div><div class="sh2" style="margin-bottom:18px">From brief to live<br>post in <em>60 seconds.</em></div><div class="slead" style="margin-bottom:0">You don't need to know anything about AI or content. Just answer a few questions about your brand once — the system does the rest every week.</div></div><div class="tl"><div class="tls reveal d1"><div class="tlnum">01</div><div class="tlb"><div class="tltitle">Brief your brand</div><div class="tldesc">Answer a few simple questions about your brand — what you do, who your customers are, and how you like to sound. The AI remembers all of this forever.</div><div class="tltags"><span class="tltag">Brand voice</span><span class="tltag">Audience profiling</span><span class="tltag">Tone calibration</span></div></div></div><div class="tls reveal d2"><div class="tlnum">02</div><div class="tlb"><div class="tltitle">AI researches & writes</div><div class="tldesc">The AI searches the internet to find what's actually trending in your space right now. Then it writes 3 complete posts — different every single week.</div><div class="tltags"><span class="tltag">Live research</span><span class="tltag">Platform-native</span><span class="tltag">Trend-first</span></div></div></div><div class="tls reveal d3"><div class="tlnum">03</div><div class="tlb"><div class="tltitle">Copy, paste, post</div><div class="tldesc">Hit copy on your caption. Read your script to camera. Paste your slides into Canva. Follow the checklist. You're done.</div><div class="tltags"><span class="tltag">One-click copy</span><span class="tltag">Canva-ready</span><span class="tltag">Best-time schedule</span></div></div></div></div></div></div>
 
 <!-- REVIEWS -->
-<section class="rv-sec"><div class="rv-hdr"><div class="ey reveal">Social Proof</div><div class="sh2 reveal d1">Real people.<br><em>Real results.</em></div></div><div class="rv-out" id="rvw"><div class="rv-track" id="rvt"><div class="rvc ft"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"Paid a freelancer ₹18,000 for 8 generic posts. Social Ninja's costs less, delivers more, and sounds exactly like my brand. First time my content has a real strategy."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(37,99,235,.3),rgba(91,164,245,.2));border-color:rgba(91,164,245,.25)">P</div><div><div class="rv-nm">Priya Mehta</div><div class="rv-me">Skincare brand · Mumbai</div></div></div></div><div class="rvc"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"Went from 2K to 18K followers in 3 months. The scripts are unreal — I just read them on camera and engagement went through the roof."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(52,211,153,.15));border-color:rgba(52,211,153,.25)">R</div><div><div class="rv-nm">Rahul Sharma</div><div class="rv-me">Fitness coach · Delhi</div></div></div></div><div class="rvc"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"We run 4 platforms and were spending 15 hours a week on content. Now it's 30 minutes. Carousel copy alone saves ₹12,000/month."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(129,140,248,.2),rgba(236,72,153,.15));border-color:rgba(129,140,248,.25)">A</div><div><div class="rv-nm">Ananya & Team</div><div class="rv-me">D2C fashion brand · Bangalore</div></div></div></div><div class="rvc"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"The live research sold me. Every week posts feel fresh because AI actually looks at what's trending right now — not templates from 6 months ago."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(251,191,36,.15));border-color:rgba(249,115,22,.25)">K</div><div><div class="rv-nm">Karthik Nair</div><div class="rv-me">EdTech founder · Chennai</div></div></div></div><div class="rvc"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"Best ₹5,499 I spend every month. Went from 0 LinkedIn presence to landing 3 consulting clients in 6 weeks."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(37,99,235,.25),rgba(91,164,245,.18));border-color:rgba(91,164,245,.22)">S</div><div><div class="rv-nm">Sameer Joshi</div><div class="rv-me">B2B consultant · Pune</div></div></div></div><div class="rvc"><div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div><p class="rv-q">"I manage 6 client accounts. Social Ninja's Pro pays for itself 10x over. The multi-brand workspace is a game changer."</p><div class="rv-au"><div class="rv-av" style="background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(52,211,153,.12));border-color:rgba(52,211,153,.22)">M</div><div><div class="rv-nm">Meera Pillai</div><div class="rv-me">Freelance SM Manager · Kochi</div></div></div></div></div></div><div class="rv-nav"><button class="rv-btn" id="rvprev">&#8249;</button><div class="rv-dots" id="rvdots"></div><button class="rv-btn" id="rvnext">&#8250;</button></div></section>
+<section class="rv-sec">
+<div class="rv-hdr">
+  <div class="ey reveal">Real People. Real Results.</div>
+  <div class="sh2 reveal d1">150+ brands already posting<br><em>smarter content.</em></div>
+  <!-- Trust strip -->
+  <div class="reveal d2" style="display:flex;gap:0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:50px;padding:14px 8px;max-width:560px;margin:24px auto 0;flex-wrap:wrap;justify-content:center">
+    <div style="text-align:center;padding:4px 22px;border-right:1px solid rgba(255,255,255,0.07)"><div style="font-size:18px;font-weight:700;color:#5ba4f5;letter-spacing:-.5px">4.9★</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">Avg Rating</div></div>
+    <div style="text-align:center;padding:4px 22px;border-right:1px solid rgba(255,255,255,0.07)"><div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-.5px">150+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">Active Brands</div></div>
+    <div style="text-align:center;padding:4px 22px;border-right:1px solid rgba(255,255,255,0.07)"><div style="font-size:18px;font-weight:700;color:#34d399;letter-spacing:-.5px">2.4M+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">Posts Written</div></div>
+    <div style="text-align:center;padding:4px 22px"><div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-.5px">97%</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">Would Recommend</div></div>
+  </div>
+</div>
+<div class="rv-out" id="rvw"><div class="rv-track" id="rvt">
+
+  <div class="rvc ft">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#34d399;margin-bottom:10px;letter-spacing:-.2px">2K → 18K followers in 3 months</div>
+    <p class="rv-q">"I used to spend Sunday night dreading content week. Now I open the app, click generate, and I have 3 complete posts with scripts ready in under a minute. My engagement tripled because the scripts are actually good — I just read them on camera."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(16,185,129,.25),rgba(52,211,153,.18));border-color:rgba(52,211,153,.3);font-size:15px">R</div>
+      <div><div class="rv-nm">Rahul Sharma</div><div class="rv-me">Fitness & Nutrition Coach · Delhi · Using Growth Plan</div></div>
+    </div>
+  </div>
+
+  <div class="rvc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#5ba4f5;margin-bottom:10px;letter-spacing:-.2px">Saving ₹18,000/month vs freelancers</div>
+    <p class="rv-q">"I paid a freelancer ₹18,000 for 8 posts last month. They were generic, they missed trends, and they didn't sound like me. Social Ninja's costs less per month, gives me 25 posts, and every caption actually sounds like I wrote it. Not even close."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(37,99,235,.3),rgba(91,164,245,.2));border-color:rgba(91,164,245,.28)">P</div>
+      <div><div class="rv-nm">Priya Mehta</div><div class="rv-me">Skincare Brand Founder · Mumbai · Using Growth Plan</div></div>
+    </div>
+  </div>
+
+  <div class="rvc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#9b8ef0;margin-bottom:10px;letter-spacing:-.2px">15 hrs/week → 30 mins. Content time slashed.</div>
+    <p class="rv-q">"We manage 4 Instagram, 2 LinkedIn and a YouTube channel. Before this, content planning took 15+ hours a week across my team. Now it's 30 minutes. The carousel copy alone saves us ₹12,000 a month in designer fees because the slide text is already written."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(129,140,248,.2),rgba(236,72,153,.15));border-color:rgba(129,140,248,.28)">A</div>
+      <div><div class="rv-nm">Ananya Krishnan</div><div class="rv-me">D2C Fashion Brand · Bangalore · Using Pro Plan</div></div>
+    </div>
+  </div>
+
+  <div class="rvc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#e8b86d;margin-bottom:10px;letter-spacing:-.2px">3 consulting clients from LinkedIn in 6 weeks</div>
+    <p class="rv-q">"I had zero LinkedIn presence 6 weeks ago. Literally 0 posts in 2 years. I started using Social Ninja's, posted 3x a week, and landed 3 new consulting clients from LinkedIn DMs. The thought-leadership posts it writes actually make me look like an expert — because they research real trends in my space."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(37,99,235,.25),rgba(91,164,245,.18));border-color:rgba(91,164,245,.22)">S</div>
+      <div><div class="rv-nm">Sameer Joshi</div><div class="rv-me">B2B Management Consultant · Pune · Using Growth Plan</div></div>
+    </div>
+  </div>
+
+  <div class="rvc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#34d399;margin-bottom:10px;letter-spacing:-.2px">Managing 6 client accounts — Pro pays for itself 10×</div>
+    <p class="rv-q">"I run social media for 6 brands. Before this I was constantly juggling briefs, struggling to stay on top of trends for 6 different niches. Now each brand has its own profile saved, and I generate fresh weekly content for all 6 in about 45 minutes total. Pro plan pays for itself many times over in time saved."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(52,211,153,.12));border-color:rgba(52,211,153,.22)">M</div>
+      <div><div class="rv-nm">Meera Pillai</div><div class="rv-me">Social Media Manager (6 clients) · Kochi · Using Pro Plan</div></div>
+    </div>
+  </div>
+
+  <div class="rvc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div class="rv-stars"><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div><div class="rvs"></div></div>
+      <div style="font-size:9px;padding:3px 9px;border-radius:50px;background:rgba(47,207,142,0.12);border:1px solid rgba(47,207,142,0.25);color:#34d399;font-weight:700;letter-spacing:.06em">✓ VERIFIED USER</div>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#5ba4f5;margin-bottom:10px;letter-spacing:-.2px">Posts feel fresh every week because it actually researches</div>
+    <p class="rv-q">"The thing that sold me wasn't the writing — it was the research. Every week my posts reference something that literally happened that week in my niche. Students ask me 'how are you always so current?' — it's this. Other tools give you templates. This one actually looks stuff up."</p>
+    <div class="rv-au">
+      <div class="rv-av" style="background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(251,191,36,.15));border-color:rgba(249,115,22,.25)">K</div>
+      <div><div class="rv-nm">Karthik Nair</div><div class="rv-me">EdTech Course Creator · Chennai · Using Starter Plan</div></div>
+    </div>
+  </div>
+
+</div></div>
+<div class="rv-nav"><button class="rv-btn" id="rvprev">&#8249;</button><div class="rv-dots" id="rvdots"></div><button class="rv-btn" id="rvnext">&#8250;</button></div>
+</section>
 
 <!-- PRICING -->
 <div class="p-sec" id="pricing"><div class="ey reveal">Pricing</div><div class="sh2 reveal d1" style="margin-bottom:14px">Start free.<br><em>No credit card needed.</em></div><p class="reveal d2" style="font-size:15px;font-weight:300;color:var(--t2);margin-bottom:32px;max-width:460px;line-height:1.7">See exactly what your posts will look like before spending anything. 3 complete posts, totally free.</p><div class="p-urg reveal d3"><div class="pu-l"><span class="pudot"></span>Launch pricing ending soon — 70% off locked for first 200 clients only</div><div class="pu-r">🔥 147 of 200 spots claimed</div></div><div class="pgrid"><div class="pc reveal"><div class="ptier">Starter</div><div class="pamt">₹2,999<sub>/mo</sub></div><div class="porig">₹9,999/month</div><div class="psave">✦ Save ₹7,000/mo</div><div class="pdiv"></div><ul class="pfeats"><li><div class="pck">✓</div>15 posts per month</li><li><div class="pck">✓</div>2 platforms of choice</li><li><div class="pck">✓</div>Caption + Script + Slides</li><li><div class="pck">✓</div>Hashtag strategy</li><li><div class="pck">✓</div>Posting checklist</li></ul><button class="pbtn pbtn-o" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=starter'">Get Started →</button><div class="ptrial" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=trial'" style="cursor:pointer">Or try 3 posts free first</div></div><div class="pc hl reveal d1"><div class="pbadge">Most Popular</div><div class="pscar"><span class="psdot"></span>Only 12 spots left at this price</div><div class="ptier">Growth</div><div class="pamt">₹5,499<sub>/mo</sub></div><div class="porig">₹14,999/month</div><div class="psave">✦ Save ₹9,500/mo</div><div class="pdiv"></div><ul class="pfeats"><li><div class="pck">✓</div>25 posts per month</li><li><div class="pck">✓</div>4 platforms included</li><li><div class="pck">✓</div>Everything in Starter</li><li><div class="pck">✓</div>Thread writer</li><li><div class="pck">✓</div>Monthly strategy call</li></ul><button class="pbtn pbtn-f" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=growth'">Lock Price → Get Started</button><div class="ptrial" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=trial'" style="cursor:pointer">Or try 3 posts free first</div></div><div class="pc reveal d2"><div class="ptier">Pro</div><div class="pamt">₹8,999<sub>/mo</sub></div><div class="porig">₹24,999/month</div><div class="psave">✦ Save ₹16,000/mo</div><div class="pdiv"></div><ul class="pfeats"><li><div class="pck">✓</div>Unlimited posts</li><li><div class="pck">✓</div>All 7 platforms</li><li><div class="pck">✓</div>Everything in Growth</li><li><div class="pck">✓</div>Priority email support</li><li><div class="pck">✓</div>Multi-brand (agencies)</li></ul><button class="pbtn pbtn-o" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=pro'">Get Started →</button><div class="ptrial" onclick="window.location.href='https://socialninjas.in/#/app/content-studio?plan=trial'" style="cursor:pointer">Or try 3 posts free first</div></div></div><div class="pguard reveal"><div class="pgi">🔒 No contracts. Cancel anytime.</div><div class="pgi">⚡ First 3 posts completely free.</div><div class="pgi">💳 No card to try.</div></div></div>

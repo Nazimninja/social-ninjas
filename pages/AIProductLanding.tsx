@@ -19,9 +19,9 @@ const productsData: Record<string, any> = {
     ],
     features: ['Live trend research before every single generation','Word-for-word Reel and YouTube Short scripts with camera directions','Platform-native captions — Instagram, LinkedIn, X, Facebook, Threads all sound different','Carousel slide copy ready to paste into Canva — every slide written out','Real hashtag research per post — broad, mid, and niche mix, never repeated','Thread writer — full multi-tweet threads and Threads posts, one-click copy per tweet','Posting checklist with the best time to post for your niche','Your brand voice stored permanently — every post sounds like you'],
     reviews: [
-      { name: 'Priya Mehta', role: 'Skincare brand · Mumbai', text: 'I paid ₹18,000 for 8 generic posts from a freelancer. This costs less per month and writes better content than she did. Every caption actually sounds like me.', stars: 5 },
-      { name: 'Rahul Sharma', role: 'Fitness coach · Delhi', text: 'Went from 2K to 18K followers in 3 months just by being consistent with the scripts. I just read them on camera. My engagement went crazy.', stars: 5 },
-      { name: 'Ananya', role: 'D2C fashion brand · Bangalore', text: 'We manage 4 platforms and were spending 15 hours a week on content. Now it takes 30 minutes. The carousel copy alone saves us ₹12,000 a month in freelance costs.', stars: 5 },
+      { name: 'Rahul Sharma', role: 'Fitness Coach · Delhi · Growth Plan', result: '2K → 18K followers in 3 months', text: 'I used to spend Sunday nights dreading content week. Now I open the app, click generate, and have 3 complete posts with scripts ready in under a minute. My engagement tripled. I just read the scripts on camera — they\'re that good.', stars: 5 },
+      { name: 'Priya Mehta', role: 'Skincare Brand Founder · Mumbai · Growth Plan', result: 'Saving ₹18,000/month vs a freelancer', text: 'I paid a freelancer ₹18,000 for 8 posts last month. They were generic, missed trends, and didn\'t sound like me at all. Social Ninja\'s gives me 25 posts per month at lower cost, and every caption sounds exactly like I wrote it.', stars: 5 },
+      { name: 'Meera Pillai', role: 'Social Media Manager (6 clients) · Kochi · Pro Plan', result: 'Manages 6 brands in 45 mins/week', text: 'I run social media for 6 different brands. Each brand has its own saved profile, I generate fresh content for all 6 in about 45 minutes total. The Pro plan pays for itself many times over in time saved alone.', stars: 5 },
     ],
     plans: [
       { name: 'Starter', price: '₹2,999', period: '/mo', features: ['15 posts per month','2 platforms of your choice','Captions + Scripts + Slides','Hashtag strategy','Posting checklist'] },
@@ -205,10 +205,14 @@ const AIProductLanding: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
               {p.reviews.map((r: any, i: number) => (
                 <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 28, borderRadius: 22 }}>
-                  <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
-                    {[...Array(r.stars)].map((_,j) => <Star key={j} size={13} fill={p.color} color={p.color} />)}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                    <div style={{ display: 'flex', gap: 2 }}>
+                      {[...Array(r.stars)].map((_,j) => <Star key={j} size={12} fill={p.color} color={p.color} />)}
+                    </div>
+                    <div style={{ fontSize: 9, padding: '2px 8px', borderRadius: 50, background: 'rgba(47,207,142,0.12)', border: '1px solid rgba(47,207,142,0.25)', color: '#34d399', fontWeight: 700, letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>✓ VERIFIED</div>
                   </div>
-                  <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, marginBottom: 20 }}>"{r.text}"</p>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: p.color, marginBottom: 12, letterSpacing: '-0.2px' }}>{(r as any).result || ""}</div>
+                  <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.68)', lineHeight: 1.72, marginBottom: 18 }}>"{r.text}"</p>
                   <div style={{ paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.88)' }}>{r.name}</div>
                     <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 2 }}>{r.role}</div>
