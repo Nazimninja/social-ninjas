@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div className="space-y-6 md:col-span-2">
             <Link to="/" style={{display:'flex',alignItems:'center',gap:10,textDecoration:'none'}}>
-              <div style={{width:44,height:44,borderRadius:'10px',overflow:'visible',background:'transparent'}}>
+              <div style={{width:52,height:52,borderRadius:'12px',overflow:'visible',background:'transparent'}}>
                 <img src="/logo.png" alt="Social Ninja's" style={{width:'100%',height:'100%',objectFit:'contain'}}/>
               </div>
               <span style={{fontFamily:"'DM Sans',system-ui",fontSize:17,fontWeight:600,letterSpacing:'-.3px',color:'rgba(255,255,255,0.95)'}}>Social<span style={{color:'#5ba4f5'}}>Ninja's</span>.</span>

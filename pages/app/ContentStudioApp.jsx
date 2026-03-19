@@ -3521,10 +3521,10 @@ export default function App(){
           <div style={{width:36,height:36,borderRadius:"50%",overflow:"hidden",flexShrink:0,
             border:"1.5px solid rgba(91,164,245,0.38)",boxShadow:"0 0 16px rgba(91,164,245,0.2)",
             background:"#07101e"}}>
-            <img src="/logo.png" alt="Social Ninja's" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
+            <img src="/logo.png" alt="Social Ninja's" style={{width:"100%",height:"100%",objectFit:"contain",filter:"drop-shadow(0 0 14px rgba(91,164,245,0.45))"}}/>
           </div>
           <div>
-            <div style={{fontSize:16,fontWeight:700,letterSpacing:"-.4px",lineHeight:1.1,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
+            <div style={{fontSize:18,fontWeight:700,letterSpacing:"-.4px",lineHeight:1.1,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
               Social<span style={{color:"#5ba4f5"}}>Ninja's</span>.
             </div>
             <div style={{fontSize:"8.5px",fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",
