@@ -79,7 +79,7 @@ const POSTS = [
       },
     ],
     cta: 'Try 3 AI Posts Free →',
-    ctaHref: 'https://contentstudio.socialninjas.in/',
+    ctaHref: 'https://socialninjas.in/#/app/content-studio?plan=trial',
   },
   {
     id: 'roas-myth',
@@ -318,7 +318,7 @@ const Blog: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 26px' }}>Book Free Audit →</button></Link>
-            <a href="https://contentstudio.socialninjas.in/"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
+            <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
           </div>
         </div>
       </div>

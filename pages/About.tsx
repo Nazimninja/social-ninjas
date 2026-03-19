@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart3, Clock, ShieldCheck, Users, Trophy, Heart, Plus, Minus, Activity } from 'lucide-react';
+import { BarChart3, Clock, ShieldCheck, Plus, Minus } from 'lucide-react';
 import SEO from '../components/SEO';
 
 function useReveal() {
@@ -14,109 +14,85 @@ function useReveal() {
   }, []);
 }
 
+const faqs = [
+  { q: 'How quickly will I see results?', a: 'Most clients see meaningful improvements within 30–45 days. We don\'t wait for everything to be perfect before launching — we start fast, measure everything, and improve every week.' },
+  { q: 'Do I own everything you create?', a: 'Yes. Every ad, every creative, every strategy document we make is 100% yours. If you leave tomorrow, you take everything with you. No lock-in, ever.' },
+  { q: 'What\'s the minimum commitment?', a: 'We work in 90-day growth sprints. That\'s enough time to actually move the needle — not just set things up and call it done.' },
+  { q: 'Do you work with small businesses?', a: 'Yes, absolutely. We work with everyone from solo founders to established brands. What matters is your commitment to growing — not the size of your current budget.' },
+  { q: 'Will I have a dedicated person looking after my account?', a: 'Yes. You\'ll work directly with experienced people — not get handed off to junior staff after signing. You\'ll always know who\'s responsible for your results.' },
+];
+
 const About: React.FC = () => {
   useReveal();
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  const faqs = [
-    { q: "How is Social Ninja's different from a traditional agency?", a: "Traditional agencies sell hours and posts. We build revenue infrastructure — combining high-fidelity creative with algorithmic media buying. We sell measurable outcomes: ROAS, CAC, Net Margin. Not deliverables." },
-    { q: "Do you work with startups or established brands?", a: "Brands that have achieved product-market fit and are ready to scale. Typically generating $30k–$50k/mo, though we make exceptions for well-funded startups with exceptional unit economics." },
-    { q: "What does your pricing structure look like?", a: "A hybrid model: a flat base fee for our premium talent and infrastructure, plus a performance incentive tied to revenue or qualified leads we generate. If we win, you win." },
-    { q: "How long does it take to see results?", a: "We launch initial campaigns within 7–10 days of onboarding. Most clients see significant trend reversal in lead quality and CPA within 30–45 days. We operate in 90-day sprints." },
-    { q: "Do I own the data and creative assets?", a: "100%. You retain full ownership of your Ad Manager accounts, creative assets, and data. We are building your infrastructure, not ours." },
-  ];
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title="About Social Ninja's | Premium Digital Growth Partner" description="A tactical revenue strike team engineering growth infrastructure for the world's most ambitious brands." keywords="growth agency, performance marketing specialists, brand scaling" />
+      <SEO title="About Us | Social Ninja's" description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work." keywords="about social ninjas, performance marketing team, AI agency India" />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 88, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div className="hero-grid" />
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
             <div>
-              <div className="reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 50, background: 'rgba(91,164,245,0.08)', border: '1px solid rgba(91,164,245,0.18)', fontSize: 11, fontWeight: 600, color: '#5ba4f5', marginBottom: 28, letterSpacing: '0.03em' }}>
-                <Activity size={12} style={{ animation: 'pulse 2s infinite' }} /> System Status: Optimal
-              </div>
-              <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(48px,7vw,96px)', fontWeight: 400, letterSpacing: '-2px', lineHeight: 0.96, marginBottom: 24, color: 'rgba(255,255,255,0.96)' }}>
-                Revenue<br /><em style={{ background: 'linear-gradient(135deg,#5ba4f5,#a5c8ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Dominance.</em>
+              <div className="eyebrow reveal">Who We Are</div>
+              <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,68px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.04, marginBottom: 20, color: 'rgba(255,255,255,0.96)' }}>
+                We're not a big agency.<br /><span style={{ color: '#5ba4f5' }}>We're your growth team.</span>
               </h1>
               <p className="reveal d2" style={{ fontSize: 17, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: 480, marginBottom: 36, borderLeft: '2px solid rgba(91,164,245,0.3)', paddingLeft: 20 }}>
-                We are the antidote to the bloated, slow-moving agency. We're not a vendor. We're your growth partner — obsessed with revenue, allergic to excuses, and built to scale the brands that refuse to be average.
+                We started Social Ninja's because we kept seeing brands spend money on marketing and never really know if it was working. We decided to do things differently — with more honesty, more speed, and AI at the centre of everything.
               </p>
-              <div className="reveal d3" style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
-                {[['4.8×','Avg ROAS'], ['$40M+','Ad Spend Managed']].map(([n,l]) => (
-                  <div key={l}>
-                    <div style={{ fontFamily: "'DM Sans'", fontSize: 32, fontWeight: 600, color: '#fff', letterSpacing: '-1.5px', lineHeight: 1 }}>{n}</div>
-                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em', marginTop: 4 }}>{l}</div>
+              <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Let's Talk →</button></Link>
+            </div>
+            <div className="reveal-r d2">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                {[['150+', 'Brands we\'ve helped grow'], ['₹40Cr+', 'In ad spend managed'], ['97%', 'Clients who renew every year'], ['4.9★', 'Average client rating']].map(([n, l], i) => (
+                  <div key={i} className="glass-card" style={{ padding: '24px 20px', borderRadius: 18, textAlign: 'center' }}>
+                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 30, fontWeight: 700, color: '#5ba4f5', letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{l}</div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="reveal-r d2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ width: 320, height: 320, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(91,164,245,0.15)', animation: 'spin 25s linear infinite' }} />
-                <div style={{ position: 'absolute', inset: 40, borderRadius: '50%', border: '1px dashed rgba(255,255,255,0.08)', animation: 'spin 18s linear infinite reverse' }} />
-                <div style={{ position: 'absolute', inset: 80, borderRadius: '50%', border: '1px solid rgba(91,164,245,0.08)' }} />
-                {[['🌍', 0.2, 0.15, '#5ba4f5', '8px'], ['🚀', 0.78, 0.22, '#818cf8', '7px'], ['⚡', 0.15, 0.72, '#34d399', '6px']].map(([ic, lp, tp, c, s], i) => (
-                  <div key={i} style={{ position: 'absolute', left: `${Number(lp)*100}%`, top: `${Number(tp)*100}%`, width: 40, height: 40, borderRadius: '50%', background: `radial-gradient(circle, ${c}20, transparent)`, border: `1px solid ${c}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, boxShadow: `0 0 16px ${c}40` }}>{ic}</div>
-                ))}
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'Instrument Serif'", fontSize: 52, fontWeight: 400, color: '#fff', letterSpacing: '-2px', lineHeight: 1 }}>150<span style={{ color: '#5ba4f5' }}>+</span></div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', marginTop: 4 }}>BRANDS WORLDWIDE</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* CORE PROTOCOLS */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '88px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Core Protocols</div>
-        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 56, lineHeight: 1.08, color: 'rgba(255,255,255,0.95)' }}>The operating system that <em>drives our decisions.</em></h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
-          {[
-            { icon: BarChart3, title: 'Profit > Popularity', desc: "Vanity metrics are for influencers. We optimise for CAC, LTV, and Net Margin — the numbers that actually appear on your P&L." },
-            { icon: Clock,     title: 'Speed as Standard',  desc: "The market penalises slowness. We launch, test, and pivot campaigns faster than your internal team can schedule a meeting." },
-            { icon: ShieldCheck, title: 'Extreme Ownership', desc: "No excuses. If the needle isn't moving, we fix it. You retain full ownership of all data and creative assets." },
-          ].map((item, i) => (
-            <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 32, borderRadius: 22 }}>
-              <div style={{ width: 52, height: 52, borderRadius: 15, background: 'rgba(91,164,245,0.07)', border: '1px solid rgba(91,164,245,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, boxShadow: '0 0 20px rgba(91,164,245,0.08)' }}>
-                <item.icon size={24} color="#5ba4f5" strokeWidth={1.5} />
-              </div>
-              <h3 style={{ fontSize: 19, fontWeight: 500, color: 'rgba(255,255,255,0.92)', marginBottom: 10, letterSpacing: '-0.3px', fontFamily: "'DM Sans',sans-serif" }}>{item.title}</h3>
-              <p style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.48)', lineHeight: 1.65 }}>{item.desc}</p>
-            </div>
-          ))}
+      {/* OUR STORY */}
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
+        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Our Story</div>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>
+          We built what we wished we could hire.
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="hero-grid-cols">
+          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.82 }}>
+            Social Ninja's started because we kept seeing the same problem: brands spending money on marketing but not knowing if it was working. Agencies would send fancy reports — but the numbers never seemed to connect to actual sales.<br /><br />We decided to do things differently. We kept the team small and focused, put AI at the centre of everything, and tied every decision to one question: is this making our client more money?
+          </p>
+          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.82 }}>
+            Today we help brands across India, Dubai, and beyond — from D2C startups to established businesses — grow faster using AI automation, paid advertising, and content that converts.<br /><br />We're small on purpose. Every client works with experienced people who genuinely care about their results. When you grow, we grow. That's not a slogan — that's literally how our business model works.
+          </p>
         </div>
       </div>
 
-      {/* CULTURE */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '88px 28px', position: 'relative', zIndex: 1, background: 'rgba(4,8,18,0.5)' }}>
+      {/* VALUES */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 52, gap: 20, flexWrap: 'wrap' }}>
-            <div>
-              <div className="eyebrow reveal">Inside The Dojo</div>
-              <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 400, letterSpacing: '-1px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.08 }}>Culture &amp; People</h2>
-              <p className="reveal d2" style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.45)', marginTop: 12, maxWidth: 420, lineHeight: 1.7 }}>Great systems need great operators. We've built a culture of radical autonomy and high performance.</p>
-            </div>
-            <Link to="/careers" className="reveal d3"><button className="btn-ghost">Join the Team →</button></Link>
-          </div>
+          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>How We Think</div>
+          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: 'rgba(255,255,255,0.95)' }}>Three rules we never break.</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
             {[
-              { icon: Users,  title: 'Zero Politics',      desc: 'Best idea wins. We don\'t care about tenure or titles. We care about data and outcomes.' },
-              { icon: Trophy, title: 'Meritocracy',        desc: 'Compensation and promotion are tied directly to the value you create, not hours worked.' },
-              { icon: Heart,  title: 'Obsessive Growth',   desc: 'We invest heavily in upskilling. If you aren\'t growing 50% YoY personally, you\'re in the wrong place.' },
-            ].map((c, i) => (
-              <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 32, borderRadius: 22, textAlign: 'center' }}>
-                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-                  <c.icon size={26} color="rgba(255,255,255,0.7)" strokeWidth={1.5} />
+              { Icon: BarChart3, title: 'Revenue over likes', desc: 'We don\'t care how many followers you have. We care how much money your marketing is making. Every strategy starts and ends with that.' },
+              { Icon: Clock, title: 'Fast beats perfect', desc: 'We launch quickly, learn from real data, and improve. Waiting weeks for a "perfect" campaign means weeks of losing to competitors who already launched.' },
+              { Icon: ShieldCheck, title: 'You own everything', desc: 'Every account, every creative, every piece of content we make belongs to you. If you leave, you walk away with everything. No exceptions, ever.' },
+            ].map((item, i) => (
+              <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 32, borderRadius: 22 }}>
+                <div style={{ width: 52, height: 52, borderRadius: 15, background: 'rgba(91,164,245,0.07)', border: '1px solid rgba(91,164,245,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                  <item.Icon size={24} color="#5ba4f5" strokeWidth={1.5} />
                 </div>
-                <h3 style={{ fontSize: 19, fontWeight: 500, color: 'rgba(255,255,255,0.92)', marginBottom: 10, fontFamily: "'DM Sans',sans-serif" }}>{c.title}</h3>
-                <p style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{c.desc}</p>
+                <h3 style={{ fontSize: 17, fontWeight: 700, color: 'rgba(255,255,255,0.9)', marginBottom: 10, fontFamily: "'DM Sans',sans-serif" }}>{item.title}</h3>
+                <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.48)', lineHeight: 1.68 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -124,47 +100,35 @@ const About: React.FC = () => {
       </div>
 
       {/* FAQ */}
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '88px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Briefing Room</div>
-        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(26px,4vw,44px)', fontWeight: 400, letterSpacing: '-1px', textAlign: 'center', marginBottom: 48, lineHeight: 1.1, color: 'rgba(255,255,255,0.95)' }}>Common <em>tactical inquiries.</em></h2>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
+        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Common Questions</div>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>Things people usually ask us.</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {faqs.map((faq, i) => (
-            <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(91,164,245,0.06)' : 'rgba(255,255,255,0.04)', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.28)' : 'rgba(255,255,255,0.08)'}`, backdropFilter: 'blur(20px)', borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s', boxShadow: openFaq === i ? '0 0 24px rgba(91,164,245,0.08)' : 'none' }}>
-              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#5ba4f5' : 'rgba(255,255,255,0.85)', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, letterSpacing: '-0.1px', fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
+            <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(91,164,245,0.06)' : 'rgba(255,255,255,0.04)', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.28)' : 'rgba(255,255,255,0.08)'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s' }}>
+              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#5ba4f5' : 'rgba(255,255,255,0.85)', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
                 {faq.q}
                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: openFaq === i ? 'rgba(91,164,245,0.15)' : 'rgba(255,255,255,0.05)', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.3)' : 'rgba(255,255,255,0.1)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
                   {openFaq === i ? <Minus size={14} color="#5ba4f5" /> : <Plus size={14} color="rgba(255,255,255,0.5)" />}
                 </div>
               </button>
-              <div style={{ display: 'grid', gridTemplateRows: openFaq === i ? '1fr' : '0fr', transition: 'grid-template-rows 0.4s ease' }}>
-                <div style={{ overflow: 'hidden' }}>
-                  <div style={{ padding: '0 22px 20px', fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.72, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>{faq.a}</div>
-                </div>
-              </div>
+              {openFaq === i && <div style={{ padding: '0 22px 20px', fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>{faq.a}</div>}
             </div>
           ))}
         </div>
       </div>
 
       {/* CTA */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
         <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 600, height: 280, background: 'radial-gradient(ellipse,rgba(91,164,245,0.08),transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(28px,5vw,54px)', fontWeight: 400, letterSpacing: '-1.5px', marginBottom: 14, color: 'rgba(255,255,255,0.96)', lineHeight: 1.06 }}>Ready to <em style={{ color: '#5ba4f5' }}>mobilise?</em></h2>
-            <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32 }}>We are currently accepting new partners. Initiate your audit request today.</p>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Initiate Protocol</button></Link>
-          </div>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: 'rgba(255,255,255,0.96)', lineHeight: 1.08 }}>Let's grow your business together.</h2>
+          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>Book a free 30-minute call. We\'ll find what\'s holding your marketing back and show you exactly what we\'d do to fix it.</p>
+          <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book a Free Call →</button></Link>
         </div>
       </div>
-
-      <style>{`
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}} @keyframes spin{to{transform:rotate(360deg)}}
-        @media(max-width:900px){.hero-grid-cols,.three-cols{grid-template-columns:1fr!important;gap:24px!important;}} @media(max-width:640px){.hero-grid-cols{gap:36px!important;}}
-      `}</style>
+      <style>{`@media(max-width:900px){.hero-grid-cols,.three-cols{grid-template-columns:1fr!important;gap:32px!important;}}`}</style>
     </div>
   );
 };
-
 export default About;
