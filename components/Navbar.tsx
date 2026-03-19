@@ -43,11 +43,7 @@ const Navbar: React.FC = () => {
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', position: 'relative', zIndex: 50 }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: '12px', overflow: 'visible', flexShrink: 0, background: 'transparent',
-          }}>
-            <img src="/logo.png" alt="Social Ninja's" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-          </div>
+          <img src="/logo.png" alt="Social Ninja's" style={{ width: 56, height: 56, objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(91,164,245,0.5))', flexShrink: 0 }} />
           <div>
             <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 17, fontWeight: 600, letterSpacing: '-0.3px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
               Social<span style={{ color: '#5ba4f5' }}>Ninja's</span>.
