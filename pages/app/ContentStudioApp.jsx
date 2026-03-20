@@ -3522,27 +3522,42 @@ export default function App(){
       <div className="nav-inner" style={{maxWidth:1060,margin:"0 auto",padding:"0 20px",height:60,
         display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <div style={{width:36,height:36,borderRadius:"50%",overflow:"hidden",flexShrink:0,
-            border:"1.5px solid rgba(91,164,245,0.38)",boxShadow:"0 0 16px rgba(91,164,245,0.2)",
-            background:"#07101e"}}>
-            <img src="/logo.png" alt="Social Ninja's" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
-          </div>
+          <img src="/logo.png" alt="Social Ninja's" style={{width:52,height:52,objectFit:"contain",filter:"drop-shadow(0 0 16px rgba(91,164,245,0.5))",flexShrink:0}}/>
           <div>
-            <div style={{fontSize:16,fontWeight:700,letterSpacing:"-.4px",lineHeight:1.1,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
+            <div style={{fontSize:18,fontWeight:700,letterSpacing:"-.4px",lineHeight:1.1,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
               Social<span style={{color:"#5ba4f5"}}>Ninja's</span>.
             </div>
-            <div style={{fontSize:"8.5px",fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",
-              color:"rgba(255,255,255,0.32)",lineHeight:1,marginTop:2}}>{CONFIG.brandTagline}</div>
+            <div style={{fontSize:"8.5px",fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",color:"rgba(255,255,255,0.32)",lineHeight:1,marginTop:2}}>{CONFIG.brandTagline}</div>
           </div>
         </div>
-        <div style={{display:"flex",gap:4,background:"rgba(255,255,255,0.04)",borderRadius:13,padding:4,border:"1px solid rgba(255,255,255,0.07)"}}>
-          {tab === "dashboard" && (
-            <button onClick={()=>{setTab("portal");setClientSelected(null);}}
-              style={{padding:"6px 16px",borderRadius:10,fontSize:12.5,fontWeight:400,border:"none",
-                cursor:"pointer",transition:"all .15s",letterSpacing:"-.1px",fontFamily:"'Outfit', 'DM Sans',sans-serif",
-                background:"transparent",color:"rgba(255,255,255,0.45)"}}>
-              ← Back to Portal</button>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          {activeClient&&(
+            <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(91,164,245,0.08)",border:"1px solid rgba(91,164,245,0.2)",borderRadius:50,padding:"5px 14px 5px 6px"}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#1d4ed8,#5ba4f5)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:"#fff",flexShrink:0}}>
+                {(activeClient.brandName||activeClient.email||"U")[0].toUpperCase()}
+              </div>
+              <span style={{fontSize:12.5,color:"rgba(255,255,255,0.7)",maxWidth:130,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500}}>
+                {activeClient.brandName||activeClient.email||"My Account"}
+              </span>
+            </div>
           )}
+          <div style={{display:"flex",gap:3,background:"rgba(255,255,255,0.04)",borderRadius:13,padding:4,border:"1px solid rgba(255,255,255,0.07)"}}>
+            {tab==="dashboard"&&(
+              <button onClick={()=>{setTab("portal");setClientSelected(null);}}
+                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:400,border:"none",cursor:"pointer",transition:"all .15s",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(255,255,255,0.45)"}}>
+                ← Back</button>
+            )}
+            {activeClient&&(
+              <button onClick={async()=>{await DB.set("snstudio_active_client_id",null);setActiveClient(null);setPortalView("home");setTab("portal");}}
+                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(240,80,80,0.7)"}}>
+                Sign Out</button>
+            )}
+            {!activeClient&&portalView!=="onboarding"&&(
+              <button onClick={()=>setPortalView("onboarding")}
+                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"rgba(91,164,245,0.12)",color:"#5ba4f5"}}>
+                Sign In</button>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -1,180 +1,174 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
 
-const servicesData = {
+const servicesData: Record<string, any> = {
   'ai-automation': {
-    title: 'AI & Automation',
-    tagline: 'Your 24/7 intelligent sales team',
-    icon: '🤖',
-    color: '#5ba4f5',
-    description: 'Intelligent chatbots and automated workflows that handle lead qualification, follow-ups, and sales 24/7 — while your team focuses on closing.',
-    benefits: [
-      'Qualify leads instantly, zero drop-off',
-      'Automated follow-ups across email & SMS',
-      'Direct calendar booking integration',
-      'CRM syncing without manual entry'
-    ],
-    details: 'The average response time to an inbound lead is 47 hours. Your AI agent replies in 0.8 seconds. By instantly engaging prospects while their intent is highest, you capture revenue that your competitors ignore due to human bandwidth limits.'
+    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '🤖', color: '#5ba4f5',
+    hero: 'Most businesses lose customers simply because they were too slow to reply. The average company takes 47 hours to respond to a new lead. By then, they\'ve already bought from a competitor. We fix that.',
+    problem: 'Your team can\'t be online 24/7. Leads come in on weekends, at midnight, during meetings. Every hour without a reply is a sale you might be losing.',
+    solution: 'We deploy an AI agent that handles every incoming lead instantly — answering questions, qualifying them, and booking calls into your calendar. Your team only gets involved when someone is ready to buy.',
+    benefits: ['Replies to every lead in under 1 second, day or night','Asks the right questions to qualify each lead automatically','Books meetings straight into your calendar without you lifting a finger','Sends follow-up messages by email and SMS if they don\'t reply','Logs every conversation to your CRM — nothing falls through the cracks','Works on your website, WhatsApp, Instagram, or wherever your leads come from'],
+    stats: [['0.8s','Average reply time'],['14×','Faster than human teams'],['24/7','Always available'],['3×','More conversions from same leads']],
+    cta: 'Set Up My AI Agent',
   },
   'performance-marketing': {
-    title: 'Performance Marketing',
-    tagline: 'High-ROAS Meta & Google Campaigns',
-    icon: '🚀',
-    color: '#818cf8',
-    description: 'Data-driven paid campaigns on Meta & Google, enriched with AI insights and creative intelligence for maximum ROAS.',
-    benefits: [
-      'Mathematical audience targeting',
-      'Continuous A/B creative testing',
-      'Deep funnel conversion tracking',
-      'Live ROAS dashboards'
-    ],
-    details: 'We don\'t just run ads; we engineer scalable revenue systems. By testing hundreds of creative variations against data-backed audiences, we reliably drop your CAC and boost your LTV:CAC ratio.'
+    title: 'Performance Marketing', tagline: 'Ads that bring real customers, not just clicks.', icon: '🚀', color: '#818cf8',
+    hero: 'Running ads is easy. Running ads that actually make money is hard. Most businesses waste half their ad budget on people who were never going to buy. We fix that using data, not guesswork.',
+    problem: 'You\'ve probably tried running ads yourself or hired someone who sent you fancy reports but couldn\'t explain why sales didn\'t go up. Low ROAS, wrong audiences, creatives that don\'t convert — these are fixable problems.',
+    solution: 'We start with an audit of everything you\'re running now. Then we rebuild your campaigns around what your best customers actually look like, create ads that stop the scroll, and test everything until we find what works best.',
+    benefits: ['Full audit of your existing ads before we touch a thing','Audience research based on your actual customers — not guesses','Multiple creative formats tested to find what converts','Weekly reporting in plain English — not jargon','We scale what works and cut what doesn\'t, every single week','Retargeting campaigns to capture people who almost bought'],
+    stats: [['4.5×','Average ROAS across our clients'],['₹40Cr+','Total ad spend managed'],['60 days','Average time to see results'],['97%','Client renewal rate']],
+    cta: 'Audit My Ad Campaigns',
   },
   'creative-studio': {
-    title: 'Creative Studio',
-    tagline: 'Scroll-stopping content that converts',
-    icon: '🎬',
-    color: '#34d399',
-    description: 'High-converting video content, designs and copy — all optimised by real performance data, not just gut feeling.',
-    benefits: [
-      'UGC & Branded Video Production',
-      'Conversion-optimised Landing Pages',
-      'Psychology-driven Copywriting',
-      'Motion Graphics & Reels'
-    ],
-    details: 'Beautiful creative is useless if it doesn\'t sell. Our studio builds assets using frameworks proven to drive clicks, retention, and purchases.'
+    title: 'Creative Studio', tagline: 'Content that actually makes people stop and buy.', icon: '🎬', color: '#34d399',
+    hero: 'The truth is most ads fail because of bad creative — not bad targeting. People scroll past content that looks like every other ad. We make content that looks different, sounds real, and converts.',
+    problem: 'Generic stock images and corporate videos don\'t work anymore. People can spot an ad in a split second. You need content that feels native to the platform and speaks directly to your customer\'s problem.',
+    solution: 'We produce video content, ad creatives, and designs that are built around what your specific audience responds to. Every piece is made with performance in mind — not just aesthetics.',
+    benefits: ['Short-form video and Reels that get watched all the way through','Ad creatives designed to convert — not just look good','UGC-style content that builds trust instantly','Carousel designs ready to use on Instagram and LinkedIn','Landing page design that turns visitors into leads','Every creative tracked and improved based on real performance data'],
+    stats: [['3×','Average engagement vs generic content'],['48hrs','Typical creative turnaround'],['100%','Owned by you — always'],['Data-led','Every decision backed by numbers']],
+    cta: 'Build My Creative Strategy',
   },
   'social-media': {
-    title: 'Social Media Management',
-    tagline: 'Build authority, grow community',
-    icon: '📱',
-    color: '#f59e0b',
-    description: 'Full-service social media management that grows community, drives engagement, and converts followers into customers.',
-    benefits: [
-      'Platform-native content strategies',
-      'Active community management',
-      'Trend-jacking & viral hooks',
-      'Data-driven hashtag strategies'
-    ],
-    details: 'Consistency isn\'t enough anymore. You need relevance. We build your organic presence to capture demand before they even search for your product.'
+    title: 'Social Media Management', tagline: 'Your brand showing up every day — without you doing the work.', icon: '📱', color: '#f59e0b',
+    hero: 'Social media only works if you\'re consistent. But finding time to write captions, research trends, post every day, and reply to comments is nearly impossible when you\'re running a business. So most brands post whenever they remember — and their growth suffers for it.',
+    problem: 'Posting once in a while doesn\'t grow an audience. Algorithms reward consistency. And one generic post a week won\'t cut through the noise when your competitors are posting daily with content built specifically for their audience.',
+    solution: 'We take over your social media completely. We plan the content, research what\'s trending in your niche, write every caption, post at the best time, and reply to your audience. You just approve and move on.',
+    benefits: ['A monthly content plan built around what your audience actually cares about','Captions and hashtags written specifically for each platform','We post at the times when your audience is most active','Community management — we reply to comments and DMs','Monthly performance reports with clear takeaways','Live trend research so your content always feels relevant'],
+    stats: [['2×','Organic reach within 90 days'],['Daily','Consistent posting schedule'],['All platforms','Instagram, LinkedIn, X, Facebook, more'],['Monthly','Reports in plain English']],
+    cta: 'Manage My Social Media',
   },
   'web-seo': {
-    title: 'Web & SEO',
-    tagline: 'Foundational organic growth',
-    icon: '🌐',
-    color: '#ec4899',
-    description: 'Conversion-optimised websites and data-driven SEO that turn visitors into leads — built for speed and performance.',
-    benefits: [
-      'Lightning-fast page loads',
-      'Technical SEO & Architecture',
-      'High-intent keyword targeting',
-      'Conversion rate optimization'
-    ],
-    details: 'Your website is your best salesperson. We ensure it ranks at the top of Google and is engineered to turn that traffic into qualified leads.'
+    title: 'Web & SEO', tagline: 'Get found on Google. Turn visitors into customers.', icon: '🌐', color: '#ec4899',
+    hero: 'Your website should be working for you 24/7 — bringing in visitors from Google and turning them into leads. If it\'s not doing that, something\'s wrong. We find it and fix it.',
+    problem: 'Most websites look fine but convert terribly. They load slowly, don\'t show up on Google for the right keywords, and confuse visitors into leaving. It\'s not a design problem — it\'s a strategy problem.',
+    solution: 'We start with a full audit of your site — speed, SEO, conversion rate, everything. Then we fix what\'s broken, write content that Google actually ranks, and rebuild your pages to turn more visitors into leads.',
+    benefits: ['Complete technical SEO audit and fixes','Content strategy targeting keywords your actual customers search for','Website redesign focused on converting visitors — not just looking nice','Page speed optimisation so you don\'t lose visitors who get impatient','Lead generation landing pages with clear calls to action','Monthly ranking reports to track progress'],
+    stats: [['Top 3','Average Google ranking within 6 months'],['Fast','Sub-2-second page load times'],['Tracked','Every keyword, every month'],['Owned','Your site, your content, always']],
+    cta: 'Audit My Website & SEO',
   },
   'growth-consulting': {
-    title: 'Growth Consulting',
-    tagline: 'Strategic advisory for scale',
-    icon: '📊',
-    color: '#a78bfa',
-    description: 'Strategic advisory for founders who want to build systematic, scalable growth engines — not random marketing activities.',
-    benefits: [
-      'Comprehensive funnel audits',
-      'Go-to-Market strategies',
-      'Unit economics optimization',
-      'Team structuring & upskilling'
-    ],
-    details: 'Stop throwing tactics at the wall. We sit down with founders to architect true 90-day growth sprints with clear KPIs and board-level reporting.'
-  }
+    title: 'Growth Consulting', tagline: 'A clear plan to grow — and someone to hold you to it.', icon: '📊', color: '#a78bfa',
+    hero: 'Sometimes you don\'t need more marketing activity. You need someone to look at what you\'re already doing, tell you what\'s working and what\'s wasting money, and give you a clear plan to follow.',
+    problem: 'Most founders and marketing teams are too close to their own business to see the problems clearly. They know something isn\'t working but they don\'t know what to fix first — so they try everything and make no progress.',
+    solution: 'We do a deep dive into your marketing, your funnel, and your numbers. Then we give you a clear 90-day plan with specific priorities, realistic targets, and weekly check-ins to make sure you\'re on track.',
+    benefits: ['Full marketing audit — find exactly what\'s leaking revenue','Clear 90-day growth plan with specific priorities and targets','Revenue funnel review — from first click to paid customer','Team training on tools, strategy, and measurement','Monthly strategy sessions to review progress and adjust the plan','Honest, direct feedback — not what you want to hear, but what you need to'],
+    stats: [['40%','Average revenue lift in Q1'],['90 days','From audit to measurable results'],['Weekly','Check-ins to stay on track'],['You own','Every strategy, every doc']],
+    cta: 'Book a Strategy Session',
+  },
 };
 
-const ServiceDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [service, setService] = useState<any>(null);
-
+function useReveal() {
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (id && servicesData[id as keyof typeof servicesData]) {
-      setService(servicesData[id as keyof typeof servicesData]);
-    } else {
-      setService({ notFound: true });
-    }
-  }, [id]);
-
-  if (!service) return <div style={{ minHeight: '100vh', background: '#07101e' }} />;
-
-  if (service.notFound) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#07101e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-        <h2>Service Not Found</h2>
-        <Link to="/services"><button className="btn-primary" style={{ marginTop: 20 }}>Back to Services</button></Link>
-      </div>
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
-  }
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+const ServiceDetail: React.FC = () => {
+  useReveal();
+  const { id } = useParams<{ id: string }>();
+  const s = id ? servicesData[id] : null;
+
+  if (!s) return (
+    <div style={{ minHeight: '100vh', background: '#07101e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 20 }}>
+      <div style={{ fontSize: 48 }}>🔍</div>
+      <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: "'Bricolage Grotesque',system-ui" }}>Service not found</h1>
+      <Link to="/services"><button className="btn-primary">See All Services</button></Link>
+    </div>
+  );
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" />
-      <SEO title={`${service.title} | Social Ninja's`} description={service.description} />
+    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+      <SEO title={`${s.title} | Social Ninja's`} description={s.hero} />
 
-      <div style={{ position: 'sticky', top: 62, zIndex: 50, background: 'rgba(7,16,30,0.85)', backdropFilter: 'blur(24px)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '12px 28px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <Link to="/services" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)' }}>
+      {/* HERO */}
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="hero-grid" />
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
+          <Link to="/services" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
             <ArrowLeft size={14} /> Back to Services
           </Link>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 400px', gap: 64 }} className="hero-grid-cols">
-        <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: `${service.color}14`, border: `1px solid ${service.color}28`, borderRadius: 12, padding: '8px 16px', fontSize: 18, marginBottom: 24, color: service.color }}>
-            {service.icon} <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{service.title}</span>
-          </div>
-          
-          <h1 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 800, letterSpacing: '-2px', lineHeight: 1.05, color: 'rgba(255,255,255,0.95)', marginBottom: 24 }}>
-            {service.tagline}
-          </h1>
-          
-          <p style={{ fontSize: 18, fontWeight: 300, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 40 }}>
-            {service.description}
-          </p>
-
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', marginBottom: 40 }} />
-
-          <h2 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 24, fontWeight: 700, color: 'white', marginBottom: 20 }}>Why it matters</h2>
-          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.8, marginBottom: 40 }}>
-            {service.details}
-          </p>
-        </div>
-
-        <div>
-          <div className="glass-card" style={{ padding: 40, borderRadius: 24, border: `1px solid ${service.color}30`, position: 'sticky', top: 120 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'white', marginBottom: 24 }}>What you get</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 40 }}>
-              {service.benefits.map((b: string, i: number) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
-                  <CheckCircle2 size={18} color={service.color} style={{ flexShrink: 0, marginTop: 2 }} />
-                  {b}
-                </div>
-              ))}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: `${s.color}14`, border: `1px solid ${s.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>{s.icon}</div>
+              </div>
+              <h1 className="reveal" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,70px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.02, marginBottom: 16, color: 'rgba(255,255,255,0.96)' }}>
+                {s.title}
+              </h1>
+              <div className="reveal d1" style={{ fontSize: 18, fontWeight: 400, color: s.color, marginBottom: 20, letterSpacing: '-0.2px' }}>{s.tagline}</div>
+              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, marginBottom: 36, borderLeft: `2px solid ${s.color}50`, paddingLeft: 20 }}>{s.hero}</p>
+              <div className="reveal d3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>{s.cta} <ArrowRight size={15} /></button></Link>
+              </div>
             </div>
-            
-            <Link to="/contact">
-              <button className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '16px', background: `linear-gradient(135deg, ${service.color}cc, ${service.color})` }}>
-                Discuss your project
-              </button>
-            </Link>
+            <div className="reveal-r d2">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {s.stats.map(([n, l]: string[]) => (
+                  <div key={l} className="glass-card" style={{ padding: '24px 20px', borderRadius: 18, textAlign: 'center', borderTop: `2px solid ${s.color}30` }}>
+                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 700, color: s.color, letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-      <style>{`
-        @media(max-width:900px) { .hero-grid-cols{ grid-template-columns: 1fr !important; gap: 40px !important; } }
-      `}</style>
+
+      {/* PROBLEM / SOLUTION */}
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginBottom: 60 }} className="hero-grid-cols">
+          <div className="glass-card reveal" style={{ padding: 32, borderRadius: 22 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,100,100,0.7)', marginBottom: 14 }}>The Problem</div>
+            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.75 }}>{s.problem}</p>
+          </div>
+          <div className="glass-card reveal d1" style={{ padding: 32, borderRadius: 22, borderTop: `2px solid ${s.color}40` }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, marginBottom: 14 }}>Our Solution</div>
+            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.75 }}>{s.solution}</p>
+          </div>
+        </div>
+
+        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>What's Included</div>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 40, color: 'rgba(255,255,255,0.95)' }}>
+          Here's exactly what you get.
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {s.benefits.map((b: string, i: number) => (
+            <div key={i} className={`glass-card reveal d${(i%3)+1}`} style={{ padding: '18px 22px', borderRadius: 16, display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+              <CheckCircle2 size={18} color={s.color} strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
+              <span style={{ fontSize: 14.5, fontWeight: 400, color: 'rgba(255,255,255,0.75)', lineHeight: 1.55 }}>{b}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${s.color}50,transparent)` }} />
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.08, marginBottom: 14, color: 'rgba(255,255,255,0.96)' }}>
+            Ready to get started?
+          </h2>
+          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
+            Book a free 30-minute call. We'll look at your specific situation and show you exactly what we'd do and what results you can realistically expect.
+          </p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>{s.cta} →</button></Link>
+            <Link to="/services"><button className="btn-ghost" style={{ fontSize: 15 }}>← See All Services</button></Link>
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:900px){.hero-grid-cols{grid-template-columns:1fr!important;gap:36px!important;}}`}</style>
     </div>
   );
 };
-
 export default ServiceDetail;
