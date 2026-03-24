@@ -187,7 +187,7 @@ const Home: React.FC = () => {
               ))}
               <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
                 <Link to="/ai-products/content-studio"><button className="btn-primary" style={{ fontSize: 14 }}>See How It Works →</button></Link>
-                <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
+                <a href="/#/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
               </div>
             </div>
             <div style={{ background: 'rgba(0,0,0,0.2)', borderLeft: '1px solid rgba(255,255,255,0.07)', padding: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -273,7 +273,7 @@ const Home: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 16, padding: '17px 40px' }}>Book My Free Strategy Call</button></Link>
-            <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try AI Studio Free First</button></a>
+            <a href="/#/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try AI Studio Free First</button></a>
           </div>
         </div>
       </div>

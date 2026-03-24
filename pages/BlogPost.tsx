@@ -19,8 +19,8 @@ const BlogPost: React.FC = () => {
     const localPost = POSTS.find(p => p.id === id);
     
     Promise.all([
-      fetch(`/api/data?resource=blogs&id=${id}`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch('/api/data?resource=blogs').then(r => r.json()).catch(() => []),
+      fetch(`/api/blogs/${id}`).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('/api/blogs').then(r => r.json()).catch(() => []),
     ]).then(([apiPost, all]) => {
       const finalPost = localPost || apiPost;
       setPost(finalPost);
@@ -97,7 +97,7 @@ const BlogPost: React.FC = () => {
             <Clock size={11} />{post.readTime || '5 min read'}
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
-            {new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+            {post.date || (post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '')}
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>By {post.author || "Social Ninja's Team"}</div>
         </div>
@@ -151,7 +151,7 @@ const BlogPost: React.FC = () => {
           <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 24 }}>Book a free 30-minute strategy session — we'll apply these frameworks to your business.</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '12px 24px' }}>Book Free Session →</button></Link>
-            <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Studio</button></a>
+            <a href="/#/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Studio</button></a>
           </div>
         </div>
       </div>

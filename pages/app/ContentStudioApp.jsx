@@ -3552,8 +3552,10 @@ export default function App(){
                 style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(240,80,80,0.7)"}}>
                 Sign Out</button>
             )}
-            {!activeClient&&portalView!=="onboarding"&&(
-              <button onClick={()=>setPortalView("onboarding")}
+            {!activeClient&&(
+              <button onClick={()=>{
+                setPortalView("login");
+              }}
                 style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"rgba(91,164,245,0.12)",color:"#5ba4f5"}}>
                 Sign In</button>
             )}
@@ -3676,6 +3678,40 @@ export default function App(){
           setActiveClient(cl);
           setPortalView("workspace");
         }}/>
+      </div>
+    ):portalView==="login"?(
+      <div style={{maxWidth:500,margin:"60px auto",textAlign:"center"}}>
+        <h2 style={{fontSize:24,fontWeight:700,marginBottom:20}}>Welcome back</h2>
+        {Object.keys(clients||{}).length > 0 ? (
+          <div style={{display:"grid",gap:12,textAlign:"left"}}>
+            {Object.values(clients).map(cl => (
+              <button key={cl.id} onClick={async()=>{
+                await DB.set("snstudio_active_client_id",cl.id);
+                setActiveClient(cl);
+                setPortalView("workspace");
+              }} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"16px",cursor:"pointer",display:"flex",alignItems:"center",gap:14,transition:"all .15s"}}
+              onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}
+              onMouseOut={e=>e.currentTarget.style.background="rgba(255,255,255,0.05)"}>
+                <div style={{width:40,height:40,borderRadius:"50%",background:`${cl.color||"#5ba4f5"}22`,display:"flex",alignItems:"center",justifyContent:"center",color:cl.color||"#5ba4f5",fontWeight:700,fontSize:16}}>
+                  {(cl.brandName||cl.email||"U")[0].toUpperCase()}
+                </div>
+                <div>
+                  <div style={{fontSize:16,fontWeight:700,color:"#fff",marginBottom:4}}>{cl.brandName || "My Workspace"}</div>
+                  <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>{cl.email} {cl.planName ? `· ${cl.planName}` : ""}</div>
+                </div>
+              </button>
+            ))}
+            <div style={{marginTop:20,textAlign:"center"}}>
+              <button onClick={()=>setPortalView("onboarding")} style={{background:"none",border:"none",color:"#5ba4f5",cursor:"pointer",fontSize:14,fontWeight:600}}>+ Create New Workspace</button>
+            </div>
+          </div>
+        ) : (
+           <div style={{textAlign:"center"}}>
+             <p style={{color:"rgba(255,255,255,0.5)",marginBottom:20}}>No workspaces found on this device.</p>
+             <button onClick={()=>setPortalView("onboarding")} style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",border:"none",borderRadius:13,padding:"14px 32px",fontSize:16,fontWeight:700,cursor:"pointer"}}>Create Workspace →</button>
+           </div>
+        )}
+        <button onClick={()=>setPortalView("home")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:13,marginTop:24}}>← Back to Home</button>
       </div>
     ):portalView==="workspace"&&activeClient?(
       <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}/>

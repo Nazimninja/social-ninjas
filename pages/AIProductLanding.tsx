@@ -8,7 +8,7 @@ const productsData: Record<string, any> = {
     name: 'AI Content Studio', icon: '⚡', color: '#5ba4f5', badge: '🟢 Live',
     tagline: 'Your whole week of content — written in 60 seconds.',
     hero: 'You know you should be posting more content. But coming up with ideas, researching what\'s trending, writing captions for different platforms, making scripts for Reels, finding hashtags — it takes hours every week. We built AI Content Studio to do all of that for you.',
-    tryLink: 'https://socialninjas.in/#/app/content-studio?plan=trial',
+    tryLink: '/#/app/content-studio?plan=trial',
     problem: 'Most content tools give you templates. Fancy, flexible, well-designed templates — that still require you to do all the thinking. You still need to research trends, write the actual content, adapt it for each platform, and figure out the hashtags.',
     solution: 'AI Content Studio does the research first, then the writing. Before it writes a single word, it checks what\'s actually trending in your niche this week. Then it writes everything — captions, scripts, carousel slides, hashtags — in the voice of your brand.',
     steps: [
@@ -131,7 +131,7 @@ const AIProductLanding: React.FC = () => {
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.6vw,17px)', fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, maxWidth: 600, margin: '0 auto 40px' }}>{p.hero}</p>
           <div className="reveal d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href={p.tryLink}><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{isLive ? '⚡ Try Free — No Card Needed' : 'Join the Waitlist →'}</button></a>
-            {isLive && <a href="https://socialninjas.in/#/app/content-studio?plan=starter"><button className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button></a>}
+            {isLive && <a href="/#/app/content-studio?plan=starter"><button className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button></a>}
           </div>
           {/* Stats row */}
           <div className="reveal d4" style={{ display: 'flex', justifyContent: 'center', gap: 0, marginTop: 56, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 50, padding: '16px 8px', maxWidth: 640, margin: '56px auto 0', flexWrap: 'wrap' }}>
@@ -246,7 +246,7 @@ const AIProductLanding: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <a href={`https://socialninjas.in/#/app/content-studio?plan=${pl.name.toLowerCase()}`}>
+                <a href={`/#/app/content-studio?plan=${pl.name.toLowerCase()}`}>
                   <button className="btn-primary" style={{ width: '100%', fontSize: 14, padding: '13px 0', background: pl.popular ? `linear-gradient(135deg,${p.color}cc,${p.color})` : undefined }}>Get Started →</button>
                 </a>
               </div>

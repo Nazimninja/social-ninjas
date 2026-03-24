@@ -20,7 +20,7 @@ const products = [
     tagline: 'Your whole week of content — written in 60 seconds.',
     desc: 'Tell the AI about your brand once. Every week it looks up what\'s trending in your niche, then writes your captions, Reel scripts, carousel slides, and hashtags. All platform-specific. All ready to copy and post.',
     color: '#5ba4f5',
-    tryLink: 'https://socialninjas.in/#/app/content-studio?plan=trial',
+    tryLink: '/#/ai-products/content-studio',
     learnLink: '/ai-products/content-studio',
     stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
     features: ['Researches live trends before writing — every time','Word-for-word scripts for Reels and YouTube Shorts','Captions written specifically for each platform','Carousel slide copy — paste straight into Canva','Real hashtag research — never generic or repeated','Thread writer for Twitter/X and Threads','Posting checklist with the best time to post'],
@@ -81,7 +81,7 @@ const AIProducts: React.FC = () => {
             We're building a suite of AI tools that handle the repetitive parts of marketing — so you can spend your time on the things that actually need you.
           </p>
           <div className="reveal d3" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></a>
+            <a href="/#/ai-products/content-studio"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></a>
             <Link to="/contact"><button className="btn-ghost" style={{ fontSize: 15 }}>Join Waitlist for New Tools →</button></Link>
           </div>
         </div>
@@ -161,7 +161,7 @@ const AIProducts: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 30px' }}>Join the Waitlist →</button></Link>
-            <a href="https://socialninjas.in/#/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try Content Studio Free</button></a>
+            <a href="/#/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try Content Studio Free</button></a>
           </div>
         </div>
       </div>

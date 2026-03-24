@@ -1,6 +1,6 @@
 window.goToApp = function(plan) {
   // Points to the live Vercel app — works from any host (Hostinger, etc.)
-  const APP_URL = 'https://socialninjas.in/#/app/content-studio';
+  const APP_URL = '/#/app/content-studio';
   const params = plan ? '?plan=' + plan : '';
   
   const overlay = document.createElement('div');
