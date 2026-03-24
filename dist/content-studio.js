@@ -1,8 +1,10 @@
+// Absolute base URL — works from any host (Hostinger, Vercel, etc.)
+const APP_BASE_URL = 'https://socialninjas.in';
+
 window.goToApp = function(plan) {
-  // Redirect to the main web app with the chosen plan pre-selected
-  const APP_URL = '/#/app/content-studio'; // Use the HashRouter app url
   const params = plan ? '?plan=' + plan : '';
-  
+  const destination = APP_BASE_URL + '/#/app/content-studio' + params;
+
   // Show a brief redirect message
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(4,4,12,.97);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
@@ -16,10 +18,13 @@ window.goToApp = function(plan) {
     <style>@keyframes prog{from{width:0}to{width:100%}}</style>
   `;
   document.body.appendChild(overlay);
-  
+
   // Actually redirect
   setTimeout(() => {
-    window.location.href = APP_URL + params;
+    window.location.href = destination;
   }, 1300);
 }
 
+window.signIn = function() {
+  window.location.href = APP_BASE_URL + '/#/app/content-studio';
+}
