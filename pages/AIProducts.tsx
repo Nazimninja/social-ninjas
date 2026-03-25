@@ -67,7 +67,11 @@ const AIProducts: React.FC = () => {
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title="AI Products | Social Ninja's" description="AI tools built for brands that want to grow — Content Studio, AI Sales Agent, Ad Copy Generator, Reporting Assistant. Try free." keywords="AI content generator India, AI marketing tools, AI sales agent, ad copy AI, marketing automation" />
+      <SEO
+        title="AI Products | Social Ninja's"
+        description="AI tools built for brands that want to grow — Content Studio, AI Sales Agent, Ad Copy Generator, Reporting Assistant. Try free."
+        keywords="AI content generator India, AI marketing tools, AI sales agent, ad copy AI, marketing automation, AI social media tool, content studio AI, AI tools for brands, AI SaaS India"
+      />
 
       {/* HERO */}
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>

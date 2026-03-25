@@ -29,7 +29,11 @@ const About: React.FC = () => {
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title="About Us | Social Ninja's" description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work." keywords="about social ninjas, performance marketing team, AI agency India" />
+      <SEO
+        title="About Us | Social Ninja's"
+        description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work."
+        keywords="about social ninjas, performance marketing team, AI agency India, digital marketing team, growth marketing experts, AI marketing company, social media agency team"
+      />
 
       {/* HERO */}
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>

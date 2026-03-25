@@ -1,8 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /#/app/
+Disallow: /api/
 
+# Sitemap
 Sitemap: https://socialninjas.in/sitemap.xml
 
-# Block admin
-Disallow: /admin
-Disallow: /#/admin
+# Crawl-delay (optional, helps prevent server overload)
+Crawl-delay: 1

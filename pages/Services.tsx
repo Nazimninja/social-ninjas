@@ -28,7 +28,11 @@ const Services: React.FC = () => {
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title="Services | Social Ninja's" description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow. Book a free strategy call." keywords="performance marketing India, AI automation, social media management, growth agency" />
+      <SEO
+        title="Services | Social Ninja's"
+        description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow. Book a free strategy call."
+        keywords="performance marketing India, AI automation, social media management, growth agency, paid ads India, content creation agency, SEO agency India, digital marketing services, email marketing WhatsApp marketing"
+      />
 
       {/* HERO */}
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>

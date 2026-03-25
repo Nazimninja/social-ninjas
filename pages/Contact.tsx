@@ -75,7 +75,11 @@ const Contact: React.FC = () => {
   return (
     <div className="page-bg" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
       <div className="amb-1"/><div className="amb-2"/><div className="amb-3"/>
-      <SEO title="Contact Social Ninja's | Book Strategy Call" description="Initiate your growth audit. Book a strategy call with our team." keywords="contact marketing agency, book strategy call"/>
+      <SEO
+        title="Contact Social Ninja's | Book Strategy Call"
+        description="Initiate your growth audit. Book a strategy call with our team and see how we'd grow your business with AI-powered marketing."
+        keywords="contact marketing agency, book strategy call, free marketing audit, digital marketing consultation, AI agency contact, growth audit India"
+      />
 
       <div style={{maxWidth:1100,margin:'0 auto',padding:'120px 28px 88px',position:'relative',zIndex:1}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'start'}} className="hero-grid-cols">

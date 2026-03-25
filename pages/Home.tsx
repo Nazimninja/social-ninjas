@@ -36,7 +36,11 @@ const Home: React.FC = () => {
   return (
     <div className="page-bg overflow-x-hidden" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title="Social Ninja's | We Help Brands Get More Customers" description="AI automation, paid ads, and content creation that actually works. Book a free strategy call and see exactly how we'd grow your business." keywords="performance marketing India, AI automation agency, social media growth agency Dubai" />
+      <SEO
+        title="Social Ninja's | We Help Brands Get More Customers"
+        description="AI automation, paid ads, and content creation that actually works. Book a free strategy call and see exactly how we'd grow your business."
+        keywords="performance marketing India, AI automation agency, social media growth agency Dubai, AI marketing tools India, content creation agency, digital marketing for small business, AI ads agency, social media management India, growth marketing agency"
+      />
 
       {/* HERO */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 80, paddingBottom: 60, overflow: 'hidden' }}>
