@@ -51,11 +51,6 @@ export const SchemaMarkup = () => {
             "name": "Nazim",
             "jobTitle": "Founder & CEO"
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "84"
-        },
         "makesOffer": [
             {
                 "@type": "Offer",
