@@ -33,7 +33,7 @@ const GrowthSystems: React.FC = () => {
               </p>
               <div className="reveal d3" style={{display:'flex',gap:12,flexWrap:'wrap'}}>
                 <Link to="/contact"><button className="btn-primary" style={{fontSize:15,padding:'15px 30px'}}>Deploy AI Workforce <ArrowRight size={16}/></button></Link>
-                <a href="/ai-products/content-studio"><button className="btn-ghost" style={{fontSize:15}}>Try Content Studio Free →</button></a>
+                <a href="/content-studio"><button className="btn-ghost" style={{fontSize:15}}>Try Content Studio Free →</button></a>
               </div>
             </div>
             <div className="reveal-r d2">

@@ -121,7 +121,7 @@ const Home: React.FC = () => {
           {[
             { icon: '🤖', title: 'AI & Automation', sub: 'Never miss a lead', desc: 'AI that talks to your leads 24/7, qualifies them, and books meetings — while you sleep.', link: '/services/ai-automation', color: '#5ba4f5' },
             { icon: '🚀', title: 'Performance Marketing', sub: 'More sales, better ROI', desc: 'Meta and Google ads that bring real customers. Our clients average 4.5× return on their ad spend.', link: '/services/performance-marketing', color: '#818cf8' },
-            { icon: '⚡', title: 'AI Content Studio', sub: 'A week of content in 60 seconds', desc: 'AI researches trending topics in your niche, then writes all your captions, scripts and slides.', link: '/ai-products/content-studio', color: '#34d399' },
+            { icon: '⚡', title: 'AI Content Studio', sub: 'A week of content in 60 seconds', desc: 'AI researches trending topics in your niche, then writes all your captions, scripts and slides.', link: '/content-studio', color: '#34d399' },
           ].map((s,i) => (
             <Link key={i} to={s.link} style={{ textDecoration: 'none' }}>
               <div className={`glass-card reveal d${i+1}`} style={{ padding: 28, height: '100%', cursor: 'pointer', borderRadius: 22, borderTop: `2px solid ${s.color}30` }}>
@@ -186,8 +186,8 @@ const Home: React.FC = () => {
                 </div>
               ))}
               <div style={{ display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' }}>
-                <Link to="/ai-products/content-studio"><button className="btn-primary" style={{ fontSize: 14 }}>See How It Works →</button></Link>
-                <a href="/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
+                <a href="/content-studio"><button className="btn-primary" style={{ fontSize: 14 }}>See How It Works →</button></a>
+                <a href="/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>⚡ Try 3 Posts Free</button></a>
               </div>
             </div>
             <div style={{ background: 'rgba(0,0,0,0.2)', borderLeft: '1px solid rgba(255,255,255,0.07)', padding: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -273,7 +273,7 @@ const Home: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 16, padding: '17px 40px' }}>Book My Free Strategy Call</button></Link>
-            <a href="/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try AI Studio Free First</button></a>
+            <a href="/content-studio"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try AI Studio Free First</button></a>
           </div>
         </div>
       </div>

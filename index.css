@@ -246,3 +246,19 @@ select.field option {
   .section { padding: 48px 16px; }
   .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
 }
+
+/* ── COMPREHENSIVE MOBILE GRID OVERRIDES ── */
+@media (max-width: 900px) {
+  .hero-grid-cols { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .three-cols { grid-template-columns: repeat(2, 1fr) !important; }
+  .four-cols { grid-template-columns: repeat(2, 1fr) !important; }
+  .hero-dashboard { margin-top: 32px; }
+}
+
+@media (max-width: 640px) {
+  .services-grid { grid-template-columns: 1fr !important; }
+  .three-cols { grid-template-columns: 1fr !important; }
+  .four-cols { grid-template-columns: 1fr !important; }
+  .hero-grid-cols { padding: 0 12px !important; }
+}

@@ -2,6 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/content-studio", "destination": "/standalone-landing/index.html" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

@@ -210,7 +210,7 @@ const Blog: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '13px 26px' }}>Book Free Audit →</button></Link>
-            <a href="/ai-products/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
+            <a href="/content-studio"><button className="btn-ghost" style={{ fontSize: 14 }}>Try AI Content Free →</button></a>
           </div>
         </div>
       </div>
