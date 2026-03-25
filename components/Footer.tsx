@@ -88,16 +88,23 @@ const Footer: React.FC = () => {
             <h4 style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Bricolage Grotesque',system-ui" }}>AI Products</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'AI Content Studio', path: '/ai-products/content-studio' },
+                { label: 'AI Content Studio', path: '/content-studio' },
                 { label: 'Lead Agent (Soon)', path: '/ai-products' },
                 { label: 'Ad Copy Gen (Soon)', path: '/ai-products' },
                 { label: 'Analytics AI (Soon)', path: '/ai-products' },
               ].map(({ label, path }) => (
                 <li key={label}>
-                  <Link to={path} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#5ba4f5')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
-                  >{label}</Link>
+                  {path.startsWith('/content-studio') ? (
+                    <a href={path} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#5ba4f5')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                    >{label}</a>
+                  ) : (
+                    <Link to={path} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#5ba4f5')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                    >{label}</Link>
+                  )}
                 </li>
               ))}
             </ul>

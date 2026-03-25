@@ -109,7 +109,11 @@ const AIProducts: React.FC = () => {
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <a href={p.tryLink}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}</button></a>
-                <Link to={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></Link>
+                {p.learnLink.startsWith('/content-studio') ? (
+                  <a href={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></a>
+                ) : (
+                  <Link to={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></Link>
+                )}
               </div>
             </div>
             <div style={{ order: i % 2 === 0 ? 1 : 0 }}>

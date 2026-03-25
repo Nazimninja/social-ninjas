@@ -122,8 +122,9 @@ const Home: React.FC = () => {
             { icon: '🤖', title: 'AI & Automation', sub: 'Never miss a lead', desc: 'AI that talks to your leads 24/7, qualifies them, and books meetings — while you sleep.', link: '/services/ai-automation', color: '#5ba4f5' },
             { icon: '🚀', title: 'Performance Marketing', sub: 'More sales, better ROI', desc: 'Meta and Google ads that bring real customers. Our clients average 4.5× return on their ad spend.', link: '/services/performance-marketing', color: '#818cf8' },
             { icon: '⚡', title: 'AI Content Studio', sub: 'A week of content in 60 seconds', desc: 'AI researches trending topics in your niche, then writes all your captions, scripts and slides.', link: '/content-studio', color: '#34d399' },
-          ].map((s,i) => (
-            <Link key={i} to={s.link} style={{ textDecoration: 'none' }}>
+          ].map((s,i) => {
+            const isExternal = s.link.startsWith('/content-studio');
+            const CardContent = (
               <div className={`glass-card reveal d${i+1}`} style={{ padding: 28, height: '100%', cursor: 'pointer', borderRadius: 22, borderTop: `2px solid ${s.color}30` }}>
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: `${s.color}12`, border: `1px solid ${s.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 16 }}>{s.icon}</div>
                 <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: s.color, marginBottom: 6 }}>{s.sub}</div>
@@ -131,8 +132,13 @@ const Home: React.FC = () => {
                 <p style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.65 }}>{s.desc}</p>
                 <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: s.color }}>Learn More <ArrowRight size={14} /></div>
               </div>
-            </Link>
-          ))}
+            );
+            return isExternal ? (
+              <a key={i} href={s.link} style={{ textDecoration: 'none' }}>{CardContent}</a>
+            ) : (
+              <Link key={i} to={s.link} style={{ textDecoration: 'none' }}>{CardContent}</Link>
+            );
+          })}
         </div>
       </div>
 
