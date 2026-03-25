@@ -3,6 +3,6 @@
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/content-studio", "destination": "/standalone-landing/index.html" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|sitemap\\.xml|robots\\.txt|.*\\.xml|.*\\.txt).*)", "destination": "/index.html" }
   ]
 }
