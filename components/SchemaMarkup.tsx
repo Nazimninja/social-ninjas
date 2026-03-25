@@ -6,9 +6,9 @@ export const SchemaMarkup = () => {
         "@context": "https://schema.org",
         "@type": "MarketingAgency",
         "name": "Social Ninja's",
-        "image": "https://socialninjas.agency/logo.png",
-        "@id": "https://socialninjas.agency",
-        "url": "https://socialninjas.agency",
+        "image": "https://socialninjas.in/og-image.png",
+        "@id": "https://socialninjas.in",
+        "url": "https://socialninjas.in",
         "telephone": "+918892587979",
         "address": {
             "@type": "PostalAddress",
@@ -37,15 +37,14 @@ export const SchemaMarkup = () => {
             "closes": "23:59"
         },
         "sameAs": [
-            "https://www.instagram.com/socialninjas",
-            "https://www.linkedin.com/company/socialninjas",
-            "https://twitter.com/socialninjas",
-            "https://www.facebook.com/socialninjas"
+            "https://www.instagram.com/socialninjas.in",
+            "https://www.linkedin.com/company/social-ninjas",
+            "https://twitter.com/socialninjasin"
         ],
-        "logo": "https://socialninjas.agency/logo.png",
-        "priceRange": "$$$",
+        "logo": "https://socialninjas.in/ninja-logo.png",
+        "priceRange": "₹₹",
         "description": "Social Ninja's is a premium performance marketing agency specializing in AI automation, paid media buying, and high-fidelity content production for brands in India and UAE.",
-        "areaServed": ["IN", "AE", "US", "UK", "SA", "QA"],
+        "areaServed": ["IN", "AE", "US", "GB", "SA", "QA"],
         "founder": {
             "@type": "Person",
             "name": "Nazim",
