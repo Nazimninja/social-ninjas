@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Social Ninja's — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07101e;--bg2:#0b1426;
+  --blue:#5ba4f5;--blue2:#1d4ed8;--mint:#34d399;--gold:#e8b86d;--red:#f87171;--vio:#9b8ef0;
+  --g1:rgba(255,255,255,.05);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);
+  --t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.35);
+  --fh:'Bricolage Grotesque',system-ui;--fd:'DM Sans',system-ui;--fm:'JetBrains Mono',monospace;
+}
+html,body{background:var(--bg);color:var(--t1);font-family:var(--fd);min-height:100vh;-webkit-font-smoothing:antialiased}
+input,textarea,select,button{font-family:var(--fd)}
+/* LOGIN */
+#ls{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.lb{width:100%;max-width:380px;background:var(--g1);border:1px solid var(--gb);border-radius:24px;padding:40px 32px;text-align:center}
+.lb h1{font-family:var(--fh);font-size:26px;font-weight:800;letter-spacing:-.5px;margin:14px 0 6px}
+.lb p{color:var(--t3);font-size:13px;margin-bottom:26px}
+.lb input{width:100%;background:var(--g1);border:1px solid var(--gb);border-radius:12px;padding:13px 16px;color:var(--t1);font-size:15px;outline:none;margin-bottom:12px}
+.lb input:focus{border-color:rgba(91,164,245,.5)}
+.lb button{width:100%;background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer}
+.er{color:#f87171;font-size:12px;margin-bottom:10px}
+/* LAYOUT */
+#app{display:none;min-height:100vh}
+.sb{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--gb);display:flex;flex-direction:column;z-index:10}
+.sl{padding:18px 20px 16px;border-bottom:1px solid var(--gb)}
+.sl .sn{font-family:var(--fh);font-size:17px;font-weight:800;letter-spacing:-.3px}
+.sl .sn em{font-style:normal;color:var(--blue)}
+.sl .ss{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-top:2px}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:13.5px;font-weight:500;color:var(--t2);cursor:pointer;border-left:3px solid transparent;margin:1px 0;transition:all .15s}
+.ni:hover{color:var(--t1);background:var(--g1)}
+.ni.on{color:var(--blue);background:rgba(91,164,245,.08);border-left-color:var(--blue)}
+.sb-b{margin-top:auto;padding:16px 20px;border-top:1px solid var(--gb)}
+.lbtn{width:100%;padding:9px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:#f87171;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer}
+.main{margin-left:220px;padding:28px 32px;min-height:100vh}
+.pg{display:none}.pg.on{display:block}
+.ph{margin-bottom:22px}
+.pt{font-family:var(--fh);font-size:28px;font-weight:800;letter-spacing:-.8px;margin-bottom:4px}
+.ps{color:var(--t3);font-size:13.5px}
+/* CARDS */
+.card{background:var(--g1);border:1px solid var(--gb);border-radius:18px;padding:22px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.sc{background:var(--g1);border:1px solid var(--gb);border-radius:16px;padding:20px}
+.sv{font-family:var(--fh);font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:4px}
+.sk{font-size:11px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase}
+/* TABLE */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;padding:10px 14px;color:var(--t3);font-size:11px;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--gb);white-space:nowrap}
+td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t2);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,.02)}
+td strong{color:var(--t1)}
+.badge{display:inline-block;padding:3px 10px;border-radius:50px;font-size:10.5px;font-weight:700;letter-spacing:.03em}
+.bt{background:rgba(91,164,245,.12);border:1px solid rgba(91,164,245,.25);color:var(--blue)}
+.bp{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25);color:var(--mint)}
+.bd{background:rgba(232,184,109,.12);border:1px solid rgba(232,184,109,.25);color:var(--gold)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s;text-decoration:none;color:inherit}
+.b-p{background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff!important}
+.b-g{background:var(--g1);border:1px solid var(--gb);color:var(--t2)}.b-g:hover{color:var(--t1);border-color:var(--gb2)}
+.b-r{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171}.b-r:hover{background:rgba(248,113,113,.2)}
+.b-sm{padding:5px 11px;font-size:11.5px}
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.fi{width:100%;background:var(--g1);border:1px solid var(--gb);border-radius:12px;padding:11px 14px;color:var(--t1);font-size:14px;outline:none;transition:border .2s}
+.fi:focus{border-color:rgba(91,164,245,.5)}
+textarea.fi{resize:vertical;min-height:80px}
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--g1);border:1px solid var(--gb);border-radius:12px;padding:4px;margin-bottom:18px;width:fit-content}
+.tab{padding:7px 16px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;color:var(--t3);transition:all .15s}
+.tab.on{background:rgba(91,164,245,.15);color:var(--blue);font-weight:600}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.mo.open{display:flex}
+.mbox{background:var(--bg2);border:1px solid var(--gb);border-radius:22px;width:100%;max-width:700px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.mh{padding:20px 24px;border-bottom:1px solid var(--gb);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.mh h3{font-family:var(--fh);font-size:19px;font-weight:800;letter-spacing:-.5px}
+.mc{width:32px;height:32px;background:var(--g1);border:1px solid var(--gb);border-radius:50%;color:var(--t3);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.mb{padding:22px;overflow-y:auto;flex:1}
+/* SEARCH */
+.srch{position:relative;margin-bottom:16px}
+.srch input{width:100%;background:var(--g1);border:1px solid var(--gb);border-radius:12px;padding:10px 14px 10px 38px;color:var(--t1);font-size:13.5px;outline:none}
+.srch::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+/* POST CARD */
+.pc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;margin-bottom:10px}
+.pc h4{font-size:14px;font-weight:700;margin-bottom:5px;color:var(--t1)}
+.pc p{font-size:12.5px;color:var(--t3);line-height:1.55}
+/* INFO BOX */
+.ib{background:rgba(91,164,245,.06);border:1px solid rgba(91,164,245,.15);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--t2);line-height:1.6;margin-bottom:16px}
+/* EMPTY */
+.empty{text-align:center;padding:44px 20px;color:var(--t3)}
+.empty .ico{font-size:36px;margin-bottom:10px}
+.empty h3{font-size:15px;font-weight:600;color:var(--t2);margin-bottom:5px}
+/* SECTION HDR */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sh h3{font-family:var(--fh);font-size:17px;font-weight:700;letter-spacing:-.3px}
+/* ALERTS */
+.al{padding:10px 14px;border-radius:10px;font-size:12.5px;margin-bottom:12px}
+.ok{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--mint)}
+.er2{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171}
+/* CLIENT DETAIL */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.di{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px}
+.di label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);display:block;margin-bottom:3px}
+.di span{font-size:13px;color:var(--t1);font-weight:500}
+/* SETTINGS TABLE */
+.stk{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--gb);font-size:13.5px}
+.stk:last-child{border-bottom:none}
+.stk span{color:var(--t3)}.stk a{color:var(--blue);text-decoration:none}
+@media(max-width:768px){.sb{transform:translateX(-100%)}.main{margin-left:0;padding:16px}.sg{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="ls">
+  <div class="lb">
+    <div style="font-size:40px">🥷</div>
+    <h1>Command Center</h1>
+    <p>Social Ninja's — Internal Dashboard</p>
+    <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
+    <div id="le" class="er" style="display:none"></div>
+    <button onclick="login()">Enter →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="sb">
+    <div class="sl"><div class="sn">Social<em>Ninja's</em>.</div><div class="ss">Command Center v2</div></div>
+    <div class="ni on" onclick="go('dash')" id="n-dash"><span>📊</span> Dashboard</div>
+    <div class="ni" onclick="go('clients')" id="n-clients"><span>👥</span> Clients & Leads</div>
+    <div class="ni" onclick="go('content')" id="n-content"><span>✍️</span> Our Content</div>
+    <div class="ni" onclick="go('blogs')" id="n-blogs"><span>📝</span> Blog Posts</div>
+    <div class="ni" onclick="go('notes')" id="n-notes"><span>📌</span> Notes & Tasks</div>
+    <div class="ni" onclick="go('settings')" id="n-settings"><span>⚙️</span> Settings</div>
+    <div class="sb-b"><button class="lbtn" onclick="lock()">🔒 Lock & Sign Out</button></div>
+  </div>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="pg on" id="p-dash">
+      <div class="ph"><div class="pt">Dashboard</div><div class="ps">All systems in one place.</div></div>
+      <div class="sg">
+        <div class="sc"><div class="sv" style="color:var(--blue)" id="s-tc">—</div><div class="sk">Total Clients</div></div>
+        <div class="sc"><div class="sv" style="color:var(--mint)" id="s-pc">—</div><div class="sk">Paid Clients</div></div>
+        <div class="sc"><div class="sv" style="color:var(--gold)" id="s-tr">—</div><div class="sk">Trial Users</div></div>
+        <div class="sc"><div class="sv" style="color:var(--vio)" id="s-bl">—</div><div class="sk">Blog Posts</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card"><div class="sh"><h3>Recent Clients</h3><button class="btn b-g b-sm" onclick="go('clients')">View All →</button></div><div id="dc"></div></div>
+        <div class="card"><div class="sh"><h3>Quick Actions</h3></div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <button class="btn b-p" onclick="go('blogs');setTimeout(openBlogEd,200)" style="justify-content:flex-start">📝 Write New Blog Post</button>
+            <button class="btn b-g" onclick="go('clients')" style="justify-content:flex-start">👥 View All Clients</button>
+            <button class="btn b-g" onclick="go('notes')" style="justify-content:flex-start">📌 Add Note / Task</button>
+            <a class="btn b-g" href="https://socialninjas.in/#/admin" target="_blank" style="justify-content:flex-start">🔗 Site Admin Panel</a>
+            <a class="btn b-g" href="https://socialninjas.in" target="_blank" style="justify-content:flex-start">🌐 Main Website</a>
+            <a class="btn b-g" href="https://socialninjas.in/#/app/content-studio" target="_blank" style="justify-content:flex-start">⚡ Content Studio App</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="pg" id="p-clients">
+      <div class="ph" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="pt">Clients & Leads</div><div class="ps">All Content Studio users.</div></div>
+        <button class="btn b-p" onclick="openAddClient()">+ Add Client</button>
+      </div>
+      <div class="ib">ℹ️ Studio clients auto-appear (same browser). Add clients manually for other browsers or offline tracking.</div>
+      <div class="tabs">
+        <div class="tab on" onclick="setF('all')" id="f-all">All</div>
+        <div class="tab" onclick="setF('paid')" id="f-paid">💎 Paid</div>
+        <div class="tab" onclick="setF('trial')" id="f-trial">🆓 Trial</div>
+      </div>
+      <div class="srch"><input id="q" type="text" placeholder="Search name, email, niche..." oninput="renderC()"></div>
+      <div class="card" style="padding:0"><div class="tw"><table>
+        <thead><tr><th>Brand / Niche</th><th>Contact</th><th>Plan</th><th>Platforms</th><th>Joined</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="ctb"><tr><td colspan="7" style="text-align:center;padding:40px;color:var(--t3)">Loading...</td></tr></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- OUR CONTENT -->
+    <div class="pg" id="p-content">
+      <div class="ph" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="pt">Our Content</div><div class="ps">Social Ninja's own social media posts.</div></div>
+        <button class="btn b-p" onclick="openContEd()">+ New Post</button>
+      </div>
+      <div class="tabs">
+        <div class="tab on" onclick="setCF('all')" id="cf-all">All</div>
+        <div class="tab" onclick="setCF('instagram')" id="cf-instagram">📸 Instagram</div>
+        <div class="tab" onclick="setCF('linkedin')" id="cf-linkedin">💼 LinkedIn</div>
+        <div class="tab" onclick="setCF('youtube')" id="cf-youtube">▶️ YouTube</div>
+        <div class="tab" onclick="setCF('twitter')" id="cf-twitter">𝕏 Twitter</div>
+      </div>
+      <div id="cl"><div class="empty"><div class="ico">✍️</div><h3>No posts yet</h3><p>Add your first post above.</p></div></div>
+    </div>
+
+    <!-- BLOGS -->
+    <div class="pg" id="p-blogs">
+      <div class="ph" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="pt">Blog Posts</div><div class="ps">Publish articles to socialninjas.in/blog</div></div>
+        <button class="btn b-p" onclick="openBlogEd()">+ New Post</button>
+      </div>
+      <div class="ib">📡 Posts publish immediately to <strong>socialninjas.in/blog</strong> via API.</div>
+      <div id="bl"><div class="empty"><div class="ico">📝</div><h3>Loading...</h3></div></div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="pg" id="p-notes">
+      <div class="ph" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="pt">Notes & Tasks</div><div class="ps">To-dos, ideas, and follow-ups.</div></div>
+        <button class="btn b-p" onclick="addNote()">+ Add Note</button>
+      </div>
+      <div id="nl"><div class="empty"><div class="ico">📌</div><h3>No notes yet</h3><p>Add a note above.</p></div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="pg" id="p-settings">
+      <div class="ph"><div class="pt">Settings</div><div class="ps">Configuration and key links.</div></div>
+      <div class="card" style="max-width:560px;margin-bottom:14px">
+        <h3 style="font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:14px">Key Links &amp; Razorpay Plans</h3>
+        <div class="stk"><span>Main Website</span><a href="https://socialninjas.in" target="_blank">socialninjas.in</a></div>
+        <div class="stk"><span>Content Studio</span><a href="https://socialninjas.in/#/app/content-studio" target="_blank">Open App →</a></div>
+        <div class="stk"><span>Site Admin</span><a href="https://socialninjas.in/#/admin" target="_blank">Open Admin →</a></div>
+        <div class="stk"><span style="color:var(--mint)">Starter ₹2,999/mo</span><a href="https://rzp.io/rzp/90qEc0D" target="_blank">rzp.io/rzp/90qEc0D</a></div>
+        <div class="stk"><span style="color:var(--mint)">Growth ₹5,499/mo</span><a href="https://rzp.io/rzp/YkQovO28" target="_blank">rzp.io/rzp/YkQovO28</a></div>
+        <div class="stk"><span style="color:var(--mint)">Pro ₹8,999/mo</span><a href="https://rzp.io/rzp/Kk2QqWB" target="_blank">rzp.io/rzp/Kk2QqWB</a></div>
+      </div>
+      <div class="card" style="max-width:560px">
+        <h3 style="font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:14px">Change Password</h3>
+        <div class="fg"><label class="fl">New Password</label><input type="password" class="fi" id="np" placeholder="Min 6 characters"></div>
+        <button class="btn b-p" onclick="chgPw()">Update Password</button>
+        <div id="pwal" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="mo" id="m-client"><div class="mbox"><div class="mh"><h3 id="m-cn">Client</h3><div class="mc" onclick="cm('m-client')">✕</div></div><div class="mb" id="m-cb">Loading...</div></div></div>
+<div class="mo" id="m-add"><div class="mbox"><div class="mh"><h3>Add Client</h3><div class="mc" onclick="cm('m-add')">✕</div></div><div class="mb">
+  <div class="fg"><label class="fl">Brand Name *</label><input class="fi" id="ab" placeholder="FitLife Studio"></div>
+  <div class="fg"><label class="fl">Email *</label><input class="fi" id="ae" type="email" placeholder="client@email.com"></div>
+  <div class="fg"><label class="fl">Phone</label><input class="fi" id="ap" placeholder="+91 98765 43210"></div>
+  <div class="fg"><label class="fl">Niche</label><input class="fi" id="an" placeholder="Fitness, Skincare..."></div>
+  <div class="fg"><label class="fl">Plan</label><select class="fi" id="apl"><option value="trial">Free Trial</option><option value="starter">Starter (Rs.2,999)</option><option value="growth">Growth (Rs.5,499)</option><option value="pro">Pro (Rs.8,999)</option></select></div>
+  <div class="fg"><label class="fl">Notes</label><textarea class="fi" id="ano"></textarea></div>
+  <div id="aal" style="margin-bottom:10px"></div>
+  <div style="display:flex;justify-content:flex-end;gap:10px"><button class="btn b-g" onclick="cm('m-add')">Cancel</button><button class="btn b-p" onclick="saveClient()">Save</button></div>
+</div></div></div>
+<div class="mo" id="m-blog"><div class="mbox" style="max-width:800px"><div class="mh"><h3>New Blog Post</h3><div class="mc" onclick="cm('m-blog')">✕</div></div><div class="mb">
+  <div class="fg"><label class="fl">Title *</label><input class="fi" id="bt" placeholder="Enter an engaging title..."></div>
+  <div class="fg"><label class="fl">Category</label><select class="fi" id="bcat"><option>AI &amp; Automation</option><option>Performance Marketing</option><option>Content Strategy</option><option>Social Media</option><option>SEO &amp; Growth</option><option>Insights</option></select></div>
+  <div class="fg"><label class="fl">Excerpt</label><textarea class="fi" id="be" style="min-height:56px" placeholder="Short summary..."></textarea></div>
+  <div class="fg"><label class="fl">Content (Markdown)</label><textarea class="fi" id="bb" style="min-height:260px;font-family:var(--fm);font-size:13px" placeholder="## Heading&#10;&#10;Write your article..."></textarea></div>
+  <div id="bal" style="margin-bottom:10px"></div>
+  <div style="display:flex;justify-content:flex-end;gap:10px"><button class="btn b-g" onclick="cm('m-blog')">Cancel</button><button class="btn b-p" onclick="saveBlog()">Publish Post</button></div>
+</div></div></div>
+<div class="mo" id="m-cont"><div class="mbox"><div class="mh"><h3>Add Social Post</h3><div class="mc" onclick="cm('m-cont')">✕</div></div><div class="mb">
+  <div class="fg"><label class="fl">Platform</label><select class="fi" id="cp"><option>Instagram</option><option>LinkedIn</option><option>YouTube</option><option>Twitter/X</option><option>Facebook</option><option>Threads</option></select></div>
+  <div class="fg"><label class="fl">Title / Topic</label><input class="fi" id="ct" placeholder="e.g. Why AI changes marketing in 2026"></div>
+  <div class="fg"><label class="fl">Caption / Script</label><textarea class="fi" id="cc" style="min-height:120px"></textarea></div>
+  <div class="fg"><label class="fl">Hashtags</label><input class="fi" id="ch" placeholder="#marketing #AI #socialmedia"></div>
+  <div class="fg"><label class="fl">Status</label><select class="fi" id="cs"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="posted">Posted</option></select></div>
+  <div class="fg"><label class="fl">Scheduled Date</label><input class="fi" id="cd" type="date"></div>
+  <div style="display:flex;justify-content:flex-end;gap:10px"><button class="btn b-g" onclick="cm('m-cont')">Cancel</button><button class="btn b-p" onclick="saveCont()">Save Post</button></div>
+</div></div></div>
+
+<script>
+const PKY='sn_crm_pw',DPWD='sn@admin2026',API='https://socialninjas.in';
+const gpw=()=>localStorage.getItem(PKY)||DPWD;
+function login(){
+  const pw=document.getElementById('pw').value.trim(),er=document.getElementById('le');
+  if(pw===gpw()){sessionStorage.setItem('snc','1');document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';init();}
+  else{er.textContent='Wrong password. Try again.';er.style.display='block';document.getElementById('pw').value='';}
+}
+function lock(){sessionStorage.removeItem('snc');location.reload();}
+function chgPw(){const np=document.getElementById('np').value.trim(),al=document.getElementById('pwal');if(!np||np.length<6){al.innerHTML='<div class="al er2">Min 6 characters.</div>';return;}localStorage.setItem(PKY,np);al.innerHTML='<div class="al ok">Password updated.</div>';document.getElementById('np').value='';}
+if(sessionStorage.getItem('snc')==='1'){document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';}
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+
+// NAV
+function go(p){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));
+  document.getElementById('p-'+p).classList.add('on');
+  document.getElementById('n-'+p).classList.add('on');
+  ({dash:loadDash,clients:renderC,blogs:loadBlogs,content:renderCont,notes:renderNotes}[p]||function(){})();
+}
+
+// DATA HELPERS
+function stC(){try{return Object.values(JSON.parse(localStorage.getItem('snstudio_clients')||'{}')).sort((a,b)=>(b.id||'').localeCompare(a.id||''));}catch{return[];}}
+function crmC(){try{return JSON.parse(localStorage.getItem('sn_crm_clients')||'[]');}catch{return[];}}
+function allC(){const s=stC(),em=new Set(s.map(c=>c.email));return[...s,...crmC().filter(c=>!em.has(c.email))];}
+function saveCrm(c){const a=crmC(),i=a.findIndex(x=>x.id===c.id);if(i>=0)a[i]=c;else a.push(c);localStorage.setItem('sn_crm_clients',JSON.stringify(a));}
+function getCont(){try{return JSON.parse(localStorage.getItem('sn_crm_cont')||'[]');}catch{return[];}}
+function setCont(a){localStorage.setItem('sn_crm_cont',JSON.stringify(a));}
+function getNotes(){try{return JSON.parse(localStorage.getItem('sn_crm_notes')||'[]');}catch{return[];}}
+function setNotes(a){localStorage.setItem('sn_crm_notes',JSON.stringify(a));}
+function getHist(id){try{return JSON.parse(localStorage.getItem('snstudio_hist_'+id)||'[]');}catch{return[];}}
+
+// DASHBOARD
+async function loadDash(){
+  const all=allC(),paid=all.filter(c=>c.plan&&c.plan!=='trial'),trial=all.filter(c=>!c.plan||c.plan==='trial');
+  document.getElementById('s-tc').textContent=all.length;
+  document.getElementById('s-pc').textContent=paid.length;
+  document.getElementById('s-tr').textContent=trial.length;
+  try{const r=await fetch(API+'/api/data?resource=blogs');const b=await r.json();document.getElementById('s-bl').textContent=Array.isArray(b)?b.length:'—';}catch{document.getElementById('s-bl').textContent='—';}
+  const el=document.getElementById('dc');
+  el.innerHTML=all.slice(0,5).map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gb)"><div><div style="font-size:13.5px;font-weight:600;color:var(--t1)">${c.brandName||c.email||'Unknown'}</div><div style="font-size:11px;color:var(--t3)">${c.niche||'—'} · ${c.email||'—'}</div></div><span class="badge ${!c.plan||c.plan==='trial'?'bt':'bp'}">${c.planName||c.plan||'Trial'}</span></div>`).join('')||'<div class="empty" style="padding:20px"><p>No clients yet.</p></div>';
+}
+
+// CLIENTS
+let CF='all';
+function setF(f){CF=f;document.querySelectorAll('[id^="f-"]').forEach(t=>t.classList.remove('on'));document.getElementById('f-'+f).classList.add('on');renderC();}
+function renderC(){
+  let c=allC(),q=(document.getElementById('q')||{}).value||'';
+  if(CF==='paid')c=c.filter(x=>x.plan&&x.plan!=='trial');
+  if(CF==='trial')c=c.filter(x=>!x.plan||x.plan==='trial');
+  if(q)c=c.filter(x=>`${x.brandName} ${x.email} ${x.niche} ${x.phone}`.toLowerCase().includes(q.toLowerCase()));
+  const tb=document.getElementById('ctb');
+  if(!c.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--t3)">No clients found.</td></tr>';return;}
+  tb.innerHTML=c.map(x=>`<tr><td><strong>${x.brandName||'—'}</strong><br><span style="font-size:11px;color:var(--t3)">${x.niche||'—'}</span></td><td>${x.email||'—'}<br><span style="font-size:11px;color:var(--t3)">${x.phone||'—'}</span></td><td><span class="badge ${!x.plan||x.plan==='trial'?'bt':'bp'}">${x.planName||x.plan||'Trial'}</span></td><td style="font-size:12px">${(x.platforms||[]).join(', ')||'—'}</td><td style="font-size:12px;color:var(--t3)">${x.joinDate||'—'}</td><td style="font-size:12px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.adminNotes||'—'}</td><td><button class="btn b-g b-sm" onclick="viewC('${x.id}')">View →</button></td></tr>`).join('');
+}
+function viewC(id){
+  const c=allC().find(x=>x.id===id);if(!c)return;
+  document.getElementById('m-cn').textContent=c.brandName||c.email;
+  const hist=getHist(id);
+  document.getElementById('m-cb').innerHTML=`
+    <div class="dg">
+      <div class="di"><label>Brand</label><span>${c.brandName||'—'}</span></div>
+      <div class="di"><label>Plan</label><span>${c.planName||c.plan||'Trial'}</span></div>
+      <div class="di"><label>Email</label><span>${c.email||'—'}</span></div>
+      <div class="di"><label>Phone</label><span>${c.phone||'—'}</span></div>
+      <div class="di"><label>Niche</label><span>${c.niche||'—'}</span></div>
+      <div class="di"><label>Audience</label><span>${c.targetAudience||c.audience||'—'}</span></div>
+      <div class="di"><label>Brand Voice</label><span>${c.toneOfVoice||c.tone||'—'}</span></div>
+      <div class="di"><label>Platforms</label><span>${(c.platforms||[]).join(', ')||'—'}</span></div>
+      <div class="di"><label>Joined</label><span>${c.joinDate||'—'}</span></div>
+      <div class="di"><label>Website</label><span>${c.website||'—'}</span></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Admin Notes</label>
+      <textarea class="fi" id="cn-${id}" style="min-height:70px">${c.adminNotes||''}</textarea>
+      <button class="btn b-g b-sm" onclick="saveNote2('${id}')" style="margin-top:7px">Save Note</button>
+    </div>
+    <div style="font-family:var(--fh);font-size:15px;font-weight:700;margin:18px 0 10px;color:var(--blue)">Content History (${hist.length} week${hist.length!==1?'s':''})</div>
+    ${hist.length?hist.map((w,wi)=>`<div class="pc"><h4>Week ${w.week||wi+1} — ${w.date||'—'}</h4>${(w.posts||[]).map(p=>`<div style="margin-top:9px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:10px;padding:10px"><div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px">${p.platform||''} ${p.format?'· '+p.format:''}</div><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">${p.title||''}</div><div style="font-size:12px;color:var(--t3);line-height:1.5">${(p.caption||p.script||'').substring(0,200)}</div></div>`).join('')}</div>`).join(''):'<div class="empty" style="padding:20px"><p>No content generated yet.</p></div>'}
+  `;
+  om('m-client');
+}
+function saveNote2(id){
+  const note=document.getElementById('cn-'+id).value,crm=crmC(),ex=crm.find(c=>c.id===id);
+  if(ex){ex.adminNotes=note;localStorage.setItem('sn_crm_clients',JSON.stringify(crm));}
+  else{const c=allC().find(c=>c.id===id);if(c){c.adminNotes=note;crm.push(c);localStorage.setItem('sn_crm_clients',JSON.stringify(crm));}}
+  const el=document.getElementById('cn-'+id);el.style.borderColor='var(--mint)';setTimeout(()=>el.style.borderColor='',1500);
+}
+function openAddClient(){om('m-add');}
+function saveClient(){
+  const b=document.getElementById('ab').value.trim(),e=document.getElementById('ae').value.trim(),al=document.getElementById('aal');
+  if(!b||!e){al.innerHTML='<div class="al er2">Brand name and email required.</div>';return;}
+  const pl=document.getElementById('apl').value,pn={trial:'Free Trial',starter:'Starter',growth:'Growth',pro:'Pro'};
+  saveCrm({id:'crm_'+Date.now(),brandName:b,email:e,phone:document.getElementById('ap').value,niche:document.getElementById('an').value,plan:pl,planName:pn[pl]||pl,adminNotes:document.getElementById('ano').value,joinDate:new Date().toLocaleDateString('en-GB'),source:'manual'});
+  cm('m-add');renderC();
+  ['ab','ae','ap','an','ano'].forEach(id=>document.getElementById(id).value='');
+}
+
+// BLOGS
+async function loadBlogs(){
+  const el=document.getElementById('bl');
+  el.innerHTML='<div class="empty"><div class="ico">⏳</div><p>Loading from API...</p></div>';
+  try{
+    const r=await fetch(API+'/api/data?resource=blogs');const b=await r.json();
+    if(!b.length){el.innerHTML='<div class="empty"><div class="ico">📝</div><h3>No posts yet</h3></div>';return;}
+    el.innerHTML=b.map(x=>`<div class="pc" style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px"><div style="flex:1"><h4>${x.title}</h4><p>${x.excerpt||''}</p><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><span class="badge bp">${x.category||'General'}</span><span style="font-size:11px;color:var(--t3)">${x.author||''}</span><span style="font-size:11px;color:var(--t3)">${x.publishedAt?new Date(x.publishedAt).toLocaleDateString('en-GB'):''}</span><a href="${API}/blog/${x.id}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none">View on site ↗</a></div></div><button class="btn b-r b-sm" onclick="delBlog('${x.id}')">Delete</button></div>`).join('');
+  }catch{el.innerHTML='<div class="empty"><div class="ico">⚠️</div><h3>Cannot reach API</h3><p>Check internet connection.</p></div>';}
+}
+function openBlogEd(){document.getElementById('bt').value='';document.getElementById('be').value='';document.getElementById('bb').value='';om('m-blog');}
+async function saveBlog(){
+  const t=document.getElementById('bt').value.trim(),al=document.getElementById('bal');
+  if(!t){al.innerHTML='<div class="al er2">Title required.</div>';return;}
+  try{
+    const r=await fetch(API+'/api/data?resource=blogs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:t,excerpt:document.getElementById('be').value,content:document.getElementById('bb').value,category:document.getElementById('bcat').value,author:"Social Ninja's Team",publishedAt:new Date().toISOString()})});
+    if(!r.ok)throw 0;
+    al.innerHTML='<div class="al ok">Published successfully!</div>';
+    setTimeout(()=>{cm('m-blog');loadBlogs();},1200);
+  }catch{al.innerHTML='<div class="al er2">Failed to publish. Check API connection.</div>';}
+}
+async function delBlog(id){if(!confirm('Delete this blog post?'))return;await fetch(API+'/api/data?resource=blogs&id='+id,{method:'DELETE'});loadBlogs();}
+
+// OUR CONTENT
+let CF2='all';
+function setCF(f){CF2=f;document.querySelectorAll('[id^="cf-"]').forEach(t=>t.classList.remove('on'));document.getElementById('cf-'+f).classList.add('on');renderCont();}
+function renderCont(){
+  let p=getCont();if(CF2!=='all')p=p.filter(x=>x.platform.toLowerCase().includes(CF2));
+  const el=document.getElementById('cl'),sc={draft:'bd',scheduled:'bp',posted:'bp'};
+  el.innerHTML=p.length?p.map((x,i)=>`<div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px"><h4>${x.title||'Untitled'}</h4><div style="display:flex;gap:6px;flex-shrink:0"><span class="badge ${sc[x.status]||'bd'}">${x.status||'draft'}</span><button class="btn b-r b-sm" onclick="delCont(${i})">✕</button></div></div><p>${(x.caption||'').substring(0,200)}</p><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><span class="badge bt">${x.platform||'—'}</span>${x.date?`<span style="font-size:11px;color:var(--t3)">📅 ${x.date}</span>`:''}</div></div>`).join(''):'<div class="empty"><div class="ico">✍️</div><h3>No posts yet</h3><p>Add your first post above.</p></div>';
+}
+function openContEd(){om('m-cont');}
+function saveCont(){
+  setCont([{platform:document.getElementById('cp').value,title:document.getElementById('ct').value,caption:document.getElementById('cc').value,hashtags:document.getElementById('ch').value,status:document.getElementById('cs').value,date:document.getElementById('cd').value,createdAt:new Date().toISOString()},...getCont()]);
+  cm('m-cont');renderCont();
+  ['ct','cc','ch'].forEach(id=>document.getElementById(id).value='');
+}
+function delCont(i){if(!confirm('Delete?'))return;const a=getCont();a.splice(i,1);setCont(a);renderCont();}
+
+// NOTES
+function renderNotes(){
+  const n=getNotes(),el=document.getElementById('nl');
+  el.innerHTML=n.length?n.map((x,i)=>`<div class="pc" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div style="display:flex;align-items:center;gap:10px;flex:1"><input type="checkbox" ${x.done?'checked':''} onchange="toggleN(${i})" style="width:16px;height:16px;cursor:pointer"><div><div style="font-size:13.5px;font-weight:600;color:var(--t1);text-decoration:${x.done?'line-through':'none'};opacity:${x.done?.5:1}">${x.text}</div><div style="font-size:11px;color:var(--t3);margin-top:2px">${x.date||''}</div></div></div><button class="btn b-r b-sm" onclick="delNote(${i})">✕</button></div>`).join(''):'<div class="empty"><div class="ico">📌</div><h3>No notes yet</h3><p>Add a task or reminder above.</p></div>';
+}
+function addNote(){const t=prompt('Note or task:');if(!t||!t.trim())return;setNotes([{text:t.trim(),done:false,date:new Date().toLocaleDateString('en-GB'),id:Date.now()},...getNotes()]);renderNotes();}
+function toggleN(i){const n=getNotes();n[i].done=!n[i].done;setNotes(n);renderNotes();}
+function delNote(i){if(!confirm('Delete?'))return;const n=getNotes();n.splice(i,1);setNotes(n);renderNotes();}
+
+// MODAL
+function om(id){document.getElementById(id).classList.add('open');}
+function cm(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+function init(){loadDash();}
+if(sessionStorage.getItem('snc')==='1')init();
+</script>
+</body>
+</html>

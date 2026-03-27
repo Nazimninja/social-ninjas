@@ -20,9 +20,9 @@ const CONFIG = {
   // For subscriptions: create 3 subscription plans in Razorpay dashboard
   // For one-time: use razorpay.me/@socialninjas directly
   razorpay: {
-    starter:   "https://rzp.io/rzp/7S3xXh0K",   // ₹2,999/mo
-    growth:    "https://rzp.io/rzp/5uCEIMB6",   // ₹5,499/mo
-    pro:       "https://rzp.io/rzp/V9wLjfrR",   // ₹8,999/mo
+    starter:   "https://rzp.io/rzp/90qEc0D",    // ₹2,999/mo
+    growth:    "https://rzp.io/rzp/YkQovO28",   // ₹5,499/mo
+    pro:       "https://rzp.io/rzp/Kk2QqWB",    // ₹8,999/mo
     // Replace above with specific subscription plan links once created
     // e.g. https://rzp.io/l/sn-starter-monthly
   },
@@ -1176,7 +1176,7 @@ function Workspace({profile, hKey, onUpgrade}){
               No card needed. Upgrade after to unlock more posts, platforms and weekly tips.
             </div>
           </div>
-          <a href="https://rzp.io/rzp/7S3xXh0K" target="_blank"
+          <a href="https://rzp.io/rzp/90qEc0D" target="_blank"
             style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",
               border:"none",borderRadius:10,padding:"9px 18px",fontSize:12,fontWeight:700,
               cursor:"pointer",textDecoration:"none",whiteSpace:"nowrap",flexShrink:0}}>
@@ -1451,7 +1451,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
   const COLORS=["#5ba4f5","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
 
   return(
-    <div style={{maxWidth:560,margin:"0 auto",padding:"28px 20px"}}>
+    <div style={{maxWidth:560,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
       <div style={{textAlign:"center",marginBottom:24}}>
         <div style={{width:52,height:52,borderRadius:14,background:"#052e16",border:"1px solid #166534",
           display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,margin:"0 auto 12px"}}>✅</div>
@@ -2501,7 +2501,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
 
   // ── DETAILS + PLATFORM SCREEN ──
   if(screen==="details"&&plan) return(
-    <div style={{maxWidth:560,margin:"0 auto",padding:"28px 20px"}}>
+    <div style={{maxWidth:560,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
       <button onClick={()=>setScreen("plans")}
         style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'Outfit', 'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
 
@@ -2526,18 +2526,15 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
       <div style={{display:"grid",gap:14}}>
         <Field label="Brand / Business Name" name="brandName" value={form.brandName}
           onChange={setF} error={errors.brandName} placeholder="e.g. FitLife Studio, Priya's Skincare" required/>
-        <div style={{display:"flex",flexWrap:"wrap",gap:12}}>
-          <div style={{flex:"1 1 160px",minWidth:0}}>
-            <Field label="Email" name="email" type="email" value={form.email}
-              onChange={setF} error={errors.email} placeholder="you@email.com" required/>
-          </div>
-          <div style={{flex:"1 1 160px",minWidth:0}}>
-            <Field label="WhatsApp / Phone" name="phone" error={errors.phone}>
+        <Field label="Email" name="email" type="email" value={form.email}
+          onChange={setF} error={errors.email} placeholder="you@email.com" required/>
+        <div>
+            <Field label="Phone / WhatsApp" name="phone" error={errors.phone}>
               <div style={{display:"flex",gap:6}}>
                 <select 
                   value={form.countryCode} 
                   onChange={e=>setF("countryCode",e.target.value)}
-                  style={{width:76,flexShrink:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                  style={{width:"clamp(80px,22vw,100px)",flexShrink:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
                     border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
                     padding:"10px 4px",color:"#fff",fontSize:12,outline:"none"}}>
                   <option value="+91" style={{background:"#08101f",color:"#fff"}}>🇮🇳 +91</option>
@@ -2556,7 +2553,6 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
                     padding:"10px 11px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
               </div>
             </Field>
-          </div>
         </div>
 
         {/* Niche — smart dropdown */}
