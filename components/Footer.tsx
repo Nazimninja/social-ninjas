@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
             <h4 style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Bricolage Grotesque',system-ui" }}>AI Products</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'AI Content Studio', path: '/content-studio' },
+                { label: 'AI Content Studio', path: '/standalone-landing/' },
                 { label: 'Lead Agent (Soon)', path: '/ai-products' },
                 { label: 'Ad Copy Gen (Soon)', path: '/ai-products' },
                 { label: 'Analytics AI (Soon)', path: '/ai-products' },

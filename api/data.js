@@ -71,7 +71,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const resource = req.query.resource;
-  const id       = req.query.id;
+  const id       = req.query.id || req.query.clientId;
 
   // ── BLOGS ─────────────────────────────────────────────────────
   if (resource === 'blogs') {
@@ -126,14 +126,34 @@ export default async function handler(req, res) {
 
   // ── CLIENTS ───────────────────────────────────────────────────
   if (resource === 'clients') {
-    if (req.method === 'GET') return res.json([]);
-    if (req.method === 'POST') return res.status(201).json({ success: true });
+    if (req.method === 'GET') {
+      const stored = await kvGet('sn_clients');
+      return res.json(stored || []);
+    }
+    if (req.method === 'POST') {
+      const body = req.body;
+      const stored = await kvGet('sn_clients') || [];
+      const idx = stored.findIndex(c => c.id === body.id || c.email === body.email);
+      if (idx >= 0) stored[idx] = { ...stored[idx], ...body, id: stored[idx].id || body.id };
+      else stored.push(body);
+      await kvSet('sn_clients', stored);
+      return res.status(201).json({ success: true });
+    }
   }
 
   // ── HISTORY ───────────────────────────────────────────────────
   if (resource === 'history') {
-    if (req.method === 'GET') return res.json([]);
-    if (req.method === 'POST') return res.status(200).json({ success: true });
+    if (req.method === 'GET') {
+      if (!id) return res.status(400).json({ error: 'Client ID required' });
+      const stored = await kvGet(`sn_hist_${id}`);
+      return res.json(stored || []);
+    }
+    if (req.method === 'POST') {
+      if (!id) return res.status(400).json({ error: 'Client ID required' });
+      // body should be the history array
+      await kvSet(`sn_hist_${id}`, req.body);
+      return res.status(200).json({ success: true });
+    }
   }
 
   return res.status(404).json({ error: 'Unknown resource' });

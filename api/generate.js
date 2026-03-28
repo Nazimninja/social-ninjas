@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const tools = [webSearchTool, ...frontendTools.filter(t => t.type !== 'web_search_20250305')];
 
     const body = {
-      model: req.body.model || "claude-3-5-sonnet-20241022",
+      model: req.body.model || "claude-sonnet-4-20250514",
       max_tokens: req.body.max_tokens || 8000,
       system: req.body.system,
       messages: req.body.messages,

@@ -1176,7 +1176,7 @@ function Workspace({profile, hKey, onUpgrade}){
               No card needed. Upgrade after to unlock more posts, platforms and weekly tips.
             </div>
           </div>
-          <a href="https://rzp.io/rzp/90qEc0D" target="_blank"
+          <a href={CONFIG.razorpay.starter} target="_blank"
             style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",
               border:"none",borderRadius:10,padding:"9px 18px",fontSize:12,fontWeight:700,
               cursor:"pointer",textDecoration:"none",whiteSpace:"nowrap",flexShrink:0}}>
@@ -2150,30 +2150,44 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 // ─────────────────────────────────────────────────────────────────
 //  ONBOARDING FLOW — plan → details → platform pick → payment → profile
 // ─────────────────────────────────────────────────────────────────
-function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
-  const [screen,setScreen]=useState("plans"); // plans|details|payment|profile|trial
+function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
+  const [screen,setScreen]=useState("plans"); // plans|details|otp|payment|profile|trial|trial_generation
   const [plan,setPlan]=useState(null);
-  const [form,setForm]=useState({
+  // Pre-fill form from trial data if upgrading
+  const [form,setForm]=useState(trialData ? {
+    brandName: trialData.brandName||"",
+    email:     trialData.email||"",
+    phone:     trialData.phone||"",
+    countryCode: trialData.countryCode||"+91",
+    audience:  trialData.audience||"",
+    tone:      trialData.tone||"",
+    niche:     trialData.niche||"",
+    platforms: trialData.platforms||[],
+  } : {
     brandName:"",email:"",phone:"",countryCode:"+91",
     audience:"",tone:"",niche:"",
     platforms:[],
   });
   const [trialContent, setTrialContent]=useState(null);
   const [errors,setErrors]=useState({});
+  // Flag so the details screen knows to show upgrade-specific UI
+  const isUpgradeFlow = !!trialData;
 
   useEffect(() => {
     const hash = window.location.hash;
     if (hash.includes("?")) {
       const urlParams = new URLSearchParams(hash.split("?")[1]);
       const planParam = urlParams.get("plan");
+      const isUpgrade = urlParams.get("upgrade") === "1";
       if (planParam === "trial") {
         setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
         setScreen("details");
       } else if (planParam) {
         const selectedPlan = PLANS.find(p => p.id === planParam);
         if (selectedPlan) {
-          setPlan(selectedPlan);
-          setScreen("details");
+          setPlan({...selectedPlan, isTrialFlow: false});
+          // If coming from trial upgrade, go straight to details (pre-filled)
+          if (isUpgrade || trialData) setScreen("details");
         }
       }
     }
@@ -2519,11 +2533,140 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           Change</button>
       </div>
 
-      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:28,fontWeight:800,letterSpacing:"-1px",marginBottom:6,lineHeight:1.04}}>Your brand details</h2>
+      {/* Smart upgrade notice — shown when upgrading from trial */}
+      {isUpgradeFlow && (
+        <div style={{background:"linear-gradient(135deg,rgba(52,211,153,0.12),rgba(52,211,153,0.04))",
+          border:"1px solid rgba(52,211,153,0.3)",borderRadius:14,padding:"14px 18px",marginBottom:20,
+          display:"flex",alignItems:"center",gap:12}}>
+          <span style={{fontSize:22}}>✓</span>
+          <div>
+            <div style={{fontSize:13,fontWeight:700,color:"#34d399",marginBottom:3}}>Your trial details have been carried over</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.55}}>
+              We've pre-filled your brand info. Just add additional details below to unlock the full studio.
+            </div>
+          </div>
+        </div>
+      )}
+
+      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:28,fontWeight:800,letterSpacing:"-1px",marginBottom:6,lineHeight:1.04}}>
+        {isUpgradeFlow ? "Complete your brand profile" : "Your brand details"}
+      </h2>
       <p style={{color:"rgba(255,255,255,0.35)",fontSize:13,marginBottom:20,lineHeight:1.6}}>
-        This trains the AI to write specifically for your brand and audience. Be detailed — the more context, the better the content.</p>
+        {isUpgradeFlow
+          ? "These extra details massively improve AI content quality — social accounts, personality and goals."
+          : "This trains the AI to write specifically for your brand and audience. Be detailed — the more context, the better the content."}
+      </p>
 
       <div style={{display:"grid",gap:14}}>
+        {/* For upgrade flow, show pre-filled fields as read-only summary, then extra fields */}
+        {isUpgradeFlow ? (
+          <>
+            {/* Read-only summary of existing trial data */}
+            <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"14px 16px"}}>
+              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.3)",marginBottom:10}}>From your trial</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                {[{k:"Brand",v:form.brandName},{k:"Email",v:form.email},{k:"Niche",v:form.niche},{k:"Platforms",v:(form.platforms||[]).join(", ")}].map(({k,v})=>(
+                  <div key={k} style={{background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"8px 11px"}}>
+                    <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",color:"rgba(255,255,255,0.28)",marginBottom:2}}>{k}</div>
+                    <div style={{fontSize:12,color:"rgba(255,255,255,0.7)"}}>{v||"—"}</div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={()=>setScreen("plans")}
+                style={{marginTop:10,background:"none",border:"none",color:"rgba(255,255,255,0.3)",fontSize:11,cursor:"pointer",textDecoration:"underline"}}>
+                Edit these details
+              </button>
+            </div>
+
+            {/* Phone re-verification if not provided in trial */}
+            {!form.phone && (
+              <div style={{marginBottom:0}}>
+                <Field label="Phone / WhatsApp" name="phone" error={errors.phone}>
+                  <div style={{display:"flex",gap:6}}>
+                    <select
+                      value={form.countryCode}
+                      onChange={e=>setF("countryCode",e.target.value)}
+                      style={{width:"clamp(80px,22vw,100px)",flexShrink:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                        border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                        padding:"10px 4px",color:"#fff",fontSize:12,outline:"none"}}>
+                      <option value="+91" style={{background:"#08101f",color:"#fff"}}>🇮🇳 +91</option>
+                      <option value="+1" style={{background:"#08101f",color:"#fff"}}>🇺🇸 +1</option>
+                      <option value="+44" style={{background:"#08101f",color:"#fff"}}>🇬🇧 +44</option>
+                      <option value="+971" style={{background:"#08101f",color:"#fff"}}>🇦🇪 +971</option>
+                      <option value="+61" style={{background:"#08101f",color:"#fff"}}>🇦🇺 +61</option>
+                    </select>
+                    <input value={form.phone} onChange={e=>setF("phone",e.target.value)}
+                      placeholder="98765 43210" type="tel"
+                      style={{flex:1,minWidth:0,background:errors.phone?"rgba(30,22,8,0.8)":"rgba(255,255,255,0.05)",
+                        border:`1px solid ${errors.phone?"#92620a":"rgba(255,255,255,0.1)"}`,borderRadius:10,
+                        padding:"10px 11px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
+                  </div>
+                </Field>
+              </div>
+            )}
+
+            {/* Extra fields only asked on upgrade */}
+            <div style={{background:"rgba(56,189,248,0.05)",border:"1px solid rgba(56,189,248,0.15)",borderRadius:14,padding:"16px"}}>
+              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"#5ba4f5",marginBottom:14}}>Additional details to maximise your content</div>
+              <div style={{display:"grid",gap:12}}>
+                <Field label="Website" name="website" value={form.website||""}
+                  onChange={setF} placeholder="https://yourbrand.com"
+                  hint="AI links to your site and understands your offering better"/>
+                <Field label="Brand Tagline / Slogan" name="tagline" value={form.tagline||""}
+                  onChange={setF} placeholder="e.g. Grow Fast. Scale Smart."
+                  hint="Appears in your AI-generated content"/>
+                <Field label="Brand Personality" name="brandPersonality" value={form.brandPersonality||""}
+                  onChange={setF} rows={2}
+                  placeholder="e.g. Bold, no-fluff, like a high-performance coach. Think Hormozi meets Red Bull."
+                  hint="The AI writes exactly like this. Be expressive."/>
+                <Field label="Content Goal" name="contentGoal" value={form.contentGoal||""}
+                  onChange={setF} rows={2}
+                  placeholder="e.g. Generate leads for online coaching — 50 sign-ups/month"
+                  hint="What do you want social media to achieve?"/>
+                <Field label="Top Competitors / Inspiration Accounts" name="competitors" value={form.competitors||""}
+                  onChange={setF} placeholder="e.g. @alexhormozi, @garyvee, @hubspot"
+                  hint="AI studies their style and writes better than them"/>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+                  <Field label="Instagram Handle" name="instagram" value={form.instagram||""}
+                    onChange={setF} placeholder="@yourbrand"/>
+                  <Field label="LinkedIn Profile" name="linkedin" value={form.linkedin||""}
+                    onChange={setF} placeholder="linkedin.com/in/yourname"/>
+                </div>
+              </div>
+            </div>
+
+            {/* Platform change option */}
+            {plan.platformCount > (form.platforms?.length||0) && (
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>
+                  {plan.name} plan — choose up to {plan.platformCount} platforms
+                  <span style={{color:plan.color,fontWeight:700,marginLeft:8}}>
+                    {form.platforms.length}/{plan.platformCount===999?"∞":plan.platformCount} selected
+                  </span>
+                </div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                  {plan.platformOptions.map(p=>{
+                    const sel=form.platforms.includes(p);
+                    const atLimit=form.platforms.length>=(plan.platformCount)&&plan.platformCount!==999;
+                    const disabled=!sel&&atLimit;
+                    return(
+                      <button key={p} onClick={()=>!disabled&&togglePlatform(p)}
+                        style={{padding:"7px 14px",borderRadius:25,fontSize:12,fontWeight:600,
+                          cursor:disabled?"not-allowed":"pointer",transition:"all .15s",
+                          background:sel?plan.color:disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
+                          color:sel?"#fff":disabled?"rgba(255,255,255,0.2)":"rgba(255,255,255,0.65)",
+                          border:`1.5px solid ${sel?plan.color:disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
+                          opacity:disabled?0.45:1}}>
+                        {sel?"✓ ":""}{p}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
         <Field label="Brand / Business Name" name="brandName" value={form.brandName}
           onChange={setF} error={errors.brandName} placeholder="e.g. FitLife Studio, Priya's Skincare" required/>
         <Field label="Email" name="email" type="email" value={form.email}
@@ -2609,6 +2752,8 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
               ✓ AI will write native content for: {form.platforms.join(", ")}</div>
           )}
         </div>
+          </>
+        )}
       </div>
 
       <button onClick={submitDetails} disabled={savingData}
@@ -2617,10 +2762,11 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}}){
           color:"#fff",border:"none",borderRadius:13,padding:"14px",
           fontSize:15,fontWeight:700,cursor:savingData?"not-allowed":"pointer",letterSpacing:"-.2px",
           opacity: savingData ? 0.7 : 1}}>
-        {savingData ? "Processing..." : plan.isTrialFlow ? "⚡ Generate My 3 Free Posts →" : "Continue to Payment →"}
+        {savingData ? "Processing..." : plan.isTrialFlow ? "⚡ Generate My 3 Free Posts →" : isUpgradeFlow ? "Continue to Payment →" : "Continue to Payment →"}
       </button>
     </div>
   );
+
 
   if(screen==="otp"&&plan) return (
     <div style={{maxWidth:400,margin:"0 auto",padding:"40px 20px",textAlign:"center"}}>
@@ -2791,7 +2937,7 @@ Return ONLY raw JSON (no markdown fences):
 // ─────────────────────────────────────────────────────────────────
 //  CLIENT PROFILE DASHBOARD
 // ─────────────────────────────────────────────────────────────────
-function ClientDashboard({profile, hKey, onGenerateContent}) {
+function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
   const color = profile.color||"#7C3AED";
   const [tips, setTips] = useState(null);
   const [loadingTips, setLoadingTips] = useState(false);
@@ -2990,12 +3136,12 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
             <span style={{fontSize:13,fontWeight:700,color:"#f1f5f9"}}>You're on Free Trial — </span>
             <span style={{fontSize:13,color:"rgba(255,255,255,0.5)"}}>Upgrade to unlock 15–unlimited posts/month</span>
           </div>
-          <a href={`${window.location.origin}/#/app/content-studio?plan=starter`}
+          <button onClick={()=>typeof onUpgrade==='function' ? onUpgrade('starter') : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=starter&upgrade=1`)}
             style={{background:"linear-gradient(135deg,#38bdf8,#1d4ed8)",color:"#fff",
               border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,
-              cursor:"pointer",textDecoration:"none",whiteSpace:"nowrap",flexShrink:0,
+              cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,
               boxShadow:"0 4px 14px rgba(56,189,248,0.3)"}}>
-            View Plans →</a>
+            ⚡ Upgrade Now →</button>
         </div>
       )}
 
@@ -3309,7 +3455,7 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
               <div style={{height:1,flex:1,background:`${color}12`}}/>
             </div>
             <Workspace profile={profile} hKey={hKey}
-              onUpgrade={(planId)=>window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`}/>
+              onUpgrade={(planId)=>typeof onUpgrade==='function' ? onUpgrade(planId) : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}&upgrade=1`)}/>
           </div>
         </div>
       )}
@@ -3363,9 +3509,13 @@ function ClientDashboard({profile, hKey, onGenerateContent}) {
 // ─────────────────────────────────────────────────────────────────
 //  PORTAL CLIENT VIEW — unified single-page layout
 // ─────────────────────────────────────────────────────────────────
-function PortalClientView({client, onHome}){
+function PortalClientView({client, onHome, onUpgrade}){
   const color = client.color||"#7C3AED";
   const hKey = `snstudio_hist_${client.id}`;
+  const handleUpgrade = (planId) => {
+    if(typeof onUpgrade === 'function') onUpgrade(planId, client);
+    else window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}&upgrade=1`;
+  };
   return (
     <div>
       {/* ── TOP NAV ── */}
@@ -3384,12 +3534,21 @@ function PortalClientView({client, onHome}){
           <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:1}}>
             Member since {client.joinDate}</div>
         </div>
-        <span style={{fontSize:11,background:"#052e16",color:"#4ade80",border:"1px solid #166534",
-          borderRadius:6,padding:"3px 10px",fontWeight:700}}>✓ {client.planName} · Active</span>
+        {(client.plan==="trial"||!client.plan) ? (
+          <button onClick={()=>handleUpgrade("starter")}
+            style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",
+              border:"none",borderRadius:8,padding:"7px 16px",fontSize:12,fontWeight:700,
+              cursor:"pointer",whiteSpace:"nowrap"}}>
+            ⚡ Upgrade Plan
+          </button>
+        ) : (
+          <span style={{fontSize:11,background:"#052e16",color:"#4ade80",border:"1px solid #166534",
+            borderRadius:6,padding:"3px 10px",fontWeight:700}}>✓ {client.planName} · Active</span>
+        )}
       </div>
 
       {/* ── PROFILE DASHBOARD SECTION ── */}
-      <ClientDashboard profile={client} hKey={hKey} onGenerateContent={null}/>
+      <ClientDashboard profile={client} hKey={hKey} onGenerateContent={null} onUpgrade={handleUpgrade}/>
     </div>
   );
 }
@@ -3406,6 +3565,7 @@ export default function App(){
   const [activeClient,setActiveClient]=useState(null);
   const [clientView, setClientView]=useState("dashboard"); // dashboard|content
   const [geo, setGeo]=useState({country:"_DEFAULT"});
+  const [upgradeTrialData, setUpgradeTrialData]=useState(null); // holds trial form data when upgrading
 
   useEffect(()=>{(async()=>{
     const saved = await DB.get("snstudio_clients") || {};
@@ -3667,11 +3827,12 @@ export default function App(){
           style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
             color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"7px 13px",
             fontSize:12,cursor:"pointer",fontWeight:600,marginBottom:4}}>← Home</button>
-        <Onboarding geo={geo} onComplete={async cl=>{
+        <Onboarding geo={geo} trialData={upgradeTrialData} onComplete={async cl=>{
           const existing=await DB.get("snstudio_clients")||{};
           await DB.set("snstudio_clients",{...existing,[cl.id]:cl});
           setClients(p=>({...p,[cl.id]:cl}));
           setActiveClient(cl);
+          setUpgradeTrialData(null);
           setPortalView("workspace");
         }}/>
       </div>
@@ -3710,7 +3871,11 @@ export default function App(){
         <button onClick={()=>setPortalView("home")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:13,marginTop:24}}>← Back to Home</button>
       </div>
     ):portalView==="workspace"&&activeClient?(
-      <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}/>
+      <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}
+        onUpgrade={(planId, trialData)=>{
+          setUpgradeTrialData(trialData||activeClient);
+          setPortalView("onboarding");
+        }}/>
     ):null
   );
 

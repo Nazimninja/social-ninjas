@@ -298,18 +298,40 @@ function go(p){
 }
 
 // DATA HELPERS
-function stC(){try{return Object.values(JSON.parse(localStorage.getItem('snstudio_clients')||'{}')).sort((a,b)=>(b.id||'').localeCompare(a.id||''));}catch{return[];}}
-function crmC(){try{return JSON.parse(localStorage.getItem('sn_crm_clients')||'[]');}catch{return[];}}
-function allC(){const s=stC(),em=new Set(s.map(c=>c.email));return[...s,...crmC().filter(c=>!em.has(c.email))];}
-function saveCrm(c){const a=crmC(),i=a.findIndex(x=>x.id===c.id);if(i>=0)a[i]=c;else a.push(c);localStorage.setItem('sn_crm_clients',JSON.stringify(a));}
+let _allClients = [];
+async function fetchClients() {
+  try {
+    const r = await fetch(API+'/api/data?resource=clients');
+    _allClients = await r.json();
+    _allClients.sort((a,b) => (b.id||'').localeCompare(a.id||''));
+  } catch {}
+}
+function allC() { return _allClients; }
+async function saveCrm(c) {
+  const i = _allClients.findIndex(x => x.id === c.id);
+  if (i >= 0) _allClients[i] = c; else _allClients.push(c);
+  try {
+    await fetch(API+'/api/data?resource=clients', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(c)
+    });
+  } catch {}
+}
 function getCont(){try{return JSON.parse(localStorage.getItem('sn_crm_cont')||'[]');}catch{return[];}}
 function setCont(a){localStorage.setItem('sn_crm_cont',JSON.stringify(a));}
 function getNotes(){try{return JSON.parse(localStorage.getItem('sn_crm_notes')||'[]');}catch{return[];}}
 function setNotes(a){localStorage.setItem('sn_crm_notes',JSON.stringify(a));}
-function getHist(id){try{return JSON.parse(localStorage.getItem('snstudio_hist_'+id)||'[]');}catch{return[];}}
+async function getHist(id) {
+  try {
+    const r = await fetch(API+'/api/data?resource=history&clientId='+id);
+    return await r.json();
+  } catch { return []; }
+}
 
 // DASHBOARD
 async function loadDash(){
+  await fetchClients();
   const all=allC(),paid=all.filter(c=>c.plan&&c.plan!=='trial'),trial=all.filter(c=>!c.plan||c.plan==='trial');
   document.getElementById('s-tc').textContent=all.length;
   document.getElementById('s-pc').textContent=paid.length;
@@ -322,7 +344,8 @@ async function loadDash(){
 // CLIENTS
 let CF='all';
 function setF(f){CF=f;document.querySelectorAll('[id^="f-"]').forEach(t=>t.classList.remove('on'));document.getElementById('f-'+f).classList.add('on');renderC();}
-function renderC(){
+async function renderC(){
+  await fetchClients();
   let c=allC(),q=(document.getElementById('q')||{}).value||'';
   if(CF==='paid')c=c.filter(x=>x.plan&&x.plan!=='trial');
   if(CF==='trial')c=c.filter(x=>!x.plan||x.plan==='trial');
@@ -331,10 +354,10 @@ function renderC(){
   if(!c.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--t3)">No clients found.</td></tr>';return;}
   tb.innerHTML=c.map(x=>`<tr><td><strong>${x.brandName||'—'}</strong><br><span style="font-size:11px;color:var(--t3)">${x.niche||'—'}</span></td><td>${x.email||'—'}<br><span style="font-size:11px;color:var(--t3)">${x.phone||'—'}</span></td><td><span class="badge ${!x.plan||x.plan==='trial'?'bt':'bp'}">${x.planName||x.plan||'Trial'}</span></td><td style="font-size:12px">${(x.platforms||[]).join(', ')||'—'}</td><td style="font-size:12px;color:var(--t3)">${x.joinDate||'—'}</td><td style="font-size:12px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.adminNotes||'—'}</td><td><button class="btn b-g b-sm" onclick="viewC('${x.id}')">View →</button></td></tr>`).join('');
 }
-function viewC(id){
+async function viewC(id){
   const c=allC().find(x=>x.id===id);if(!c)return;
   document.getElementById('m-cn').textContent=c.brandName||c.email;
-  const hist=getHist(id);
+  const hist=await getHist(id);
   document.getElementById('m-cb').innerHTML=`
     <div class="dg">
       <div class="di"><label>Brand</label><span>${c.brandName||'—'}</span></div>
@@ -358,10 +381,9 @@ function viewC(id){
   `;
   om('m-client');
 }
-function saveNote2(id){
-  const note=document.getElementById('cn-'+id).value,crm=crmC(),ex=crm.find(c=>c.id===id);
-  if(ex){ex.adminNotes=note;localStorage.setItem('sn_crm_clients',JSON.stringify(crm));}
-  else{const c=allC().find(c=>c.id===id);if(c){c.adminNotes=note;crm.push(c);localStorage.setItem('sn_crm_clients',JSON.stringify(crm));}}
+async function saveNote2(id){
+  const note=document.getElementById('cn-'+id).value, c=allC().find(x=>x.id===id);
+  if(c){ c.adminNotes=note; await saveCrm(c); }
   const el=document.getElementById('cn-'+id);el.style.borderColor='var(--mint)';setTimeout(()=>el.style.borderColor='',1500);
 }
 function openAddClient(){om('m-add');}
@@ -369,7 +391,7 @@ function saveClient(){
   const b=document.getElementById('ab').value.trim(),e=document.getElementById('ae').value.trim(),al=document.getElementById('aal');
   if(!b||!e){al.innerHTML='<div class="al er2">Brand name and email required.</div>';return;}
   const pl=document.getElementById('apl').value,pn={trial:'Free Trial',starter:'Starter',growth:'Growth',pro:'Pro'};
-  saveCrm({id:'crm_'+Date.now(),brandName:b,email:e,phone:document.getElementById('ap').value,niche:document.getElementById('an').value,plan:pl,planName:pn[pl]||pl,adminNotes:document.getElementById('ano').value,joinDate:new Date().toLocaleDateString('en-GB'),source:'manual'});
+  await saveCrm({id:'crm_'+Date.now(),brandName:b,email:e,phone:document.getElementById('ap').value,niche:document.getElementById('an').value,plan:pl,planName:pn[pl]||pl,adminNotes:document.getElementById('ano').value,joinDate:new Date().toLocaleDateString('en-GB'),source:'manual'});
   cm('m-add');renderC();
   ['ab','ae','ap','an','ano'].forEach(id=>document.getElementById(id).value='');
 }
