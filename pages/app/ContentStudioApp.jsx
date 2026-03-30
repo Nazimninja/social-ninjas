@@ -1196,7 +1196,7 @@ function Workspace({profile, hKey, onUpgrade}){
             You've seen what AI-researched, platform-native content looks like for your brand.
             Upgrade now to generate 15–unlimited posts every month — new trends, new topics, every week.
           </p>
-          <div className="mobile-grid-1" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
+          <div className="mobile-grid-1 upgrade-cards" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
             {[
               {price:"₹2,999/mo",name:"Starter",desc:"15 posts · 2 platforms",id:"starter"},
               {price:"₹5,499/mo",name:"Growth",desc:"25 posts · 4 platforms",id:"growth"},
@@ -2234,7 +2234,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
     if(Object.keys(errs).length){setErrors(errs);return;}
     setSavingData(true);
     try {
-      if(form.phone) {
+      if(form.phone && !isUpgradeFlow) {
         const r = await fetch("/api/send-otp", {
           method:"POST", headers:{"Content-Type":"application/json"},
           body:JSON.stringify({phone: form.countryCode + form.phone.replace(/\D/g,"")})
@@ -2244,7 +2244,16 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       }
     } catch(e){ /* non-blocking */ }
     setSavingData(false);
-    setScreen("otp");
+    // Upgrade users skip OTP — they already verified during trial
+    if(isUpgradeFlow) {
+      const leadData = {...form, planName:plan.name, displayINR:plan.displayINR,
+        joinDate:new Date().toLocaleDateString("en-IN"), paymentStatus:"upgrading"};
+      pushToClickUp(leadData, CONFIG.clickup.leadsListId);
+      pushToBackend({...leadData, type:"upgrade_intent"});
+      setScreen("payment");
+    } else {
+      setScreen("otp");
+    }
   };
 
   const verifyOtpAndProceed=async()=>{
@@ -2635,11 +2644,11 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
               </div>
             </div>
 
-            {/* Platform change option */}
-            {plan.platformCount > (form.platforms?.length||0) && (
+            {/* Platform change option — always show on upgrade */}
+            {true && (
               <div>
                 <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>
-                  {plan.name} plan — choose up to {plan.platformCount} platforms
+                  {plan.name} plan — choose up to {plan.platformCount===999?"unlimited":plan.platformCount} platforms
                   <span style={{color:plan.color,fontWeight:700,marginLeft:8}}>
                     {form.platforms.length}/{plan.platformCount===999?"∞":plan.platformCount} selected
                   </span>
@@ -2942,7 +2951,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
   const [tips, setTips] = useState(null);
   const [loadingTips, setLoadingTips] = useState(false);
   const [hist, setHist] = useState([]);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("content");
 
   useEffect(()=>{
     (async()=>{
@@ -3071,7 +3080,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
       </div>
 
       {/* ── INFOGRAPHIC STATS ── */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+      <div className="stats-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
         {[
           {label:"Posts Created",value:totalPosts,sub:"all time",icon:"📝",color:"#5ba4f5"},
           {label:"Weeks Active",value:totalWeeks,sub:"content weeks",icon:"📅",color:"#7C3AED"},
@@ -3197,7 +3206,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             <div style={{background:"#020617",border:`1px solid ${color}20`,borderRadius:16,padding:"18px 20px"}}>
               <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
                 color:"rgba(255,255,255,0.28)",marginBottom:14}}>🔗 Connected Social Accounts</div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
+              <div className="social-grid" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
                 {[
                   {key:"instagram",label:"Instagram",icon:"📸",prefix:"@",url:"https://instagram.com/"},
                   {key:"linkedin",label:"LinkedIn",icon:"💼",prefix:"",url:"https://"},
@@ -3233,7 +3242,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 
           {/* ── ACCOUNT ANALYSIS (quick wins) ── */}
           {tips?.account_analysis&&(
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+            <div className="analysis-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
               {[
                 {label:"💪 Strengths",items:tips.account_analysis.strengths,col:"#10b981",bg:"#052e16"},
                 {label:"🚧 Gaps",items:tips.account_analysis.gaps,col:"#f59e0b",bg:"#1c1203"},
@@ -3507,11 +3516,12 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 
 
 // ─────────────────────────────────────────────────────────────────
-//  PORTAL CLIENT VIEW — unified single-page layout
+//  PORTAL CLIENT VIEW — Content Studio First Layout
 // ─────────────────────────────────────────────────────────────────
 function PortalClientView({client, onHome, onUpgrade}){
   const color = client.color||"#7C3AED";
   const hKey = `snstudio_hist_${client.id}`;
+  const platforms = client.platforms || [client.sub || "Instagram"];
   const handleUpgrade = (planId) => {
     if(typeof onUpgrade === 'function') onUpgrade(planId, client);
     else window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}&upgrade=1`;
@@ -3519,7 +3529,7 @@ function PortalClientView({client, onHome, onUpgrade}){
   return (
     <div>
       {/* ── TOP NAV ── */}
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20,flexWrap:"wrap"}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,flexWrap:"wrap"}}>
         <button onClick={onHome}
           style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
             color:"rgba(255,255,255,0.55)",borderRadius:9,padding:"7px 13px",fontSize:13,
@@ -3530,7 +3540,7 @@ function PortalClientView({client, onHome, onUpgrade}){
             display:"flex",alignItems:"center",justifyContent:"center",fontSize:17}}>🏢</div>}
         <div style={{flex:1}}>
           <div style={{fontSize:15,fontWeight:700,letterSpacing:"-.3px"}}>{client.brandName}
-            <span style={{color,fontSize:12}}> · {(client.platforms||[client.sub]).join(", ")}</span></div>
+            <span style={{color,fontSize:12}}> · {platforms.join(", ")}</span></div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:1}}>
             Member since {client.joinDate}</div>
         </div>
@@ -3547,7 +3557,33 @@ function PortalClientView({client, onHome, onUpgrade}){
         )}
       </div>
 
-      {/* ── PROFILE DASHBOARD SECTION ── */}
+      {/* ══ HERO: CONTENT GENERATOR — Primary Feature ══ */}
+      <div style={{background:`linear-gradient(135deg,${color}14,${color}05)`,
+        border:`1px solid ${color}28`,borderRadius:20,padding:"22px 24px",marginBottom:20}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+          flexWrap:"wrap",gap:12,marginBottom:16}}>
+          <div>
+            <div style={{fontSize:12,fontWeight:800,textTransform:"uppercase",letterSpacing:"2px",
+              color,marginBottom:4}}>⚡ AI Content Studio</div>
+            <h2 style={{fontSize:"clamp(18px,4vw,24px)",fontWeight:800,letterSpacing:"-.5px",
+              margin:0,color:"#fff"}}>
+              {client.plan==="trial"||!client.plan ? "See Your Trial Content" : "Generate This Week's Content"}
+            </h2>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginTop:4}}>
+              Live trend research → Platform-native captions → Scripts → Carousels — ready to post
+            </div>
+          </div>
+          <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+            {platforms.map(p=>(
+              <span key={p} style={{background:`${color}18`,border:`1px solid ${color}35`,color,
+                borderRadius:15,padding:"4px 12px",fontSize:11,fontWeight:700}}>{p}</span>
+            ))}
+          </div>
+        </div>
+        <Workspace profile={client} hKey={hKey} onUpgrade={handleUpgrade}/>
+      </div>
+
+      {/* ── PROFILE DASHBOARD & ANALYTICS ── */}
       <ClientDashboard profile={client} hKey={hKey} onGenerateContent={null} onUpgrade={handleUpgrade}/>
     </div>
   );
@@ -3663,6 +3699,10 @@ export default function App(){
       .post-card{border-radius:14px!important;}
       .sn-btn-primary,.sn-btn-ghost{width:100%!important;text-align:center!important;justify-content:center!important;}
       .sn-glass{padding:16px!important;}
+      .stats-grid{grid-template-columns:repeat(2,1fr)!important;}
+      .analysis-grid{grid-template-columns:1fr!important;}
+      .social-grid{grid-template-columns:1fr!important;}
+      .upgrade-cards{grid-template-columns:1fr!important;}
     }
     @media(max-width:480px){
       h1{font-size:clamp(22px,7vw,32px)!important;}
