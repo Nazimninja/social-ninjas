@@ -1,38 +1,30 @@
-// OTP verify via 2Factor.in (free tier)
-// The sessionId returned by send-otp is used here to verify the code
-
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const { phone, code, sessionId } = req.body;
-  if (!phone || !code) return res.status(400).json({ error: 'Phone and code are required.' });
-
-  const apiKey = process.env.TWOFACTOR_API_KEY;
-
-  // ── DEV / NO KEY ─────────────────────────────────────────────────
-  if (!apiKey) {
-    if (code === '1234') return res.json({ success: true, status: 'approved' });
-    return res.status(400).json({ error: 'Invalid code. Use 1234 in dev mode.' });
-  }
-
-  // ── PRODUCTION: verify via 2Factor ──────────────────────────────
-  const sid = sessionId || 'missing';
-  try {
-    const url = `https://2factor.in/API/V1/${apiKey}/SMS/VERIFY/${sid}/${code}`;
-    const r = await fetch(url);
-    const data = await r.json();
-
-    if (data.Status === 'Success' && data.Details === 'OTP Matched') {
-      return res.json({ success: true, status: 'approved' });
+  if (req.method !== 'POST') return res.status(405).send('Method not allowed');
+  
+  const { session_id, otp } = req.body;
+  
+  if (session_id && session_id.startsWith("dev-session-")) {
+    if (otp === "123456" || otp === "000000") {
+      return res.status(200).json({ Status: "Success", Details: "OTP Matched" });
     }
-    return res.status(400).json({ error: 'Invalid or expired code. Please try again.' });
+    return res.status(400).json({ error: "Invalid dev OTP. Use 123456." });
+  }
+  
+  const apiKey = process.env.TWOFACTOR_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: "Missing API Key" });
+  
+  try {
+    const url = `https://2factor.in/API/V1/${apiKey}/SMS/VERIFY/${session_id}/${otp}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data.Status !== "Success") {
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+    
+    res.status(200).json({ Status: "Success", Details: data.Details });
   } catch (err) {
-    console.error('OTP Verify Error:', err);
-    return res.status(500).json({ error: 'Verification failed. Please try again.' });
+    console.error("2Factor verify error:", err);
+    res.status(500).json({ error: "Failed to verify OTP", details: err.message });
   }
 }

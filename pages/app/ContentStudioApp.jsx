@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-
+import { auth } from './firebase';
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 /* ═══════════════════════════════════════════════════════════════════
    SOCIAL NINJA'S — AI CONTENT STUDIO  v7
    ✦ Razorpay only · ✦ No graphics — pure content depth
@@ -2216,7 +2217,10 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       const err=fieldErr(k,form[k]||"");
       if(err) e[k]=err;
     });
-    if(form.phone){const err=fieldErr("phone",form.phone);if(err) e.phone=err;}
+    // Phone is REQUIRED for trial users (needed for OTP verification to prevent fake signups)
+    if(plan?.isTrialFlow && !form.phone?.trim()) {
+      e.phone = "Phone number is required to verify your identity for the free trial";
+    } else if(form.phone){const err=fieldErr("phone",form.phone);if(err) e.phone=err;}
     if(!form.platforms?.length) e.platforms="Choose at least one platform";
     return e;
   };
@@ -2224,7 +2228,31 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
   const [otpValue, setOtpValue] = useState("");
   const [otpError, setOtpError] = useState("");
   const [verifyingOtp,setVerifyingOtp]=useState(false);
-  const [otpSessionId, setOtpSessionId] = useState(""); // 2Factor session ID
+  const [firebaseConfirmation, setFirebaseConfirmation] = useState(null);
+
+  const initRecaptcha = () => {
+    // Always destroy the old verifier first to avoid stale state
+    if (window.recaptchaVerifier) {
+      try { window.recaptchaVerifier.clear(); } catch(e) {}
+      window.recaptchaVerifier = null;
+    }
+    try {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        'size': 'invisible',
+        'callback': () => {}
+      });
+    } catch(e) { console.error("Recaptcha Init Error:", e); }
+  };
+
+  useEffect(() => {
+    initRecaptcha();
+    return () => {
+      if (window.recaptchaVerifier) {
+        try { window.recaptchaVerifier.clear(); } catch(e) {}
+        window.recaptchaVerifier = null;
+      }
+    };
+  }, []);
 
   const SUPPORT_EMAIL = "hello@socialninjas.in";
   const SUPPORT_INSTAGRAM = "https://www.instagram.com/socialninja.s/";
@@ -2233,26 +2261,39 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
     const errs=validateDetails();
     if(Object.keys(errs).length){setErrors(errs);return;}
     setSavingData(true);
-    try {
-      if(form.phone && !isUpgradeFlow) {
-        const r = await fetch("/api/send-otp", {
-          method:"POST", headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({phone: form.countryCode + form.phone.replace(/\D/g,"")})
-        });
-        const d = await r.json().catch(()=>({}));
-        if(d.sessionId) setOtpSessionId(d.sessionId);
-      }
-    } catch(e){ /* non-blocking */ }
-    setSavingData(false);
+    
     // Upgrade users skip OTP — they already verified during trial
     if(isUpgradeFlow) {
       const leadData = {...form, planName:plan.name, displayINR:plan.displayINR,
         joinDate:new Date().toLocaleDateString("en-IN"), paymentStatus:"upgrading"};
       pushToClickUp(leadData, CONFIG.clickup.leadsListId);
       pushToBackend({...leadData, type:"upgrade_intent"});
+      setSavingData(false);
       setScreen("payment");
-    } else {
+      return;
+    }
+
+    try {
+      if(form.phone) {
+        // Always create a fresh reCAPTCHA verifier before every attempt
+        initRecaptcha();
+        const fullPhone = form.countryCode + form.phone.replace(/\D/g,"");
+        const confirmation = await signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier);
+        setFirebaseConfirmation(confirmation);
+      }
+      setSavingData(false);
       setScreen("otp");
+    } catch(e) { 
+      console.error("Firebase Auth Error:", e);
+      // Show a clean user-friendly message
+      const msg = e.code === 'auth/invalid-app-credential' ? 'reCAPTCHA expired — please try again.' 
+        : e.code === 'auth/too-many-requests' ? 'Too many attempts. Please wait a few minutes.'
+        : e.code === 'auth/billing-not-enabled' ? 'Firebase billing not enabled on this project.'
+        : `Failed: ${e.message || e.code || "Check phone format"}`;
+      setErrors({...errs, phone: msg});
+      setSavingData(false);
+      // Always fully reset verifier after any failure
+      initRecaptcha();
     }
   };
 
@@ -2261,18 +2302,17 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
     setVerifyingOtp(true);
     setOtpError("");
     try {
-      if(form.phone) {
-        const res = await fetch("/api/verify-otp", {
-          method:"POST", headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            phone: form.countryCode + form.phone.replace(/\D/g,""),
-            code: otpValue.trim(),
-            sessionId: otpSessionId
-          })
-        });
-        if(!res.ok) {
-          const err = await res.json().catch(()=>({}));
-          setOtpError(err.error || "Invalid code. Please try again.");
+      if(plan.isTrialFlow && !form.phone) {
+        setOtpError("Phone number is required for trial verification. Please go back and enter your phone.");
+        setVerifyingOtp(false); return;
+      }
+
+      // Verify OTP with Firebase
+      if(form.phone && firebaseConfirmation) {
+        try {
+          await firebaseConfirmation.confirm(otpValue.trim());
+        } catch(err) {
+          setOtpError("Invalid or expired code. Please try again.");
           setVerifyingOtp(false);
           return;
         }
@@ -2289,7 +2329,6 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
           setVerifyingOtp(false);
           return;
         }
-        // Check backend too (cross-device duplicate protection)
         try {
           const checkRes = await fetch("/api/check-trial", {
             method:"POST", headers:{"Content-Type":"application/json"},
@@ -2302,10 +2341,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
               setVerifyingOtp(false); return;
             }
           }
-        } catch(e){ /* non-blocking — local check already passed */ }
+        } catch(e){ /* non-blocking */ }
         trials[Date.now()] = { email: tEmail, phone: form.phone, date: new Date().toISOString() };
         await DB.set("snstudio_trials", trials);
-        // Persist to Upstash Redis for cross-device trial tracking
         fetch("/api/check-trial", {method:"POST",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({action:"save", email:tEmail, phone:form.phone})}).catch(()=>{});
         fetch("/api/data?resource=clients", {method:"POST",headers:{"Content-Type":"application/json"},
@@ -2681,7 +2719,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         <Field label="Email" name="email" type="email" value={form.email}
           onChange={setF} error={errors.email} placeholder="you@email.com" required/>
         <div>
-            <Field label="Phone / WhatsApp" name="phone" error={errors.phone}>
+            <Field label={plan?.isTrialFlow ? "Phone / WhatsApp" : "Phone / WhatsApp"} name="phone" error={errors.phone} required={plan?.isTrialFlow} hint={plan?.isTrialFlow ? "🔒 Required — we send a verification code to confirm your number" : undefined}>
               <div style={{display:"flex",gap:6}}>
                 <select 
                   value={form.countryCode} 
@@ -3557,33 +3595,7 @@ function PortalClientView({client, onHome, onUpgrade}){
         )}
       </div>
 
-      {/* ══ HERO: CONTENT GENERATOR — Primary Feature ══ */}
-      <div style={{background:`linear-gradient(135deg,${color}14,${color}05)`,
-        border:`1px solid ${color}28`,borderRadius:20,padding:"22px 24px",marginBottom:20}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
-          flexWrap:"wrap",gap:12,marginBottom:16}}>
-          <div>
-            <div style={{fontSize:12,fontWeight:800,textTransform:"uppercase",letterSpacing:"2px",
-              color,marginBottom:4}}>⚡ AI Content Studio</div>
-            <h2 style={{fontSize:"clamp(18px,4vw,24px)",fontWeight:800,letterSpacing:"-.5px",
-              margin:0,color:"#fff"}}>
-              {client.plan==="trial"||!client.plan ? "See Your Trial Content" : "Generate This Week's Content"}
-            </h2>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginTop:4}}>
-              Live trend research → Platform-native captions → Scripts → Carousels — ready to post
-            </div>
-          </div>
-          <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-            {platforms.map(p=>(
-              <span key={p} style={{background:`${color}18`,border:`1px solid ${color}35`,color,
-                borderRadius:15,padding:"4px 12px",fontSize:11,fontWeight:700}}>{p}</span>
-            ))}
-          </div>
-        </div>
-        <Workspace profile={client} hKey={hKey} onUpgrade={handleUpgrade}/>
-      </div>
-
-      {/* ── PROFILE DASHBOARD & ANALYTICS ── */}
+      {/* ── FULL DASHBOARD — primary view with Overview, Tips, Content Generator, History ── */}
       <ClientDashboard profile={client} hKey={hKey} onGenerateContent={null} onUpgrade={handleUpgrade}/>
     </div>
   );
@@ -3771,6 +3783,7 @@ export default function App(){
       </div>
       <div dangerouslySetInnerHTML={{__html:CSS}}/>
       {NAV}
+      <div id="recaptcha-container"></div>
       <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"clamp(16px,3vw,28px) clamp(14px,2vw,20px)",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
         {children}
       </div>
