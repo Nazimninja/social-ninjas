@@ -387,7 +387,7 @@ async function saveNote2(id){
   const el=document.getElementById('cn-'+id);el.style.borderColor='var(--mint)';setTimeout(()=>el.style.borderColor='',1500);
 }
 function openAddClient(){om('m-add');}
-function saveClient(){
+async function saveClient(){
   const b=document.getElementById('ab').value.trim(),e=document.getElementById('ae').value.trim(),al=document.getElementById('aal');
   if(!b||!e){al.innerHTML='<div class="al er2">Brand name and email required.</div>';return;}
   const pl=document.getElementById('apl').value,pn={trial:'Free Trial',starter:'Starter',growth:'Growth',pro:'Pro'};

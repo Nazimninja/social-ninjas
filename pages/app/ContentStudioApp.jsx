@@ -416,35 +416,126 @@ async function pushToBackend(data) {
 // ─────────────────────────────────────────────────────────────────
 //  AI PROMPT — platform-specific, no graphics, pure content depth
 // ─────────────────────────────────────────────────────────────────
+function isInstagram(p) { return p === "Instagram"; }
+
 function buildPrompt(profile, prevTitles=[]) {
   const platforms = profile.platforms || [profile.sub||profile.platform||"Instagram"];
-  const mainPlat  = platforms[0];
-  const dna       = PLATFORM_DNA[mainPlat] || PLATFORM_DNA["Instagram"];
-  const allDNA    = platforms.map(p => PLATFORM_DNA[p]||PLATFORM_DNA["Instagram"]);
-  const prev      = prevTitles.length
-    ? `\nNEVER REPEAT THESE (already published):\n${prevTitles.map((t,i)=>`${i+1}. ${t}`).join("\n")}\n`:"";
+  // Deduplicate platforms
+  const uniquePlatforms = [...new Set(platforms)];
+  const prev = prevTitles.length
+    ? `\nNEVER REPEAT THESE TOPICS (already published):\n${prevTitles.map((t,i)=>`${i+1}. ${t}`).join("\n")}\n`:"";
 
-  const platformInstructions = platforms.length > 1
-    ? platforms.map(p => {
-        const d = PLATFORM_DNA[p]||PLATFORM_DNA["Instagram"];
-        return `\n### ${p}
-- Formats: ${d.formats.join(", ")}
+  // Build per-platform intelligence block
+  const platformGuide = uniquePlatforms.map(p => {
+    const d = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
+    return `### ${p}
+- Best formats: ${d.formats.join(", ")}
 - Caption style: ${d.captionStyle}
 - Hashtags: ${d.hashtagCount} tags — ${d.hashtagStyle}
-- Script style: ${d.scriptStyle}
-- Best times: ${d.bestTimes.join(", ")}
-- What works: ${d.contentTypes.join(" | ")}
+- Best posting times: ${d.bestTimes.join(", ")}
+- What performs: ${d.contentTypes.join(" | ")}
 - Viral mechanics: ${d.viralMechanics}`;
-      }).join("\n")
-    : `- Formats available: ${dna.formats.join(", ")}
-- Caption style: ${dna.captionStyle}
-- Hashtag count: ${dna.hashtagCount} — ${dna.hashtagStyle}
-- Script requirements: ${dna.scriptStyle}
-- Best posting times: ${dna.bestTimes.join(", ")}
-- What performs: ${dna.contentTypes.join(" | ")}
-- Viral mechanics on this platform: ${dna.viralMechanics}`;
+  }).join("\n\n");
 
-  return `You are a world-class viral content strategist with 15 years experience growing brands to millions of followers across every social platform. You've run content for brands doing $100M+ in revenue. Every post you write is strategically engineered to stop the scroll, hold attention, and drive action.
+  // Build per-platform JSON schema — each platform gets its own tailored post
+  const postSchemas = uniquePlatforms.map((p, i) => {
+    const d = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
+    const postNum = `p${i+1}`;
+    const isYouTube = p === "YouTube";
+    const isShort = p === "Instagram" || p === "TikTok" || p === "Snapchat";
+    const isLinkedIn = p === "LinkedIn";
+    const isTwitter = p === "Twitter/X";
+    const isThreads = p === "Threads";
+    const isFacebook = p === "Facebook";
+    const isPinterest = p === "Pinterest";
+
+    // Script instructions — platform-specific
+    let scriptInstr = "null";
+    if (isYouTube) {
+      scriptInstr = `"YOUTUBE ONLY — choose ONE format:\\n(A) YouTube Short (60 sec max): Write a complete 60-second vertical video script with [HOOK 0-3s], [MAIN VALUE 3-50s], [CTA 50-60s] and camera directions.\\n(B) Long-form YouTube Video (8-15 min): Write the full VIDEO SCRIPT including: Title (60 chars, keyword-first), thumbnail concept, hook story (first 30 sec), chapter outline with talking points for each section, and SEO description (200+ words with timestamps). Format: TITLE: ... | THUMBNAIL: ... | HOOK: ... | CHAPTERS: ... | DESCRIPTION: ..."`;
+    } else if (isShort) {
+      scriptInstr = `"SHORT-FORM VIDEO SCRIPT — ${d.scriptStyle} Write complete word-for-word script with [DIRECTION: camera/text/action] notes every 5-10 seconds. Must be speakable cold. Min 150 words."`;
+    } else if (isLinkedIn) {
+      scriptInstr = `"LINKEDIN VIDEO (60-90 sec) — Open with bold claim (0-5s, on camera). Proof/story (5-70s). Takeaway (70-80s). CTA invite comment (80-90s). No music. Add [SUBTITLE: text] for every spoken line since subtitles are critical. Min 150 words."`;
+    } else if (isFacebook) {
+      scriptInstr = `"FACEBOOK VIDEO (60-90 sec) — Slow emotional hook (0-5s). Story arc with relatable conflict. Soft CTA. [DIRECTION] notes for each scene. Min 150 words."`;
+    } else {
+      scriptInstr = "null";
+    }
+
+    // Carousel/slides — platform-specific
+    let carouselInstr = "null";
+    if (isInstagram(p)) {
+      carouselInstr = `[
+          INSTAGRAM CAROUSEL — min 5 slides. Format: {"slide_num":1,"heading":"hook (max 8 words)","body":"2-3 punchy lines","design_note":"visual/color direction"},
+          Slide 1 = bold hook statement, Slides 2-4 = value/proof points, Last slide = strong CTA + follow prompt.
+          Each slide must work as a standalone screenshot people save.
+        ]`;
+    } else if (isLinkedIn) {
+      carouselInstr = `[
+          LINKEDIN DOCUMENT CAROUSEL — 6-10 slides. Format: {"slide_num":1,"heading":"slide title","body":"2-4 lines of insight/data/advice","design_note":"clean professional look, branded colors"},
+          Slide 1 = click-worthy title card (what the reader will learn), Middle slides = actionable data/frameworks, Last slide = CTA + personal brand.
+          LinkedIn document carousels get 3x more saves than regular posts.
+        ]`;
+    } else if (isFacebook) {
+      carouselInstr = `[
+          FACEBOOK CAROUSEL — 3-5 cards. Format: {"slide_num":1,"heading":"short hook","body":"1-2 lines","design_note":"image/visual suggestion"},
+          Tell a story across cards or show product/service benefits.
+        ]`;
+    } else if (isPinterest) {
+      carouselInstr = `[
+          PINTEREST IDEA PIN — 3-5 steps. Format: {"slide_num":1,"heading":"step title","body":"instruction text","design_note":"tall image, font overlay suggestion"},
+          How-to or step-by-step format works best on Pinterest.
+        ]`;
+    }
+
+    // Thread tweets — Twitter/X only
+    const threadInstr = isTwitter
+      ? `[{"num":1,"tweet":"hook tweet (max 280 chars — bold statement that makes people read thread)"},{"num":2,"tweet":"..."},{"num":3,"tweet":"..."},...] — min 7 tweets, max 12. Each tweet standalone-valuable. Last tweet = CTA + engagement question. Number them like "1/${p==="Twitter/X"?"n":"..."}" for thread feel.`
+      : "null";
+
+    // Hashtag count
+    const htags = d.hashtagCount;
+    const hashtagSlots = htags === 0 ? "[] (no hashtags on this platform)" :
+      htags <= 3 ? `["tag1","tag2","tag3"]` :
+      htags <= 5 ? `["tag1","tag2","tag3","tag4","tag5"]` :
+      `["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8","tag9","tag10"]`;
+
+    // Caption style note per platform
+    let captionNote = "";
+    if (isYouTube) {
+      captionNote = "For YouTube: 'caption' = the video TITLE (60 chars max, keyword-first for SEO). Do NOT write a social media caption.";
+    } else if (isThreads) {
+      captionNote = "Threads: casual, conversational, like texting. Max 500 chars. No hashtags.";
+    } else if (isTwitter) {
+      captionNote = "Twitter: 'caption' = the hook tweet only (max 280 chars). Full thread goes in thread_tweets.";
+    } else if (isPinterest) {
+      captionNote = "Pinterest: SEO keyword-rich description, 100-150 words, searchable terms.";
+    }
+
+    return `    {
+      "id":"${postNum}",
+      "platform":"${p}",
+      "format":"${d.formats[0]}",
+      "title":"string — post title/topic (max 8 words, specific to ${p})",
+      "priority":"Must Post|High Value|Good to Post",
+      "best_day":"string",
+      "best_time":"${d.bestTimes[0]}",
+      "trend_used":"string — which specific trend this rides on ${p}",
+      "why_now":"string — why this specific angle matters THIS week (max 20 words)",
+      "hook":"string — the opening line or on-screen text hook (max 15 words, platform-native for ${p})",
+      "caption":"string — ${captionNote || `full ${p}-native caption, properly formatted with \\n line breaks, minimum 100 words for ${p}`}",
+      "hashtags":${hashtagSlots},
+      "cta":"string — specific CTA tied to this post's content",
+      "script":${scriptInstr},
+      "carousel_slides":${carouselInstr},
+      "thread_tweets":${threadInstr},
+      "posting_checklist":["${p}-specific step 1","step 2","step 3","step 4","step 5"],
+      "engagement_tip":"string — one specific action to take in first 30 min after posting on ${p} to boost reach"
+    }`;
+  }).join(",\n");
+
+  return `You are a world-class content strategist who creates PLATFORM-NATIVE content that is deeply different for every platform. You understand that what goes viral on Instagram will flop on LinkedIn, that YouTube needs SEO-optimised titles not captions, and that each platform has its own culture, algorithm, and audience behaviour.
 
 ## CLIENT BRIEF
 - Brand: ${profile.brandName||profile.name}
@@ -452,82 +543,54 @@ function buildPrompt(profile, prevTitles=[]) {
 - Target Audience: ${profile.audience||"People interested in "+profile.niche}
 - Brand Voice: ${profile.tone||profile.personality||"Engaging, authentic, relatable"}
 - Content Niche: ${profile.niche||profile.industry||"General"}
-- Active Platforms: ${platforms.join(", ")}
+- Active Platforms: ${uniquePlatforms.join(", ")}
 - Avoid: ${profile.avoid||"Nothing specific"}
-${profile.competitors?`- Competitors to Research: ${profile.competitors} — study what they post, find gaps, write angles that differentiate`:""}
-${profile.tagline?`- Tagline: ${profile.tagline}`:""}
-${profile.socialAccounts?.instagram?`- Instagram: @${profile.socialAccounts.instagram.replace("@","")} — research this account's recent posts, engagement style, and what's working/missing`:""}
-${profile.socialAccounts?.linkedin?`- LinkedIn: ${profile.socialAccounts.linkedin} — analyse their LinkedIn presence and content gaps`:""}
-${profile.socialAccounts?.youtube?`- YouTube: ${profile.socialAccounts.youtube} — analyse their channel strategy and content opportunities`:""}
-${profile.socialAccounts?.tiktok?`- TikTok: @${profile.socialAccounts.tiktok.replace("@","")} — research their TikTok content angles`:""}
-${profile.socialAccounts?.twitter?`- Twitter/X: @${profile.socialAccounts.twitter.replace("@","")} — analyse their X presence`:""}
+${profile.competitors?`- Study these competitors for gaps: ${profile.competitors}`:""}
+${profile.tagline?`- Brand Tagline: ${profile.tagline}`:""}
+${profile.socialAccounts?.instagram?`- Their Instagram: @${profile.socialAccounts.instagram.replace("@","")} — research their actual content`:""}
+${profile.socialAccounts?.linkedin?`- Their LinkedIn: ${profile.socialAccounts.linkedin} — analyse their posts`:""}
+${profile.socialAccounts?.youtube?`- Their YouTube: ${profile.socialAccounts.youtube} — study their channel`:""}
 ${prev}
-## PLATFORM INTELLIGENCE
-${platformInstructions}
+## PLATFORM-SPECIFIC RULES (read carefully — each platform is DIFFERENT)
+${platformGuide}
+
+## CRITICAL PLATFORM DIFFERENCES YOU MUST FOLLOW
+- **YouTube** ≠ Instagram Reels. YouTube needs: keyword-first titles (for SEO), long-form video scripts OR YouTube Shorts scripts. NO carousel slides for YouTube. NO Instagram-style captions.
+- **LinkedIn** ≠ Instagram. LinkedIn captions are professional thought-leadership (150-300 words). LinkedIn carousels are Document/PDF posts (professional, data-driven). No reel scripts for LinkedIn text posts.
+- **Instagram** = Reels (short 15-30 sec scripts), Carousels (swipe posts, 5+ slides), Feed posts.
+- **Twitter/X** = Threads (7-12 tweets) or single punchy opinions. No carousel slides.
+- **Threads** = Casual conversational text. No hashtags. No scripts.
+- **TikTok/Snapchat** = Very short video scripts (15-60 sec), trending audio, fast hook.
 
 ## YOUR JOB
-Step 1: Use web_search to find what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Search for:
-- "${mainPlat} trending content ${new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})}"
-- "viral ${(profile.niche.split(",")[0]||"").trim()} content ${mainPlat}"
-- trending hashtags, sounds, formats, memes or conversations in this niche this week
-${profile.competitors?`- Also search what ${profile.competitors.split(",")[0]?.trim()} is posting lately to find gaps you can fill`:""}
-${profile.socialAccounts?.instagram||profile.socialAccounts?.linkedin?`- Search the client's brand "${profile.brandName}" online to understand their current positioning and what content gaps exist`:""}
+Step 1: Use web_search to find what is ACTUALLY TRENDING THIS WEEK in "${profile.niche}" on ${uniquePlatforms.join(" and ")}:
+- Search "trending ${(profile.niche.split(",")[0]||"").trim()} content ${new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})}"
+- Search what's viral on each specific platform this week for this niche
+- Find current hot topics, memes, conversations, or formats in this niche
+${profile.competitors?`- Search what ${profile.competitors.split(",")[0]?.trim()} is posting to find content gaps`:""}
 
-Step 2: Write 3 complete, platform-native posts using what you found. Every post must be deeply researched and hyper-specific to "${profile.niche}" — no generic content.
+Step 2: Write EXACTLY ${uniquePlatforms.length} post${uniquePlatforms.length>1?"s":""} — ONE unique post per platform. Each post must:
+- Be genuinely different from the others — different topic, different angle, different format
+- Sound like it was created by someone who lives on that specific platform
+- Use current trends found in your search
+- Be hyper-specific to "${profile.niche}" — zero generic content
 
-## CONTENT RULES
-- Every caption must open with a PATTERN INTERRUPT — a bold statement, controversial opinion, or specific number that stops the scroll in 0.3 seconds. No greetings, no "Are you...", no questions as openers.
-- Captions must be LONG and valuable — minimum 150 words. Use line breaks every 1-2 sentences. Include specific facts, numbers, or insights. Not fluffy filler.
-- Captions must be platform-native (Instagram caption ≠ LinkedIn post ≠ Twitter thread)
-- Scripts MUST be word-for-word, minimum 180 words, with [DIRECTION: ...] notes for every scene change, text overlay, B-roll cut, and camera action. Write it so someone can read it cold and film immediately.
-- Carousel slides must be complete — EVERY slide's heading AND full body copy written. Minimum 5 slides. Slide 1 = hook, Last slide = strong CTA. Each slide must standalone-valuable.
-- Hooks must create a knowledge gap or open loop the brain is compelled to close
-- Hashtags must be NICHE-SPECIFIC — mix of: 3 broad niche tags, 3 mid-size community tags, 3 micro-niche tags, 1 trending tag. NO generic tags like #love #instagood #viral
-- CTAs must be specific, low-friction, and tied to the post content — not "follow for more" or "link in bio"
-- Content must feel like it was written by a practitioner who lives this niche — insider language, specific examples, real numbers
+## CONTENT QUALITY RULES
+- Every caption: PATTERN INTERRUPT opener (bold stat, controversial opinion, specific number). NO "Are you...", no greetings
+- Captions: platform-native length and format. Specific facts, real numbers, insider knowledge
+- Scripts: word-for-word, with [DIRECTION: ...] notes so anyone can film immediately
+- Hashtags: niche-specific mix (broad + mid + micro). NO generic tags (#love, #viral, #instagood)
+- Each post topic must be DIFFERENT — spread across the best current trends you find
 
 ## RESPONSE FORMAT
-CRITICAL: Return ONLY raw JSON. Start immediately with { — no markdown fences, no preamble, no explanation.
+Return ONLY raw JSON starting with {. No markdown, no explanation, no preamble.
 
 {
   "trends": [
-    {"name":"string","platform":"string","why":"string (max 20 words)","heat":"Hot|Rising|Emerging","source":"what you found in search"}
+    {"name":"string","platform":"string","why":"string (why trending, max 20 words)","heat":"Hot|Rising|Emerging"}
   ],
   "posts": [
-    {
-      "id":"p1",
-      "title":"string (descriptive, max 8 words)",
-      "platform":"${mainPlat}",
-      "format":"${dna.formats[0]}",
-      "priority":"Must Post|High Value|Good to Post",
-      "best_day":"Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday",
-      "best_time":"${dna.bestTimes[0]}",
-      "trend_used":"string — which trend this post rides",
-      "why_now":"string — why posting this THIS week matters (max 20 words)",
-
-      "hook":"string — the opening line/text that stops the scroll (max 15 words)",
-      "caption":"string — full platform-native caption, properly formatted with line breaks using \\n",
-      "hashtags":["t1","t2","t3"${dna.hashtagCount>3?',"t4","t5","t6","t7","t8","t9","t10"':""}],
-      "cta":"string — the call to action at end of caption",
-
-      "script": ${dna.requiresScript || mainPlat==="YouTube" || mainPlat==="Instagram" || mainPlat==="TikTok" || mainPlat==="Snapchat" || mainPlat==="Facebook" || mainPlat==="LinkedIn"
-        ? `"string — complete word-for-word script with [DIRECTIONS IN BRACKETS] for camera, text overlays, b-roll, music cues, on-screen text. Min 150 words. Max 220 words. Every line must be speakable exactly as written."`
-        : "null"},
-
-      "carousel_slides": ${dna.requiresCarousel || mainPlat==="Instagram" || mainPlat==="LinkedIn" || mainPlat==="Facebook"
-        ? `[
-          {"slide_num":1,"heading":"string — slide title (max 8 words)","body":"string — slide copy (2–4 lines)","design_note":"string — visual direction, background, font style, image suggestion"},
-          // ...include ALL slides, min 5 slides for carousels, 4 for LinkedIn docs
-        ] IMPORTANT: Always generate carousel_slides for LinkedIn (it is a document/PDF carousel). null only if the post format is a plain text post or video.`
-        : "null"},
-
-      "thread_tweets": ${mainPlat==="Twitter/X"
-        ? `[{"num":1,"tweet":"string (max 280 chars)"}] — min 6 tweets in thread, max 12. Make each tweet standalone-valuable.`
-        : "null"},
-
-      "posting_checklist":["step 1","step 2","step 3","step 4","step 5"],
-      "engagement_tip":"string — one specific thing to do in first 30 mins after posting to boost reach"
-    }
+${postSchemas}
   ]
 }`;
 }
@@ -657,11 +720,22 @@ function PostCard({post, profile, index}){
   const pColor = getPlatformColor(post.platform);
 
 
+  const isYT = post.platform === "YouTube";
+  const isTW = post.platform === "Twitter/X";
+  const isLI = post.platform === "LinkedIn";
+  const isIG = post.platform === "Instagram";
+  const isTK = post.platform === "TikTok";
+
+  // Platform-specific tab labels and hints
+  const captionLabel = isYT ? "Title & SEO" : "Caption";
+  const captionHint  = isYT ? "Video title + SEO description" : "Copy & paste into your post";
+  const captionIcon  = isYT ? "🔎" : "📋";
+
   const tabs=[
-    {id:"caption", icon:"📋", label:"Caption", hint:"Copy & paste into your post"},
-    ...(post.script?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
-    ...(post.carousel_slides?.length?[{id:"slides", icon:"🎠", label:"Slides", hint:"Each slide for Canva"}]:[]),
-    ...(post.thread_tweets?.length?[{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}]:[]),
+    {id:"caption", icon:captionIcon, label:captionLabel, hint:captionHint},
+    ...(post.script ? [{id:"script", icon:"🎬", label: isYT ? "Video Script" : isLI ? "Video Script" : "Script", hint: isYT ? "YouTube Short or Long-form script" : "Read on camera word-for-word"}] : []),
+    ...(post.carousel_slides?.length ? [{id:"slides", icon: isLI ? "📄" : "🎠", label: isLI ? "Document Slides" : isIG ? "Carousel" : "Slides", hint: isLI ? "LinkedIn Document/PDF carousel" : "Each slide for Canva"}] : []),
+    ...(post.thread_tweets?.length ? [{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}] : []),
     {id:"checklist", icon:"✅", label:"Checklist", hint:"Step-by-step posting guide"},
   ];
 
@@ -771,16 +845,30 @@ function PostCard({post, profile, index}){
         {tab==="caption"&&(
           <div style={{display:"grid",gap:14}}>
 
-            {/* Caption text box */}
+            {/* Caption text box — platform-specific label */}
             <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,overflow:"hidden"}}>
               <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
                 display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                  color:"rgba(255,255,255,0.3)"}}>📝 Caption text — copy this into your post</span>
-                <CopyBtn text={fixText(post.caption)} label="Copy Caption" sm/>
+                  color:"rgba(255,255,255,0.3)"}}>
+                  {isYT?"🔎 YouTube Title (SEO-optimised — 60 chars max)":
+                   isTW?"💬 Hook Tweet (first tweet in thread)":
+                   isLI?"💼 LinkedIn Post Copy":"📝 Caption — copy this into your post"}
+                </span>
+                <CopyBtn text={fixText(post.caption)} label={isYT?"Copy Title":"Copy Caption"} sm/>
               </div>
               <pre style={MONO}>{fixText(post.caption)}</pre>
             </div>
+            {/* YouTube: show thumbnail concept as a separate block */}
+            {isYT && post.hook && (
+              <div style={{background:"rgba(255,0,0,0.05)",border:"1px solid rgba(255,0,0,0.15)",borderRadius:13,overflow:"hidden"}}>
+                <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,0,0,0.1)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,60,60,0.5)"}}>🖼 Thumbnail Concept / Hook</span>
+                  <CopyBtn text={post.hook} label="Copy" sm/>
+                </div>
+                <pre style={MONO}>{post.hook}</pre>
+              </div>
+            )}
 
             {/* CTA */}
             {post.cta&&(
@@ -842,9 +930,19 @@ function PostCard({post, profile, index}){
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
               <span style={{fontSize:20,flexShrink:0}}>🎬</span>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",marginBottom:4}}>How to use this script</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",marginBottom:4}}>
+                  {isYT ? "YouTube Script — Short or Long-form Video" :
+                   isLI ? "LinkedIn Video Script (60-90 sec)" :
+                   isTK ? "TikTok Video Script (15-60 sec)" :
+                   "Reel / Short-form Video Script"}
+                </div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open your camera</strong> → film in portrait (9:16 vertical)<br/>
+                  {isYT ? "YouTube scripts include: Title, thumbnail concept, chapter outline, and full talking script for either a Short (60s) or long-form video (8-15 min). Sections are clearly labelled." :
+                   isLI ? "Speak directly to camera. Bold opening claim first. No background music. Enable subtitles — they're critical for LinkedIn reach." :
+                   "Read exactly as written. [DIRECTIONS] tell you what to show on screen. Film vertically. Hook viewer in first 2 seconds."}
+                </div>
+                {/*placeholder*/}
+                <div style={{display:"none"}}>  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open your camera</strong> → film in portrait (9:16 vertical)<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>2. Read each line</strong> exactly as written — then look at camera<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>3. [DIRECTION: ...]</strong> = action for you (don't say these out loud)<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>4. First 3 seconds</strong> = the hook line — nail this, it stops the scroll
@@ -878,14 +976,26 @@ function PostCard({post, profile, index}){
             {/* Instruction */}
             <div style={{background:"#0a0f1a",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
-              <span style={{fontSize:20,flexShrink:0}}>🎠</span>
+              <span style={{fontSize:20,flexShrink:0}}>{isLI ? "📄" : "🎠"}</span>
               <div>
-                <div style={{fontSize:12,fontWeight:700,color:"#c084fc",marginBottom:4}}>How to turn these into a carousel</div>
+                <div style={{fontSize:12,fontWeight:700,color:"#c084fc",marginBottom:4}}>
+                  {isLI ? "LinkedIn Document Carousel — how to publish" : "Instagram Carousel — how to build in Canva"}
+                </div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open Canva</strong> → search "Instagram Carousel" template<br/>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>2. For each slide</strong> → copy the Heading + Body text → paste in<br/>
+                  {isLI ? (
+                    <span>
+                      <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Create slides in Canva</strong> → search "LinkedIn Document" template<br/>
+                      <strong style={{color:"rgba(255,255,255,0.7)"}}>2. Export as PDF</strong> → upload as "Document" post on LinkedIn (not image!)<br/>
+                      <strong style={{color:"rgba(255,255,255,0.7)"}}>3. LinkedIn PDFs</strong> get 3× more saves than image carousels — always use Document format
+                    </span>
+                  ) : (
+                    <span>
+                      <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open Canva</strong> → search "Instagram Carousel" template<br/>
+                      <strong style={{color:"rgba(255,255,255,0.7)"}}>2. For each slide</strong> → copy the Heading + Body text → paste in<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>3. Design note</strong> = colour/style suggestion for that slide<br/>
                   <strong style={{color:"rgba(255,255,255,0.7)"}}>4. Last slide</strong> = always your CTA / follow prompt
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -1129,7 +1239,7 @@ function Workspace({profile, hKey, onUpgrade}){
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
           system:buildPrompt(profile,prevTitles),
-          messages:[{role:"user",content:`Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Then write 3 complete posts for ${profile.brandName||profile.name}. Return ONLY raw JSON starting with {`}]
+          messages:[{role:"user",content:`Today is ${today}. I need ${platforms.length} completely different post${platforms.length>1?"s":""}, one for EACH of these platforms: ${platforms.join(", ")}. Each post must be genuinely different — different topic, different format, different tone — written specifically for that platform's culture and algorithm. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. For YouTube, write either a YouTube Short script OR a long-form video script with chapters — NOT a Reel script. For LinkedIn, write a professional thought-leadership post — NOT an Instagram caption. Return ONLY raw JSON starting with {`}]
         })
       });
       clearInterval(tmr.current);
@@ -2004,7 +2114,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         system: buildPrompt(profile, []),
-        messages: [{ role: "user", content: `Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${profile.platforms.join(" and ")}. Write 3 complete posts for ${profile.brandName}. Each post MUST have a full word-for-word script (min 180 words) and complete carousel slides if applicable. Return ONLY raw JSON starting with {` }],
+        messages: [{ role: "user", content: `Today is ${today}. Write ${profile.platforms?.length||1} post${(profile.platforms?.length||1)>1?"s":""}, one for EACH platform: ${(profile.platforms||["Instagram"]).join(", ")}. Each must be genuinely different — different topic, different angle, different format. Research what is TRENDING RIGHT NOW in "${profile.niche}" on ${(profile.platforms||["Instagram"]).join(" and ")}. For YouTube: write a proper YouTube script (Short or Long-form), NOT a Reel. For LinkedIn: write thought-leadership, NOT an Instagram caption. Return ONLY raw JSON starting with {` }],
         max_tokens: 6000,
       })
     })
