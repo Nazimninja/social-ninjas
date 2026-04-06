@@ -203,27 +203,31 @@ const PLATFORM_DNA = {
     viralMechanics: "Relatable opinions, share-triggers, Facebook groups cross-posting",
   },
   "YouTube": {
-    formats: ["YouTube Short","Long Video","Community Post"],
-    captionStyle: "YouTube title: 60 chars max, keyword-first. Description: SEO-optimised, 200+ words, timestamps.",
+    formats: ["YouTube Short","Long-Form Video","Community Post"],
+    captionStyle: "VIDEO TITLE (not a social caption): 60 chars max, keyword-first for SEO. Example: 'How I Grew 10K Followers in 30 Days'. Then: SEO description 200+ words with timestamps, keywords in first 2 lines.",
     hashtagCount: 5,
-    hashtagStyle: "5 tags: channel name + 4 searchable topics. No spam.",
-    scriptStyle: "YouTube Short: 45–60 sec. Hook (0–5s) must answer: why should I watch? Payoff must come fast. Long video: AIDA structure.",
-    bestTimes: ["2pm","5pm","8pm"],
-    contentTypes: ["Shorts for discovery","Long-form for authority","Community posts for retention"],
-    viralMechanics: "Search-intent titles, retention hooks, end screen CTAs",
+    hashtagStyle: "5 hashtags: channel topic + 4 searchable keyword tags. No spam.",
+    scriptStyle: "Choose ONE: (A) YouTube Short (60 sec max) — vertical video, hook in first 3 sec, fast delivery, loop-worthy ending. OR (B) Long-Form (8-15 min) — hook story first 60 sec, chapter outline with timestamps, full talking script. Always include [DIRECTION: camera/cut/text] notes. YouTube NEVER uses carousel slides.",
+    bestTimes: ["2pm","5pm","8pm Fri-Sun"],
+    contentTypes: ["Shorts for discovery — always generate first","Long-form for authority and watch time","Community posts for subscriber retention"],
+    viralMechanics: "Keyword-rich titles (search intent), strong thumbnail concept, retention hooks every 2 min, end-screen CTAs",
+    requiresScript: true,
+    requiresCarousel: false,
+    requiresThread: false,
   },
   "LinkedIn": {
-    formats: ["LinkedIn Video", "LinkedIn Carousel Doc", "LinkedIn Post", "LinkedIn Article", "Poll"],
-    captionStyle: "Line 1: bold opinion or surprising stat — no fluff. Data-backed insight. 150–300 words. Short paragraphs (1–2 lines). NO generic hashtag spam. End with a strong opinion-driven CTA.",
+    formats: ["LinkedIn Post","LinkedIn Document Carousel","LinkedIn Video","Poll"],
+    captionStyle: "Line 1: bold opinion OR surprising stat — no fluff, no greetings. Data-backed professional insight. 150–300 words. Short paragraphs 1–2 lines max. This is NOT an Instagram caption — no emoji spam, professional voice. End with a thought-provoking question to drive comments.",
     hashtagCount: 5,
-    hashtagStyle: "5 precise professional hashtags. Industry-specific, not generic. e.g. #GrowthMarketing not #Marketing",
-    scriptStyle: "LinkedIn Video: 60–90 sec. Speak directly to camera, smart casual. Open with a bold claim (0–5s). No music. Subtitles CRITICAL. Structure: Hook claim → proof/story → actionable takeaway → invite comment.",
+    hashtagStyle: "5 precise professional hashtags. Industry-specific. e.g. #GrowthMarketing #B2BSaaS — NOT #viral #love",
+    scriptStyle: "LinkedIn Video (60–90 sec): Speak directly to camera, smart casual. Bold claim in first 5 sec. No background music. Subtitles CRITICAL. Structure: Hook claim → data/proof → actionable takeaway → invite comment. This is NOT a Reel — professional delivery only.",
     bestTimes: ["8am","12pm","5pm Tue–Thu"],
-    contentTypes: ["Video posts get 5× more reach than text","Document carousels drive highest saves","Personal opinion posts 3× engagement","Polls drive massive comment volume"],
-    viralMechanics: "Contrarian takes, personal story + data, comment-bait opinion questions, document carousel saves",
-    requiresScript: true,
+    contentTypes: ["Document/PDF carousels get 3x saves — frameworks and lists perform best","Video posts get 5x reach vs text","Personal founder story + real data = highest engagement","Polls drive massive comment volume"],
+    viralMechanics: "Contrarian professional takes, personal story + hard data, save-worthy frameworks as Document carousels (NOT image carousels)",
+    requiresScript: false,
     requiresCarousel: true,
     requiresThread: false,
+    isLinkedIn: true,
   },
   "Twitter/X": {
     formats: ["Tweet Thread","Single Tweet","Reply Hook","Quote Tweet"],
@@ -475,6 +479,14 @@ ${profile.socialAccounts?.instagram||profile.socialAccounts?.linkedin?`- Search 
 
 Step 2: Write 3 complete, platform-native posts using what you found. Every post must be deeply researched and hyper-specific to "${profile.niche}" — no generic content.
 
+## PLATFORM-SPECIFIC RULES (NON-NEGOTIABLE)
+- YouTube: "caption" field = SEO video TITLE (60 chars, keyword-first). No carousel_slides. Script = YouTube Short (60 sec) OR Long-Form with chapter outline. 
+- LinkedIn: Professional thought-leadership tone. "caption" = 150-300 word post (bold opinion opening). carousel_slides = Document/PDF format (6-8 data-driven slides). NOT Instagram-style.
+- Instagram/TikTok: Short reel scripts (15-30 sec). Carousel = swipe posts (5+ slides). Visual hooks.
+- Twitter/X: thread_tweets only. No carousel. No scripts.
+- Threads: Short conversational text only. No hashtags. No scripts.
+- Each post must cover a DIFFERENT topic — never repeat the same angle across posts.
+
 ## CONTENT RULES
 - Every caption must open with a PATTERN INTERRUPT — a bold statement, controversial opinion, or specific number that stops the scroll in 0.3 seconds. No greetings, no "Are you...", no questions as openers.
 - Captions must be LONG and valuable — minimum 150 words. Use line breaks every 1-2 sentences. Include specific facts, numbers, or insights. Not fluffy filler.
@@ -494,40 +506,34 @@ CRITICAL: Return ONLY raw JSON. Start immediately with { — no markdown fences,
     {"name":"string","platform":"string","why":"string (max 20 words)","heat":"Hot|Rising|Emerging","source":"what you found in search"}
   ],
   "posts": [
-    {
-      "id":"p1",
-      "title":"string (descriptive, max 8 words)",
-      "platform":"${mainPlat}",
-      "format":"${dna.formats[0]}",
+    ${platforms.map((p,i) => {
+      const d = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
+      const needsScript  = d.requiresScript  !== false && p !== "Threads" && p !== "Twitter/X" && p !== "Pinterest";
+      const needsCarousel= d.requiresCarousel !== false && p !== "YouTube" && p !== "Twitter/X" && p !== "Threads" && p !== "TikTok" && p !== "Snapchat";
+      const needsThread  = p === "Twitter/X";
+      const isYT = p === "YouTube";
+      const isLI = p === "LinkedIn";
+      const htags = d.hashtagCount > 5 ? ',"t4","t5","t6","t7","t8","t9","t10"' : d.hashtagCount > 3 ? ',"t4","t5"' : '';
+      return `{
+      "id":"p${i+1}",
+      "platform":"${p}",
+      "format":"${d.formats[0]}",
+      "title":"string — post title/topic (max 8 words, specific to ${p})",
       "priority":"Must Post|High Value|Good to Post",
-      "best_day":"Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday",
-      "best_time":"${dna.bestTimes[0]}",
-      "trend_used":"string — which trend this post rides",
-      "why_now":"string — why posting this THIS week matters (max 20 words)",
-
-      "hook":"string — the opening line/text that stops the scroll (max 15 words)",
-      "caption":"string — full platform-native caption, properly formatted with line breaks using \\n",
-      "hashtags":["t1","t2","t3"${dna.hashtagCount>3?',"t4","t5","t6","t7","t8","t9","t10"':""}],
-      "cta":"string — the call to action at end of caption",
-
-      "script": ${dna.requiresScript || mainPlat==="YouTube" || mainPlat==="Instagram" || mainPlat==="TikTok" || mainPlat==="Snapchat" || mainPlat==="Facebook" || mainPlat==="LinkedIn"
-        ? `"string — complete word-for-word script with [DIRECTIONS IN BRACKETS] for camera, text overlays, b-roll, music cues, on-screen text. Min 150 words. Max 220 words. Every line must be speakable exactly as written."`
-        : "null"},
-
-      "carousel_slides": ${dna.requiresCarousel || mainPlat==="Instagram" || mainPlat==="LinkedIn" || mainPlat==="Facebook"
-        ? `[
-          {"slide_num":1,"heading":"string — slide title (max 8 words)","body":"string — slide copy (2–4 lines)","design_note":"string — visual direction, background, font style, image suggestion"},
-          // ...include ALL slides, min 5 slides for carousels, 4 for LinkedIn docs
-        ] IMPORTANT: Always generate carousel_slides for LinkedIn (it is a document/PDF carousel). null only if the post format is a plain text post or video.`
-        : "null"},
-
-      "thread_tweets": ${mainPlat==="Twitter/X"
-        ? `[{"num":1,"tweet":"string (max 280 chars)"}] — min 6 tweets in thread, max 12. Make each tweet standalone-valuable.`
-        : "null"},
-
-      "posting_checklist":["step 1","step 2","step 3","step 4","step 5"],
-      "engagement_tip":"string — one specific thing to do in first 30 mins after posting to boost reach"
-    }
+      "best_day":"string",
+      "best_time":"${d.bestTimes[0]}",
+      "trend_used":"string — which specific trend this post rides on ${p}",
+      "why_now":"string — why this angle works THIS week on ${p} (max 20 words)",
+      "hook":"string — ${isYT ? 'video title (60 chars max, SEO keyword-first)' : 'opening line that stops scroll on '+p+' (max 15 words)'}",
+      "caption":"string — ${isYT ? 'SEO video description (200+ words, keywords in first 2 lines, timestamps)' : isLI ? 'professional LinkedIn post (150-300 words, bold stat/opinion opening, NOT an Instagram caption)' : 'full '+p+'-native caption with line breaks, min 100 words'}",
+      "hashtags":["t1","t2","t3"${htags}],
+      "cta":"string — specific CTA for ${p}",
+      "script":${needsScript ? `"${isYT ? 'YOUTUBE: Choose Short (60 sec, vertical, hook 0-3s, fast, loop ending) OR Long-Form (full script with chapter outline and timestamps). Include [DIRECTION: camera/cut/text] notes throughout. Min 200 words.' : isLI ? 'LINKEDIN VIDEO (60-90 sec): Bold claim 0-5s, data/proof, actionable takeaway, invite comment. No music. Subtitles critical. Professional delivery. [DIRECTION] notes for each section. Min 150 words.' : 'Word-for-word script with [DIRECTION: camera/text/action] every 5-10 sec. Hook in first 2 sec. Min 150 words. Speakable as written.'}"`  : '"null"'},
+      "carousel_slides":${needsCarousel ? `[{"slide_num":1,"heading":"string","body":"string — ${isLI ? 'LinkedIn Document carousel (PDF format). Slide 1=title card, slides 2-6=data/framework/insight, last slide=CTA+follow. Professional design.' : 'Instagram/Facebook carousel. Slide 1=bold hook, slides 2-4=value, last slide=CTA. Each slide save-worthy.'}","design_note":"string"}]` : '"null"'},
+      "thread_tweets":${needsThread ? '[{"num":1,"tweet":"string (max 280 chars)"},{"num":2,"tweet":"..."}] — min 7 tweets, last tweet=CTA. Each tweet standalone-valuable. Number them like 1/8.' : '"null"'},
+      "posting_checklist":["${p}-specific step 1","step 2","step 3","step 4","step 5"],
+      "engagement_tip":"string — one specific action in first 30 min after posting on ${p} to boost reach"
+    }`;}).join(',\n    ')}
   ]
 }`;
 }
@@ -1129,7 +1135,7 @@ function Workspace({profile, hKey, onUpgrade}){
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
           system:buildPrompt(profile,prevTitles),
-          messages:[{role:"user",content:`Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Then write 3 complete posts for ${profile.brandName||profile.name}. Return ONLY raw JSON starting with {`}]
+          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Write ${platforms.length} post${platforms.length>1?"s — one per platform, each on a DIFFERENT topic and angle":""}. Each post must be deeply specific to "${profile.niche}", use current trends, and be genuinely different from the others. Return ONLY raw JSON starting with {`}]
         })
       });
       clearInterval(tmr.current);
@@ -2004,7 +2010,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         system: buildPrompt(profile, []),
-        messages: [{ role: "user", content: `Today is ${today}. Research what is trending RIGHT NOW in "${profile.niche}" on ${profile.platforms.join(" and ")}. Write 3 complete posts for ${profile.brandName}. Each post MUST have a full word-for-word script (min 180 words) and complete carousel slides if applicable. Return ONLY raw JSON starting with {` }],
+        messages: [{ role: "user", content: `Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${(profile.platforms||["Instagram"])[0]}. Write 3 complete posts — all 3 for ${(profile.platforms||["Instagram"])[0]} only, each on a DIFFERENT topic and angle. Use real current trends you find. Each post needs a full word-for-word script (min 180 words) and carousel slides if applicable for this platform. Return ONLY raw JSON starting with {` }],
         max_tokens: 6000,
       })
     })
