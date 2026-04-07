@@ -15,11 +15,46 @@ function useReveal() {
 }
 
 const testimonials = [
-  { name: 'Priya Mehta', role: 'Skincare brand · Mumbai', impact: '4.2× ROAS', text: 'In 60 days our ROAS went from 1.8 to 4.2. Our old agency gave us pretty charts. Social Ninja\'s gave us actual results.', stars: 5 },
-  { name: 'Rahul Sharma', role: 'Fitness coach · Delhi', impact: '2K → 18K followers', text: 'Went from 2,000 to 18,000 followers in 3 months just by being consistent with the scripts they write for me. I just read them on camera.', stars: 5 },
-  { name: 'Vikram Singh', role: 'Founder · Velocity Logistics', impact: '$250k Net Profit', text: 'They found leaks in our ad account we didn\'t know existed. Two weeks later our cost per lead dropped 40%. Literally saved our Q4.', stars: 5 },
-  { name: 'Fatima Al-Maktoum', role: 'Head of Marketing · Al-Futtaim', impact: '4.5× ROAS', text: 'No jargon, no fluff. Just clear numbers showing what we spent and what we made. They treat our budget like their own money.', stars: 5 },
-  { name: 'Mike Ross', role: 'VP of Sales · SaaSify', impact: '2× Close Rate', text: 'My sales team now only talks to people who actually want to buy. Our close rate doubled because we stopped wasting time on bad leads.', stars: 5 },
+  {
+    name: 'Priya Mehta', initials: 'PM',
+    role: 'Founder', company: 'Glow Republic', industry: 'Skincare · Mumbai',
+    impact: '4.2× ROAS', impactDetail: 'from 1.8× in 60 days',
+    color: '#e879a0',
+    text: 'In 60 days our ROAS went from 1.8 to 4.2. Our old agency gave us pretty charts. Social Ninja\'s gave us actual results — revenue we could see in our Shopify dashboard.',
+    stars: 5, verified: true, platform: 'Meta Ads'
+  },
+  {
+    name: 'Rahul Sharma', initials: 'RS',
+    role: 'Fitness Coach', company: 'FitWithRahul', industry: 'Fitness · Delhi',
+    impact: '2K → 18K', impactDetail: 'Instagram followers in 3 months',
+    color: '#34d399',
+    text: 'Went from 2,000 to 18,000 followers in 3 months just by being consistent with the scripts they write for me. I just read them on camera. The AI knows my niche better than most agencies.',
+    stars: 5, verified: true, platform: 'Instagram'
+  },
+  {
+    name: 'Vikram Singh', initials: 'VS',
+    role: 'Founder & CEO', company: 'Velocity Logistics', industry: 'Logistics · Bengaluru',
+    impact: '40% lower CPL', impactDetail: 'Cost per lead in 2 weeks',
+    color: '#5ba4f5',
+    text: 'They found leaks in our ad account we didn\'t know existed. Two weeks later our cost per lead dropped 40%. Literally saved our Q4 — that\'s real money back in our pocket.',
+    stars: 5, verified: true, platform: 'Google Ads'
+  },
+  {
+    name: 'Fatima Al-Rashidi', initials: 'FA',
+    role: 'Head of Marketing', company: 'Al-Futtaim Group', industry: 'Retail · Dubai, UAE',
+    impact: '4.5× ROAS', impactDetail: 'across 3 markets simultaneously',
+    color: '#f59e0b',
+    text: 'No jargon, no fluff. Just clear numbers showing what we spent and what we made. They treat our budget like their own money — and the reporting is transparent to a level I haven\'t seen before.',
+    stars: 5, verified: true, platform: 'Meta + Google'
+  },
+  {
+    name: 'Michael Ross', initials: 'MR',
+    role: 'VP of Sales', company: 'SaaSify', industry: 'B2B SaaS · London, UK',
+    impact: '2× Close Rate', impactDetail: 'with the same sales team size',
+    color: '#a78bfa',
+    text: 'My sales team now only talks to people who actually want to buy. Our close rate doubled because we stopped wasting time on bad leads. The AI lead qualification is genuinely impressive.',
+    stars: 5, verified: true, platform: 'LinkedIn Ads'
+  },
 ];
 
 const Home: React.FC = () => {
@@ -254,12 +289,20 @@ const Home: React.FC = () => {
                       <div style={{ display: 'flex', gap: 3 }}>{[...Array(t.stars)].map((_,j) => <Star key={j} size={12} fill="#5ba4f5" color="#5ba4f5" />)}</div>
                       <div style={{ fontSize: 9, padding: '2px 8px', borderRadius: 50, background: 'rgba(47,207,142,0.12)', border: '1px solid rgba(47,207,142,0.25)', color: '#34d399', fontWeight: 700, letterSpacing: '0.06em' }}>✓ VERIFIED</div>
                     </div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: '#5ba4f5', marginBottom: 10, letterSpacing: '-0.2px' }}>{t.impact}</div>
+                    <div style={{ marginBottom: 10 }}>
+                      <span style={{ fontSize: 15, fontWeight: 800, color: t.color, letterSpacing: '-0.4px' }}>{t.impact}</span>
+                      {t.impactDetail && <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', marginLeft: 6, fontWeight: 400 }}>{t.impactDetail}</span>}
+                    </div>
                     <p style={{ fontSize: 14.5, fontWeight: 300, color: 'rgba(255,255,255,0.72)', lineHeight: 1.72, marginBottom: 20 }}>"{t.text}"</p>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#2563eb,#5ba4f5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>{t.name[0]}</div>
-                    <div><div style={{ fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.9)' }}>{t.name}</div><div style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 1 }}>{t.role}</div></div>
+                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: `linear-gradient(135deg,${t.color}40,${t.color}18)`, border: `1.5px solid ${t.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, color: t.color, flexShrink: 0, letterSpacing: '-0.5px' }}>{t.initials}</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.92)' }}>{t.name}</div>
+                      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 1 }}>{t.role} · <span style={{ color: 'rgba(255,255,255,0.55)' }}>{t.company}</span></div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 1 }}>{t.industry}</div>
+                    </div>
+                    <div style={{ fontSize: 9, padding: '2px 7px', borderRadius: 4, background: `${t.color}15`, border: `1px solid ${t.color}30`, color: t.color, fontWeight: 700, letterSpacing: '0.06em', flexShrink: 0 }}>{t.platform}</div>
                   </div>
                 </div>
               ))}

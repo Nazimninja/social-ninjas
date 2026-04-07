@@ -162,6 +162,17 @@ const PrivacyPolicy: React.FC = () => {
                         </div>
                     </section>
 
+                    {/* Link to Terms */}
+                    <div className="bg-brand-surface border border-white/5 p-6 rounded-2xl flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <p className="text-white font-bold mb-1">Also read our Terms of Service</p>
+                            <p className="text-neutral-500 text-sm">Understand your rights, payment terms, and legal obligations when using our services.</p>
+                        </div>
+                        <a href="/terms" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-sm font-bold hover:bg-brand-primary/20 transition-colors">
+                            Terms of Service →
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>

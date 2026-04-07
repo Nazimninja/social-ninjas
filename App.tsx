@@ -1,6 +1,6 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -21,6 +21,7 @@ const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail'));
 const Careers = lazy(() => import('./pages/Careers'));
 
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
@@ -96,6 +97,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/admin" element={<PageTransition><Admin /></PageTransition>} />
 
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+        <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>

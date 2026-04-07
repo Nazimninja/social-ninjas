@@ -121,6 +121,7 @@ const Footer: React.FC = () => {
                 { label: 'Contact', path: '/contact' },
                 { label: 'Careers', path: '/careers' },
                 { label: 'Privacy Policy', path: '/privacy' },
+                { label: 'Terms of Service', path: '/terms' },
               ].map(({ label, path }) => (
                 <li key={label}>
                   <Link to={path} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
@@ -141,6 +142,19 @@ const Footer: React.FC = () => {
           <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, fontWeight: 400 }}>
             © {new Date().getFullYear()} Social Ninja's. All rights reserved.
           </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <Link to="/privacy" style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textDecoration: 'none', transition: 'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color='rgba(255,255,255,0.6)')}
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,0.3)')}>
+              Privacy Policy
+            </Link>
+            <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display:'inline-block' }} />
+            <Link to="/terms" style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textDecoration: 'none', transition: 'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color='rgba(255,255,255,0.6)')}
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,0.3)')}>
+              Terms of Service
+            </Link>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {['Dubai', 'India'].map((city, i) => (
               <span key={city} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
