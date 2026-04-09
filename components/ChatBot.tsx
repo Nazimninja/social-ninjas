@@ -127,7 +127,7 @@ const ChatBot: React.FC = () => {
 
       // 1. Send Data to FormSubmit via AJAX
       try {
-        await fetch("https://formsubmit.co/ajax/nazim@socialninjas.in", {
+        await fetch("https://formsubmit.co/ajax/info@socialninjas.in", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import twilio from 'twilio';
+import { GoogleGenAI } from '@google/genai';
 
 dotenv.config();
 
@@ -274,8 +275,8 @@ Your goal is to be helpful, concise, authoritative, and friendly. Answer questio
 Key Info:
 - Services: Content Studio (AI content generation), Lead Automation (Custom chatbots & CRM), Paid Ads (Meta/Google).
 - Pricing (Content Studio): Starter ₹2,999/mo, Growth ₹5,499/mo, Pro ₹8,999/mo.
-- Contact: If they want to speak to a human or engineer, direct them to email hello@socialninjas.com or use the /contact page.
-Do NOT reveal you are an AI from Anthropic, you are 'Social Ninja's AI Assistant'. Provide short, conversational answers.`;
+- Contact: If they want to speak to a human or engineer, direct them to email info@socialninjas.in or use the /contact page.
+Do NOT reveal you are an AI, you are 'Social Ninja's AI Assistant'. Provide short, conversational answers.`;
 
         const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
@@ -285,8 +286,8 @@ Do NOT reveal you are an AI from Anthropic, you are 'Social Ninja's AI Assistant
                 "anthropic-version": "2023-06-01"
             },
             body: JSON.stringify({
-                model: "claude-3-5-sonnet-20241022",
-                max_tokens: 500,
+                model: "claude-3-haiku-20240307",
+                max_tokens: 1024,
                 system: systemPrompt,
                 messages: req.body.messages
             })
@@ -298,7 +299,7 @@ Do NOT reveal you are an AI from Anthropic, you are 'Social Ninja's AI Assistant
         }
 
         const data = await anthropicRes.json();
-        res.json(data);
+        res.json({ content: [{ text: data.content[0].text }] });
     } catch (error) {
         console.error("AI Chat Error:", error);
         res.status(500).json({ error: "Failed to communicate with AI chat provider" });

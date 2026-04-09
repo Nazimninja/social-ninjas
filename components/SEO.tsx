@@ -48,7 +48,7 @@ const SEO: React.FC<SEOProps> = ({
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer support",
-      "email": "hello@socialninjas.in",
+      "email": "info@socialninjas.in",
       "areaServed": ["IN", "AE", "US", "GB"],
       "availableLanguage": ["English", "Hindi"]
     },

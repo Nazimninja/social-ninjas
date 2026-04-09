@@ -2232,7 +2232,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
   const [verifyingOtp,setVerifyingOtp]=useState(false);
   const [otpSessionId, setOtpSessionId] = useState(""); // 2Factor session ID
 
-  const SUPPORT_EMAIL = "hello@socialninjas.in";
+  const SUPPORT_EMAIL = "info@socialninjas.in";
   const SUPPORT_INSTAGRAM = "https://www.instagram.com/socialninja.s/";
 
   const submitDetails=async()=>{

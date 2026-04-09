@@ -218,7 +218,7 @@ const Terms: React.FC = () => {
                         </p>
                         <div className="space-y-2 text-sm">
                             <p><strong className="text-white">Email:</strong> <a href="mailto:legal@socialninjas.in" className="text-brand-primary hover:underline">legal@socialninjas.in</a></p>
-                            <p><strong className="text-white">General:</strong> <a href="mailto:hello@socialninjas.in" className="text-brand-primary hover:underline">hello@socialninjas.in</a></p>
+                            <p><strong className="text-white">General:</strong> <a href="mailto:info@socialninjas.in" className="text-brand-primary hover:underline">info@socialninjas.in</a></p>
                             <p><strong className="text-white">Entity:</strong> Social Ninja's Digital Agency, India</p>
                         </div>
                         <div className="mt-6 flex gap-4 flex-wrap">

@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
                 { Icon: Instagram, href: 'https://www.instagram.com/socialninja.s/', label: 'Instagram' },
                 { Icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61553674457871', label: 'Facebook' },
                 { Icon: Linkedin, href: 'https://www.linkedin.com/company/99078419/', label: 'LinkedIn' },
-                { Icon: Mail, href: 'mailto:hello@socialninjas.in', label: 'Email' },
+                { Icon: Mail, href: 'mailto:info@socialninjas.in', label: 'Email' },
                 { Icon: Phone, href: 'tel:+918892587979', label: 'Phone' },
               ].map(({ Icon, href, label }) => (
                 <a key={label} href={href}

@@ -94,7 +94,7 @@ const Contact: React.FC = () => {
 
             <div className="reveal d3" style={{display:'flex',flexDirection:'column',gap:18}}>
               {[
-                {icon:Mail,label:'Email',val:'hello@socialninjas.in',href:'mailto:hello@socialninjas.in'},
+                {icon:Mail,label:'Email',val:'info@socialninjas.in',href:'mailto:info@socialninjas.in'},
                 {icon:Phone,label:'Instagram',val:'@socialninja.s',href:'https://www.instagram.com/socialninja.s/'},
                 {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
               ].map(({icon:Ico,label,val,href})=>(

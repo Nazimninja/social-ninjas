@@ -11,11 +11,11 @@ const ContactWidget: React.FC = () => {
         <div className="flex flex-col gap-2 animate-fade-in-up">
           {/* Email */}
           <a
-            href="mailto:nazim@socialninjas.in"
+            href="mailto:info@socialninjas.in"
             style={{display:"flex",alignItems:"center",gap:8,background:"rgba(11,20,34,0.92)",backdropFilter:"blur(24px)",border:"1px solid rgba(91,164,245,0.2)",color:"rgba(255,255,255,0.85)",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
           >
             <Mail size={14} style={{color:"#5ba4f5"}} />
-            nazim@socialninjas.in
+            info@socialninjas.in
           </a>
           {/* Instagram */}
           <a
