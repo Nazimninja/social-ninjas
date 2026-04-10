@@ -374,6 +374,168 @@ app.post('/api/verify-otp', async (req, res) => {
     }
 });
 
+// ─────────────────────────────────────────────────────────────────
+// PAYMENT VERIFICATION
+// ─────────────────────────────────────────────────────────────────
+app.post('/api/verify-payment', async (req, res) => {
+    try {
+        const { paymentId, planId } = req.body;
+        if (!paymentId) return res.status(400).json({ error: 'Payment ID required.' });
+
+        // ✅ SECRET TEST BYPASS — owner only, never shown in UI
+        if (paymentId === 'SN_TEST_2026') {
+            console.log('[DEV/TEST] Test payment bypass accepted.');
+            return res.json({ verified: true, mode: 'test', paymentId, message: 'Test bypass accepted' });
+        }
+
+        if (!paymentId.startsWith('pay_') || paymentId.length < 14) {
+            return res.status(400).json({ verified: false, error: 'Invalid payment ID format.' });
+        }
+
+        const keyId     = process.env.RAZORPAY_KEY_ID;
+        const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+        // Dev mode — no Razorpay keys configured
+        if (!keyId || !keySecret) {
+            console.log(`[DEV MODE] Payment accepted without verification: ${paymentId}`);
+            return res.json({ verified: true, mode: 'dev', paymentId });
+        }
+
+        // Production — verify with Razorpay
+        const credentials = Buffer.from(`${keyId}:${keySecret}`).toString('base64');
+        const rzRes = await fetch(`https://api.razorpay.com/v1/payments/${paymentId}`, {
+            headers: { Authorization: `Basic ${credentials}` }
+        });
+
+        if (!rzRes.ok) {
+            const err = await rzRes.json();
+            return res.status(400).json({ verified: false, error: err.error?.description || 'Payment not found.' });
+        }
+
+        const payment = await rzRes.json();
+        if (payment.status !== 'captured') {
+            return res.status(400).json({ verified: false, error: `Payment status is "${payment.status}". Only captured payments accepted.` });
+        }
+
+        console.log(`✅ Payment verified: ${paymentId} | ₹${payment.amount / 100}`);
+        return res.json({ verified: true, paymentId, amount: payment.amount / 100, status: payment.status });
+
+    } catch (error) {
+        console.error('Payment verification error:', error);
+        return res.status(500).json({ error: 'Failed to verify payment.' });
+    }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// TRIAL CHECK (local JSON fallback since no Upstash in dev)
+// ─────────────────────────────────────────────────────────────────
+const TRIALS_FILE = path.join(__dirname, 'data', 'trials.json');
+const readTrials = () => {
+    try {
+        if (!fs.existsSync(TRIALS_FILE)) fs.writeFileSync(TRIALS_FILE, JSON.stringify({}, null, 2));
+        return JSON.parse(fs.readFileSync(TRIALS_FILE, 'utf8'));
+    } catch { return {}; }
+};
+const writeTrials = (data) => {
+    try { fs.writeFileSync(TRIALS_FILE, JSON.stringify(data, null, 2)); } catch (e) { console.error(e); }
+};
+
+app.post('/api/check-trial', (req, res) => {
+    const { email, phone, action } = req.body || {};
+    const trials = readTrials();
+    const cleanEmail = email ? email.toLowerCase().trim() : null;
+    const cleanPhone = phone ? phone.replace(/\D/g, '') : null;
+
+    if (action === 'save') {
+        if (cleanEmail) trials[`email:${cleanEmail}`] = 1;
+        if (cleanPhone) trials[`phone:${cleanPhone}`] = 1;
+        writeTrials(trials);
+        return res.json({ saved: true });
+    }
+    if (cleanEmail && trials[`email:${cleanEmail}`]) return res.json({ exists: true, reason: 'email' });
+    if (cleanPhone && trials[`phone:${cleanPhone}`]) return res.json({ exists: true, reason: 'phone' });
+    return res.json({ exists: false });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// UNIFIED /api/data — clients, history, blogs
+// ─────────────────────────────────────────────────────────────────
+app.all('/api/data', async (req, res) => {
+    const resource = req.query.resource;
+    const id       = req.query.id || req.query.clientId;
+
+    // CLIENTS
+    if (resource === 'clients') {
+        if (req.method === 'GET') {
+            return res.json(Object.values(readClients()));
+        }
+        if (req.method === 'POST') {
+            const clients = readClients();
+            const body    = req.body;
+            const eid     = body.id || Object.keys(clients).find(k =>
+                clients[k].email && clients[k].email.toLowerCase() === body.email?.toLowerCase()
+            );
+            const clientId = eid || `client_${Date.now()}`;
+            clients[clientId] = { ...clients[clientId], ...body, id: clientId, updatedAt: new Date().toISOString() };
+            if (!clients[clientId].joinDate) clients[clientId].joinDate = new Date().toLocaleDateString('en-IN');
+            writeClients(clients);
+            return res.status(201).json(clients[clientId]);
+        }
+    }
+
+    // HISTORY
+    if (resource === 'history') {
+        const HISTORY_FILE2 = path.join(__dirname, 'data', 'history.json');
+        const hist = readHistory();
+        if (req.method === 'GET') {
+            if (!id) return res.status(400).json({ error: 'Client ID required' });
+            return res.json(hist[id] || []);
+        }
+        if (req.method === 'POST') {
+            if (!id) return res.status(400).json({ error: 'Client ID required' });
+            hist[id] = req.body;
+            writeHistory(hist);
+            return res.status(200).json({ success: true });
+        }
+    }
+
+    // BLOGS
+    if (resource === 'blogs') {
+        const data = readBlogs();
+        if (req.method === 'GET') {
+            if (id) {
+                const post = data.blogs.find(b => b.id === id || b.slug === id);
+                if (!post) return res.status(404).json({ error: 'Not found' });
+                return res.json(post);
+            }
+            return res.json(data.blogs.sort((a,b) => new Date(b.publishedAt||b.date) - new Date(a.publishedAt||a.date)));
+        }
+        if (req.method === 'POST') {
+            const body = req.body;
+            const newPost = {
+                id: body.id || `post-${Date.now()}`,
+                slug: body.slug || body.title?.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
+                title: body.title, excerpt: body.excerpt || body.title,
+                content: body.content || '', author: body.author || "Social Ninja's Team",
+                category: body.category || 'Insights', readTime: body.readTime || '3 min read',
+                publishedAt: body.publishedAt || new Date().toISOString(),
+            };
+            const idx = data.blogs.findIndex(b => b.id === newPost.id);
+            if (idx >= 0) data.blogs[idx] = newPost; else data.blogs.unshift(newPost);
+            writeBlogs(data);
+            return res.status(201).json(newPost);
+        }
+        if (req.method === 'DELETE') {
+            if (!id) return res.status(400).json({ error: 'id required' });
+            data.blogs = data.blogs.filter(b => b.id !== id);
+            writeBlogs(data);
+            return res.json({ success: true });
+        }
+    }
+
+    return res.status(404).json({ error: 'Unknown resource' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

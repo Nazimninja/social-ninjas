@@ -1,6 +1,6 @@
 window.goToApp = function(plan) {
   // Redirect to the main web app with the chosen plan pre-selected
-  const APP_URL = '/#/app/content-studio'; // Use the HashRouter app url
+  const APP_URL = '/app/content-studio'; // Use the HashRouter app url
   const params = plan ? '?plan=' + plan : '';
   
   // Show a brief redirect message

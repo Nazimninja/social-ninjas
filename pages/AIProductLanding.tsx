@@ -255,7 +255,7 @@ const AIProductLanding: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <button onClick={() => handleNavigate(`/#/app/content-studio?plan=${pl.name.toLowerCase()}`)} className="btn-primary" style={{ width: '100%', fontSize: 14, padding: '13px 0', background: pl.popular ? `linear-gradient(135deg,${p.color}cc,${p.color})` : undefined }}>Get Started →</button>
+                <button onClick={() => handleNavigate(`/app/content-studio?plan=${pl.name.toLowerCase()}`)} className="btn-primary" style={{ width: '100%', fontSize: 14, padding: '13px 0', background: pl.popular ? `linear-gradient(135deg,${p.color}cc,${p.color})` : undefined }}>Get Started →</button>
               </div>
             ))}
           </div>

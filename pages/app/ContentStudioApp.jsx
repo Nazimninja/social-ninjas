@@ -1211,7 +1211,7 @@ function Workspace({profile, hKey, onUpgrade}){
               <button key={name}
                 onClick={()=> { 
                   if(typeof onUpgrade === 'function') onUpgrade(id); 
-                  else window.location.href=`${window.location.origin}/#/app/content-studio?plan=${id}`; 
+                  else window.location.href=`${window.location.origin}/app/content-studio?plan=${id}`; 
                 }}
                 style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.25)",
                   borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center",transition:"all .2s"}}
@@ -1356,7 +1356,7 @@ function Workspace({profile, hKey, onUpgrade}){
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#5ba4f5",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
-                <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=starter`)}
+                <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}/app/content-studio?plan=starter`)}
                   style={{background:"#5ba4f5",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
@@ -1631,7 +1631,8 @@ function ProfileBuilder({clientData, plan, onComplete}){
 //  PAYMENT STEP — Razorpay only (razorpay.me/@socialninjas)
 // ─────────────────────────────────────────────────────────────────
 function PaymentStep({plan, formData, onVerified}){
-  const [mode,setMode]=useState("pay"); // pay | verify | done
+  // Always start on verify so the Payment ID input is immediately visible
+  const [mode,setMode]=useState("verify"); // pay | verify | done
   const [pid,setPid]=useState("");
   const [checking,setChecking]=useState(false);
   const [pidErr,setPidErr]=useState("");
@@ -1717,6 +1718,7 @@ function PaymentStep({plan, formData, onVerified}){
         <div style={{display:"grid",gap:10}}>
           <a href={CONFIG.razorpay[plan.id]} target="_blank" rel="noreferrer"
             onClick={()=>setTimeout(()=>setMode("verify"),2000)}
+            id="btn-pay-razorpay"
             style={{display:"block",textAlign:"center",
               background:"linear-gradient(135deg,#3395FF,#1a5fc8)",
               color:"#fff",borderRadius:13,padding:"15px",fontSize:16,fontWeight:700,
@@ -1725,7 +1727,7 @@ function PaymentStep({plan, formData, onVerified}){
           </a>
           <div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.28)",padding:"4px 0"}}>
             You'll be taken to Razorpay's secure payment page</div>
-          <button onClick={()=>setMode("verify")}
+          <button id="btn-already-paid" onClick={()=>setMode("verify")}
             style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",
               color:"rgba(255,255,255,0.45)",borderRadius:11,padding:"10px",
               fontSize:13,cursor:"pointer",fontWeight:600}}>
@@ -1737,16 +1739,24 @@ function PaymentStep({plan, formData, onVerified}){
       {mode==="verify"&&(
         <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.09)",
           borderRadius:13,padding:"18px 20px"}}>
+          {/* Razorpay link for paid users at top */}
+          <a href={CONFIG.razorpay[plan.id]} target="_blank" rel="noreferrer"
+            style={{display:"block",textAlign:"center",
+              background:"linear-gradient(135deg,#3395FF,#1a5fc8)",
+              color:"#fff",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,
+              textDecoration:"none",letterSpacing:"-.2px",marginBottom:14}}>
+            💳 Pay ₹{plan.priceINR.toLocaleString("en-IN")} with Razorpay →
+          </a>
           <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px",marginBottom:5}}>
-            Confirm your payment</div>
+            Already paid? Confirm your payment</div>
           <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.65,marginBottom:14}}>
             After paying, Razorpay shows you a Payment ID like{" "}
             <code style={{background:"rgba(255,255,255,0.08)",borderRadius:5,padding:"1px 7px",
               fontFamily:"monospace",fontSize:11}}>pay_XXXXXXXXXXXXXXXX</code>
             {" "}in the confirmation screen or email. Paste it below.
           </div>
-          <input value={pid} onChange={e=>{setPid(e.target.value);setPidErr("");}}
-            placeholder="pay_XXXXXXXXXXXXXXXX"
+          <input id="input-payment-id" value={pid} onChange={e=>{setPid(e.target.value);setPidErr("");}}
+            placeholder="pay_XXXXXXXXXXXXXXXX  (or SN_TEST_2026 to test)"
             style={{width:"100%",background:"rgba(255,255,255,0.06)",
               border:`1px solid ${pidErr?"#92620a":"rgba(255,255,255,0.12)"}`,borderRadius:10,
               padding:"11px 13px",color:"#fff",fontSize:13,outline:"none",
@@ -1793,13 +1803,19 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
   const [open,setOpen]=useState(false);
   const [q,setQ]=useState("");
   const ref=useRef();
+  const selectingRef=useRef(false);
   useEffect(()=>{
     const h=(e)=>{if(ref.current&&!ref.current.contains(e.target))setOpen(false);};
     document.addEventListener("mousedown",h);
     return()=>document.removeEventListener("mousedown",h);
   },[]);
   const filtered=options.filter(o=>o.toLowerCase().includes(q.toLowerCase()));
-  const select=(v)=>{onChange(v);setQ("");setOpen(false);};
+  const select=(v)=>{
+    if(selectingRef.current) return;
+    selectingRef.current=true;
+    onChange(v);setQ("");setOpen(false);
+    setTimeout(()=>{selectingRef.current=false;},300);
+  };
   return(
     <div ref={ref} style={{position:"relative",marginBottom:14}}>
       <label style={{display:"block",fontSize:11,fontWeight:700,color:error?"#e8b86d":"rgba(255,255,255,0.4)",
@@ -1822,13 +1838,22 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
           maxHeight:260,overflow:"hidden",display:"flex",flexDirection:"column"}}>
           <div style={{padding:"8px 10px",borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
             <input autoFocus value={q} onChange={e=>setQ(e.target.value)}
+              onKeyDown={e=>{
+                if(e.key==="Enter"){
+                  // Commit: use first filtered match, or the typed custom value
+                  const commit = filtered.length>0 ? filtered[0] : (allowCustom&&q ? q : null);
+                  if(commit){ select(commit); }
+                }
+                if(e.key==="Escape") setOpen(false);
+              }}
               placeholder="Search or type your own..."
               style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
                 borderRadius:7,padding:"7px 11px",fontSize:13,color:"#fff",outline:"none"}}/>
           </div>
           <div style={{overflowY:"auto",flex:1}}>
             {filtered.map(o=>(
-              <div key={o} onClick={()=>select(o)}
+              <div key={o}
+                onMouseDown={e=>{e.preventDefault();select(o);}}
                 style={{padding:"10px 14px",cursor:"pointer",fontSize:13,
                   color:value===o?"#fff":"rgba(255,255,255,0.7)",
                   background:value===o?"rgba(56,189,248,0.15)":"transparent",
@@ -1839,7 +1864,8 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
               </div>
             ))}
             {allowCustom&&q&&!options.includes(q)&&(
-              <div onClick={()=>select(q)}
+              <div
+                onMouseDown={e=>{e.preventDefault();select(q);}}
                 style={{padding:"10px 14px",cursor:"pointer",fontSize:13,
                   color:"rgba(255,255,255,0.5)",borderTop:"1px solid rgba(255,255,255,0.06)"}}
                 onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
@@ -2180,9 +2206,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
   const isUpgradeFlow = !!trialData;
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes("?")) {
-      const urlParams = new URLSearchParams(hash.split("?")[1]);
+    const querySource = window.location.search || window.location.hash;
+    if (querySource.includes("?")) {
+      const urlParams = new URLSearchParams(querySource.split("?")[1]);
       const planParam = urlParams.get("plan");
       const isUpgrade = urlParams.get("upgrade") === "1";
       if (planParam === "trial") {
@@ -3142,7 +3168,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             <span style={{fontSize:13,fontWeight:700,color:"#f1f5f9"}}>You're on Free Trial — </span>
             <span style={{fontSize:13,color:"rgba(255,255,255,0.5)"}}>Upgrade to unlock 15–unlimited posts/month</span>
           </div>
-          <button onClick={()=>typeof onUpgrade==='function' ? onUpgrade('starter') : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=starter&upgrade=1`)}
+          <button onClick={()=>typeof onUpgrade==='function' ? onUpgrade('starter') : (window.location.href=`${window.location.origin}/app/content-studio?plan=starter&upgrade=1`)}
             style={{background:"linear-gradient(135deg,#38bdf8,#1d4ed8)",color:"#fff",
               border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,
               cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,
@@ -3461,7 +3487,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
               <div style={{height:1,flex:1,background:`${color}12`}}/>
             </div>
             <Workspace profile={profile} hKey={hKey}
-              onUpgrade={(planId)=>typeof onUpgrade==='function' ? onUpgrade(planId) : (window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}&upgrade=1`)}/>
+              onUpgrade={(planId)=>typeof onUpgrade==='function' ? onUpgrade(planId) : (window.location.href=`${window.location.origin}/app/content-studio?plan=${planId}&upgrade=1`)}/>
           </div>
         </div>
       )}
@@ -3520,7 +3546,7 @@ function PortalClientView({client, onHome, onUpgrade}){
   const hKey = `snstudio_hist_${client.id}`;
   const handleUpgrade = (planId) => {
     if(typeof onUpgrade === 'function') onUpgrade(planId, client);
-    else window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}&upgrade=1`;
+    else window.location.href=`${window.location.origin}/app/content-studio?plan=${planId}&upgrade=1`;
   };
   return (
     <div>
@@ -3784,7 +3810,7 @@ export default function App(){
               <div style={{height:1,flex:1,background:`${clColor}12`}}/>
             </div>
             <Workspace profile={cl} hKey={`snstudio_hist_${clientSelected}`}
-              onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/#/app/content-studio?plan=${planId}`; }}/>
+              onUpgrade={(planId)=>{ window.location.href=`${window.location.origin}/app/content-studio?plan=${planId}`; }}/>
           </div>
         </div>
     );

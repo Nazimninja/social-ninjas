@@ -3,7 +3,7 @@ const APP_BASE_URL = 'https://socialninjas.in';
 
 window.goToApp = function(plan) {
   const params = plan ? '?plan=' + plan : '';
-  const destination = APP_BASE_URL + '/#/app/content-studio' + params;
+  const destination = APP_BASE_URL + '/app/content-studio' + params;
 
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(4,4,12,.97);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
@@ -24,5 +24,5 @@ window.goToApp = function(plan) {
 }
 
 window.signIn = function() {
-  window.location.href = APP_BASE_URL + '/#/app/content-studio';
+  window.location.href = APP_BASE_URL + '/app/content-studio';
 }
