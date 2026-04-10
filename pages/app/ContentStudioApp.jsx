@@ -1104,6 +1104,14 @@ function WeekCal({posts, color}){
 }
 
 
+const GEN_STEPS = [
+  "🔍 Researching live trends in your niche...",
+  "📊 Analysing platform algorithms...",
+  "✍️ Writing platform-native captions...",
+  "🎬 Scripting your Reels...",
+  "✨ Final quality check...",
+];
+
 function Workspace({profile, hKey, onUpgrade}){
   const color=profile.color||"#5ba4f5";
   const [hist,setHist]=useState([]);
