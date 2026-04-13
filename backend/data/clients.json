@@ -234,5 +234,77 @@
     },
     "id": "client_1775739054895",
     "updatedAt": "2026-04-09T12:50:55.862Z"
+  },
+  "client_1776063926091": {
+    "brandName": "Social Ninja's",
+    "email": "info@socialninjas.in",
+    "phone": "9999999999",
+    "countryCode": "+91",
+    "audience": "Agencies and creators looking for growth and premium content solutions",
+    "tone": "Professional and energetic",
+    "niche": "Digital Marketing Agency",
+    "platforms": [
+      "Instagram"
+    ],
+    "planName": "Pro",
+    "displayINR": "₹8,999",
+    "joinDate": "13/4/2026",
+    "paymentStatus": "lead",
+    "id": "client_1776063926091",
+    "updatedAt": "2026-04-13T07:05:26.092Z"
+  },
+  "client_1776064036205": {
+    "brandName": "Social Ninja's",
+    "email": "info@socialninjas.in",
+    "phone": "9999999999",
+    "countryCode": "+91",
+    "audience": "Agencies and creators looking for growth and premium content solutions",
+    "tone": "Professional and energetic. Personality: Professional, energetic, and data-driven marketing experts.",
+    "niche": "Digital Marketing Agency",
+    "platforms": [
+      "Instagram"
+    ],
+    "plan": "pro",
+    "planName": "Pro",
+    "displayINR": "₹8,999",
+    "color": "#E31313",
+    "brand": "client",
+    "darkBg": "#020617",
+    "joinDate": "13/4/2026",
+    "active": true,
+    "emoji": "🏢",
+    "sub": "Instagram",
+    "logo": null,
+    "logoPreview": null,
+    "tagline": "Scale your brand with Ninja Precision",
+    "website": "https://socialninjas.in",
+    "instagram": "",
+    "linkedin": "",
+    "youtube": "",
+    "tiktok": "",
+    "twitter": "",
+    "facebook": "",
+    "brandPersonality": "Professional, energetic, and data-driven marketing experts.",
+    "businessContext": "We provide high-end content solutions for agencies and creators.",
+    "avoid": "",
+    "contentGoal": "Increase brand awareness and generate leads for high-end marketing services.",
+    "competitors": "",
+    "colorHex": "#E31313",
+    "followers": {
+      "instagram": "",
+      "linkedin": "",
+      "youtube": "",
+      "tiktok": ""
+    },
+    "socialAccounts": {
+      "instagram": "",
+      "linkedin": "",
+      "youtube": "",
+      "tiktok": "",
+      "twitter": "",
+      "facebook": ""
+    },
+    "id": "client_1776064036205",
+    "updatedAt": "2026-04-13T07:07:16.549Z"
   }
 }

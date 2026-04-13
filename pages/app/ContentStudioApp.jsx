@@ -3626,8 +3626,8 @@ export default function App(){
   },[activeClient]);
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes("?plan=")) {
+    const querySource = window.location.search || window.location.hash;
+    if (querySource.includes("plan=")) {
       setTab("portal");
       setPortalView("onboarding");
     }
