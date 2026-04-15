@@ -694,11 +694,12 @@ function PostCard({post, profile, index}){
   const pColor = getPlatformColor(post.platform);
 
 
+  const isRealVal = v => v && v !== "null" && v !== "undefined";
   const tabs=[
     {id:"caption", icon:"📋", label:"Caption", hint:"Copy & paste into your post"},
-    ...(post.script?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
-    ...(post.carousel_slides?.length?[{id:"slides", icon:"🎠", label:"Slides", hint:"Each slide for Canva"}]:[]),
-    ...(post.thread_tweets?.length?[{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}]:[]),
+    ...(isRealVal(post.script)?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
+    ...(Array.isArray(post.carousel_slides)&&post.carousel_slides.length?[{id:"slides", icon:"🎠", label:"Slides", hint:"Each slide for Canva"}]:[]),
+    ...(Array.isArray(post.thread_tweets)&&post.thread_tweets.length?[{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}]:[]),
     {id:"checklist", icon:"✅", label:"Checklist", hint:"Step-by-step posting guide"},
   ];
 
@@ -890,7 +891,7 @@ function PostCard({post, profile, index}){
             </div>
 
             {/* Script body */}
-            {post.script?(
+            {isRealVal(post.script)?(
               <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,overflow:"hidden"}}>
                 <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
                   display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -978,7 +979,7 @@ ${s.body}`} sm/>
         )}
 
         {/* ════ THREAD TAB ════ */}
-        {tab==="thread"&&post.thread_tweets?.length&&(
+        {tab==="thread"&&Array.isArray(post.thread_tweets)&&post.thread_tweets.length&&(
           <div style={{display:"grid",gap:8}}>
             <div style={{background:"#0a1018",border:"1px solid rgba(29,161,242,0.2)",borderRadius:12,
               padding:"12px 16px",display:"flex",gap:10,alignItems:"flex-start",marginBottom:4}}>
