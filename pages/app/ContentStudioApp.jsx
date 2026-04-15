@@ -329,6 +329,37 @@ const MY_PROFILES = {
 };
 
 // ─────────────────────────────────────────────────────────────────
+//  GOOGLE OAUTH CONFIG
+// ─────────────────────────────────────────────────────────────────
+const GOOGLE_CLIENT_ID = "148307495726-m3rorieqqq3rdom6kase7k0sl3n9l6lu.apps.googleusercontent.com";
+
+// Load Google Identity Services script once
+function loadGoogleScript() {
+  return new Promise((resolve) => {
+    if (window.google?.accounts) { resolve(); return; }
+    if (document.getElementById("google-gsi-script")) {
+      document.getElementById("google-gsi-script").addEventListener("load", resolve);
+      return;
+    }
+    const s = document.createElement("script");
+    s.id = "google-gsi-script";
+    s.src = "https://accounts.google.com/gsi/client";
+    s.async = true;
+    s.defer = true;
+    s.onload = resolve;
+    document.head.appendChild(s);
+  });
+}
+
+// Decode a JWT payload (Google credential)
+function decodeJWT(token) {
+  try {
+    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(base64));
+  } catch { return null; }
+}
+
+// ─────────────────────────────────────────────────────────────────
 //  STORAGE
 // ─────────────────────────────────────────────────────────────────
 const DB = {
@@ -2188,6 +2219,100 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 
 
 // ─────────────────────────────────────────────────────────────────
+//  GOOGLE LOGIN BUTTON — uses Google Identity Services (GIS)
+// ─────────────────────────────────────────────────────────────────
+function GoogleLoginButton({ onSuccess, onError, label = "Continue with Google" }) {
+  const btnRef = useRef();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      await loadGoogleScript();
+      if (cancelled) return;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: (response) => {
+          if (response.error) { onError?.(response.error); return; }
+          const payload = decodeJWT(response.credential);
+          if (payload) onSuccess({ name: payload.name, email: payload.email, picture: payload.picture, sub: payload.sub });
+          else onError?.("Invalid token");
+        },
+      });
+      window.google.accounts.id.renderButton(btnRef.current, {
+        theme: "filled_black",
+        size: "large",
+        width: btnRef.current?.offsetWidth || 320,
+        text: "continue_with",
+        shape: "pill",
+      });
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  return (
+    <div style={{ width: "100%", position: "relative" }}>
+      {loading && (
+        <div style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 50, padding: "12px 20px", fontSize: 14, color: "rgba(255,255,255,0.4)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          <div style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.2)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin .8s linear infinite" }} />
+          Loading Google Login...
+        </div>
+      )}
+      <div ref={btnRef} style={{ opacity: loading ? 0 : 1, transition: "opacity .2s", width: "100%" }} />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  EMAIL LOGIN FORM — for returning users who signed up via email
+// ─────────────────────────────────────────────────────────────────
+function EmailLoginForm({ onSuccess, onCancel }) {
+  const [email, setEmail] = useState("");
+  const [checking, setChecking] = useState(false);
+  const [err, setErr] = useState("");
+
+  const handleSubmit = async () => {
+    if (!V.email(email)) { setErr("Enter a valid email address"); return; }
+    setChecking(true); setErr("");
+    try {
+      // Search localStorage for any client matching this email
+      const clients = await DB.get("snstudio_clients") || {};
+      const match = Object.values(clients).find(c => c.email?.toLowerCase().trim() === email.toLowerCase().trim());
+      if (match) {
+        onSuccess(match);
+      } else {
+        setErr("No workspace found for this email. Please sign up first or try Google login.");
+      }
+    } catch {
+      setErr("Something went wrong. Please try again.");
+    }
+    setChecking(false);
+  };
+
+  return (
+    <div style={{ display: "grid", gap: 10 }}>
+      <input
+        value={email} onChange={e => { setEmail(e.target.value); setErr(""); }}
+        onKeyDown={e => e.key === "Enter" && handleSubmit()}
+        placeholder="Enter your email address"
+        type="email"
+        style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: `1px solid ${err ? "#92620a" : "rgba(255,255,255,0.12)"}`, borderRadius: 12, padding: "12px 16px", color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+      />
+      {err && <div style={{ fontSize: 12, color: "#e8b86d" }}>⚠ {err}</div>}
+      <button onClick={handleSubmit} disabled={checking}
+        style={{ width: "100%", background: checking ? "rgba(255,255,255,0.05)" : "linear-gradient(135deg,#1d4ed8,#5ba4f5)", color: checking ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: 50, padding: "12px", fontSize: 14, fontWeight: 700, cursor: checking ? "not-allowed" : "pointer" }}>
+        {checking ? "Looking up account..." : "Sign In with Email →"}
+      </button>
+      <button onClick={onCancel} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: 12, cursor: "pointer", textDecoration: "underline" }}>
+        Cancel
+      </button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
 //  ONBOARDING FLOW — plan → details → platform pick → payment → profile
 // ─────────────────────────────────────────────────────────────────
 function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
@@ -2809,14 +2934,49 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
 
 
   if(screen==="otp"&&plan) return (
-    <div style={{maxWidth:400,margin:"0 auto",padding:"40px 20px",textAlign:"center"}}>
+    <div style={{maxWidth:420,margin:"0 auto",padding:"40px 20px",textAlign:"center"}}>
       <div style={{fontSize:48,marginBottom:16}}>📱</div>
-      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:700,marginBottom:8,letterSpacing:"-0.5px"}}>Verify your phone</h2>
+      <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:700,marginBottom:8,letterSpacing:"-0.5px"}}>Verify your identity</h2>
       <p style={{color:"rgba(255,255,255,0.5)",fontSize:14,marginBottom:24}}>
-        We've sent a verification code via SMS to<br/>
-        <b style={{color:"#fff"}}>{form.phone ? `${form.countryCode} ${form.phone}` : "your phone number"}</b>.
+        {form.phone
+          ? <>We've sent a code to <b style={{color:"#fff"}}>{form.countryCode} {form.phone}</b>.</>
+          : <>Enter the code sent to your phone or skip with Google.</>}
       </p>
-      
+
+      {/* ── GOOGLE LOGIN FAST TRACK ── */}
+      <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:"16px",marginBottom:20}}>
+        <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>⚡ Faster — Sign in with Google</div>
+        <GoogleLoginButton
+          label="Continue with Google"
+          onSuccess={async (googleUser) => {
+            // Pre-fill email from Google
+            setForm(prev => ({...prev, email: googleUser.email || prev.email, brandName: prev.brandName || googleUser.name?.split(" ")[0] || "" }));
+            // Check for existing client with this Google email
+            const clients = await DB.get("snstudio_clients") || {};
+            const existingClient = Object.values(clients).find(c => c.email?.toLowerCase() === googleUser.email?.toLowerCase());
+            if (existingClient) {
+              // Already a member — log them in
+              const appState = window.__snAppSetActiveClient;
+              if (appState) { appState(existingClient); }
+              return;
+            }
+            // New user — continue onboarding flow (skip OTP)
+            if(plan.isTrialFlow) {
+              setScreen("trial_generation");
+            } else {
+              setScreen("payment");
+            }
+          }}
+          onError={(e) => console.warn("Google login error:", e)}
+        />
+      </div>
+
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}>
+        <div style={{flex:1,height:1,background:"rgba(255,255,255,0.08)"}}/>
+        <span style={{fontSize:11,color:"rgba(255,255,255,0.3)",fontWeight:600}}>OR VERIFY BY SMS</span>
+        <div style={{flex:1,height:1,background:"rgba(255,255,255,0.08)"}}/>
+      </div>
+
       {import.meta?.env?.DEV && (
         <div style={{background:"rgba(56,189,248,0.08)", border:"1px dashed rgba(56,189,248,0.2)", borderRadius:8, padding:"10px", marginBottom:20, color:"#7ab8f5", fontSize:11, fontWeight:600}}>
           🛠 Dev Mode: Use code <b style={{color:"#fff"}}>1234</b> · 2Factor SMS not active in local dev
@@ -3607,6 +3767,16 @@ export default function App(){
   const [geo, setGeo]=useState({country:"_DEFAULT"});
   const [upgradeTrialData, setUpgradeTrialData]=useState(null); // holds trial form data when upgrading
 
+  // Expose setActiveClient for Google login bridge used in OTP screen
+  useEffect(() => {
+    window.__snAppSetActiveClient = async (cl) => {
+      await DB.set("snstudio_active_client_id", cl.id);
+      setActiveClient(cl);
+      setPortalView("workspace");
+    };
+    return () => { delete window.__snAppSetActiveClient; };
+  }, []);
+
   useEffect(()=>{(async()=>{
     const saved = await DB.get("snstudio_clients") || {};
     setClients(saved);
@@ -3703,11 +3873,50 @@ export default function App(){
       .post-card{border-radius:14px!important;}
       .sn-btn-primary,.sn-btn-ghost{width:100%!important;text-align:center!important;justify-content:center!important;}
       .sn-glass{padding:16px!important;}
+      /* Post card tab bar — scrollable on mobile */
+      [style*="overflow-x: auto"]{-webkit-overflow-scrolling:touch!important;}
+      /* Dashboard stat grid — 2 cols on mobile */
+      [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important;}
+      /* Account analysis 3-col → 1-col */
+      [style*="repeat(3,1fr)"]{grid-template-columns:1fr!important;}
+      /* Social accounts 2-col → 1-col */
+      [style*="repeat(2,1fr)"]{grid-template-columns:1fr!important;}
+      /* Week calendar — tighten up */
+      [style*="repeat(7,1fr)"]{gap:2px!important;}
+      /* Trial wall plan buttons — stack */
+      .trial-plans-grid{grid-template-columns:1fr!important;}
+      /* Nav — reduce logo size */
+      nav img{width:38px!important;height:38px!important;}
+      /* Tab bars — sticky top inside workspace */
+      .post-tabs-bar{position:sticky!important;top:60px!important;z-index:40!important;background:rgba(8,14,26,0.95)!important;}
+      /* Hero text on plans screen */
+      [style*="font-size:46px"]{font-size:clamp(28px,7vw,42px)!important;}
+      /* Plan grid 3→1 col */
+      [style*="gridTemplateColumns:\"repeat(3,1fr)\""]{grid-template-columns:1fr!important;}
+      /* Checklist posting card */
+      [style*="justifyContent:\"space-between\""]{flex-wrap:wrap!important;}
+      /* Copy buttons full width on small screens */
+      .copy-btn{font-size:11px!important;padding:6px 10px!important;}
+      /* Prevent zoom on inputs iOS */
+      input[type="text"],input[type="email"],input[type="tel"],input[type="number"],textarea,select{font-size:16px!important;}
     }
     @media(max-width:480px){
       h1{font-size:clamp(22px,7vw,32px)!important;}
       .mobile-padding{padding:12px!important;}
       .plan-card-glass{padding:18px!important;}
+      /* OTP input smaller on tiny screens */
+      input[style*="fontSize:28"]{font-size:22px!important;letter-spacing:10px!important;}
+      /* Dashboard rings smaller on tiny screen */
+      svg[width="80"]{width:60px!important;height:60px!important;}
+      /* Slide cards full bleed */
+      [style*="borderRadius:14"]{border-radius:10px!important;}
+      /* Bottom CTA bar fixed */
+      .mobile-cta-fixed{position:sticky!important;bottom:0!important;background:rgba(7,16,30,0.97)!important;padding:12px 16px!important;border-top:1px solid rgba(255,255,255,0.08)!important;z-index:50!important;}
+    }
+    /* Safe area insets for iPhone notch/home bar */
+    @supports(padding:env(safe-area-inset-bottom)){
+      body{padding-bottom:env(safe-area-inset-bottom);}
+      nav{padding-top:env(safe-area-inset-top);}
     }
   </style>`;
 
@@ -3877,38 +4086,86 @@ export default function App(){
         }}/>
       </div>
     ):portalView==="login"?(
-      <div style={{maxWidth:500,margin:"60px auto",textAlign:"center"}}>
-        <h2 style={{fontSize:24,fontWeight:700,marginBottom:20}}>Welcome back</h2>
-        {Object.keys(clients||{}).length > 0 ? (
-          <div style={{display:"grid",gap:12,textAlign:"left"}}>
-            {Object.values(clients).map(cl => (
-              <button key={cl.id} onClick={async()=>{
-                await DB.set("snstudio_active_client_id",cl.id);
-                setActiveClient(cl);
+      <div style={{maxWidth:460,margin:"40px auto",padding:"0 16px"}}>
+        <div style={{textAlign:"center",marginBottom:28}}>
+          <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",border:"1px solid #38bdf840",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,margin:"0 auto 14px"}}>🥷</div>
+          <h2 style={{fontSize:24,fontWeight:800,letterSpacing:"-.5px",marginBottom:6}}>Welcome back</h2>
+          <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Sign in to access your content studio</p>
+        </div>
+
+        {/* ── GOOGLE LOGIN ── */}
+        <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:18,padding:"20px",marginBottom:14}}>
+          <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.35)",marginBottom:14,textAlign:"center"}}>Sign in with Google</div>
+          <GoogleLoginButton
+            label="Continue with Google"
+            onSuccess={async (googleUser) => {
+              // Search for client with matching email
+              const savedClients = await DB.get("snstudio_clients") || {};
+              const match = Object.values(savedClients).find(c => c.email?.toLowerCase() === googleUser.email?.toLowerCase());
+              if (match) {
+                await DB.set("snstudio_active_client_id", match.id);
+                setActiveClient(match);
                 setPortalView("workspace");
-              }} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"16px",cursor:"pointer",display:"flex",alignItems:"center",gap:14,transition:"all .15s"}}
-              onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}
-              onMouseOut={e=>e.currentTarget.style.background="rgba(255,255,255,0.05)"}>
-                <div style={{width:40,height:40,borderRadius:"50%",background:`${cl.color||"#5ba4f5"}22`,display:"flex",alignItems:"center",justifyContent:"center",color:cl.color||"#5ba4f5",fontWeight:700,fontSize:16}}>
-                  {(cl.brandName||cl.email||"U")[0].toUpperCase()}
-                </div>
-                <div>
-                  <div style={{fontSize:16,fontWeight:700,color:"#fff",marginBottom:4}}>{cl.brandName || "My Workspace"}</div>
-                  <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>{cl.email} {cl.planName ? `· ${cl.planName}` : ""}</div>
-                </div>
-              </button>
-            ))}
-            <div style={{marginTop:20,textAlign:"center"}}>
-              <button onClick={()=>setPortalView("onboarding")} style={{background:"none",border:"none",color:"#5ba4f5",cursor:"pointer",fontSize:14,fontWeight:600}}>+ Create New Workspace</button>
+              } else {
+                // No account — pre-fill and send to onboarding
+                setUpgradeTrialData({ email: googleUser.email, brandName: googleUser.name?.split(" ")[0] || "", platforms: [] });
+                setPortalView("onboarding");
+              }
+            }}
+            onError={(e) => console.warn("Google login error:", e)}
+          />
+        </div>
+
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+          <div style={{flex:1,height:1,background:"rgba(255,255,255,0.07)"}}/>
+          <span style={{fontSize:11,color:"rgba(255,255,255,0.3)",fontWeight:600,flexShrink:0}}>OR USE EMAIL</span>
+          <div style={{flex:1,height:1,background:"rgba(255,255,255,0.07)"}}/>
+        </div>
+
+        {/* ── EMAIL LOGIN ── */}
+        <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:18,padding:"20px",marginBottom:14}}>
+          <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.35)",marginBottom:14}}>Sign in with Email</div>
+          <EmailLoginForm
+            onSuccess={async (cl) => {
+              await DB.set("snstudio_active_client_id", cl.id);
+              setActiveClient(cl);
+              setPortalView("workspace");
+            }}
+            onCancel={() => setPortalView("home")}
+          />
+        </div>
+
+        {/* ── EXISTING WORKSPACES on device ── */}
+        {Object.keys(clients||{}).length > 0 && (
+          <div style={{marginTop:20}}>
+            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.25)",marginBottom:10,textAlign:"center"}}>Saved workspaces on this device</div>
+            <div style={{display:"grid",gap:8}}>
+              {Object.values(clients).map(cl => (
+                <button key={cl.id} onClick={async()=>{
+                  await DB.set("snstudio_active_client_id",cl.id);
+                  setActiveClient(cl);
+                  setPortalView("workspace");
+                }} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:12,padding:"12px 16px",cursor:"pointer",display:"flex",alignItems:"center",gap:12,transition:"all .15s",width:"100%",textAlign:"left"}}
+                onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}
+                onMouseOut={e=>e.currentTarget.style.background="rgba(255,255,255,0.04)"}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:`${cl.color||"#5ba4f5"}22`,display:"flex",alignItems:"center",justifyContent:"center",color:cl.color||"#5ba4f5",fontWeight:700,fontSize:15,flexShrink:0}}>
+                    {(cl.brandName||cl.email||"U")[0].toUpperCase()}
+                  </div>
+                  <div style={{flex:1,overflow:"hidden"}}>
+                    <div style={{fontSize:14,fontWeight:700,color:"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{cl.brandName || "My Workspace"}</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.38)"}}>{cl.email} {cl.planName ? `· ${cl.planName}` : ""}</div>
+                  </div>
+                  <span style={{fontSize:11,color:"rgba(255,255,255,0.3)",flexShrink:0}}>→</span>
+                </button>
+              ))}
             </div>
           </div>
-        ) : (
-           <div style={{textAlign:"center"}}>
-             <p style={{color:"rgba(255,255,255,0.5)",marginBottom:20}}>No workspaces found on this device.</p>
-             <button onClick={()=>setPortalView("onboarding")} style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",border:"none",borderRadius:13,padding:"14px 32px",fontSize:16,fontWeight:700,cursor:"pointer"}}>Create Workspace →</button>
-           </div>
         )}
-        <button onClick={()=>setPortalView("home")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:13,marginTop:24}}>← Back to Home</button>
+
+        <div style={{textAlign:"center",marginTop:20}}>
+          <button onClick={()=>setPortalView("onboarding")} style={{background:"none",border:"none",color:"#5ba4f5",cursor:"pointer",fontSize:14,fontWeight:600}}>+ Create New Workspace</button>
+        </div>
+        <button onClick={()=>setPortalView("home")} style={{display:"block",background:"none",border:"none",color:"rgba(255,255,255,0.3)",cursor:"pointer",fontSize:13,marginTop:16,width:"100%",textAlign:"center"}}>← Back to Home</button>
       </div>
     ):portalView==="workspace"&&activeClient?(
       <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}
