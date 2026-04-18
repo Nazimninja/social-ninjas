@@ -2,6 +2,7 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatBot from './components/ChatBot';
@@ -129,6 +130,7 @@ const App: React.FC = () => {
       <Router>
         <ScrollToTop />
         <MainLayout />
+        <Analytics />
       </Router>
     </HelmetProvider>
   );

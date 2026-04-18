@@ -1680,7 +1680,12 @@ function PaymentStep({plan, formData, onVerified}){
     setChecking(true); setPidErr("");
     try {
       if(isTestBypass){
-        // Skip API call — simulate verified payment for owner testing
+        // Owner test bypass — still push to CRM so the flow is fully verified
+        await pushToClickUp({...formData,planName:plan.name,displayINR:plan.displayINR||plan.displayPrice,
+          paymentId:"SN_TEST_2026",joinDate:new Date().toLocaleDateString("en-IN"),
+          paymentStatus:"test-verified"}, CONFIG.clickup.activeListId);
+        await pushToSheets({...formData,planName:plan.name,displayINR:plan.displayINR||plan.displayPrice,
+          paymentId:"SN_TEST_2026",joinDate:new Date().toLocaleDateString("en-IN"),paymentStatus:"test-verified"});
         await new Promise(r=>setTimeout(r,800));
         setMode("done");
         setTimeout(()=>onVerified(),1200);
