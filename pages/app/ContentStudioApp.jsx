@@ -392,45 +392,37 @@ const fieldErr=(k,v)=>{
 // ─────────────────────────────────────────────────────────────────
 //  CLICKUP PUSH
 // ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+//  CRM PUSH — routes through /api/crm (server-side) for security
+// ─────────────────────────────────────────────────────────────────
 async function pushToClickUp(data, listId) {
   try {
-    const desc=`**Brand:** ${data.brandName}
-**Email:** ${data.email}
-**Phone:** ${data.phone||"—"}
-**Plan:** ${data.planName} (${data.displayINR}/mo)
-**Platforms:** ${(data.platforms||[data.platform]).join(", ")}
-**Audience:** ${data.audience}
-**Business:** ${data.businessContext}
-**Niche:** ${data.niche}
-**Tone:** ${data.tone}
-**Website:** ${data.website||"—"}
-**Payment ID:** ${data.paymentId||"—"}
-**Joined:** ${data.joinDate}`;
-    await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,
-        tools:[{type:"url",url:"https://mcp.clickup.com/mcp",name:"clickup-mcp"}],
-        messages:[{role:"user",content:`Create task in ClickUp list ${listId} named "${data.brandName} — ${data.planName}" with this description:\n${desc}`}]})});
-  } catch{}
+    await fetch("/api/crm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data, listId, sheetsWebhook: CONFIG.sheetsWebhook }),
+    });
+  } catch(e) { console.warn("CRM push failed:", e.message); }
 }
 
-// ─────────────────────────────────────────────────────────────────
-//  GOOGLE SHEETS PUSH
-// ─────────────────────────────────────────────────────────────────
+// Keep pushToSheets as lightweight local fallback (no-cors sheets webhook)
 async function pushToSheets(data) {
-  if(!CONFIG.sheetsWebhook||CONFIG.sheetsWebhook.includes("YOUR_SCRIPT")) return;
+  if (!CONFIG.sheetsWebhook || CONFIG.sheetsWebhook.includes("YOUR_SCRIPT")) return;
   try {
-    await fetch(CONFIG.sheetsWebhook,{method:"POST",mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        timestamp:new Date().toISOString(),
-        brand:data.brandName,email:data.email,phone:data.phone||"",
-        plan:data.planName,price:data.displayINR,
-        platforms:(data.platforms||[data.platform]).join(", "),
-        audience:data.audience,niche:data.niche,
-        website:data.website||"",joinDate:data.joinDate,
-        paymentId:data.paymentId||"",status:"active",
-      })});
-  } catch{}
+    await fetch(CONFIG.sheetsWebhook, {
+      method: "POST", mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        brand: data.brandName, email: data.email, phone: data.phone || "",
+        plan: data.planName, price: data.displayINR,
+        platforms: (data.platforms || [data.platform]).join(", "),
+        audience: data.audience, niche: data.niche,
+        website: data.website || "", joinDate: data.joinDate,
+        paymentId: data.paymentId || "", status: "active",
+      }),
+    });
+  } catch {}
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -2223,45 +2215,85 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 //  GOOGLE LOGIN BUTTON — uses Google Identity Services (GIS)
 // ─────────────────────────────────────────────────────────────────
 function GoogleLoginButton({ onSuccess, onError, label = "Continue with Google" }) {
-  const btnRef = useRef();
   const [loading, setLoading] = useState(false);
+  const [btnReady, setBtnReady] = useState(false);
+  const [gsiError, setGsiError] = useState(false);
+  const btnRef = useRef();
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      setLoading(true);
-      await loadGoogleScript();
-      if (cancelled) return;
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: (response) => {
-          if (response.error) { onError?.(response.error); return; }
-          const payload = decodeJWT(response.credential);
-          if (payload) onSuccess({ name: payload.name, email: payload.email, picture: payload.picture, sub: payload.sub });
-          else onError?.("Invalid token");
-        },
-      });
-      window.google.accounts.id.renderButton(btnRef.current, {
-        theme: "filled_black",
-        size: "large",
-        width: btnRef.current?.offsetWidth || 320,
-        text: "continue_with",
-        shape: "pill",
-      });
-      setLoading(false);
+      try {
+        await loadGoogleScript();
+        if (cancelled) return;
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (response) => {
+            if (response.error) { setGsiError(true); onError?.(response.error); return; }
+            const payload = decodeJWT(response.credential);
+            if (payload) onSuccess({ name: payload.name, email: payload.email, picture: payload.picture, sub: payload.sub });
+            else { setGsiError(true); onError?.("Invalid token"); }
+          },
+          cancel_on_tap_outside: true,
+        });
+        if (btnRef.current) {
+          window.google.accounts.id.renderButton(btnRef.current, {
+            theme: "filled_black",
+            size: "large",
+            width: Math.min(btnRef.current.offsetWidth || 380, 500),
+            text: "continue_with",
+            shape: "pill",
+          });
+        }
+        setBtnReady(true);
+      } catch(e) {
+        console.warn("Google GSI load failed:", e);
+        setGsiError(true);
+      }
     })();
     return () => { cancelled = true; };
   }, []);
 
+  // Fallback manual button using the popup flow
+  const handleManualClick = () => {
+    if (!window.google?.accounts?.id) { onError?.("Google not loaded"); return; }
+    setLoading(true);
+    try {
+      window.google.accounts.id.prompt((notification) => {
+        setLoading(false);
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          setGsiError(true);
+        }
+      });
+    } catch(e) {
+      setLoading(false);
+      setGsiError(true);
+    }
+  };
+
+  // If GSI fails (origin not registered, etc.) — show a clean fallback message
+  if (gsiError) {
+    return (
+      <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px", textAlign: "center" }}>
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>
+          Google login is being configured. Please use email sign-in below, or try again shortly.
+        </div>
+        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
+          (If you are the developer: add <code style={{ color: "#5ba4f5" }}>https://www.socialninjas.in</code> to Authorized JavaScript Origins in Google Cloud Console → APIs → Credentials)
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ width: "100%", position: "relative" }}>
-      {loading && (
+      {!btnReady && (
         <div style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 50, padding: "12px 20px", fontSize: 14, color: "rgba(255,255,255,0.4)", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
           <div style={{ width: 16, height: 16, border: "2px solid rgba(255,255,255,0.2)", borderTopColor: "#fff", borderRadius: "50%", animation: "spin .8s linear infinite" }} />
-          Loading Google Login...
+          Loading Google...
         </div>
       )}
-      <div ref={btnRef} style={{ opacity: loading ? 0 : 1, transition: "opacity .2s", width: "100%" }} />
+      <div ref={btnRef} style={{ opacity: btnReady ? 1 : 0, transition: "opacity .3s", width: "100%", minHeight: btnReady ? "auto" : 0 }} />
     </div>
   );
 }
