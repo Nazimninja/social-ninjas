@@ -2315,14 +2315,34 @@ function EmailLoginForm({ onSuccess, onCancel }) {
     if (!V.email(email)) { setErr("Enter a valid email address"); return; }
     setChecking(true); setErr("");
     try {
-      // Search localStorage for any client matching this email
-      const clients = await DB.get("snstudio_clients") || {};
-      const match = Object.values(clients).find(c => c.email?.toLowerCase().trim() === email.toLowerCase().trim());
-      if (match) {
-        onSuccess(match);
-      } else {
-        setErr("No workspace found for this email. Please sign up first or try Google login.");
-      }
+      const cleanEmail = email.toLowerCase().trim();
+
+      // 1. Check localStorage first (fastest)
+      const localClients = await DB.get("snstudio_clients") || {};
+      const localMatch = Object.values(localClients).find(c => c.email?.toLowerCase().trim() === cleanEmail);
+      if (localMatch) { onSuccess(localMatch); setChecking(false); return; }
+
+      // 2. Check backend KV (cross-device — account created on another device/browser)
+      try {
+        const res = await fetch(`/api/data?resource=clients`);
+        if (res.ok) {
+          const allClients = await res.json();
+          const serverMatch = (Array.isArray(allClients) ? allClients : []).find(
+            c => c.email?.toLowerCase().trim() === cleanEmail
+          );
+          if (serverMatch) {
+            // Save to localStorage so future logins are instant
+            const updatedLocal = { ...localClients, [serverMatch.id]: serverMatch };
+            await DB.set("snstudio_clients", updatedLocal);
+            await DB.set("snstudio_active_client_id", serverMatch.id);
+            onSuccess(serverMatch);
+            setChecking(false);
+            return;
+          }
+        }
+      } catch { /* non-blocking — fall through to error */ }
+
+      setErr("No workspace found for this email. Check your email or sign up for a free trial.");
     } catch {
       setErr("Something went wrong. Please try again.");
     }
@@ -3823,6 +3843,13 @@ export default function App(){
     if (lastId && saved[lastId]) {
       setActiveClient(saved[lastId]);
       setPortalView("workspace");
+      return; // Don't process URL params if already logged in
+    }
+    // Only check URL plan params if NOT already logged in
+    const querySource = window.location.search || window.location.hash;
+    if (querySource.includes("plan=")) {
+      setTab("portal");
+      setPortalView("onboarding");
     }
   })();},[]);
   useEffect(()=>{(async()=>{ const g=await detectGeo(); setGeo(g||{country:"_DEFAULT"}); })();},[]);
@@ -3832,14 +3859,6 @@ export default function App(){
   useEffect(()=>{
     if(activeClient?.id) DB.set("snstudio_active_client_id", activeClient.id);
   },[activeClient]);
-
-  useEffect(() => {
-    const querySource = window.location.search || window.location.hash;
-    if (querySource.includes("plan=")) {
-      setTab("portal");
-      setPortalView("onboarding");
-    }
-  }, []);
 
   const CSS=`<style>
     @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -4137,15 +4156,29 @@ export default function App(){
           <GoogleLoginButton
             label="Continue with Google"
             onSuccess={async (googleUser) => {
-              // Search for client with matching email
+              const cleanEmail = googleUser.email?.toLowerCase().trim();
+              // 1. Check localStorage
               const savedClients = await DB.get("snstudio_clients") || {};
-              const match = Object.values(savedClients).find(c => c.email?.toLowerCase() === googleUser.email?.toLowerCase());
+              let match = Object.values(savedClients).find(c => c.email?.toLowerCase().trim() === cleanEmail);
+              // 2. Check backend if not found locally
+              if (!match) {
+                try {
+                  const res = await fetch("/api/data?resource=clients");
+                  if (res.ok) {
+                    const all = await res.json();
+                    match = (Array.isArray(all) ? all : []).find(c => c.email?.toLowerCase().trim() === cleanEmail);
+                    if (match) {
+                      const updated = { ...savedClients, [match.id]: match };
+                      await DB.set("snstudio_clients", updated);
+                    }
+                  }
+                } catch {}
+              }
               if (match) {
                 await DB.set("snstudio_active_client_id", match.id);
                 setActiveClient(match);
                 setPortalView("workspace");
               } else {
-                // No account — pre-fill and send to onboarding
                 setUpgradeTrialData({ email: googleUser.email, brandName: googleUser.name?.split(" ")[0] || "", platforms: [] });
                 setPortalView("onboarding");
               }
@@ -4205,12 +4238,17 @@ export default function App(){
         </div>
         <button onClick={()=>setPortalView("home")} style={{display:"block",background:"none",border:"none",color:"rgba(255,255,255,0.3)",cursor:"pointer",fontSize:13,marginTop:16,width:"100%",textAlign:"center"}}>← Back to Home</button>
       </div>
-    ):portalView==="workspace"&&activeClient?(
-      <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}
-        onUpgrade={(planId, trialData)=>{
-          setUpgradeTrialData(trialData||activeClient);
-          setPortalView("onboarding");
-        }}/>
+    ):portalView==="workspace"?(
+      activeClient
+        ? <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}
+            onUpgrade={(planId, trialData)=>{
+              setUpgradeTrialData(trialData||activeClient);
+              setPortalView("onboarding");
+            }}/>
+        : <div style={{textAlign:"center",padding:"80px 20px"}}>
+            <div style={{width:44,height:44,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.3)",borderTopColor:"#5ba4f5",animation:"spin 1s linear infinite",margin:"0 auto 16px"}}/>
+            <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Loading your studio...</p>
+          </div>
     ):null
   );
 
