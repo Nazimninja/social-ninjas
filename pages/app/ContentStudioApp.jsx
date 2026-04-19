@@ -2322,27 +2322,23 @@ function EmailLoginForm({ onSuccess, onCancel }) {
       const localMatch = Object.values(localClients).find(c => c.email?.toLowerCase().trim() === cleanEmail);
       if (localMatch) { onSuccess(localMatch); setChecking(false); return; }
 
-      // 2. Check backend KV (cross-device — account created on another device/browser)
+      // 2. Check backend KV (cross-device login)
       try {
-        const res = await fetch(`/api/data?resource=clients`);
+        const res = await fetch("/api/data?resource=clients");
         if (res.ok) {
           const allClients = await res.json();
           const serverMatch = (Array.isArray(allClients) ? allClients : []).find(
             c => c.email?.toLowerCase().trim() === cleanEmail
           );
           if (serverMatch) {
-            // Save to localStorage so future logins are instant
-            const updatedLocal = { ...localClients, [serverMatch.id]: serverMatch };
-            await DB.set("snstudio_clients", updatedLocal);
-            await DB.set("snstudio_active_client_id", serverMatch.id);
             onSuccess(serverMatch);
             setChecking(false);
             return;
           }
         }
-      } catch { /* non-blocking — fall through to error */ }
+      } catch { /* non-blocking */ }
 
-      setErr("No workspace found for this email. Check your email or sign up for a free trial.");
+      setErr("No workspace found for this email. Check the spelling or try Google sign-in.");
     } catch {
       setErr("Something went wrong. Please try again.");
     }
@@ -3819,48 +3815,59 @@ export default function App(){
   const [mySelected,setMySelected]=useState(null);
   const [clients,setClients]=useState({});
   const [clientSelected,setClientSelected]=useState(null);
-  const [portalView,setPortalView]=useState("home"); // home|onboarding|workspace
+  const [portalView,setPortalView]=useState("loading"); // loading|home|onboarding|workspace|login
   const [activeClient,setActiveClient]=useState(null);
-  const [clientView, setClientView]=useState("dashboard"); // dashboard|content
+  const [clientView, setClientView]=useState("dashboard");
   const [geo, setGeo]=useState({country:"_DEFAULT"});
-  const [upgradeTrialData, setUpgradeTrialData]=useState(null); // holds trial form data when upgrading
+  const [upgradeTrialData, setUpgradeTrialData]=useState(null);
 
-  // Expose setActiveClient for Google login bridge used in OTP screen
+  // Single source of truth for logging in — always use this
+  const loginClient = async (cl) => {
+    const existing = await DB.get("snstudio_clients") || {};
+    const merged = { ...existing, [cl.id]: cl };
+    await DB.set("snstudio_clients", merged);
+    await DB.set("snstudio_active_client_id", cl.id);
+    setClients(merged);
+    setActiveClient(cl);
+    setPortalView("workspace");
+  };
+
+  // Expose for Google login bridge inside OTP screen
   useEffect(() => {
-    window.__snAppSetActiveClient = async (cl) => {
-      await DB.set("snstudio_active_client_id", cl.id);
-      setActiveClient(cl);
-      setPortalView("workspace");
-    };
+    window.__snAppSetActiveClient = loginClient;
     return () => { delete window.__snAppSetActiveClient; };
   }, []);
 
+  // Session restore — determines initial view BEFORE rendering anything
   useEffect(()=>{(async()=>{
     const saved = await DB.get("snstudio_clients") || {};
     setClients(saved);
-    // Restore last active client so users keep access after refresh
+
     const lastId = await DB.get("snstudio_active_client_id");
     if (lastId && saved[lastId]) {
       setActiveClient(saved[lastId]);
       setPortalView("workspace");
-      return; // Don't process URL params if already logged in
+      return;
     }
-    // Only check URL plan params if NOT already logged in
-    const querySource = window.location.search || window.location.hash;
-    if (querySource.includes("plan=")) {
+
+    // Check URL for plan= only when not logged in
+    const qs = window.location.search || window.location.hash;
+    if (qs.includes("plan=")) {
       setTab("portal");
       setPortalView("onboarding");
+    } else {
+      setPortalView("home");
     }
   })();},[]);
+
   useEffect(()=>{(async()=>{ const g=await detectGeo(); setGeo(g||{country:"_DEFAULT"}); })();},[]);
   const saveClients=async c=>{setClients(c);await DB.set("snstudio_clients",c);};
 
-  // Persist active client ID whenever it changes
   useEffect(()=>{
     if(activeClient?.id) DB.set("snstudio_active_client_id", activeClient.id);
   },[activeClient]);
 
-  const CSS=`<style>
+    const CSS=`<style>
     @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
     :root{--blue:#5ba4f5;--blue2:#2563eb;--mint:#34d399;--vio:#818cf8;--g1:rgba(255,255,255,.055);--g2:rgba(255,255,255,.09);--g3:rgba(255,255,255,.04);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.62);--t3:rgba(255,255,255,.36);--t4:rgba(255,255,255,.18);}
     *{box-sizing:border-box;margin:0;padding:0;}
@@ -4010,7 +4017,7 @@ export default function App(){
                 ← Back</button>
             )}
             {activeClient&&(
-              <button onClick={async()=>{await DB.set("snstudio_active_client_id",null);setActiveClient(null);setPortalView("home");setTab("portal");}}
+              <button onClick={async()=>{await DB.set("snstudio_active_client_id",null);setActiveClient(null);setPortalView("home");}}
                 style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(240,80,80,0.7)"}}>
                 Sign Out</button>
             )}
@@ -4092,7 +4099,12 @@ export default function App(){
 
   // ── PORTAL ───────────────────────────────────────────────────────
   if(tab==="portal") return wrap(
-    portalView==="home"?(
+    portalView==="loading"?(
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:16}}>
+        <div style={{width:48,height:48,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.25)",borderTopColor:"#5ba4f5",animation:"spin 1s linear infinite"}}/>
+        <p style={{color:"rgba(255,255,255,0.35)",fontSize:14,fontWeight:500}}>Loading your studio...</p>
+      </div>
+    ):portalView==="home"?(
       <div style={{textAlign:"center",maxWidth:580,margin:"60px auto 40px"}}>
         <div style={{width:70,height:70,borderRadius:20,
           background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",
@@ -4134,12 +4146,8 @@ export default function App(){
             color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"7px 13px",
             fontSize:12,cursor:"pointer",fontWeight:600,marginBottom:4}}>← Home</button>
         <Onboarding geo={geo} trialData={upgradeTrialData} onComplete={async cl=>{
-          const existing=await DB.get("snstudio_clients")||{};
-          await DB.set("snstudio_clients",{...existing,[cl.id]:cl});
-          setClients(p=>({...p,[cl.id]:cl}));
-          setActiveClient(cl);
           setUpgradeTrialData(null);
-          setPortalView("workspace");
+          await loginClient(cl);
         }}/>
       </div>
     ):portalView==="login"?(
@@ -4160,24 +4168,18 @@ export default function App(){
               // 1. Check localStorage
               const savedClients = await DB.get("snstudio_clients") || {};
               let match = Object.values(savedClients).find(c => c.email?.toLowerCase().trim() === cleanEmail);
-              // 2. Check backend if not found locally
+              // 2. Check backend KV
               if (!match) {
                 try {
                   const res = await fetch("/api/data?resource=clients");
                   if (res.ok) {
                     const all = await res.json();
                     match = (Array.isArray(all) ? all : []).find(c => c.email?.toLowerCase().trim() === cleanEmail);
-                    if (match) {
-                      const updated = { ...savedClients, [match.id]: match };
-                      await DB.set("snstudio_clients", updated);
-                    }
                   }
                 } catch {}
               }
               if (match) {
-                await DB.set("snstudio_active_client_id", match.id);
-                setActiveClient(match);
-                setPortalView("workspace");
+                await loginClient(match);
               } else {
                 setUpgradeTrialData({ email: googleUser.email, brandName: googleUser.name?.split(" ")[0] || "", platforms: [] });
                 setPortalView("onboarding");
@@ -4198,9 +4200,7 @@ export default function App(){
           <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.35)",marginBottom:14}}>Sign in with Email</div>
           <EmailLoginForm
             onSuccess={async (cl) => {
-              await DB.set("snstudio_active_client_id", cl.id);
-              setActiveClient(cl);
-              setPortalView("workspace");
+              await loginClient(cl);
             }}
             onCancel={() => setPortalView("home")}
           />
@@ -4213,9 +4213,7 @@ export default function App(){
             <div style={{display:"grid",gap:8}}>
               {Object.values(clients).map(cl => (
                 <button key={cl.id} onClick={async()=>{
-                  await DB.set("snstudio_active_client_id",cl.id);
-                  setActiveClient(cl);
-                  setPortalView("workspace");
+                  await loginClient(cl);
                 }} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:12,padding:"12px 16px",cursor:"pointer",display:"flex",alignItems:"center",gap:12,transition:"all .15s",width:"100%",textAlign:"left"}}
                 onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}
                 onMouseOut={e=>e.currentTarget.style.background="rgba(255,255,255,0.04)"}>
