@@ -13,15 +13,7 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'AI service not configured.' });
 
   try {
-    const webSearchTool = {
-      type: "web_search_20250305",
-      name: "web_search",
-      max_uses: 5
-    };
-
-    const frontendTools = req.body.tools || [];
-    const tools = [webSearchTool, ...frontendTools.filter(t => t.type !== 'web_search_20250305')];
-
+    const tools = req.body.tools || [];
     let messages = [...(req.body.messages || [])];
     let finalData = null;
     let loopCount = 0;
@@ -31,12 +23,15 @@ export default async function handler(req, res) {
       loopCount++;
 
       const body = {
-        model: req.body.model || "claude-3-7-sonnet-20250219",
+        model: req.body.model || "claude-3-5-sonnet-20241022",
         max_tokens: req.body.max_tokens || 8192,
         messages,
-        tools,
-        tool_choice: { type: "auto" },
       };
+
+      if (tools && tools.length > 0) {
+        body.tools = tools;
+        body.tool_choice = { type: "auto" };
+      }
 
       if (req.body.system) body.system = req.body.system;
 
@@ -45,8 +40,7 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-beta": "web-search-2025-03-05"
+          "anthropic-version": "2023-06-01"
         },
         body: JSON.stringify(body)
       });
