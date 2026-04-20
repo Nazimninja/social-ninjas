@@ -13,85 +13,15 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'AI service not configured.' });
 
   try {
-    const tools = req.body.tools || [];
-    let messages = [...(req.body.messages || [])];
-    let finalData = null;
-    let loopCount = 0;
-    const MAX_LOOPS = 10;
-
-    while (loopCount < MAX_LOOPS) {
-      loopCount++;
-
-      const body = {
-        model: req.body.model || "claude-3-5-sonnet-20241022",
-        max_tokens: req.body.max_tokens || 8192,
-        messages,
-      };
-
-      if (tools && tools.length > 0) {
-        body.tools = tools;
-        body.tool_choice = { type: "auto" };
+    const anthropicRes = await fetch("https://api.anthropic.com/v1/models", {
+      method: "GET",
+      headers: {
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01"
       }
-
-      if (req.body.system) body.system = req.body.system;
-
-      const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01"
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (!anthropicRes.ok) {
-        const error = await anthropicRes.json().catch(() => ({}));
-        console.error('Anthropic API error:', JSON.stringify(error));
-        return res.status(anthropicRes.status).json({
-          error: error?.error?.message || 'AI service error. Please try again.',
-          fullError: error
-        });
-      }
-
-      const data = await anthropicRes.json();
-      console.log(`[Loop ${loopCount}] stop_reason: ${data.stop_reason}, blocks: ${data.content?.length}`);
-
-      // DONE — Claude finished, return final response
-      if (data.stop_reason === 'end_turn') {
-        finalData = data;
-        break;
-      }
-
-      // TOOL USE — Claude ran web search, send results back
-      if (data.stop_reason === 'tool_use') {
-        messages = [...messages, { role: 'assistant', content: data.content }];
-
-        const toolResultContent = [];
-        for (const block of data.content) {
-          if (block.type === 'tool_use') {
-            toolResultContent.push({
-              type: 'tool_result',
-              tool_use_id: block.id,
-              content: block.content || `Search completed for: ${JSON.stringify(block.input)}`,
-            });
-          }
-        }
-
-        messages = [...messages, { role: 'user', content: toolResultContent }];
-        continue;
-      }
-
-      // Any other stop_reason — return as-is
-      finalData = data;
-      break;
-    }
-
-    if (!finalData) {
-      return res.status(500).json({ error: 'Generation loop exceeded. Please try again.' });
-    }
-
-    return res.json(finalData);
+    });
+    const data = await anthropicRes.json();
+    return res.json(data);
 
   } catch (error) {
     console.error("AI Generation Error:", error);
