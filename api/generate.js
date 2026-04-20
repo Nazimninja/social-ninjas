@@ -55,7 +55,8 @@ export default async function handler(req, res) {
         const error = await anthropicRes.json().catch(() => ({}));
         console.error('Anthropic API error:', JSON.stringify(error));
         return res.status(anthropicRes.status).json({
-          error: error?.error?.message || 'AI service error. Please try again.'
+          error: error?.error?.message || 'AI service error. Please try again.',
+          fullError: error
         });
       }
 
