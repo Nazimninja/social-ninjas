@@ -31,8 +31,8 @@ export default async function handler(req, res) {
       loopCount++;
 
       const body = {
-        model: req.body.model || "claude-sonnet-4-20250514",
-        max_tokens: req.body.max_tokens || 8000,
+        model: req.body.model || "claude-3-7-sonnet-20250219",
+        max_tokens: req.body.max_tokens || 8192,
         messages,
         tools,
         tool_choice: { type: "auto" },

@@ -216,7 +216,7 @@ app.post('/api/generate', async (req, res) => {
             },
             body: JSON.stringify({
                 model: "claude-3-5-sonnet-20241022",
-                max_tokens: req.body.max_tokens || 4000,
+                max_tokens: req.body.max_tokens || 8192,
                 system: req.body.system,
                 messages: req.body.messages,
                 tools: req.body.tools
@@ -248,7 +248,7 @@ app.post('/api/analysis', async (req, res) => {
             },
             body: JSON.stringify({
                 model: "claude-3-5-sonnet-20241022",
-                max_tokens: req.body.max_tokens || 3000,
+                max_tokens: req.body.max_tokens || 8192,
                 system: req.body.system,
                 messages: req.body.messages,
                 tools: req.body.tools
