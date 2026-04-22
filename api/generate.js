@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
       const body = {
         model: req.body.model || "claude-3-7-sonnet-20250219",
-        max_tokens: req.body.max_tokens || 16000,
+        max_tokens: req.body.max_tokens || 8000,
         messages,
         tools,
         tool_choice: { type: "auto" },
@@ -98,3 +98,9 @@ export default async function handler(req, res) {
     }
 
     return res.json(finalData);
+
+  } catch (err) {
+    console.error('generate handler error:', err?.message || err);
+    return res.status(500).json({ error: err?.message || 'Internal server error' });
+  }
+}
