@@ -443,8 +443,8 @@ async function pushToBackend(data) {
 // ─────────────────────────────────────────────────────────────────
 //  AI PROMPT — platform-specific, no graphics, pure content depth
 // ─────────────────────────────────────────────────────────────────
-function buildPrompt(profile, prevTitles=[]) {
-  const platforms = profile.platforms || [profile.sub||profile.platform||"Instagram"];
+function buildPrompt(profile, prevTitles=[], selectedPlatforms=[]) {
+  const platforms = selectedPlatforms.length > 0 ? selectedPlatforms : (profile.platforms || [profile.sub||profile.platform||"Instagram"]);
   const mainPlat  = platforms[0];
   const dna       = PLATFORM_DNA[mainPlat] || PLATFORM_DNA["Instagram"];
   const allDNA    = platforms.map(p => PLATFORM_DNA[p]||PLATFORM_DNA["Instagram"]);
@@ -1145,6 +1145,7 @@ function Workspace({profile, hKey, onUpgrade}){
   const [step,setStep]=useState(0);
   const tmr=useRef(null);
   const platforms=(profile.platforms||[profile.sub||"Instagram"]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState(platforms);
 
   useEffect(()=>{
     (async()=>{const h=await DB.get(hKey)||[];setHist(h);if(h.length>0)setResult(h[h.length-1]);})();
@@ -1166,8 +1167,8 @@ function Workspace({profile, hKey, onUpgrade}){
       const res=await fetch("/api/generate",{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-          system:buildPrompt(profile,prevTitles),
-          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Write ${platforms.length} post${platforms.length>1?"s — one per platform, each on a DIFFERENT topic and angle":""}. Each post must be deeply specific to "${profile.niche}", use current trends, and be genuinely different from the others. Return ONLY raw JSON starting with {`}]
+          system:buildPrompt(profile,prevTitles,selectedPlatforms),
+          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${selectedPlatforms.join(" and ")}. Write ${selectedPlatforms.length} post${selectedPlatforms.length>1?"s — one per platform, each on a DIFFERENT topic and angle":""}. Each post must be deeply specific to "${profile.niche}", use current trends, and be genuinely different from the others. Return ONLY raw JSON starting with {`}]
         })
       });
       clearInterval(tmr.current);
@@ -1278,9 +1279,25 @@ function Workspace({profile, hKey, onUpgrade}){
           {/* Platform badges */}
           <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:4}}>
             {platforms.map(p=>(
-              <span key={p} style={{background:`${color}15`,border:`1px solid ${color}30`,color,
-                borderRadius:15,padding:"2px 10px",fontSize:11,fontWeight:600}}>
-                {p}</span>
+              <button key={p} 
+                onClick={() => {
+                  if (selectedPlatforms.includes(p)) {
+                    if (selectedPlatforms.length > 1) setSelectedPlatforms(selectedPlatforms.filter(x => x !== p));
+                  } else {
+                    setSelectedPlatforms([...selectedPlatforms, p]);
+                  }
+                }}
+                disabled={gen||trialExhausted}
+                style={{
+                  background: selectedPlatforms.includes(p) ? color : `${color}15`,
+                  border: `1px solid ${selectedPlatforms.includes(p) ? color : color+"30"}`,
+                  color: selectedPlatforms.includes(p) ? "#fff" : color,
+                  borderRadius:15,padding:"2px 10px",fontSize:11,fontWeight:600,
+                  cursor: (gen||trialExhausted) ? "not-allowed" : "pointer",
+                  transition: "all 0.2s"
+                }}>
+                {p}
+              </button>
             ))}
           </div>
         </div>
