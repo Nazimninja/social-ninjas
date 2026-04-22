@@ -443,120 +443,90 @@ async function pushToBackend(data) {
 // ─────────────────────────────────────────────────────────────────
 //  AI PROMPT — platform-specific, no graphics, pure content depth
 // ─────────────────────────────────────────────────────────────────
-function buildPrompt(profile, prevTitles=[], selectedPlatforms=[]) {
-  const platforms = selectedPlatforms.length > 0 ? selectedPlatforms : (profile.platforms || [profile.sub||profile.platform||"Instagram"]);
-  const mainPlat  = platforms[0];
-  const dna       = PLATFORM_DNA[mainPlat] || PLATFORM_DNA["Instagram"];
-  const allDNA    = platforms.map(p => PLATFORM_DNA[p]||PLATFORM_DNA["Instagram"]);
-  const prev      = prevTitles.length
-    ? `\nNEVER REPEAT THESE (already published):\n${prevTitles.map((t,i)=>`${i+1}. ${t}`).join("\n")}\n`:"";
+function buildPrompt(profile, prevTitles=[], platform="Instagram") {
+  // Always single platform — keeps tokens focused and output reliable
+  const p = platform;
+  const dna = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
+  const prev = prevTitles.length
+    ? `\nNEVER REPEAT THESE TOPICS (already generated):\n${prevTitles.slice(-20).map((t,i)=>`${i+1}. ${t}`).join("\n")}\n` : "";
 
-  const platformInstructions = platforms.length > 1
-    ? platforms.map(p => {
-        const d = PLATFORM_DNA[p]||PLATFORM_DNA["Instagram"];
-        return `\n### ${p}
-- Formats: ${d.formats.join(", ")}
-- Caption style: ${d.captionStyle}
-- Hashtags: ${d.hashtagCount} tags — ${d.hashtagStyle}
-- Script style: ${d.scriptStyle}
-- Best times: ${d.bestTimes.join(", ")}
-- What works: ${d.contentTypes.join(" | ")}
-- Viral mechanics: ${d.viralMechanics}`;
-      }).join("\n")
-    : `- Formats available: ${dna.formats.join(", ")}
-- Caption style: ${dna.captionStyle}
-- Hashtag count: ${dna.hashtagCount} — ${dna.hashtagStyle}
-- Script requirements: ${dna.scriptStyle}
-- Best posting times: ${dna.bestTimes.join(", ")}
-- What performs: ${dna.contentTypes.join(" | ")}
-- Viral mechanics on this platform: ${dna.viralMechanics}`;
+  const needsScript   = dna.requiresScript  !== false && p !== "Threads" && p !== "Twitter/X" && p !== "Pinterest";
+  const needsCarousel = dna.requiresCarousel !== false && p !== "YouTube" && p !== "Twitter/X" && p !== "Threads" && p !== "TikTok" && p !== "Snapchat";
+  const needsThread   = p === "Twitter/X";
+  const isYT = p === "YouTube";
+  const isLI = p === "LinkedIn";
 
-  return `You are a world-class viral content strategist with 15 years experience growing brands to millions of followers across every social platform. You've run content for brands doing $100M+ in revenue. Every post you write is strategically engineered to stop the scroll, hold attention, and drive action.
+  const htags = dna.hashtagCount > 5
+    ? ',"t4","t5","t6","t7","t8","t9","t10"'
+    : dna.hashtagCount > 3 ? ',"t4","t5"' : '';
 
-## CLIENT BRIEF
+  return `You are a world-class viral content strategist specialising in ${p}. Every post you write is platform-native, trend-researched, and ready to publish.
+
+## CLIENT
 - Brand: ${profile.brandName||profile.name}
-- Business: ${profile.businessContext||profile.industry||profile.niche||"Growing brand"}
-- Target Audience: ${profile.audience||"People interested in "+profile.niche}
-- Brand Voice: ${profile.tone||profile.personality||"Engaging, authentic, relatable"}
-- Content Niche: ${profile.niche||profile.industry||"General"}
-- Active Platforms: ${platforms.join(", ")}
+- Niche: ${profile.niche||"General"}
+- Audience: ${profile.audience||"General audience"}
+- Voice: ${profile.tone||"Engaging, authentic"}
+- Business: ${profile.businessContext||profile.niche||"Growing brand"}
 - Avoid: ${profile.avoid||"Nothing specific"}
-${profile.competitors?`- Competitors to Research: ${profile.competitors} — study what they post, find gaps, write angles that differentiate`:""}
-${profile.tagline?`- Tagline: ${profile.tagline}`:""}
-${profile.socialAccounts?.instagram?`- Instagram: @${profile.socialAccounts.instagram.replace("@","")} — research this account's recent posts, engagement style, and what's working/missing`:""}
-${profile.socialAccounts?.linkedin?`- LinkedIn: ${profile.socialAccounts.linkedin} — analyse their LinkedIn presence and content gaps`:""}
-${profile.socialAccounts?.youtube?`- YouTube: ${profile.socialAccounts.youtube} — analyse their channel strategy and content opportunities`:""}
-${profile.socialAccounts?.tiktok?`- TikTok: @${profile.socialAccounts.tiktok.replace("@","")} — research their TikTok content angles`:""}
-${profile.socialAccounts?.twitter?`- Twitter/X: @${profile.socialAccounts.twitter.replace("@","")} — analyse their X presence`:""}
+${profile.tagline ? `- Tagline: "${profile.tagline}"` : ""}
+${profile.competitors ? `- Competitors: ${profile.competitors}` : ""}
+${profile.socialAccounts?.instagram ? `- Instagram: @${profile.socialAccounts.instagram.replace("@","")}` : ""}
+${profile.socialAccounts?.linkedin ? `- LinkedIn: ${profile.socialAccounts.linkedin}` : ""}
+${profile.socialAccounts?.youtube ? `- YouTube: ${profile.socialAccounts.youtube}` : ""}
 ${prev}
-## PLATFORM INTELLIGENCE
-${platformInstructions}
+## PLATFORM: ${p.toUpperCase()}
+- Formats: ${dna.formats.join(", ")}
+- Caption style: ${dna.captionStyle}
+- Hashtags: ${dna.hashtagCount} — ${dna.hashtagStyle}
+- Script: ${dna.scriptStyle}
+- Best times: ${dna.bestTimes.join(", ")}
+- What performs: ${dna.contentTypes.join(" | ")}
+- Viral mechanics: ${dna.viralMechanics}
 
-## YOUR JOB
-Step 1: Use web_search to find what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${platforms.join(" and ")}. Search for:
-- "${mainPlat} trending content ${new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})}"
-- "viral ${(profile.niche.split(",")[0]||"").trim()} content ${mainPlat}"
-- trending hashtags, sounds, formats, memes or conversations in this niche this week
-${profile.competitors?`- Also search what ${profile.competitors.split(",")[0]?.trim()} is posting lately to find gaps you can fill`:""}
-${profile.socialAccounts?.instagram||profile.socialAccounts?.linkedin?`- Search the client's brand "${profile.brandName}" online to understand their current positioning and what content gaps exist`:""}
+## TASK
+1. Use web_search to find 2-3 trending topics in "${profile.niche}" on ${p} RIGHT NOW this week.
+2. Write exactly 3 complete ${p}-native posts on DIFFERENT topics using those trends.
 
-Step 2: Write 3 complete, platform-native posts using what you found. Every post must be deeply researched and hyper-specific to "${profile.niche}" — no generic content.
+## STRICT RULES
+- ${isYT ? 'caption = SEO title (60 chars, keyword-first). No carousel_slides.' : isLI ? 'caption = 150-300 word professional post (bold stat/opinion opening, NOT Instagram style).' : `caption = full ${p}-native caption, min 100 words, line breaks every 1-2 lines.`}
+- ${needsScript ? (isYT ? 'Script = YouTube Short (60 sec) OR Long-Form with timestamps. Include [DIRECTION] notes.' : isLI ? 'Script = LinkedIn video 60-90 sec. Professional delivery. [DIRECTION] notes.' : 'Script = word-for-word, [DIRECTION] every 5-10 sec, min 150 words, speakable as written.') : 'script = "null"'}
+- ${needsCarousel ? `carousel_slides = ${isLI ? 'LinkedIn Document carousel, 6-8 data-driven slides, last=CTA' : '5+ slides, slide 1=bold hook, last=CTA, each slide standalone-valuable'}` : 'carousel_slides = "null"'}
+- ${needsThread ? 'thread_tweets = min 7 tweets, numbered 1/7 style, last=CTA' : 'thread_tweets = "null"'}
+- Every caption opens with a PATTERN INTERRUPT (bold claim, specific number, or controversy). No greetings.
+- Hashtags: mix 3 broad + 3 mid + 3 niche-specific. NO generic tags.
+- Each post on a DIFFERENT angle/topic.
 
-## PLATFORM-SPECIFIC RULES (NON-NEGOTIABLE)
-- YouTube: "caption" field = SEO video TITLE (60 chars, keyword-first). No carousel_slides. Script = YouTube Short (60 sec) OR Long-Form with chapter outline. 
-- LinkedIn: Professional thought-leadership tone. "caption" = 150-300 word post (bold opinion opening). carousel_slides = Document/PDF format (6-8 data-driven slides). NOT Instagram-style.
-- Instagram/TikTok: Short reel scripts (15-30 sec). Carousel = swipe posts (5+ slides). Visual hooks.
-- Twitter/X: thread_tweets only. No carousel. No scripts.
-- Threads: Short conversational text only. No hashtags. No scripts.
-- Each post must cover a DIFFERENT topic — never repeat the same angle across posts.
-
-## CONTENT RULES
-- Every caption must open with a PATTERN INTERRUPT — a bold statement, controversial opinion, or specific number that stops the scroll in 0.3 seconds. No greetings, no "Are you...", no questions as openers.
-- Captions must be LONG and valuable — minimum 150 words. Use line breaks every 1-2 sentences. Include specific facts, numbers, or insights. Not fluffy filler.
-- Captions must be platform-native (Instagram caption ≠ LinkedIn post ≠ Twitter thread)
-- Scripts MUST be word-for-word, minimum 180 words, with [DIRECTION: ...] notes for every scene change, text overlay, B-roll cut, and camera action. Write it so someone can read it cold and film immediately.
-- Carousel slides must be complete — EVERY slide's heading AND full body copy written. Minimum 5 slides. Slide 1 = hook, Last slide = strong CTA. Each slide must standalone-valuable.
-- Hooks must create a knowledge gap or open loop the brain is compelled to close
-- Hashtags must be NICHE-SPECIFIC — mix of: 3 broad niche tags, 3 mid-size community tags, 3 micro-niche tags, 1 trending tag. NO generic tags like #love #instagood #viral
-- CTAs must be specific, low-friction, and tied to the post content — not "follow for more" or "link in bio"
-- Content must feel like it was written by a practitioner who lives this niche — insider language, specific examples, real numbers
-
-## RESPONSE FORMAT
-CRITICAL: Return ONLY raw JSON. Start immediately with { — no markdown fences, no preamble, no explanation.
+## OUTPUT
+Return ONLY raw JSON starting with {. No markdown, no explanation.
 
 {
   "trends": [
-    {"name":"string","platform":"string","why":"string (max 20 words)","heat":"Hot|Rising|Emerging","source":"what you found in search"}
+    {"name":"string","why":"string (max 15 words)","heat":"Hot|Rising|Emerging"}
   ],
   "posts": [
-    ${platforms.map((p,i) => {
-      const d = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
-      const needsScript  = d.requiresScript  !== false && p !== "Threads" && p !== "Twitter/X" && p !== "Pinterest";
-      const needsCarousel= d.requiresCarousel !== false && p !== "YouTube" && p !== "Twitter/X" && p !== "Threads" && p !== "TikTok" && p !== "Snapchat";
-      const needsThread  = p === "Twitter/X";
-      const isYT = p === "YouTube";
-      const isLI = p === "LinkedIn";
-      const htags = d.hashtagCount > 5 ? ',"t4","t5","t6","t7","t8","t9","t10"' : d.hashtagCount > 3 ? ',"t4","t5"' : '';
-      return `{
-      "id":"p${i+1}",
+    {
+      "id":"p1",
       "platform":"${p}",
-      "format":"${d.formats[0]}",
-      "title":"string — post title/topic (max 8 words, specific to ${p})",
+      "format":"${dna.formats[0]}",
+      "title":"string (max 8 words, specific topic)",
       "priority":"Must Post|High Value|Good to Post",
       "best_day":"string",
-      "best_time":"${d.bestTimes[0]}",
-      "trend_used":"string — which specific trend this post rides on ${p}",
-      "why_now":"string — why this angle works THIS week on ${p} (max 20 words)",
-      "hook":"string — ${isYT ? 'video title (60 chars max, SEO keyword-first)' : 'opening line that stops scroll on '+p+' (max 15 words)'}",
-      "caption":"string — ${isYT ? 'SEO video description (200+ words, keywords in first 2 lines, timestamps)' : isLI ? 'professional LinkedIn post (150-300 words, bold stat/opinion opening, NOT an Instagram caption)' : 'full '+p+'-native caption with line breaks, min 100 words'}",
+      "best_time":"${dna.bestTimes[0]}",
+      "trend_used":"string",
+      "why_now":"string (max 15 words)",
+      "hook":"string (max 15 words, scroll-stopping opener)",
+      "caption":"string (full ${p}-native caption)",
       "hashtags":["t1","t2","t3"${htags}],
-      "cta":"string — specific CTA for ${p}",
-      "script":${needsScript ? `"${isYT ? 'YOUTUBE: Choose Short (60 sec, vertical, hook 0-3s, fast, loop ending) OR Long-Form (full script with chapter outline and timestamps). Include [DIRECTION: camera/cut/text] notes throughout. Min 200 words.' : isLI ? 'LINKEDIN VIDEO (60-90 sec): Bold claim 0-5s, data/proof, actionable takeaway, invite comment. No music. Subtitles critical. Professional delivery. [DIRECTION] notes for each section. Min 150 words.' : 'Word-for-word script with [DIRECTION: camera/text/action] every 5-10 sec. Hook in first 2 sec. Min 150 words. Speakable as written.'}"`  : '"null"'},
-      "carousel_slides":${needsCarousel ? `[{"slide_num":1,"heading":"string","body":"string — ${isLI ? 'LinkedIn Document carousel (PDF format). Slide 1=title card, slides 2-6=data/framework/insight, last slide=CTA+follow. Professional design.' : 'Instagram/Facebook carousel. Slide 1=bold hook, slides 2-4=value, last slide=CTA. Each slide save-worthy.'}","design_note":"string"}]` : '"null"'},
-      "thread_tweets":${needsThread ? '[{"num":1,"tweet":"string (max 280 chars)"},{"num":2,"tweet":"..."}] — min 7 tweets, last tweet=CTA. Each tweet standalone-valuable. Number them like 1/8.' : '"null"'},
-      "posting_checklist":["${p}-specific step 1","step 2","step 3","step 4","step 5"],
-      "engagement_tip":"string — one specific action in first 30 min after posting on ${p} to boost reach"
-    }`;}).join(',\n    ')}
+      "cta":"string",
+      "script":${needsScript ? '"string (full word-for-word script with [DIRECTION] notes)"' : '"null"'},
+      "carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},
+      "thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},
+      "posting_checklist":["step 1","step 2","step 3","step 4"],
+      "engagement_tip":"string"
+    },
+    {"id":"p2","platform":"${p}","format":"${dna.formats[0]}","title":"string","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"string","hashtags":["t1","t2","t3"${htags}],"cta":"string","script":${needsScript ? '"string"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step 1","step 2","step 3"],"engagement_tip":"string"},
+    {"id":"p3","platform":"${p}","format":"${dna.formats[0]}","title":"string","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"string","hashtags":["t1","t2","t3"${htags}],"cta":"string","script":${needsScript ? '"string"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step 1","step 2","step 3"],"engagement_tip":"string"}
   ]
 }`;
 }
@@ -1145,7 +1115,8 @@ function Workspace({profile, hKey, onUpgrade}){
   const [step,setStep]=useState(0);
   const tmr=useRef(null);
   const platforms=(profile.platforms||[profile.sub||"Instagram"]);
-  const [selectedPlatforms, setSelectedPlatforms] = useState(platforms);
+  // Single platform selection — generate one platform at a time for reliability
+  const [activePlatform, setActivePlatform] = useState(platforms[0] || "Instagram");
 
   useEffect(()=>{
     (async()=>{const h=await DB.get(hKey)||[];setHist(h);if(h.length>0)setResult(h[h.length-1]);})();
@@ -1158,7 +1129,7 @@ function Workspace({profile, hKey, onUpgrade}){
   const trialRemaining = profile?.isTrial ? Math.max(0, TRIAL_LIMIT - totalGenerated) : null;
 
   const generate=async()=>{
-    if(trialExhausted) return; // hard block
+    if(trialExhausted) return;
     setGen(true);setErr(null);setResult(null);setStep(0);
     tmr.current=setInterval(()=>setStep(s=>(s+1)%GEN_STEPS.length),3500);
     try{
@@ -1167,8 +1138,9 @@ function Workspace({profile, hKey, onUpgrade}){
       const res=await fetch("/api/generate",{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-          system:buildPrompt(profile,prevTitles,selectedPlatforms),
-          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${selectedPlatforms.join(" and ")}. Write ${selectedPlatforms.length} post${selectedPlatforms.length>1?"s — one per platform, each on a DIFFERENT topic and angle":""}. Each post must be deeply specific to "${profile.niche}", use current trends, and be genuinely different from the others. Return ONLY raw JSON starting with {`}]
+          max_tokens: 6000,
+          system:buildPrompt(profile,prevTitles,activePlatform),
+          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${activePlatform}. Write exactly 3 complete, platform-native posts for ${activePlatform} — each on a DIFFERENT topic. Use current live trends. Return ONLY raw JSON starting with {`}]
         })
       });
       clearInterval(tmr.current);
@@ -1262,52 +1234,81 @@ function Workspace({profile, hKey, onUpgrade}){
         </div>
       )}
 
-      {/* Generate CTA */}
-      <div className="mobile-col" style={{background:`linear-gradient(135deg,${profile.darkBg||"#0B152B"}CC,#080810)`,
-        border:`1px solid ${color}20`,borderRadius:16,padding:"20px 24px",marginBottom:20,
-        display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
-        <div>
-          <div style={{fontSize:14,fontWeight:700,marginBottom:4,letterSpacing:"-.3px"}}>
-            Week {hist.length+1}
-            <span style={{color,fontSize:12,fontWeight:500}}> — live research · write · optimise</span>
-          </div>
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.3)",marginBottom:hist.length?6:0}}>
-            {hist.length>0
-              ? `✓ ${hist.flatMap(w=>w.posts||[]).length} posts saved — AI never repeats them`
-              : "AI finds what's trending → writes platform-native content → ready to post"}
-          </div>
-          {/* Platform badges */}
-          <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:4}}>
-            {platforms.map(p=>(
-              <button key={p} 
-                onClick={() => {
-                  if (selectedPlatforms.includes(p)) {
-                    if (selectedPlatforms.length > 1) setSelectedPlatforms(selectedPlatforms.filter(x => x !== p));
-                  } else {
-                    setSelectedPlatforms([...selectedPlatforms, p]);
-                  }
-                }}
-                disabled={gen||trialExhausted}
-                style={{
-                  background: selectedPlatforms.includes(p) ? color : `${color}15`,
-                  border: `1px solid ${selectedPlatforms.includes(p) ? color : color+"30"}`,
-                  color: selectedPlatforms.includes(p) ? "#fff" : color,
-                  borderRadius:15,padding:"2px 10px",fontSize:11,fontWeight:600,
-                  cursor: (gen||trialExhausted) ? "not-allowed" : "pointer",
-                  transition: "all 0.2s"
-                }}>
-                {p}
-              </button>
-            ))}
+      {/* ── PLATFORM PICKER + GENERATE ── */}
+      <div style={{background:`linear-gradient(135deg,${profile.darkBg||"#0B152B"}CC,#080810)`,
+        border:`1px solid ${color}20`,borderRadius:16,padding:"20px 24px",marginBottom:20}}>
+
+        {/* Header */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:16}}>
+          <div>
+            <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.3px"}}>
+              Week {hist.length+1}
+              <span style={{color,fontSize:12,fontWeight:500}}> — live research · write · post</span>
+            </div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",marginTop:3}}>
+              {hist.length>0
+                ? `✓ ${hist.flatMap(w=>w.posts||[]).length} posts saved — AI never repeats`
+                : "Pick a platform → AI researches trends → writes 3 ready-to-post pieces"}
+            </div>
           </div>
         </div>
-        <button onClick={generate} disabled={gen||trialExhausted}
-          style={{background:gen||trialExhausted?"rgba(255,255,255,0.04)":"linear-gradient(135deg,#1d4ed8,#5ba4f5)",
+
+        {/* Single-platform selector */}
+        <div style={{marginBottom:16}}>
+          <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
+            color:"rgba(255,255,255,0.3)",marginBottom:8}}>
+            📲 Select platform to generate for
+          </div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {platforms.map(p=>{
+              const active = activePlatform === p;
+              const platColors = {
+                "Instagram":"#E1306C","LinkedIn":"#0077B5","YouTube":"#FF0000",
+                "Facebook":"#1877F2","Twitter/X":"#1DA1F2","TikTok":"#00f2fe",
+                "Threads":"#fff","Pinterest":"#E60023","Snapchat":"#FFFC00"
+              };
+              const pc = platColors[p] || color;
+              return(
+                <button key={p}
+                  onClick={()=>!gen&&!trialExhausted&&setActivePlatform(p)}
+                  disabled={gen||trialExhausted}
+                  style={{
+                    padding:"7px 16px",borderRadius:20,fontSize:12,fontWeight:active?700:500,
+                    cursor:gen||trialExhausted?"not-allowed":"pointer",
+                    transition:"all .18s",
+                    background: active ? pc : "rgba(255,255,255,0.05)",
+                    color: active ? (p==="Snapchat"?"#000":"#fff") : "rgba(255,255,255,0.55)",
+                    border: `1.5px solid ${active ? pc : "rgba(255,255,255,0.1)"}`,
+                    boxShadow: active ? `0 4px 14px ${pc}44` : "none",
+                    transform: active ? "translateY(-1px)" : "none",
+                  }}>
+                  {active && "✓ "}{p}
+                </button>
+              );
+            })}
+          </div>
+          {activePlatform && (
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginTop:8}}>
+              Generating 3 {activePlatform}-native posts with live trend research
+            </div>
+          )}
+        </div>
+
+        {/* Generate button */}
+        <button onClick={generate} disabled={gen||trialExhausted||!activePlatform}
+          style={{width:"100%",
+            background:gen||trialExhausted?"rgba(255,255,255,0.04)":"linear-gradient(135deg,#1d4ed8,#5ba4f5)",
             color:gen||trialExhausted?"rgba(255,255,255,0.2)":"#fff",
-            border:`1px solid ${gen||trialExhausted?"rgba(255,255,255,0.07)":"rgba(91,164,245,0.5)"}`,borderRadius:50,
-            padding:"15px 32px",fontSize:15,fontWeight:600,boxShadow:gen||trialExhausted?"none":"0 8px 28px rgba(91,164,245,0.3),inset 0 1px 0 rgba(255,255,255,0.15)",cursor:gen||trialExhausted?"not-allowed":"pointer",
-            minWidth:195,transition:"all .2s",letterSpacing:"-.2px"}}>
-          {trialExhausted?"🔒 Trial Complete — Upgrade":gen?"✦ Researching trends...":hist.length>0?`⚡ Generate Week ${hist.length+1} Content`:"⚡ Research Trends & Write Content"}
+            border:`1px solid ${gen||trialExhausted?"rgba(255,255,255,0.07)":"rgba(91,164,245,0.5)"}`,
+            borderRadius:12,padding:"14px 28px",fontSize:15,fontWeight:700,
+            boxShadow:gen||trialExhausted?"none":"0 8px 28px rgba(91,164,245,0.3),inset 0 1px 0 rgba(255,255,255,0.15)",
+            cursor:gen||trialExhausted?"not-allowed":"pointer",
+            transition:"all .2s",letterSpacing:"-.2px"}}>
+          {trialExhausted
+            ? "🔒 Trial Complete — Upgrade"
+            : gen
+            ? `✦ Writing ${activePlatform} content...`
+            : `⚡ Generate 3 ${activePlatform} Posts`}
         </button>
       </div>
 
@@ -1321,7 +1322,7 @@ function Workspace({profile, hKey, onUpgrade}){
           <p style={{color:"rgba(255,255,255,0.7)",fontSize:15,margin:"0 0 5px",fontWeight:600,letterSpacing:"-.2px"}}>
             {GEN_STEPS[step]}</p>
           <p style={{color:"rgba(255,255,255,0.25)",fontSize:12,margin:0}}>
-            30–60 seconds · searching live web · {platforms.join(", ")}</p>
+            30–60 seconds · searching live web · {activePlatform}</p>
           <div style={{display:"flex",justifyContent:"center",gap:5,marginTop:16}}>
             {GEN_STEPS.map((_,i)=>(
               <div key={i} style={{width:5,height:5,borderRadius:"50%",transition:"all .3s",
@@ -1414,7 +1415,7 @@ function Workspace({profile, hKey, onUpgrade}){
                 style={{background:`linear-gradient(135deg,${color},${color}88)`,
                   color:"#fff",border:"none",borderRadius:12,padding:"13px 28px",
                   fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
-                ↻ Generate Week {hist.length+1}</button>
+                ↻ Generate More {activePlatform} Posts (Week {hist.length+1})</button>
             )}
           </div>
         </div>
@@ -1429,7 +1430,7 @@ function Workspace({profile, hKey, onUpgrade}){
             Ready for {profile.brandName||profile.name}</h3>
           <div style={{display:"inline-grid",textAlign:"left",gap:7,background:"rgba(255,255,255,0.03)",
             borderRadius:13,padding:"14px 20px"}}>
-            {["🔍 Searches live trends on "+platforms.join(" + "),
+            {["🔍 Searches live trends on "+activePlatform,
               "✍️ Writes platform-native captions and scripts",
               "🎠 Builds complete carousel decks",
               "🧵 Creates Twitter/X threads if needed",

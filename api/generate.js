@@ -1,5 +1,4 @@
-// AI Generation proxy — passes requests to Anthropic Claude API
-// Handles multi-turn tool_use (web_search) loops until end_turn
+// AI Generation proxy — single-platform, multi-turn tool_use loop
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,25 +15,25 @@ export default async function handler(req, res) {
     const webSearchTool = {
       type: "web_search_20250305",
       name: "web_search",
-      max_uses: 5
+      max_uses: 3  // reduced to 3 — enough for trends, saves tokens
     };
 
-    const frontendTools = req.body.tools || [];
-    const tools = [webSearchTool, ...frontendTools.filter(t => t.type !== 'web_search_20250305')];
-
     let messages = [...(req.body.messages || [])];
+    // Cap max_tokens at 6000 — enough for 3 full posts, avoids timeout
+    const maxTokens = Math.min(req.body.max_tokens || 6000, 6000);
+
     let finalData = null;
     let loopCount = 0;
-    const MAX_LOOPS = 10;
+    const MAX_LOOPS = 8;
 
     while (loopCount < MAX_LOOPS) {
       loopCount++;
 
       const body = {
-        model: req.body.model || "claude-3-7-sonnet-20250219",
-        max_tokens: req.body.max_tokens || 8000,
+        model: "claude-sonnet-4-5-20251001",   // verified working model
+        max_tokens: maxTokens,
         messages,
-        tools,
+        tools: [webSearchTool],
         tool_choice: { type: "auto" },
       };
 
@@ -53,54 +52,60 @@ export default async function handler(req, res) {
 
       if (!anthropicRes.ok) {
         const error = await anthropicRes.json().catch(() => ({}));
-        console.error('Anthropic API error:', JSON.stringify(error));
+        console.error('[generate] Anthropic error:', JSON.stringify(error));
         return res.status(anthropicRes.status).json({
-          error: error?.error?.message || 'AI service error. Please try again.',
-          fullError: error
+          error: error?.error?.message || `API error ${anthropicRes.status}. Please try again.`
         });
       }
 
       const data = await anthropicRes.json();
-      console.log(`[Loop ${loopCount}] stop_reason: ${data.stop_reason}, blocks: ${data.content?.length}`);
+      console.log(`[Loop ${loopCount}] stop_reason=${data.stop_reason} blocks=${data.content?.length} tokens_used=${data.usage?.output_tokens}`);
 
-      // DONE — Claude finished, return final response
       if (data.stop_reason === 'end_turn') {
         finalData = data;
         break;
       }
 
-      // TOOL USE — Claude ran web search, send results back
       if (data.stop_reason === 'tool_use') {
         messages = [...messages, { role: 'assistant', content: data.content }];
 
-        const toolResultContent = [];
+        const toolResults = [];
         for (const block of data.content) {
           if (block.type === 'tool_use') {
-            toolResultContent.push({
+            toolResults.push({
               type: 'tool_result',
               tool_use_id: block.id,
-              content: block.content || `Search completed for: ${JSON.stringify(block.input)}`,
+              content: block.content || `Search done for: ${JSON.stringify(block.input)}`,
             });
           }
         }
 
-        messages = [...messages, { role: 'user', content: toolResultContent }];
+        if (toolResults.length > 0) {
+          messages = [...messages, { role: 'user', content: toolResults }];
+        }
         continue;
       }
 
-      // Any other stop_reason — return as-is
+      // max_tokens hit or other stop reason
+      if (data.stop_reason === 'max_tokens') {
+        // Still try to parse whatever was returned
+        finalData = data;
+        console.warn('[generate] max_tokens hit — partial response returned');
+        break;
+      }
+
       finalData = data;
       break;
     }
 
     if (!finalData) {
-      return res.status(500).json({ error: 'Generation loop exceeded. Please try again.' });
+      return res.status(500).json({ error: 'Generation did not complete. Please try again.' });
     }
 
     return res.json(finalData);
 
   } catch (err) {
-    console.error('generate handler error:', err?.message || err);
-    return res.status(500).json({ error: err?.message || 'Internal server error' });
+    console.error('[generate] Handler error:', err?.message || err);
+    return res.status(500).json({ error: err?.message || 'Internal server error. Please try again.' });
   }
 }
