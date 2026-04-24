@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       loopCount++;
 
       const body = {
-        model: "claude-sonnet-4-5-20251001",   // verified working model
+        model: "claude-sonnet-4-6",   // Corrected working model from models list
         max_tokens: maxTokens,
         messages,
         tools: [webSearchTool],
