@@ -616,7 +616,7 @@ function HowToUseBanner({color, postCount}){
         {steps.map((s,i)=>(
           <div key={i} style={{background:"rgba(0,0,0,0.3)",borderRadius:12,padding:"12px 14px",
             border:"1px solid rgba(255,255,255,0.08)",display:"flex",gap:10,alignItems:"flex-start"}}>
-            <div style={{width:28,height:28,borderRadius:8,background:`${color}22`,color,
+            <div style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,.07)",color:"rgba(255,255,255,.8)",
               fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               {s.n}</div>
             <div>
@@ -680,16 +680,16 @@ function PostCard({post, profile, index}){
   };
 
   return(
-    <div style={{background:"rgba(8,14,26,0.85)",border:`1px solid ${color}20`,borderRadius:20,overflow:"hidden",backdropFilter:"blur(32px) saturate(180%)",WebkitBackdropFilter:"blur(32px) saturate(180%)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.06),0 8px 32px rgba(0,0,0,0.3)`}}>
+    <div style={{background:"rgba(8,14,26,0.85)",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
 
       {/* ── HEADER STRIP ── */}
-      <div style={{background:`linear-gradient(135deg,${color}14,${color}06)`,
-        borderBottom:`1px solid ${color}18`,padding:"18px 22px"}}>
+      <div style={{background:"linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))",
+        borderBottom:"1px solid rgba(255,255,255,.07)",padding:"18px 22px"}}>
 
         {/* Post number + platform + priority */}
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-          <div style={{width:28,height:28,borderRadius:8,background:`${color}20`,border:`1px solid ${color}30`,
-            color,fontWeight:900,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",
+            color:"rgba(255,255,255,.7)",fontWeight:700,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>
             {index+1}</div>
           <span style={{background:pColor.bg,color:pColor.text,boxShadow:`0 0 10px ${pColor.bg}40`,
             borderRadius:6,padding:"4px 10px",fontSize:11,fontWeight:800,textTransform:"uppercase",letterSpacing:"1px"}}>
@@ -708,9 +708,9 @@ function PostCard({post, profile, index}){
 
         {/* Hook */}
         {post.hook&&(
-          <div style={{background:"rgba(0,0,0,0.3)",border:`1px solid ${color}25`,borderRadius:11,
+          <div style={{background:"rgba(0,0,0,0.3)",border:"1px solid rgba(255,255,255,.1)",borderRadius:11,
             padding:"10px 14px",display:"flex",gap:10,alignItems:"flex-start"}}>
-            <div style={{background:`${color}20`,color,borderRadius:6,padding:"2px 8px",
+            <div style={{background:"rgba(255,255,255,.06)",color:"rgba(255,255,255,.6)",borderRadius:6,padding:"2px 8px",
               fontSize:9,fontWeight:800,textTransform:"uppercase",letterSpacing:"1.5px",
               whiteSpace:"nowrap",flexShrink:0,marginTop:1}}>HOOK</div>
             <div style={{fontSize:13,color:"#e2e8f0",fontWeight:600,fontStyle:"italic",lineHeight:1.5}}>
@@ -735,8 +735,8 @@ function PostCard({post, profile, index}){
             style={{padding:"10px 18px",fontSize:12.5,fontWeight:tab===t.id?700:400,border:"none",cursor:"pointer",
               whiteSpace:"nowrap",transition:"all .2s",
               borderBottom:`2px solid ${tab===t.id?color:"transparent"}`,
-              background:tab===t.id?`${color}12`:"transparent",
-              color:tab===t.id?color:"rgba(255,255,255,0.4)",
+              background:tab===t.id?"rgba(255,255,255,.08)":"transparent",
+              color:tab===t.id?"rgba(255,255,255,.9)":"rgba(255,255,255,0.4)",
               display:"flex",alignItems:"center",gap:6,borderRadius:"8px 8px 0 0"}}>
             <span>{t.icon}</span>
             <span>{t.label}</span>
@@ -755,7 +755,7 @@ function PostCard({post, profile, index}){
         </div>
         {tab==="caption"&&(
           <button onClick={copyAll}
-            style={{background:copied?"#052e16":`${color}18`,color:copied?"#4ade80":color,
+            style={{background:copied?"#052e16":"rgba(255,255,255,.07)",color:copied?"#4ade80":color,
               border:`1px solid ${copied?"#166534":color+"40"}`,borderRadius:8,
               padding:"5px 14px",fontSize:11,fontWeight:700,cursor:"pointer",
               display:"flex",alignItems:"center",gap:5,transition:"all .2s",whiteSpace:"nowrap"}}>
@@ -807,8 +807,8 @@ function PostCard({post, profile, index}){
                 </div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                   {post.hashtags.map((h,i)=>(
-                    <span key={i} style={{background:`${color}12`,color:`${color}dd`,
-                      border:`1px solid ${color}25`,borderRadius:20,padding:"4px 12px",fontSize:11,fontWeight:600}}>
+                    <span key={i} style={{background:"rgba(255,255,255,.04)",color:"rgba(255,255,255,.45)",
+                      border:"1px solid rgba(255,255,255,.09)",borderRadius:20,padding:"4px 12px",fontSize:11,fontWeight:500}}>
                       #{h.replace(/^#/,"")}</span>
                   ))}
                 </div>
@@ -816,16 +816,16 @@ function PostCard({post, profile, index}){
             )}
 
             {/* Ready-to-paste block */}
-            <div style={{background:`${color}08`,border:`1px solid ${color}25`,borderRadius:13,padding:"14px 16px"}}>
+            <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:13,padding:"14px 16px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                 <div>
                   <div style={{fontSize:12,fontWeight:700,color,marginBottom:2}}>⚡ Ready to paste — caption + hashtags combined</div>
                   <div style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>Click the button → open {post.platform} → paste. Done.</div>
                 </div>
                 <button onClick={copyAll}
-                  style={{background:copied?"#052e16":`linear-gradient(135deg,${color},${color}99)`,
-                    color:copied?"#2fcf8e":"#fff",border:"none",borderRadius:10,
-                    padding:"9px 18px",fontSize:12,fontWeight:800,cursor:"pointer",
+                  style={{background:copied?"#052e16":"rgba(255,255,255,.08)",
+                    color:copied?"#2fcf8e":"rgba(255,255,255,.8)",border:"1px solid rgba(255,255,255,.12)",borderRadius:8,
+                    padding:"9px 18px",fontSize:12,fontWeight:600,cursor:"pointer",
                     transition:"all .2s",whiteSpace:"nowrap",flexShrink:0}}>
                   {copied?"✓ Copied!":"Copy Complete ↗"}
                 </button>
@@ -892,16 +892,15 @@ function PostCard({post, profile, index}){
 
             {/* Copy all */}
             <div style={{display:"flex",justifyContent:"flex-end"}}>
-              <CopyBtn text={(post.carousel_slides||[]).map(s=>`Slide ${s.slide_num}: ${s.heading}\n${s.body}`).join("\n\n")}
-                label={`Copy All ${post.carousel_slides?.length||0} Slides`}/>
+              <CopyBtn text={(post.carousel_slides||[]).map(s=>"Slide "+s.slide_num+": "+s.heading+" | "+s.body).join(" || ")} label={"Copy All "+(post.carousel_slides?.length||0)+" Slides"}/>
             </div>
 
             {/* Slide cards */}
             {(post.carousel_slides||[]).map((s,i)=>(
-              <div key={i} style={{background:"#020209",border:`1px solid rgba(168,85,247,0.18)`,
+              <div key={i} style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.08)",
                 borderRadius:14,overflow:"hidden"}}>
-                <div style={{background:"rgba(168,85,247,0.08)",padding:"10px 16px",
-                  borderBottom:"1px solid rgba(168,85,247,0.12)",
+                <div style={{background:"rgba(255,255,255,.03)",padding:"10px 16px",
+                  borderBottom:"1px solid rgba(255,255,255,.07)",
                   display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
                     <div style={{width:28,height:28,borderRadius:8,background:"rgba(168,85,247,0.2)",
@@ -915,10 +914,7 @@ function PostCard({post, profile, index}){
                          i===(post.carousel_slides.length-1)?"Last slide — strong call to action":"Body slide"}</div>
                     </div>
                   </div>
-                  <CopyBtn text={`${s.heading}
-
-${s.body}`} sm/>
-                </div>
+                  <CopyBtn text={s.heading+" | "+s.body} sm/> </div>
                 <div style={{padding:"13px 16px"}}>
                   <div style={{fontSize:13,color:"rgba(255,255,255,0.7)",lineHeight:1.75,marginBottom:s.design_note?10:0}}>
                     {s.body}</div>
@@ -951,7 +947,7 @@ ${s.body}`} sm/>
                 Use the copy button on each tweet to paste one at a time.
               </div>
             </div>
-            <CopyBtn text={post.thread_tweets.map(t=>`${t.num}/ ${t.tweet}`).join("\n\n")} label="Copy Entire Thread"/>
+            <CopyBtn text={post.thread_tweets.map(t=>t.num+"/ "+t.tweet).join(" | ")} label="Copy Entire Thread"/>
             {post.thread_tweets.map((t,i)=>(
               <div key={i} style={{display:"flex",gap:10}}>
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0}}>
@@ -982,11 +978,11 @@ ${s.body}`} sm/>
           <div style={{display:"grid",gap:10}}>
 
             {/* Posting time card */}
-            <div style={{background:`${color}10`,border:`1px solid ${color}25`,borderRadius:13,
+            <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:13,
               padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
               <div>
                 <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                  color:`${color}80`,marginBottom:4}}>📅 When to post this</div>
+                  color:"rgba(255,255,255,.5)",marginBottom:4}}>📅 When to post this</div>
                 <div style={{fontSize:20,fontWeight:800,color:"#f1f5f9",letterSpacing:"-.4px"}}>
                   {post.best_day} · {post.best_time}</div>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:3}}>
@@ -1004,8 +1000,8 @@ ${s.body}`} sm/>
               <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",
                 background:"rgba(255,255,255,0.03)",borderRadius:11,padding:"12px 16px",
                 border:"1px solid rgba(255,255,255,0.06)"}}>
-                <div style={{width:26,height:26,borderRadius:8,background:`${color}20`,color,
-                  fontWeight:800,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",
+                <div style={{width:26,height:26,borderRadius:8,background:"rgba(255,255,255,.08)",color:"rgba(255,255,255,.8)",
+                  fontWeight:700,fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",
                   flexShrink:0,fontFamily:"'JetBrains Mono',monospace"}}>{i+1}</div>
                 <span style={{fontSize:13,color:"rgba(255,255,255,0.7)",lineHeight:1.6}}>{step}</span>
               </div>
@@ -1079,13 +1075,13 @@ function WeekCal({posts, color}){
         color:"rgba(255,255,255,0.3)",marginBottom:8}}>📅 Your posting schedule this week</div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4}}>
         {days.map(d=>(
-          <div key={d} style={{background:byDay[d]?`${color}0c`:"rgba(255,255,255,0.02)",
+          <div key={d} style={{background:byDay[d]?`rgba(255,255,255,.05)`:"rgba(255,255,255,0.02)",
             border:`1px solid ${byDay[d]?color+"28":"rgba(255,255,255,0.05)"}`,
             borderRadius:10,padding:"7px 5px",minHeight:52,textAlign:"center"}}>
             <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".8px",
               color:byDay[d]?color:"rgba(255,255,255,0.22)",marginBottom:5}}>{d}</div>
             {byDay[d]?.map((p,i)=>(
-              <div key={i} style={{background:`${color}18`,borderRadius:4,
+              <div key={i} style={{background:"rgba(255,255,255,.07)",borderRadius:4,
                 padding:"3px 4px",marginBottom:2}}>
                 <div style={{fontSize:8,color,fontWeight:700,lineHeight:1.2}}>{p.format}</div>
               </div>
@@ -1235,8 +1231,7 @@ function Workspace({profile, hKey, onUpgrade}){
       )}
 
       {/* ── PLATFORM PICKER + GENERATE ── */}
-      <div style={{background:`linear-gradient(135deg,${profile.darkBg||"#0B152B"}CC,#080810)`,
-        border:`1px solid ${color}20`,borderRadius:16,padding:"20px 24px",marginBottom:20}}>
+      <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:16,padding:"20px 24px",marginBottom:20}}>
 
         {/* Header */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:16}}>
@@ -1255,55 +1250,33 @@ function Workspace({profile, hKey, onUpgrade}){
 
         {/* Single-platform selector */}
         <div style={{marginBottom:16}}>
-          <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-            color:"rgba(255,255,255,0.3)",marginBottom:8}}>
-            📲 Select platform to generate for
+          <div style={{fontSize:11,fontWeight:500,color:"rgba(255,255,255,.35)",marginBottom:8}}>
+            Select platform
           </div>
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {platforms.map(p=>{
               const active = activePlatform === p;
-              const platColors = {
-                "Instagram":"#E1306C","LinkedIn":"#0077B5","YouTube":"#FF0000",
-                "Facebook":"#1877F2","Twitter/X":"#1DA1F2","TikTok":"#00f2fe",
-                "Threads":"#fff","Pinterest":"#E60023","Snapchat":"#FFFC00"
-              };
-              const pc = platColors[p] || color;
               return(
                 <button key={p}
                   onClick={()=>!gen&&!trialExhausted&&setActivePlatform(p)}
                   disabled={gen||trialExhausted}
-                  style={{
-                    padding:"7px 16px",borderRadius:20,fontSize:12,fontWeight:active?700:500,
-                    cursor:gen||trialExhausted?"not-allowed":"pointer",
-                    transition:"all .18s",
-                    background: active ? pc : "rgba(255,255,255,0.05)",
-                    color: active ? (p==="Snapchat"?"#000":"#fff") : "rgba(255,255,255,0.55)",
-                    border: `1.5px solid ${active ? pc : "rgba(255,255,255,0.1)"}`,
-                    boxShadow: active ? `0 4px 14px ${pc}44` : "none",
-                    transform: active ? "translateY(-1px)" : "none",
-                  }}>
+                  className={"plat-pill"+(active?" active":"")}>
                   {active && "✓ "}{p}
                 </button>
               );
             })}
           </div>
           {activePlatform && (
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.28)",marginTop:8}}>
-              Generating 3 {activePlatform}-native posts with live trend research
+            <div style={{fontSize:12,color:"rgba(255,255,255,.28)",marginTop:8}}>
+              3 {activePlatform} posts · live trend research · ready to post
             </div>
           )}
         </div>
 
         {/* Generate button */}
         <button onClick={generate} disabled={gen||trialExhausted||!activePlatform}
-          style={{width:"100%",
-            background:gen||trialExhausted?"rgba(255,255,255,0.04)":"linear-gradient(135deg,#1d4ed8,#5ba4f5)",
-            color:gen||trialExhausted?"rgba(255,255,255,0.2)":"#fff",
-            border:`1px solid ${gen||trialExhausted?"rgba(255,255,255,0.07)":"rgba(91,164,245,0.5)"}`,
-            borderRadius:12,padding:"14px 28px",fontSize:15,fontWeight:700,
-            boxShadow:gen||trialExhausted?"none":"0 8px 28px rgba(91,164,245,0.3),inset 0 1px 0 rgba(255,255,255,0.15)",
-            cursor:gen||trialExhausted?"not-allowed":"pointer",
-            transition:"all .2s",letterSpacing:"-.2px"}}>
+          className="sn-btn sn-btn-primary sn-btn-full"
+          style={{padding:"15px",fontSize:15,borderRadius:10,opacity:gen||trialExhausted?0.35:1}}>
           {trialExhausted
             ? "🔒 Trial Complete — Upgrade"
             : gen
@@ -1317,7 +1290,7 @@ function Workspace({profile, hKey, onUpgrade}){
         <div style={{textAlign:"center",padding:"52px 20px",background:"rgba(255,255,255,0.02)",
           borderRadius:18,border:"1px solid rgba(255,255,255,0.05)",marginBottom:20}}>
           <div style={{width:46,height:46,borderRadius:"50%",
-            border:`3px solid ${color}20`,borderTop:`3px solid ${color}`,
+            border:"3px solid rgba(255,255,255,.08)",borderTop:`3px solid ${color}`,
             margin:"0 auto 20px",animation:"spin .85s linear infinite"}}/>
           <p style={{color:"rgba(255,255,255,0.7)",fontSize:15,margin:"0 0 5px",fontWeight:600,letterSpacing:"-.2px"}}>
             {GEN_STEPS[step]}</p>
@@ -1376,7 +1349,7 @@ function Workspace({profile, hKey, onUpgrade}){
                     transition:"all .2s",
                     background:result?.week===w.week?color:"rgba(255,255,255,0.05)",
                     color:result?.week===w.week?"#fff":"rgba(255,255,255,0.7)",cursor:"pointer",
-                    boxShadow:result?.week===w.week?`0 4px 12px ${color}40`:"none"}}>
+                    boxShadow:result?.week===w.week?`0 4px 12px rgba(255,255,255,.16)`:"none"}}>
                   Week {w.week || (i + 1)}
                 </button>
               ))}
@@ -1384,11 +1357,11 @@ function Workspace({profile, hKey, onUpgrade}){
           )}
 
           <div className="mobile-col" style={{display:"flex",alignItems:"center",gap:10,marginTop:12}}>
-            <div style={{height:1,flex:1,background:`${color}12`}}/>
+            <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
             <div style={{background:color,color:"#fff",borderRadius:20,padding:"4px 16px",
               fontSize:11,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase"}}>
               Week {result.week || (hist.indexOf(result)+1)} · {result.date}</div>
-            <div style={{height:1,flex:1,background:`${color}12`}}/>
+            <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
           </div>
           {result.posts?.length>0&&<WeekCal posts={result.posts} color={color}/>}
           <TrendCards trends={result.trends} color={color}/>
@@ -1412,7 +1385,7 @@ function Workspace({profile, hKey, onUpgrade}){
               </div>
             ) : (
               <button onClick={generate}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,
+                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,
                   color:"#fff",border:"none",borderRadius:12,padding:"13px 28px",
                   fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
                 ↻ Generate More {activePlatform} Posts (Week {hist.length+1})</button>
@@ -1741,12 +1714,12 @@ function PaymentStep({plan, formData, onVerified}){
       <p style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:20}}>{plan.guarantee}</p>
 
       {/* Order card */}
-      <div style={{background:"#050A1F",border:`1px solid ${plan.color}25`,borderRadius:14,
+      <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:14,
         padding:"16px 20px",marginBottom:18}}>
         <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
           color:"rgba(255,255,255,0.3)",marginBottom:12}}>Order Summary</div>
         {[
-          ["Plan", <span style={{color:plan.color,fontWeight:700}}>{plan.name}</span>],
+          ["Plan", <span style={{color:"rgba(255,255,255,.8)",fontWeight:600}}>{plan.name}</span>],
           ["Brand", formData.brandName],
           ["Platforms", (formData.platforms||[]).join(", ") || formData.platform],
           ["Posts/month", plan.postsPerMonth===999?"Unlimited":plan.postsPerMonth],
@@ -1761,10 +1734,10 @@ function PaymentStep({plan, formData, onVerified}){
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:15,fontWeight:700}}>Total</span>
-            <span style={{background:`${plan.color}18`,color:plan.color,borderRadius:5,
+            <span style={{background:"rgba(52,211,153,.08)",color:"#34d399",borderRadius:5,
               padding:"2px 7px",fontSize:10,fontWeight:700}}>{disc}% OFF</span>
           </div>
-          <span style={{fontSize:24,fontWeight:800,color:plan.color,letterSpacing:"-1px"}}>
+          <span style={{fontSize:24,fontWeight:800,color:"rgba(255,255,255,.95)",letterSpacing:"-1px"}}>
             {plan.displayINR}</span>
         </div>
       </div>
@@ -1819,7 +1792,7 @@ function PaymentStep({plan, formData, onVerified}){
           {pidErr&&<div style={{fontSize:11,color:"#e8b86d",marginBottom:10}}>⚠ {pidErr}</div>}
           <button onClick={confirm} disabled={checking}
             style={{width:"100%",background:checking?"rgba(255,255,255,0.05)":
-              `linear-gradient(135deg,${plan.color},${plan.color}88)`,
+              "#fff",
               color:checking?"rgba(255,255,255,0.3)":"#fff",border:"none",borderRadius:11,
               padding:"12px",fontSize:14,fontWeight:700,cursor:checking?"not-allowed":"pointer"}}>
             {checking?"Saving...":"✓ Confirm Payment & Continue →"}
@@ -2196,7 +2169,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 
       {stage === 0 ? (
         <div style={{padding:"60px 0", textAlign:"center"}}>
-          <div style={{width:48, height:48, border:`4px solid ${color}33`, borderTopColor:color, borderRadius:"50%", animation:"spin 1s linear infinite", margin:"0 auto 20px"}}/>
+          <div style={{width:48, height:48, border:"4px solid rgba(255,255,255,.2)", borderTopColor:color, borderRadius:"50%", animation:"spin 1s linear infinite", margin:"0 auto 20px"}}/>
           <div style={{fontSize:13, color:color, fontWeight:700, letterSpacing: "1px", textTransform: "uppercase"}}>AI Agent Working</div>
         </div>
       ) : (
@@ -2211,7 +2184,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
               {p.hashtags?.length > 0 && (
                 <div style={{display:"flex", flexWrap:"wrap", gap:5, marginTop:6}}>
                   {p.hashtags.slice(0,5).map((h,j) => (
-                    <span key={j} style={{background:`${color}14`, color, border:`1px solid ${color}28`, borderRadius:20, padding:"2px 9px", fontSize:11, fontWeight:600}}>#{h.replace(/^#/,"")}</span>
+                    <span key={j} style={{background:"rgba(255,255,255,.05)", color, border:"1px solid rgba(255,255,255,.11)", borderRadius:20, padding:"2px 9px", fontSize:11, fontWeight:600}}>#{h.replace(/^#/,"")}</span>
                   ))}
                 </div>
               )}
@@ -2222,10 +2195,10 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 
       {stage === 1 && (
         <button onClick={() => onSubscribe(posts)}
-          style={{width:"100%", background:`linear-gradient(135deg,${color},${color}88)`,
+          style={{width:"100%", background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,
             color:"#fff", border:"none", borderRadius:14, padding:"16px",
             fontSize:16, fontWeight:700, cursor:"pointer", letterSpacing:"-.2px",
-            boxShadow:`0 8px 30px ${color}44`, transition:"all .2s"}}>
+            boxShadow:"0 8px 30px rgba(255,255,255,.17)", transition:"all .2s"}}>
           Save to My Dashboard →
         </button>
       )}
@@ -2563,21 +2536,13 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
     <div style={{maxWidth:920,margin:"0 auto",padding:"36px 20px"}}>
       {/* Hero */}
       <div style={{textAlign:"center",marginBottom:40}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginBottom:12}}>
-          <div style={{width:44,height:44,borderRadius:12,background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",border:"1px solid #38bdf840",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>🥷</div>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
-            <span style={{fontFamily:"Outfit, sans-serif",fontSize:22,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",lineHeight:1}}>Social<em style={{fontStyle:"normal",color:CONFIG.accentColor}}>Ninja's</em>.</span>
-            <span style={{fontSize:9,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.2em",color:CONFIG.accentColor,alignSelf:"flex-end",lineHeight:1,marginTop:-2}}>AI Agency</span>
-          </div>
-        </div>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"3px",marginBottom:10}}>{CONFIG.brandTagline}</div>
-        <h1 style={{fontSize:46,fontWeight:800,margin:"0 0 14px",letterSpacing:"-1.8px",lineHeight:1.08,
-          background:"linear-gradient(155deg,#ffffff 40%,#7BA8D4)",
-          WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>
-          Stop guessing.<br/>Start growing.
+        <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.09)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,margin:"0 auto 20px"}}>🥷</div>
+        <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>AI Content Studio</div>
+        <h1 style={{fontSize:"clamp(28px,5.5vw,46px)",fontWeight:800,margin:"0 0 14px",letterSpacing:"-2px",lineHeight:1.05}}>
+          Choose your plan.
         </h1>
-        <p style={{color:"rgba(255,255,255,0.42)",fontSize:16,maxWidth:500,margin:"0 auto 24px",lineHeight:1.7}}>
-          AI researches what's trending on your platform right now — then writes every caption, script, carousel, thread and hashtag set. You just copy, paste, and post.
+        <p style={{color:"rgba(255,255,255,.42)",fontSize:15,maxWidth:440,margin:"0 auto 24px",lineHeight:1.7}}>
+          AI researches trends and writes your captions, scripts and carousels every week. Copy, paste, post.
         </p>
         {/* Feature pills */}
         <div style={{display:"flex",flexWrap:"wrap",gap:7,justifyContent:"center",marginBottom:10}}>
@@ -2589,7 +2554,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         <button onClick={()=>{
           setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
           setScreen("details");
-        }} style={{marginTop:24, background:`linear-gradient(135deg,#38bdf8,#38bdf888)`,color:"#fff",border:"none",borderRadius:14,padding:"14px 28px",fontSize:15,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px",boxShadow:`0 8px 30px #38bdf844`}}>
+        }} className="sn-btn sn-btn-primary sn-btn-lg" style={{marginTop:24,width:"100%"}}>
           ⚡ Try 3 Posts Free — No Card Needed
         </button>
       </div>
@@ -2601,18 +2566,18 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
           const geoInfo = GEO_PRICING[geo.country]||GEO_PRICING["_DEFAULT"];
           return(
             <div key={pl.id}
-              style={{background:pl.badge?"linear-gradient(160deg,#0D1B3E,#0b0b1a)":"#050A1F",
-                border:`2px solid ${pl.color}${pl.badge?"70":"25"}`,borderRadius:22,
-                padding:"24px 20px",position:"relative",transition:"transform .18s"}}
-              onMouseOver={e=>e.currentTarget.style.transform="translateY(-3px)"}
-              onMouseOut={e=>e.currentTarget.style.transform="translateY(0)"}>
+              style={{background:"#0e1018",
+                border:`1px solid ${pl.badge?"rgba(255,255,255,.18)":"rgba(255,255,255,.07)"}`,borderRadius:20,
+                padding:"24px 20px",position:"relative",transition:"all .2s"}}
+              onMouseOver={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.borderColor="rgba(255,255,255,.18)";}}
+              onMouseOut={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor=pl.badge?"rgba(255,255,255,.18)":"rgba(255,255,255,.07)";}}>
               {pl.badge&&(
                 <div style={{position:"absolute",top:-11,left:"50%",transform:"translateX(-50%)",
-                  background:`linear-gradient(135deg,${pl.color},${pl.color}AA)`,color:"#fff",
+                  background:"rgba(255,255,255,.1)",color:"rgba(255,255,255,.8)",
                   borderRadius:20,padding:"3px 16px",fontSize:10,fontWeight:800,letterSpacing:"1.5px",
                   whiteSpace:"nowrap"}}>{pl.badge}</div>
               )}
-              <div style={{fontSize:10,fontWeight:700,color:pl.color,textTransform:"uppercase",
+              <div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,.35)",textTransform:"uppercase",
                 letterSpacing:"2px",marginBottom:4}}>{pl.tagline}</div>
               <div style={{fontSize:24,fontWeight:800,letterSpacing:"-.5px",marginBottom:10}}>{pl.name}</div>
 
@@ -2622,18 +2587,18 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                   {geoInfo.flag} Pricing in {geoInfo.currency}
                 </div>
                 <div style={{display:"flex",alignItems:"baseline",gap:5,marginBottom:4}}>
-                  <span style={{fontSize:38,fontWeight:800,color:pl.color,letterSpacing:"-1.5px"}}>
+                  <span style={{fontSize:36,fontWeight:800,color:"rgba(255,255,255,.95)",letterSpacing:"-1.5px"}}>
                     {pricing.display}</span>
                   <span style={{fontSize:13,color:"rgba(255,255,255,0.35)"}}>/mo</span>
                 </div>
                 <div style={{display:"flex",gap:7,alignItems:"center"}}>
                   <span style={{fontSize:12,color:"rgba(255,255,255,0.25)",textDecoration:"line-through"}}>
                     {pricing.displayOriginal}</span>
-                  <span style={{background:`${pl.color}20`,color:pl.color,borderRadius:5,
-                    padding:"2px 7px",fontSize:10,fontWeight:700}}>{pricing.disc}% off</span>
+                  <span style={{background:"rgba(52,211,153,.1)",color:"#34d399",borderRadius:5,
+                    padding:"2px 7px",fontSize:10,fontWeight:600}}>{pricing.disc}% off</span>
                 </div>
                 {pl.highlight&&(
-                  <div style={{fontSize:11,color:pl.color,fontWeight:600,marginTop:5}}>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:500,marginTop:5}}>
                     💡 {pl.highlight}</div>
                 )}
               </div>
@@ -2643,8 +2608,8 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                 <div style={{background:"rgba(255,255,255,0.05)",borderRadius:7,
                   padding:"5px 10px",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.55)"}}>
                   {pl.postsPerMonth===999?"Unlimited":"~"+pl.postsPerMonth} posts/month</div>
-                <div style={{background:`${pl.color}12`,border:`1px solid ${pl.color}25`,borderRadius:7,
-                  padding:"5px 10px",fontSize:11,fontWeight:700,color:pl.color}}>
+                <div style={{background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.08)",borderRadius:7,
+                  padding:"5px 10px",fontSize:11,fontWeight:500,color:"rgba(255,255,255,.55)"}}>
                   {pl.platformCount===999?"All platforms":"Choose "+pl.platformCount+" platform"+(pl.platformCount!==1?"s":"")}</div>
                 <div style={{background:"rgba(255,255,255,0.04)",borderRadius:7,
                   padding:"5px 10px",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.4)"}}>
@@ -2669,19 +2634,19 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                     const active = pl.platformCount===999 || i<pl.platformCount;
                     return(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:3,
-                        background:active?`${pl.color}18`:"rgba(255,255,255,0.04)",
-                        border:`1px solid ${active?pl.color+"35":"rgba(255,255,255,0.08)"}`,
+                        background:active?"rgba(255,255,255,.1)":"rgba(255,255,255,.04)",
+                        border:`1px solid ${active?"rgba(255,255,255,.25)":"rgba(255,255,255,0.08)"}`,
                         borderRadius:6,padding:"3px 8px",fontSize:10,fontWeight:700,
-                        color:active?pl.color:"rgba(255,255,255,0.25)"}}>
+                        color:active?"rgba(255,255,255,.9)":"rgba(255,255,255,0.25)"}}>
                         <span>{displayIcon}</span>{displayName}
                       </div>
                     );
                   })}
                   {pl.platformCount===999&&(
                     <div style={{display:"flex",alignItems:"center",
-                      background:`${pl.color}18`,border:`1px solid ${pl.color}35`,
+                      background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.1)",
                       borderRadius:6,padding:"3px 8px",fontSize:9,fontWeight:700,
-                      color:`${pl.color}99`}}>+more</div>
+                      color:"rgba(255,255,255,.35)"}}>+more</div>
                   )}
                 </div>
               </div>
@@ -2690,26 +2655,21 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
               <div style={{display:"grid",gap:6,marginBottom:16}}>
                 {pl.features.map((f,i)=>(
                   <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                    <span style={{color:pl.color,fontSize:14,flexShrink:0,lineHeight:1.3}}>{f.icon}</span>
+                    <span style={{color:"rgba(255,255,255,.4)",fontSize:14,flexShrink:0,lineHeight:1.3}}>{f.icon}</span>
                     <span style={{fontSize:12,color:"rgba(255,255,255,0.58)",lineHeight:1.45}}>{f.text}</span>
                   </div>
                 ))}
               </div>
-              <div style={{background:`${pl.color}0d`,border:`1px solid ${pl.color}22`,borderRadius:9,
-                padding:"8px 11px",fontSize:11,color:`${pl.color}cc`,fontWeight:600,
-                textAlign:"center",marginBottom:14}}>
+              <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:500,textAlign:"center",marginBottom:14}}>
                 🛡 {pl.guarantee}</div>
               {true?(
                 <button onClick={()=>{setPlan({...pl, isTrialFlow: false});setScreen("details");}}
-                  style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}99)`,color:"#fff",border:"none",borderRadius:50,padding:"13px",boxShadow:`0 8px 24px ${pl.color}40,inset 0 1px 0 rgba(255,255,255,0.18)`,
-                    fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
+                  style={{width:"100%",background:"#fff",color:"#08090d",border:"none",borderRadius:9,padding:"13px",fontSize:14,fontWeight:600,cursor:"pointer",letterSpacing:"-.2px",fontFamily:"'Sora',system-ui,sans-serif"}}>
                   Select {pl.name} →
                 </button>
               ):(
                 <button onClick={()=>{setPlan(pl);setScreen("details");}}
-                  style={{width:"100%",background:`linear-gradient(135deg,${pl.color},${pl.color}88)`,
-                    color:"#fff",border:"none",borderRadius:11,padding:"12px",
-                    fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
+                  style={{width:"100%",background:"rgba(255,255,255,.07)",color:"rgba(255,255,255,.8)",border:"1px solid rgba(255,255,255,.1)",borderRadius:9,padding:"12px",fontSize:14,fontWeight:600,cursor:"pointer",letterSpacing:"-.2px",fontFamily:"'Sora',system-ui,sans-serif"}}>
                   Choose {pl.name} →
                 </button>
               )}
@@ -2757,7 +2717,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'Outfit', 'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
 
       {/* Plan badge */}
-      <div style={{background:`${plan.color}12`,border:`1px solid ${plan.color}28`,borderRadius:12,
+      <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,
         padding:"13px 17px",marginBottom:22,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div>
           <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px"}}>
@@ -2766,7 +2726,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
           <div style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>{plan.guarantee || "Cancel anytime. No lock-in."}</div>
         </div>
         <button onClick={()=>setScreen("plans")}
-          style={{fontSize:12,color:plan.color,background:"none",border:"none",cursor:"pointer",fontWeight:700}}>
+          style={{fontSize:12,color:"rgba(255,255,255,.5)",background:"none",border:"none",cursor:"pointer",fontWeight:500}}>
           Change</button>
       </div>
 
@@ -2877,7 +2837,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
               <div>
                 <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>
                   {plan.name} plan — choose up to {plan.platformCount} platforms
-                  <span style={{color:plan.color,fontWeight:700,marginLeft:8}}>
+                  <span style={{color:"rgba(255,255,255,.8)",fontWeight:600,marginLeft:8}}>
                     {form.platforms.length}/{plan.platformCount===999?"∞":plan.platformCount} selected
                   </span>
                 </div>
@@ -2890,9 +2850,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                       <button key={p} onClick={()=>!disabled&&togglePlatform(p)}
                         style={{padding:"7px 14px",borderRadius:25,fontSize:12,fontWeight:600,
                           cursor:disabled?"not-allowed":"pointer",transition:"all .15s",
-                          background:sel?plan.color:disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
+                          background:sel?"#fff":disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
                           color:sel?"#fff":disabled?"rgba(255,255,255,0.2)":"rgba(255,255,255,0.65)",
-                          border:`1.5px solid ${sel?plan.color:disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
+                          border:`1.5px solid ${sel?"rgba(255,255,255,.5)":disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
                           opacity:disabled?0.45:1}}>
                         {sel?"✓ ":""}{p}
                       </button>
@@ -2961,7 +2921,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
               ? "Pro plan — choose as many platforms as you want"
               : `${plan.name} plan — choose ${plan.platformCount} platform${plan.platformCount!==1?"s":""}`}
             {form.platforms.length>0&&(
-              <span style={{color:plan.color,fontWeight:700,marginLeft:6}}>
+              <span style={{color:"rgba(255,255,255,.8)",fontWeight:600,marginLeft:6}}>
                 {form.platforms.length}/{plan.platformCount===999?"∞":plan.platformCount} selected</span>
             )}
           </div>
@@ -2974,9 +2934,9 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                 <button key={p} onClick={()=>!disabled&&togglePlatform(p)}
                   style={{padding:"8px 16px",borderRadius:25,fontSize:13,fontWeight:600,
                     cursor:disabled?"not-allowed":"pointer",transition:"all .15s",
-                    background:sel?plan.color:disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
+                    background:sel?"#fff":disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
                     color:sel?"#fff":disabled?"rgba(255,255,255,0.2)":"rgba(255,255,255,0.65)",
-                    border:`1.5px solid ${sel?plan.color:disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
+                    border:`1.5px solid ${sel?"rgba(255,255,255,.5)":disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
                     opacity:disabled?0.45:1}}>
                   {sel?"✓ ":""}{p}
                 </button>
@@ -2985,7 +2945,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
           </div>
           {errors.platforms&&<div style={{fontSize:11,color:"#e8b86d",marginTop:6}}>⚠ {errors.platforms}</div>}
           {form.platforms.length>0&&!errors.platforms&&(
-            <div style={{marginTop:8,fontSize:11,color:`${plan.color}99`}}>
+            <div style={{marginTop:8,fontSize:11,color:"rgba(52,211,153,.6)"}}>
               ✓ AI will write native content for: {form.platforms.join(", ")}</div>
           )}
         </div>
@@ -2995,7 +2955,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
 
       <button onClick={submitDetails} disabled={savingData}
         style={{width:"100%",marginTop:22,
-          background:`linear-gradient(135deg,${plan.color},${plan.color}88)`,
+          background:"#fff",
           color:"#fff",border:"none",borderRadius:13,padding:"14px",
           fontSize:15,fontWeight:700,cursor:savingData?"not-allowed":"pointer",letterSpacing:"-.2px",
           opacity: savingData ? 0.7 : 1}}>
@@ -3061,7 +3021,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       {otpError && <div style={{color:"#e8b86d",fontSize:13,marginBottom:16}}>⚠ {otpError}</div>}
       
       <button onClick={verifyOtpAndProceed} disabled={verifyingOtp}
-        style={{width:"100%",background:`linear-gradient(135deg,#1d4ed8,#5ba4f5)`,
+        style={{width:"100%",background:"linear-gradient(135deg,#1d4ed8,#5ba4f5)",
           color:"#fff",border:"none",borderRadius:12,padding:"16px",marginTop:16,
           fontSize:16,fontWeight:700,cursor:verifyingOtp?"not-allowed":"pointer",boxShadow:"0 8px 24px rgba(91,164,245,0.28)",transition:"all .2s"}}>
         {verifyingOtp ? "Verifying code..." : "Verify & Continue →"}
@@ -3284,11 +3244,11 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
     <div style={{animation:"fadeUp .3s ease"}}>
       {/* ── PROFILE HERO ── */}
       <div style={{background:`linear-gradient(135deg,${profile.darkBg||"#020617"},#0B152B)`,
-        border:`1px solid ${color}22`,borderRadius:22,padding:"24px",marginBottom:16,
+        border:"1px solid rgba(255,255,255,.09)",borderRadius:22,padding:"24px",marginBottom:16,
         position:"relative",overflow:"hidden"}}>
         {/* BG glow */}
         <div style={{position:"absolute",top:-60,right:-60,width:220,height:220,borderRadius:"50%",
-          background:`radial-gradient(circle,${color}20,transparent 70%)`,pointerEvents:"none"}}/>
+          background:"radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)",pointerEvents:"none"}}/>
 
         <div style={{display:"flex",alignItems:"flex-start",gap:16,flexWrap:"wrap",position:"relative"}}>
           {/* Logo / avatar */}
@@ -3296,10 +3256,10 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             {profile.logoPreview
               ?<img src={profile.logoPreview} alt="logo"
                 style={{width:64,height:64,borderRadius:16,objectFit:"contain",
-                  background:"#fff",padding:6,border:`2px solid ${color}40`}}/>
+                  background:"#fff",padding:6,border:"2px solid rgba(255,255,255,.16)"}}/>
               :<div style={{width:64,height:64,borderRadius:16,
-                background:`linear-gradient(135deg,${color}30,${color}10)`,
-                border:`2px solid ${color}35`,display:"flex",alignItems:"center",
+                background:"linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04))",
+                border:"2px solid rgba(255,255,255,.14)",display:"flex",alignItems:"center",
                 justifyContent:"center",fontSize:28}}>{profile.emoji||"🏢"}</div>
             }
           </div>
@@ -3311,20 +3271,20 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
               <span style={{background:"#052e16",color:"#4ade80",border:"1px solid #166534",
                 borderRadius:20,padding:"2px 10px",fontSize:10,fontWeight:700}}>● Active</span>
               {profile.planName&&(
-                <span style={{background:`${color}20`,color,border:`1px solid ${color}40`,
+                <span style={{background:"rgba(255,255,255,.08)",color,border:"1px solid rgba(255,255,255,.16)",
                   borderRadius:20,padding:"2px 10px",fontSize:10,fontWeight:700}}>
                   {profile.planName}</span>
               )}
             </div>
             {profile.tagline&&(
-              <div style={{fontSize:13,color:`${color}99`,fontStyle:"italic",marginBottom:6}}>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontStyle:"italic",marginBottom:6}}>
                 "{profile.tagline}"</div>
             )}
             <div style={{fontSize:12,color:"rgba(255,255,255,0.38)",lineHeight:1.6,marginBottom:10,
               maxWidth:480}}>{profile.businessContext}</div>
             <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
               {platforms.map(p=>(
-                <span key={p} style={{background:`${color}15`,border:`1px solid ${color}28`,color,
+                <span key={p} style={{background:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.11)",color:"rgba(255,255,255,.6)",
                   borderRadius:15,padding:"3px 11px",fontSize:11,fontWeight:700}}>{p}</span>
               ))}
             </div>
@@ -3333,7 +3293,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
           {/* Action buttons */}
           <div style={{display:"flex",flexDirection:"column",gap:8,flexShrink:0}}>
             <button onClick={fetchTips} disabled={loadingTips}
-              style={{background:"rgba(255,255,255,0.08)",border:`1px solid ${color}30`,
+              style={{background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,.12)",
                 color:"rgba(255,255,255,0.8)",borderRadius:10,padding:"9px 18px",
                 fontSize:13,fontWeight:600,cursor:loadingTips?"not-allowed":"pointer",whiteSpace:"nowrap",
                 transition:"all .15s"}}>
@@ -3424,11 +3384,11 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
         {TABS.map(t=>(
           <button key={t.id} onClick={()=>setActiveTab(t.id)}
             style={{padding:"8px 16px",borderRadius:9,fontSize:12,fontWeight:activeTab===t.id?700:500,
-              border:activeTab===t.id?`1px solid ${color}40`:"1px solid transparent",
+              border:activeTab===t.id?`1px solid rgba(255,255,255,.16)`:"1px solid transparent",
               cursor:"pointer",whiteSpace:"nowrap",transition:"all .2s",
               background:activeTab===t.id?color:"transparent",
               color:activeTab===t.id?"#ffffff":"rgba(255,255,255,0.45)",
-              boxShadow:activeTab===t.id?`0 2px 10px ${color}35`:"none"}}>
+              boxShadow:activeTab===t.id?`0 2px 10px rgba(255,255,255,.14)`:"none"}}>
             {t.label}</button>
         ))}
       </div>
@@ -3437,7 +3397,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
       {activeTab==="overview"&&(
         <div style={{display:"grid",gap:12}}>
           {/* Profile details */}
-          <div style={{background:"#020617",border:`1px solid rgba(255,255,255,0.07)`,borderRadius:16,padding:"18px 20px"}}>
+          <div style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,padding:"18px 20px"}}>
             <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
               color:"rgba(255,255,255,0.28)",marginBottom:14}}>Brand Profile</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
@@ -3466,7 +3426,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 
           {/* ── SOCIAL ACCOUNTS PANEL ── */}
           {profile.socialAccounts&&Object.values(profile.socialAccounts).some(v=>v)&&(
-            <div style={{background:"#020617",border:`1px solid ${color}20`,borderRadius:16,padding:"18px 20px"}}>
+            <div style={{background:"#020617",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,padding:"18px 20px"}}>
               <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
                 color:"rgba(255,255,255,0.28)",marginBottom:14}}>🔗 Connected Social Accounts</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
@@ -3481,7 +3441,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
                   <a key={a.key} href={a.url+profile.socialAccounts[a.key].replace("@","")}
                     target="_blank" rel="noopener"
                     style={{display:"flex",alignItems:"center",gap:10,
-                      background:"rgba(255,255,255,0.03)",border:`1px solid ${color}15`,
+                      background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,.08)",
                       borderRadius:11,padding:"10px 13px",textDecoration:"none"}}>
                     <span style={{fontSize:18}}>{a.icon}</span>
                     <div style={{flex:1,overflow:"hidden"}}>
@@ -3530,7 +3490,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 
           {/* Content summary donut */}
           {totalPosts>0&&(
-            <div style={{background:"#020617",border:`1px solid rgba(255,255,255,0.07)`,borderRadius:16,
+            <div style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,
               padding:"18px 20px"}}>
               <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
                 color:"rgba(255,255,255,0.28)",marginBottom:16}}>Content Summary</div>
@@ -3564,10 +3524,10 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
           )}
 
           {tips?.content_insights&&(
-            <div style={{background:`${color}0a`,border:`1px solid ${color}20`,borderRadius:14,
+            <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",borderRadius:14,
               padding:"14px 18px"}}>
               <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                color:`${color}80`,marginBottom:7}}>🧠 AI Content Analysis</div>
+                color:"rgba(255,255,255,.5)",marginBottom:7}}>🧠 AI Content Analysis</div>
               <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",lineHeight:1.7}}>
                 {tips.content_insights}</div>
             </div>
@@ -3579,7 +3539,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
               <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginBottom:10}}>
                 Get your personalised weekly analysis and growth tips</div>
               <button onClick={fetchTips} disabled={loadingTips}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
+                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
                   border:"none",borderRadius:10,padding:"10px 22px",fontSize:13,fontWeight:700,
                   cursor:loadingTips?"not-allowed":"pointer"}}>
                 {loadingTips?"Analysing your profile...":"🔍 Run AI Analysis"}</button>
@@ -3595,7 +3555,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
               borderRadius:14,border:"1px solid rgba(255,255,255,0.06)"}}>
               <div style={{width:40,height:40,borderRadius:"50%",
-                border:`3px solid ${color}20`,borderTop:`3px solid ${color}`,
+                border:"3px solid rgba(255,255,255,.08)",borderTop:`3px solid ${color}`,
                 margin:"0 auto 14px",animation:"spin .85s linear infinite"}}/>
               <div style={{color:"rgba(255,255,255,0.5)",fontSize:13}}>Researching your niche and analysing your content…</div>
             </div>
@@ -3609,7 +3569,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
               <div style={{fontSize:12,color:"rgba(255,255,255,0.28)",marginBottom:16}}>
                 Click below to get personalised weekly growth tips for {profile.brandName||profile.name}</div>
               <button onClick={fetchTips}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
+                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
                   border:"none",borderRadius:10,padding:"11px 24px",fontSize:13,fontWeight:700,cursor:"pointer"}}>
                 🔍 Analyse & Get Tips</button>
             </div>
@@ -3655,20 +3615,20 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
               borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
               <button onClick={fetchTips}
-                style={{background:`linear-gradient(135deg,${color},${color}88)`,color:"#fff",
+                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
                   border:"none",borderRadius:10,padding:"11px 24px",fontSize:13,fontWeight:700,cursor:"pointer"}}>
                 🔍 Get Platform-Specific Tips</button>
             </div>
           )}
           {tips?.platform_tips?.map((pt,i)=>(
-            <div key={i} style={{background:"#020617",border:`1px solid ${color}18`,borderRadius:14,padding:"16px 18px"}}>
+            <div key={i} style={{background:"#020617",border:"1px solid rgba(255,255,255,.07)",borderRadius:14,padding:"16px 18px"}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                <span style={{background:`${color}20`,color,border:`1px solid ${color}35`,
+                <span style={{background:"rgba(255,255,255,.08)",color,border:"1px solid rgba(255,255,255,.14)",
                   borderRadius:20,padding:"3px 12px",fontSize:11,fontWeight:700}}>{pt.platform}</span>
               </div>
               <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.75)",marginBottom:6,letterSpacing:"-.2px"}}>
                 {pt.tip}</div>
-              <div style={{background:`${color}0a`,border:`1px solid ${color}18`,borderRadius:8,
+              <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:8,
                 padding:"8px 11px",fontSize:12,color:color,fontWeight:600}}>
                 → Action: {pt.action}</div>
             </div>
@@ -3694,12 +3654,12 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             return (
               <div style={{animation:"fadeUp .3s ease"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-                  <div style={{height:1,flex:1,background:`${color}15`}}/>
+                  <div style={{height:1,flex:1,background:"rgba(255,255,255,.08)"}}/>
                   <div style={{background:color,color:"#fff",borderRadius:20,padding:"4px 16px",
                     fontSize:11,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase"}}>
                     Week {latest.week} · {latest.date}
                   </div>
-                  <div style={{height:1,flex:1,background:`${color}15`}}/>
+                  <div style={{height:1,flex:1,background:"rgba(255,255,255,.08)"}}/>
                 </div>
                 {latest.posts?.length>0&&<WeekCal posts={latest.posts} color={color}/>}
                 <TrendCards trends={latest.trends} color={color}/>
@@ -3717,14 +3677,14 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
           {/* Generator embedded directly in Ongoing Content */}
           <div style={{paddingTop:28,borderTop:"1px solid rgba(255,255,255,0.08)"}}>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
-              <div style={{height:1,flex:1,background:`${color}12`}}/>
+              <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
               <div style={{display:"flex",alignItems:"center",gap:8,
-                background:`${color}12`,border:`1px solid ${color}28`,borderRadius:24,
+                background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.11)",borderRadius:24,
                 padding:"7px 20px"}}>
                 <span style={{fontSize:15}}>⚡</span>
                 <span style={{fontSize:13,fontWeight:700,color,letterSpacing:"-.2px"}}>Content Generator</span>
               </div>
-              <div style={{height:1,flex:1,background:`${color}12`}}/>
+              <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
             </div>
             <Workspace profile={profile} hKey={hKey}
               onUpgrade={(planId)=>typeof onUpgrade==='function' ? onUpgrade(planId) : (window.location.href=`${window.location.origin}/app/content-studio?plan=${planId}&upgrade=1`)}/>
@@ -3745,7 +3705,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             </div>
           )}
           {hist.slice(0,-1).reverse().map((w,i)=>(
-            <div key={i} style={{background:"#020617",border:`1px solid rgba(255,255,255,0.07)`,
+            <div key={i} style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",
               borderRadius:14,padding:"16px 18px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                 <div>
@@ -3760,7 +3720,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
                 {w.posts?.map((p,pi)=>(
                   <div key={pi} style={{display:"flex",alignItems:"center",gap:8,
                     background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"7px 11px"}}>
-                    <span style={{background:`${color}18`,color,borderRadius:4,
+                    <span style={{background:"rgba(255,255,255,.07)",color,borderRadius:4,
                       padding:"1px 7px",fontSize:10,fontWeight:700,flexShrink:0}}>{p.format}</span>
                     <span style={{fontSize:12,color:"rgba(255,255,255,0.6)",flex:1,
                       overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.title}</span>
@@ -3798,7 +3758,7 @@ function PortalClientView({client, onHome, onUpgrade}){
             cursor:"pointer",fontWeight:600}}>← Home</button>
         {client.logoPreview
           ?<img src={client.logoPreview} alt="logo" style={{width:36,height:36,borderRadius:10,objectFit:"contain",background:"#fff",padding:2}}/>
-          :<div style={{width:36,height:36,borderRadius:10,background:`${color}18`,
+          :<div style={{width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.07)",
             display:"flex",alignItems:"center",justifyContent:"center",fontSize:17}}>🏢</div>}
         <div style={{flex:1}}>
           <div style={{fontSize:15,fontWeight:700,letterSpacing:"-.3px"}}>{client.brandName}
@@ -3886,180 +3846,138 @@ export default function App(){
   },[activeClient]);
 
     const CSS=`<style>
-    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
-    :root{--blue:#5ba4f5;--blue2:#2563eb;--mint:#34d399;--vio:#818cf8;--g1:rgba(255,255,255,.055);--g2:rgba(255,255,255,.09);--g3:rgba(255,255,255,.04);--gb:rgba(255,255,255,.09);--gb2:rgba(255,255,255,.15);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.62);--t3:rgba(255,255,255,.36);--t4:rgba(255,255,255,.18);}
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+    :root{--bg:#08090d;--surface:#0e1018;--surface2:#141720;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--t1:rgba(255,255,255,.95);--t2:rgba(255,255,255,.55);--t3:rgba(255,255,255,.28);--t4:rgba(255,255,255,.1);--blue:#4f8ef7;--radius:14px;--radius-sm:9px;--radius-lg:20px;}
     *{box-sizing:border-box;margin:0;padding:0;}
-    html,body,*{font-family:'Outfit','DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;} h1,h2,h3,h4{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;letter-spacing:-.03em;line-height:1.06;}
-    body{background:#07101e;color:rgba(255,255,255,.96);}
-    ::-webkit-scrollbar{width:4px;height:4px;}
-    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
+    html,body{font-family:'Sora',system-ui,sans-serif;-webkit-font-smoothing:antialiased;background:#08090d;color:rgba(255,255,255,.95);overflow-x:hidden;}
+    h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;font-weight:700;letter-spacing:-.03em;line-height:1.1;}
+    input,textarea,select,button{font-family:'Sora',system-ui,sans-serif;}
+    a{text-decoration:none;color:inherit;}
+    ::-webkit-scrollbar{width:3px;height:3px;} ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px;}
     @keyframes spin{to{transform:rotate(360deg);}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(91,164,245,0.4)}50%{box-shadow:0 0 0 8px rgba(91,164,245,0)}}
-    h1,h2,h3{letter-spacing:-.4px;line-height:1.15;}
-    input,textarea,select,button{font-family:'Outfit','DM Sans',system-ui,sans-serif!important;}
-    input,textarea,select{color:rgba(255,255,255,.92);}
-    a{text-decoration:none;}[contenteditable]{outline:none;}
-    .sn-glass{background:rgba(255,255,255,.055);backdrop-filter:blur(36px) saturate(180%);-webkit-backdrop-filter:blur(36px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 32px rgba(0,0,0,.2);}
-    .sn-input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:rgba(255,255,255,.92);padding:12px 14px;font-size:14px;width:100%;transition:all .2s;outline:none;}
-    .sn-input:focus{border-color:rgba(91,164,245,.45);background:rgba(91,164,245,.06);box-shadow:0 0 0 3px rgba(91,164,245,.1);}
-    .sn-input::placeholder{color:rgba(255,255,255,.28);}
-    .sn-btn-primary{background:linear-gradient(135deg,#2563eb,#5ba4f5);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(91,164,245,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:all .22s;font-family:'Outfit','DM Sans',system-ui,sans-serif;letter-spacing:-.1px;}
-    .sn-btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 12px 32px rgba(91,164,245,.4);}
-    .sn-btn-ghost{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:50px;padding:12px 22px;font-size:14px;font-weight:400;cursor:pointer;transition:all .2s;font-family:'Outfit','DM Sans',system-ui,sans-serif;backdrop-filter:blur(20px);}
-    .sn-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);color:#fff;}
-    .sn-btn-icon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);display:inline-flex;align-items:center;gap:7px;font-family:'Outfit','DM Sans',system-ui,sans-serif;}
-    .sn-btn-icon:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
-    .sn-btn-icon.active{background:rgba(91,164,245,.15);border-color:rgba(91,164,245,.3);color:#5ba4f5;}
-    .plan-card-glass{background:rgba(255,255,255,.04);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px;position:relative;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
-    .plan-card-glass:hover{transform:translateY(-3px);border-color:rgba(91,164,245,.2);box-shadow:0 16px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);}
-    .plan-card-hl{border-color:rgba(91,164,245,.3)!important;background:linear-gradient(165deg,rgba(37,99,235,.12) 0%,rgba(8,16,31,.96) 50%)!important;box-shadow:0 0 0 1px rgba(91,164,245,.1),0 20px 50px rgba(91,164,245,.1),inset 0 1px 0 rgba(91,164,245,.18)!important;}
-    .post-card{background:rgba(255,255,255,.04);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border:1px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);position:relative;}
-    .post-card:hover{border-color:rgba(91,164,245,.2);box-shadow:0 12px 36px rgba(0,0,0,.25);}
-    .sn-tabbar{display:flex;gap:4px;background:rgba(255,255,255,.04);border-radius:14px;padding:4px;border:1px solid rgba(255,255,255,.07);}
-    .sn-tab{padding:8px 16px;border-radius:11px;font-size:13px;font-weight:400;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:transparent;transition:all .2s;font-family:'Outfit','DM Sans',system-ui,sans-serif;white-space:nowrap;}
-    .sn-tab.active{background:rgba(91,164,245,.15);color:#5ba4f5;font-weight:500;border:1px solid rgba(91,164,245,.22);}
-    .sn-tab:hover:not(.active){background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);}
-    .sn-badge-blue{background:rgba(91,164,245,.1);border:1px solid rgba(91,164,245,.2);color:#5ba4f5;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
-    .sn-badge-green{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:#34d399;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
-    .sn-badge-red{background:rgba(232,184,109,.1);border:1px solid rgba(196,155,58,.18);color:#e8b86d;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:500;}
-    .sn-divider{height:1px;background:rgba(255,255,255,.07);margin:16px 0;}
-    .sn-h1{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:400;letter-spacing:-.5px;line-height:1.12;color:rgba(255,255,255,.95);}
-    .sn-h2{font-size:19px;font-weight:500;letter-spacing:-.3px;color:rgba(255,255,255,.9);}
-    .sn-body{font-size:14px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.68;}
-    .copy-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.55);transition:all .2s;display:inline-flex;align-items:center;gap:6px;font-family:'Outfit','DM Sans',system-ui,sans-serif;}
-    .copy-btn:hover{background:rgba(91,164,245,.12);border-color:rgba(91,164,245,.25);color:#5ba4f5;}
-    .copy-btn.copied{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.25);color:#34d399;}
-    @media(max-width:768px){
-      .mobile-col{flex-direction:column!important;align-items:stretch!important;gap:12px!important;}
-      .mobile-wrap{flex-wrap:wrap!important;}
-      .mobile-grid-1{grid-template-columns:1fr!important;}
-      .mobile-padding{padding:14px!important;}
-      .mobile-btn{padding:13px 16px!important;font-size:14px!important;width:100%!important;}
-      html,body{overflow-x:hidden!important;max-width:100vw!important;}
-      .sn-card{max-width:100%!important;width:100%!important;}
-      h1{font-size:clamp(24px,8vw,38px)!important;letter-spacing:-1px!important;}
-      h2{font-size:clamp(20px,5.5vw,30px)!important;}
-      h3{font-size:clamp(16px,4vw,22px)!important;}
-      input,textarea,select{width:100%!important;min-width:0!important;font-size:16px!important;}
-      .sn-tabs,.sn-tabbar{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;white-space:nowrap!important;}
-      .sn-tabs::-webkit-scrollbar,.sn-tabbar::-webkit-scrollbar{display:none!important;}
-      .plans-grid{grid-template-columns:1fr!important;max-width:100%!important;margin:0 auto!important;padding:0 4px!important;}
-      .plan-card-glass{padding:22px!important;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+    /* ── SURFACES ── */
+    .sn-page{min-height:100vh;background:#08090d;}
+    .sn-card{background:#0e1018;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:24px;}
+    .sn-glass{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;}
+    /* ── INPUTS ── */
+    .sn-input{background:#141720;border:1px solid rgba(255,255,255,.07);border-radius:9px;color:rgba(255,255,255,.95);padding:13px 15px;font-size:15px;width:100%;transition:border-color .15s,box-shadow .15s;outline:none;-webkit-appearance:none;}
+    .sn-input:focus{border-color:rgba(79,142,247,.5);box-shadow:0 0 0 3px rgba(79,142,247,.1);}
+    .sn-input::placeholder{color:rgba(255,255,255,.25);}
+    textarea.sn-input{resize:vertical;min-height:88px;line-height:1.6;}
+    /* ── BUTTONS ── */
+    .sn-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:-.02em;padding:13px 22px;}
+    .sn-btn-primary{background:#fff;color:#08090d;}
+    .sn-btn-primary:hover{background:#e8f0ff;transform:translateY(-1px);}
+    .sn-btn-secondary{background:#141720;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.12);}
+    .sn-btn-secondary:hover{border-color:rgba(255,255,255,.22);background:#1a1f2e;}
+    .sn-btn-ghost{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.07);}
+    .sn-btn-ghost:hover{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.15);}
+    .sn-btn-full{width:100%;}
+    .sn-btn-lg{padding:16px 28px;font-size:16px;border-radius:12px;}
+    .sn-btn-sm{padding:8px 14px;font-size:13px;border-radius:8px;}
+    .sn-btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+    /* ── PLAN CARDS ── */
+    .plan-card-glass{background:#0e1018;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:all .2s;}
+    .plan-card-glass:hover{border-color:rgba(255,255,255,.14);}
+    .plan-card-hl{border-color:rgba(79,142,247,.3)!important;background:#111827!important;}
+    /* ── POST CARDS ── */
+    .post-card{background:#0e1018;border:1px solid rgba(255,255,255,.07);border-radius:18px;overflow:hidden;transition:border-color .2s;}
+    .post-card:hover{border-color:rgba(255,255,255,.14);}
+    /* ── TABS ── */
+    .sn-tabbar{display:flex;gap:2px;background:#141720;border-radius:9px;padding:3px;border:1px solid rgba(255,255,255,.07);}
+    .sn-tab{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;color:rgba(255,255,255,.35);cursor:pointer;border:none;background:transparent;transition:all .15s;white-space:nowrap;font-family:'Sora',system-ui,sans-serif;}
+    .sn-tab.active{background:#0e1018;color:rgba(255,255,255,.95);box-shadow:0 1px 3px rgba(0,0,0,.4);}
+    .sn-tab:hover:not(.active){color:rgba(255,255,255,.6);}
+    /* ── BADGES ── */
+    .sn-badge-blue{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);color:#4f8ef7;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
+    .sn-badge-green{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);color:#34d399;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
+    .sn-badge-red{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.15);color:#f87171;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
+    /* ── COPY BTN ── */
+    .copy-btn{background:#141720;border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.45);transition:all .15s;display:inline-flex;align-items:center;gap:5px;font-family:'Sora',system-ui,sans-serif;}
+    .copy-btn:hover{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.85);}
+    .copy-btn.copied{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);color:#34d399;}
+    /* ── NAV ── */
+    .sn-nav{position:sticky;top:0;z-index:100;background:rgba(8,9,13,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);}
+    .sn-nav-inner{max-width:900px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+    /* ── LABELS ── */
+    .sn-label{font-size:13px;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:6px;display:block;}
+    .sn-hint{font-size:12px;color:rgba(255,255,255,.28);margin-top:5px;line-height:1.5;}
+    .sn-error{font-size:12px;color:#f87171;margin-top:5px;}
+    /* ── DIVIDER ── */
+    .sn-divider{height:1px;background:rgba(255,255,255,.07);margin:20px 0;}
+    /* ── PLATFORM PILLS ── */
+    .plat-pill{padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;border:1px solid rgba(255,255,255,.07);background:#141720;color:rgba(255,255,255,.5);white-space:nowrap;font-family:'Sora',system-ui,sans-serif;}
+    .plat-pill:hover{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.85);}
+    .plat-pill.active{background:#fff;color:#08090d;border-color:#fff;font-weight:600;}
+    /* ── MISC ── */
+    .sn-h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:rgba(255,255,255,.95);}
+    .sn-h2{font-size:19px;font-weight:600;letter-spacing:-.02em;color:rgba(255,255,255,.9);}
+    .sn-body{font-size:14px;font-weight:400;color:rgba(255,255,255,.5);line-height:1.7;}
+    /* ── MOBILE ── */
+    @media(max-width:640px){
+      .sn-nav-inner{padding:0 16px;}
+      .sn-card{padding:16px;}
+      h1{font-size:clamp(26px,8vw,36px)!important;}
+      h2{font-size:clamp(18px,5vw,24px)!important;}
+      input,textarea,select{font-size:16px!important;}
+      .plans-grid{grid-template-columns:1fr!important;}
+      .plan-card-glass{padding:20px!important;}
+      .sn-tabbar{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+      .sn-tabbar::-webkit-scrollbar{display:none;}
+      .sn-btn-lg{padding:15px 22px;font-size:15px;}
+      .mobile-stack{flex-direction:column!important;gap:10px!important;}
+      .mobile-full{width:100%!important;}
+      [style*='grid-template-columns:repeat(4']{grid-template-columns:repeat(2,1fr)!important;}
+      [style*='grid-template-columns:repeat(3']{grid-template-columns:1fr!important;}
+      [style*='grid-template-columns:repeat(2']{grid-template-columns:1fr!important;}
       .ws-sidebar{display:none!important;}
       .ws-main{padding:14px!important;}
-      .nav-inner{padding:0 14px!important;}
-      .gen-grid{grid-template-columns:1fr!important;}
-      .details-row{flex-direction:column!important;gap:10px!important;}
-      .phone-row{flex-direction:row!important;gap:8px!important;}
-      .post-card{border-radius:14px!important;}
-      .sn-btn-primary,.sn-btn-ghost{width:100%!important;text-align:center!important;justify-content:center!important;}
-      .sn-glass{padding:16px!important;}
-      /* Post card tab bar — scrollable on mobile */
-      [style*="overflow-x: auto"]{-webkit-overflow-scrolling:touch!important;}
-      /* Dashboard stat grid — 2 cols on mobile */
-      [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important;}
-      /* Account analysis 3-col → 1-col */
-      [style*="repeat(3,1fr)"]{grid-template-columns:1fr!important;}
-      /* Social accounts 2-col → 1-col */
-      [style*="repeat(2,1fr)"]{grid-template-columns:1fr!important;}
-      /* Week calendar — tighten up */
-      [style*="repeat(7,1fr)"]{gap:2px!important;}
-      /* Trial wall plan buttons — stack */
-      .trial-plans-grid{grid-template-columns:1fr!important;}
-      /* Nav — reduce logo size */
-      nav img{width:38px!important;height:38px!important;}
-      /* Tab bars — sticky top inside workspace */
-      .post-tabs-bar{position:sticky!important;top:60px!important;z-index:40!important;background:rgba(8,14,26,0.95)!important;}
-      /* Hero text on plans screen */
-      [style*="font-size:46px"]{font-size:clamp(28px,7vw,42px)!important;}
-      /* Plan grid 3→1 col */
-      [style*="gridTemplateColumns:\"repeat(3,1fr)\""]{grid-template-columns:1fr!important;}
-      /* Checklist posting card */
-      [style*="justifyContent:\"space-between\""]{flex-wrap:wrap!important;}
-      /* Copy buttons full width on small screens */
-      .copy-btn{font-size:11px!important;padding:6px 10px!important;}
-      /* Prevent zoom on inputs iOS */
-      input[type="text"],input[type="email"],input[type="tel"],input[type="number"],textarea,select{font-size:16px!important;}
     }
-    @media(max-width:480px){
-      h1{font-size:clamp(22px,7vw,32px)!important;}
-      .mobile-padding{padding:12px!important;}
-      .plan-card-glass{padding:18px!important;}
-      /* OTP input smaller on tiny screens */
-      input[style*="fontSize:28"]{font-size:22px!important;letter-spacing:10px!important;}
-      /* Dashboard rings smaller on tiny screen */
-      svg[width="80"]{width:60px!important;height:60px!important;}
-      /* Slide cards full bleed */
-      [style*="borderRadius:14"]{border-radius:10px!important;}
-      /* Bottom CTA bar fixed */
-      .mobile-cta-fixed{position:sticky!important;bottom:0!important;background:rgba(7,16,30,0.97)!important;padding:12px 16px!important;border-top:1px solid rgba(255,255,255,0.08)!important;z-index:50!important;}
+    @media(max-width:380px){
+      .sn-btn{padding:12px 16px;font-size:14px;}
     }
-    /* Safe area insets for iPhone notch/home bar */
     @supports(padding:env(safe-area-inset-bottom)){
       body{padding-bottom:env(safe-area-inset-bottom);}
-      nav{padding-top:env(safe-area-inset-top);}
+      .sn-nav{padding-top:env(safe-area-inset-top);}
     }
   </style>`;
 
   const NAV=(
-    <nav style={{background:"rgba(8,16,31,0.88)",backdropFilter:"blur(48px) saturate(180%)",
-      WebkitBackdropFilter:"blur(48px) saturate(180%)",
-      borderBottom:"1px solid rgba(255,255,255,0.07)",position:"sticky",top:0,zIndex:50}}>
-      <div className="nav-inner" style={{maxWidth:1060,margin:"0 auto",padding:"0 20px",height:60,
-        display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <img src="/logo.png" alt="Social Ninja's" style={{width:52,height:52,objectFit:"contain",filter:"drop-shadow(0 0 16px rgba(91,164,245,0.5))",flexShrink:0}}/>
-          <div>
-            <div style={{fontSize:18,fontWeight:700,letterSpacing:"-.4px",lineHeight:1.1,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
-              Social<span style={{color:"#5ba4f5"}}>Ninja's</span>.
-            </div>
-            <div style={{fontSize:"8.5px",fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",color:"rgba(255,255,255,0.32)",lineHeight:1,marginTop:2}}>{CONFIG.brandTagline}</div>
+    <nav className="sn-nav">
+      <div className="sn-nav-inner">
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <img src="/logo.png" alt="SN" style={{width:32,height:32,objectFit:"contain",borderRadius:8,flexShrink:0}}/>
+          <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.3px"}}>
+            SocialNinja's.<span style={{fontWeight:300,color:"rgba(255,255,255,.3)",fontSize:11,marginLeft:6,letterSpacing:"1px",textTransform:"uppercase"}}>Studio</span>
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           {activeClient&&(
-            <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(91,164,245,0.08)",border:"1px solid rgba(91,164,245,0.2)",borderRadius:50,padding:"5px 14px 5px 6px"}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#1d4ed8,#5ba4f5)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:"#fff",flexShrink:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:7,background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.09)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:"rgba(255,255,255,.8)",flexShrink:0}}>
                 {(activeClient.brandName||activeClient.email||"U")[0].toUpperCase()}
               </div>
-              <span style={{fontSize:12.5,color:"rgba(255,255,255,0.7)",maxWidth:130,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500}}>
-                {activeClient.brandName||activeClient.email||"My Account"}
+              <span style={{fontSize:12,color:"rgba(255,255,255,.55)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                {activeClient.brandName||activeClient.email||"My Studio"}
               </span>
             </div>
           )}
-          <div style={{display:"flex",gap:3,background:"rgba(255,255,255,0.04)",borderRadius:13,padding:4,border:"1px solid rgba(255,255,255,0.07)"}}>
-            {tab==="dashboard"&&(
-              <button onClick={()=>{setTab("portal");setClientSelected(null);}}
-                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:400,border:"none",cursor:"pointer",transition:"all .15s",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(255,255,255,0.45)"}}>
-                ← Back</button>
-            )}
-            {activeClient&&(
-              <button onClick={async()=>{await DB.set("snstudio_active_client_id",null);setActiveClient(null);setPortalView("home");}}
-                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"transparent",color:"rgba(240,80,80,0.7)"}}>
-                Sign Out</button>
-            )}
-            {!activeClient&&(
-              <button onClick={()=>{
-                setPortalView("login");
-              }}
-                style={{padding:"6px 14px",borderRadius:10,fontSize:12.5,fontWeight:500,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:"rgba(91,164,245,0.12)",color:"#5ba4f5"}}>
-                Sign In</button>
-            )}
-          </div>
+          {activeClient&&(
+            <button onClick={async()=>{await DB.set("snstudio_active_client_id",null);setActiveClient(null);setPortalView("home");}}
+              style={{background:"none",border:"1px solid rgba(255,255,255,.07)",borderRadius:7,padding:"6px 12px",fontSize:12,color:"rgba(255,255,255,.35)",cursor:"pointer",fontFamily:"'Sora',system-ui,sans-serif"}}>Sign out</button>
+          )}
+          {!activeClient&&(
+            <button onClick={()=>setPortalView("login")}
+              style={{background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.09)",borderRadius:7,padding:"7px 14px",fontSize:13,fontWeight:500,color:"rgba(255,255,255,.7)",cursor:"pointer",fontFamily:"'Sora',system-ui,sans-serif"}}>Sign in</button>
+          )}
         </div>
       </div>
     </nav>
   );
-
   const wrap=children=>(
-    <div style={{background:"#07101e",minHeight:"100vh",color:"rgba(255,255,255,0.95)",position:"relative",overflow:"hidden"}}>
-      {/* Ambient background */}
-      <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
-        <div style={{position:"absolute",width:700,height:700,borderRadius:"50%",filter:"blur(130px)",opacity:.22,top:"-20%",left:"-10%",background:"radial-gradient(circle,rgba(37,99,235,.35),transparent 70%)"}}></div>
-        <div style={{position:"absolute",width:500,height:500,borderRadius:"50%",filter:"blur(120px)",opacity:.16,top:"15%",right:"-5%",background:"radial-gradient(circle,rgba(91,164,245,.3),transparent 70%)"}}></div>
-        <div style={{position:"absolute",width:400,height:400,borderRadius:"50%",filter:"blur(110px)",opacity:.14,bottom:"10%",left:"25%",background:"radial-gradient(circle,rgba(16,185,129,.25),transparent 70%)"}}></div>
-      </div>
+    <div className="sn-page">
       <div dangerouslySetInnerHTML={{__html:CSS}}/>
       {NAV}
       <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"clamp(16px,3vw,28px) clamp(14px,2vw,20px)",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
@@ -4124,10 +4042,7 @@ export default function App(){
       </div>
     ):portalView==="home"?(
       <div style={{textAlign:"center",maxWidth:580,margin:"60px auto 40px"}}>
-        <div style={{width:70,height:70,borderRadius:20,
-          background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",
-          border:"1px solid #38bdf840",display:"flex",alignItems:"center",
-          justifyContent:"center",fontSize:30,margin:"0 auto 18px"}}>🥷</div>
+        <div style={{width:52,height:52,borderRadius:14,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,margin:"0 auto 22px"}}>🥷</div>
         <div style={{fontSize:12,fontWeight:700,color:CONFIG.accentColor,textTransform:"uppercase",
           letterSpacing:"2.5px",marginBottom:10}}>{CONFIG.brandName}</div>
         <h1 style={{fontSize:40,fontWeight:800,letterSpacing:"-1.4px",lineHeight:1.08,margin:"0 0 14px",
@@ -4140,9 +4055,8 @@ export default function App(){
         </p>
         <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",marginBottom:24}}>
           <button onClick={()=>setPortalView("onboarding")}
-            style={{background:"linear-gradient(135deg,#38bdf8,#1a3a6e)",color:"#fff",border:"none",
-              borderRadius:13,padding:"14px 32px",fontSize:16,fontWeight:700,cursor:"pointer",letterSpacing:"-.2px"}}>
-            See Plans & Get Started →</button>
+            className="sn-btn sn-btn-primary sn-btn-lg">
+            Get started free →</button>
           {activeClient&&(
             <button onClick={()=>setPortalView("workspace")}
               style={{background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",
@@ -4171,7 +4085,7 @@ export default function App(){
     ):portalView==="login"?(
       <div style={{maxWidth:460,margin:"40px auto",padding:"0 16px"}}>
         <div style={{textAlign:"center",marginBottom:28}}>
-          <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,#38bdf8,#0D1B3E)",border:"1px solid #38bdf840",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,margin:"0 auto 14px"}}>🥷</div>
+          <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,margin:"0 auto 14px"}}>🥷</div>
           <h2 style={{fontSize:24,fontWeight:800,letterSpacing:"-.5px",marginBottom:6}}>Welcome back</h2>
           <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Sign in to access your content studio</p>
         </div>
