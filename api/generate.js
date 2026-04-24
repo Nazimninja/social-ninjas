@@ -1,4 +1,4 @@
-// AI Generation proxy — single-platform, multi-turn tool_use loop
+// AI Generation proxy — single-platform using OpenAI ChatGPT API
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,99 +8,56 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'AI service not configured.' });
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'OpenAI API key not configured.' });
 
   try {
-    const webSearchTool = {
-      type: "web_search_20250305",
-      name: "web_search",
-      max_uses: 3  // reduced to 3 — enough for trends, saves tokens
-    };
-
     let messages = [...(req.body.messages || [])];
-    // Cap max_tokens at 6000 — enough for 3 full posts, avoids timeout
+    
+    // If system prompt is provided, prepend it as a system message
+    if (req.body.system) {
+      messages.unshift({ role: 'system', content: req.body.system });
+    }
+
     const maxTokens = Math.min(req.body.max_tokens || 6000, 6000);
 
-    let finalData = null;
-    let loopCount = 0;
-    const MAX_LOOPS = 8;
+    const body = {
+      model: "gpt-4o", // Using ChatGPT 4o
+      max_tokens: maxTokens,
+      messages: messages,
+      temperature: 0.7
+    };
 
-    while (loopCount < MAX_LOOPS) {
-      loopCount++;
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
 
-      const body = {
-        model: "claude-sonnet-4-6",   // Corrected working model from models list
-        max_tokens: maxTokens,
-        messages,
-        tools: [webSearchTool],
-        tool_choice: { type: "auto" },
-      };
-
-      if (req.body.system) body.system = req.body.system;
-
-      const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-beta": "web-search-2025-03-05"
-        },
-        body: JSON.stringify(body)
+    if (!openaiRes.ok) {
+      const error = await openaiRes.json().catch(() => ({}));
+      console.error('[generate] OpenAI error:', JSON.stringify(error));
+      return res.status(openaiRes.status).json({
+        error: error?.error?.message || `API error ${openaiRes.status}. Please try again.`
       });
-
-      if (!anthropicRes.ok) {
-        const error = await anthropicRes.json().catch(() => ({}));
-        console.error('[generate] Anthropic error:', JSON.stringify(error));
-        return res.status(anthropicRes.status).json({
-          error: error?.error?.message || `API error ${anthropicRes.status}. Please try again.`
-        });
-      }
-
-      const data = await anthropicRes.json();
-      console.log(`[Loop ${loopCount}] stop_reason=${data.stop_reason} blocks=${data.content?.length} tokens_used=${data.usage?.output_tokens}`);
-
-      if (data.stop_reason === 'end_turn') {
-        finalData = data;
-        break;
-      }
-
-      if (data.stop_reason === 'tool_use') {
-        messages = [...messages, { role: 'assistant', content: data.content }];
-
-        const toolResults = [];
-        for (const block of data.content) {
-          if (block.type === 'tool_use') {
-            toolResults.push({
-              type: 'tool_result',
-              tool_use_id: block.id,
-              content: block.content || `Search done for: ${JSON.stringify(block.input)}`,
-            });
-          }
-        }
-
-        if (toolResults.length > 0) {
-          messages = [...messages, { role: 'user', content: toolResults }];
-        }
-        continue;
-      }
-
-      // max_tokens hit or other stop reason
-      if (data.stop_reason === 'max_tokens') {
-        // Still try to parse whatever was returned
-        finalData = data;
-        console.warn('[generate] max_tokens hit — partial response returned');
-        break;
-      }
-
-      finalData = data;
-      break;
     }
 
-    if (!finalData) {
-      return res.status(500).json({ error: 'Generation did not complete. Please try again.' });
-    }
+    const data = await openaiRes.json();
+    console.log(`[generate] OpenAI success, tokens_used=${data.usage?.total_tokens}`);
+
+    // Map OpenAI response format back to the format the frontend expects (which was Anthropic's format)
+    // The frontend expects: { content: [{ type: "text", text: "..." }] }
+    const finalData = {
+      content: [
+        { type: "text", text: data.choices[0].message.content }
+      ],
+      usage: {
+        output_tokens: data.usage?.completion_tokens
+      }
+    };
 
     return res.json(finalData);
 

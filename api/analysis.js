@@ -14,43 +14,47 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'AI service not configured.' });
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'OpenAI API key not configured.' });
 
   try {
-    // Include web search so analysis can look up actual social accounts
-    const webSearchTool = {
-      type: "web_search_20250305",
-      name: "web_search",
-      max_uses: 3
-    };
-    const tools = [webSearchTool, ...(req.body.tools || []).filter(t => t.type !== 'web_search_20250305')];
+    let messages = [...(req.body.messages || [])];
+    if (req.body.system) {
+        messages.unshift({ role: 'system', content: req.body.system });
+    }
 
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-beta": "web-search-2025-03-05"
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "gpt-4o",
         max_tokens: req.body.max_tokens || 3000,
-        system: req.body.system,
-        messages: req.body.messages,
-        tools,
-        tool_choice: { type: "auto" },
+        messages: messages,
+        temperature: 0.7
       })
     });
 
-    if (!anthropicRes.ok) {
-      const error = await anthropicRes.json();
-      return res.status(anthropicRes.status).json(error);
+    if (!openaiRes.ok) {
+      const error = await openaiRes.json();
+      return res.status(openaiRes.status).json(error);
     }
 
-    const data = await anthropicRes.json();
-    res.json(data);
+    const data = await openaiRes.json();
+    
+    // Map response back to Anthropic's format so the frontend works without changes
+    const finalData = {
+      content: [
+        { type: "text", text: data.choices[0].message.content }
+      ],
+      usage: {
+        output_tokens: data.usage?.completion_tokens
+      }
+    };
+
+    res.json(finalData);
   } catch (error) {
     console.error("AI Analysis Error:", error);
     res.status(500).json({ error: "Failed to analyze profile" });

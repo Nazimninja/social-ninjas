@@ -207,29 +207,39 @@ app.post('/api/history/:clientId', (req, res) => {
 // AI Content Generation Proxy
 app.post('/api/generate', async (req, res) => {
     try {
-        const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+        let messages = [...(req.body.messages || [])];
+        if (req.body.system) {
+            messages.unshift({ role: 'system', content: req.body.system });
+        }
+
+        const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-api-key": process.env.ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01"
+                "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "claude-3-5-sonnet-20241022",
+                model: "gpt-4o",
                 max_tokens: req.body.max_tokens || 8192,
-                system: req.body.system,
-                messages: req.body.messages,
-                tools: req.body.tools
+                messages: messages,
+                temperature: 0.7
             })
         });
 
-        if (!anthropicRes.ok) {
-            const error = await anthropicRes.json();
-            return res.status(anthropicRes.status).json(error);
+        if (!openaiRes.ok) {
+            const error = await openaiRes.json();
+            return res.status(openaiRes.status).json(error);
         }
 
-        const data = await anthropicRes.json();
-        res.json(data);
+        const data = await openaiRes.json();
+        
+        // Map back to format expected by frontend
+        const finalData = {
+            content: [{ type: "text", text: data.choices[0].message.content }],
+            usage: { output_tokens: data.usage?.completion_tokens }
+        };
+
+        res.json(finalData);
     } catch (error) {
         console.error("AI Generation Error:", error);
         res.status(500).json({ error: "Failed to communicate with AI provider" });
@@ -239,29 +249,36 @@ app.post('/api/generate', async (req, res) => {
 // AI Weekly Analysis Proxy
 app.post('/api/analysis', async (req, res) => {
     try {
-        const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+        let messages = [...(req.body.messages || [])];
+        if (req.body.system) {
+            messages.unshift({ role: 'system', content: req.body.system });
+        }
+
+        const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-api-key": process.env.ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01"
+                "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "claude-3-5-sonnet-20241022",
+                model: "gpt-4o",
                 max_tokens: req.body.max_tokens || 8192,
-                system: req.body.system,
-                messages: req.body.messages,
-                tools: req.body.tools
+                messages: messages,
+                temperature: 0.7
             })
         });
 
-        if (!anthropicRes.ok) {
-            const error = await anthropicRes.json();
-            return res.status(anthropicRes.status).json(error);
+        if (!openaiRes.ok) {
+            const error = await openaiRes.json();
+            return res.status(openaiRes.status).json(error);
         }
 
-        const data = await anthropicRes.json();
-        res.json(data);
+        const data = await openaiRes.json();
+        const finalData = {
+            content: [{ type: "text", text: data.choices[0].message.content }],
+            usage: { output_tokens: data.usage?.completion_tokens }
+        };
+        res.json(finalData);
     } catch (error) {
         console.error("AI Analysis Error:", error);
         res.status(500).json({ error: "Failed to analyze profile" });
@@ -278,28 +295,29 @@ Key Info:
 - Contact: If they want to speak to a human or engineer, direct them to email info@socialninjas.in or use the /contact page.
 Do NOT reveal you are an AI, you are 'Social Ninja's AI Assistant'. Provide short, conversational answers.`;
 
-        const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+        const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-api-key": process.env.ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01"
+                "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "claude-3-haiku-20240307",
+                model: "gpt-4o-mini",
                 max_tokens: 1024,
-                system: systemPrompt,
-                messages: req.body.messages
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    ...(req.body.messages || [])
+                ]
             })
         });
 
-        if (!anthropicRes.ok) {
-            const error = await anthropicRes.json();
-            return res.status(anthropicRes.status).json(error);
+        if (!openaiRes.ok) {
+            const error = await openaiRes.json();
+            return res.status(openaiRes.status).json(error);
         }
 
-        const data = await anthropicRes.json();
-        res.json({ content: [{ text: data.content[0].text }] });
+        const data = await openaiRes.json();
+        res.json({ content: [{ text: data.choices[0].message.content }] });
     } catch (error) {
         console.error("AI Chat Error:", error);
         res.status(500).json({ error: "Failed to communicate with AI chat provider" });
