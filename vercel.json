@@ -1,4 +1,26 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/content-studio", "destination": "/standalone-landing/index.html" },
+    { "source": "/standalone-crm", "destination": "/standalone-crm/index.html" },
+    { "source": "/((?!api/|standalone-crm|standalone-landing|assets/|favicon|logo|manifest|robots|sitemap|og-image|BingSite).*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/xml" }]
+    }
+  ],
   "functions": {
     "api/generate.js": {
       "maxDuration": 60
