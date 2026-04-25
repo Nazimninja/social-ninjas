@@ -1,4 +1,5 @@
-// AI Generation proxy — single-platform using OpenAI ChatGPT API
+// AI Generation — OpenAI gpt-4o-mini (budget-friendly, great quality)
+// No web search tool needed — GPT-4o-mini has training data up to early 2025
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,19 +14,17 @@ export default async function handler(req, res) {
 
   try {
     let messages = [...(req.body.messages || [])];
-    
-    // If system prompt is provided, prepend it as a system message
+
     if (req.body.system) {
       messages.unshift({ role: 'system', content: req.body.system });
     }
 
-    const maxTokens = Math.min(req.body.max_tokens || 6000, 6000);
-
     const body = {
-      model: "gpt-4o", // Using ChatGPT 4o
-      max_tokens: maxTokens,
-      messages: messages,
-      temperature: 0.7
+      model: "gpt-4o-mini",      // 80% cheaper than gpt-4o, great for structured content
+      max_tokens: Math.min(req.body.max_tokens || 6000, 6000),
+      messages,
+      temperature: 0.85,         // slightly higher temp for more natural, human-feeling writing
+      response_format: { type: "text" }
     };
 
     const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -46,23 +45,17 @@ export default async function handler(req, res) {
     }
 
     const data = await openaiRes.json();
-    console.log(`[generate] OpenAI success, tokens_used=${data.usage?.total_tokens}`);
+    const raw = data.choices?.[0]?.message?.content || '';
+    console.log(`[generate] tokens=${data.usage?.total_tokens} model=gpt-4o-mini`);
 
-    // Map OpenAI response format back to the format the frontend expects (which was Anthropic's format)
-    // The frontend expects: { content: [{ type: "text", text: "..." }] }
-    const finalData = {
-      content: [
-        { type: "text", text: data.choices[0].message.content }
-      ],
-      usage: {
-        output_tokens: data.usage?.completion_tokens
-      }
-    };
-
-    return res.json(finalData);
+    // Map to Anthropic-compatible format the frontend expects
+    return res.json({
+      content: [{ type: "text", text: raw }],
+      usage: { output_tokens: data.usage?.completion_tokens }
+    });
 
   } catch (err) {
-    console.error('[generate] Handler error:', err?.message || err);
-    return res.status(500).json({ error: err?.message || 'Internal server error. Please try again.' });
+    console.error('[generate] Fatal:', err?.message);
+    return res.status(500).json({ error: err?.message || 'Server error. Please try again.' });
   }
 }

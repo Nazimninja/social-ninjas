@@ -444,89 +444,160 @@ async function pushToBackend(data) {
 //  AI PROMPT — platform-specific, no graphics, pure content depth
 // ─────────────────────────────────────────────────────────────────
 function buildPrompt(profile, prevTitles=[], platform="Instagram") {
-  // Always single platform — keeps tokens focused and output reliable
   const p = platform;
   const dna = PLATFORM_DNA[p] || PLATFORM_DNA["Instagram"];
-  const prev = prevTitles.length
-    ? `\nNEVER REPEAT THESE TOPICS (already generated):\n${prevTitles.slice(-20).map((t,i)=>`${i+1}. ${t}`).join("\n")}\n` : "";
-
-  const needsScript   = dna.requiresScript  !== false && p !== "Threads" && p !== "Twitter/X" && p !== "Pinterest";
-  const needsCarousel = dna.requiresCarousel !== false && p !== "YouTube" && p !== "Twitter/X" && p !== "Threads" && p !== "TikTok" && p !== "Snapchat";
-  const needsThread   = p === "Twitter/X";
+  const isIG = p === "Instagram";
   const isYT = p === "YouTube";
   const isLI = p === "LinkedIn";
+  const isTW = p === "Twitter/X";
+  const isTH = p === "Threads";
+  const needsScript   = !isTH && !isTW && p !== "Pinterest";
+  const needsCarousel = !isYT && !isTW && !isTH && p !== "TikTok" && p !== "Snapchat";
+  const needsThread   = isTW;
 
-  const htags = dna.hashtagCount > 5
-    ? ',"t4","t5","t6","t7","t8","t9","t10"'
-    : dna.hashtagCount > 3 ? ',"t4","t5"' : '';
+  const brand    = profile.brandName || profile.name || "this brand";
+  const niche    = profile.niche || "lifestyle";
+  const audience = profile.audience || "general audience";
+  const voice    = profile.tone || "authentic, conversational";
+  const biz      = profile.businessContext || niche;
+  const avoid    = profile.avoid ? `\nNEVER write about or mention: ${profile.avoid}` : "";
+  const prevList = prevTitles.length
+    ? `\nDO NOT repeat these already-generated topics:\n${prevTitles.slice(-15).map((t,i)=>`${i+1}. ${t}`).join("\n")}` : "";
 
-  return `You are a world-class viral content strategist specialising in ${p}. Every post you write is platform-native, trend-researched, and ready to publish.
+  const htags = dna.hashtagCount > 5 ? ',"t4","t5","t6","t7","t8","t9","t10"'
+              : dna.hashtagCount > 3 ? ',"t4","t5"' : '';
 
-## CLIENT
-- Brand: ${profile.brandName||profile.name}
-- Niche: ${profile.niche||"General"}
-- Audience: ${profile.audience||"General audience"}
-- Voice: ${profile.tone||"Engaging, authentic"}
-- Business: ${profile.businessContext||profile.niche||"Growing brand"}
-- Avoid: ${profile.avoid||"Nothing specific"}
-${profile.tagline ? `- Tagline: "${profile.tagline}"` : ""}
-${profile.competitors ? `- Competitors: ${profile.competitors}` : ""}
-${profile.socialAccounts?.instagram ? `- Instagram: @${profile.socialAccounts.instagram.replace("@","")}` : ""}
-${profile.socialAccounts?.linkedin ? `- LinkedIn: ${profile.socialAccounts.linkedin}` : ""}
-${profile.socialAccounts?.youtube ? `- YouTube: ${profile.socialAccounts.youtube}` : ""}
-${prev}
+  // Platform-specific caption guidance
+  const captionGuide = isYT
+    ? `caption = the YouTube video TITLE only (55-65 chars, keyword first, curiosity gap). Example: "I tested 7 AI tools for 30 days — here's what actually worked"`
+    : isLI
+    ? `caption = a 200-300 word LinkedIn post. Open with a bold 1-line opinion or data point. Short paragraphs. End with a question. Professional but conversational. NO hashtags in body.`
+    : isTH
+    ? `caption = a 150-300 character Threads post. Punchy, opinionated, conversational. Like a thought you'd share with a friend. No hashtags.`
+    : isTW
+    ? `caption = the FIRST tweet of the thread (max 240 chars). Bold hook that makes people click "show more". Do NOT end with a hashtag.`
+    : `caption = a full Instagram caption. Structure: hook line (3-7 words, no hashtags) → 2 blank lines → story/value body (4-8 short paragraphs) → blank line → CTA. Conversational, warm, no corporate language. Speak directly to one person.`;
+
+  // Platform-specific script guidance
+  const scriptGuide = needsScript ? (
+    isYT
+    ? `script = a complete YouTube video script. Format:
+[HOOK - 0-15s]: Attention-grabbing opening line. Problem or bold claim.
+[INTRO - 15-30s]: Brief context, what they'll learn.
+[BODY]: 3-5 numbered points with [B-ROLL: describe shot] and [ON-CAMERA: direction] tags.
+[CTA - last 30s]: Subscribe + like ask + what's coming next.
+Minimum 300 words. Natural spoken language — write how people TALK, not how they write.`
+    : isLI
+    ? `script = a 60-90 second LinkedIn video script. Format:
+[0-5s HOOK]: Say 1 surprising stat or bold take. Direct to camera.
+[6-20s CONTEXT]: 1-2 sentences establishing credibility.
+[21-55s VALUE]: 3 punchy points. Each on its own breath. [PAUSE] tags.
+[56-90s CTA]: Connect/follow prompt. Conversational close.
+Natural executive tone — like a smart colleague talking, not presenting.`
+    : `script = a complete word-for-word Reel/Short script. Format EXACTLY like this:
+
+[HOOK — 0-3s]
+{the exact opening line they say — the scroll-stopper}
+
+[DIRECTION: describe the shot — what they're doing, where they're looking, any props]
+
+[BODY — 4-15s]
+{2-4 spoken lines. Short. Punchy. Each line on its own. Build tension or value.}
+
+[DIRECTION: camera movement, B-roll suggestion, or action to do]
+
+[PIVOT — 10-20s]
+{the "but here's the thing" moment — the value or twist}
+
+[DIRECTION: visual cue, show something, zoom, or cut]
+
+[CTA — final 3-5s]
+{exact words for the call to action — follow, link in bio, comment, etc.}
+
+[DIRECTION: end card or final look to camera]
+
+Rules for the script:
+- Write how a real person speaks — contractions, short sentences, natural pauses
+- Each spoken section is MAX 3 short lines. NO paragraphs.
+- [DIRECTION] notes are for the filmmaker, never spoken
+- Hook must create curiosity or shock in under 3 seconds
+- Total spoken words: 80-150 words (fits 30-60 second video)
+- Sound like ${voice} — NOT like an AI writing marketing copy`
+  ) : `script = "null"`;
+
+  const carouselGuide = needsCarousel ? (
+    isLI
+    ? `carousel_slides = 6-8 slides for a LinkedIn Document post. Slide 1: bold stat/claim. Slides 2-6: one insight per slide (heading + 2-3 sentence explanation). Last slide: CTA with next step. Data-driven, professional.`
+    : `carousel_slides = 5-7 slides. Slide 1: bold hook (makes them swipe). Middle slides: one standalone insight each. Last slide: CTA. Each slide works on its own without context. Design note should describe visual style.`
+  ) : `carousel_slides = "null"`;
+
+  return `You are a professional social media content writer who has managed viral accounts with millions of followers across ${p}. You write content that sounds like a real human being — specific, emotional, opinionated, and rooted in real life. You NEVER write generic marketing copy.
+
+## THE BRAND
+Brand: ${brand}
+Niche: ${niche}
+Target audience: ${audience}
+Brand voice: ${voice}
+What the business does: ${biz}${avoid}${prevList}
+
+## YOUR WRITING RULES — FOLLOW THESE EXACTLY
+1. Write like a real person talking to ONE friend — not a brand talking to customers
+2. Use specific details, numbers, and real-world examples — NEVER vague claims like "game-changer" or "transform your life"
+3. Contractions always — it's, you're, don't, here's, I've
+4. Short sentences. Under 12 words each. Create rhythm.
+5. Open with a pattern interrupt — a specific number, a controversial take, a relatable problem
+6. NEVER start with "Are you ready?", "Hey there!", "In today's world", "In this digital age", or any greeting
+7. NEVER use: "game-changer", "transform", "skyrocket", "revolutionize", "unleash", "elevate", "dive deep"
+8. The caption should feel like the brand owner wrote it themselves after a real experience
+
 ## PLATFORM: ${p.toUpperCase()}
-- Formats: ${dna.formats.join(", ")}
-- Caption style: ${dna.captionStyle}
-- Hashtags: ${dna.hashtagCount} — ${dna.hashtagStyle}
-- Script: ${dna.scriptStyle}
-- Best times: ${dna.bestTimes.join(", ")}
-- What performs: ${dna.contentTypes.join(" | ")}
-- Viral mechanics: ${dna.viralMechanics}
+${captionGuide}
 
-## TASK
-1. Use web_search to find 2-3 trending topics in "${profile.niche}" on ${p} RIGHT NOW this week.
-2. Write exactly 3 complete ${p}-native posts on DIFFERENT topics using those trends.
+## SCRIPT
+${scriptGuide}
 
-## STRICT RULES
-- ${isYT ? 'caption = SEO title (60 chars, keyword-first). No carousel_slides.' : isLI ? 'caption = 150-300 word professional post (bold stat/opinion opening, NOT Instagram style).' : `caption = full ${p}-native caption, min 100 words, line breaks every 1-2 lines.`}
-- ${needsScript ? (isYT ? 'Script = YouTube Short (60 sec) OR Long-Form with timestamps. Include [DIRECTION] notes.' : isLI ? 'Script = LinkedIn video 60-90 sec. Professional delivery. [DIRECTION] notes.' : 'Script = word-for-word, [DIRECTION] every 5-10 sec, min 150 words, speakable as written.') : 'script = "null"'}
-- ${needsCarousel ? `carousel_slides = ${isLI ? 'LinkedIn Document carousel, 6-8 data-driven slides, last=CTA' : '5+ slides, slide 1=bold hook, last=CTA, each slide standalone-valuable'}` : 'carousel_slides = "null"'}
-- ${needsThread ? 'thread_tweets = min 7 tweets, numbered 1/7 style, last=CTA' : 'thread_tweets = "null"'}
-- Every caption opens with a PATTERN INTERRUPT (bold claim, specific number, or controversy). No greetings.
-- Hashtags: mix 3 broad + 3 mid + 3 niche-specific. NO generic tags.
-- Each post on a DIFFERENT angle/topic.
+## CAROUSEL
+${carouselGuide}
 
-## OUTPUT
-Return ONLY raw JSON starting with {. No markdown, no explanation.
+## THREAD
+${needsThread ? `thread_tweets = minimum 8 tweets. Tweet 1: bold hook. Tweets 2-7: one insight each (max 240 chars, punchy). Tweet 8: CTA. Number each tweet (1/8, 2/8 etc).` : `thread_tweets = "null"`}
+
+## HASHTAGS
+${dna.hashtagCount} hashtags. Mix: 3 very broad (#DigitalMarketing), 3 mid-size (#ContentCreatorTips), 3 ultra-niche specific to the post topic. NO generic hashtags like #Viral #Success #Motivation.
+
+## YOUR TASK
+Write exactly 3 completely different ${p} posts for ${brand}. Each must be on a DIFFERENT topic, angle, and format. Think about what's actually relevant and trending in "${niche}" right now in 2025 — AI tools, creator economy shifts, platform algorithm changes, cultural moments relevant to this audience.
+
+## OUTPUT FORMAT
+Return ONLY a raw JSON object starting with { — no markdown, no explanation, no code fences.
 
 {
   "trends": [
-    {"name":"string","why":"string (max 15 words)","heat":"Hot|Rising|Emerging"}
+    {"name":"specific trend name","why":"one sentence why it matters now","heat":"Hot|Rising|Emerging"}
   ],
   "posts": [
     {
       "id":"p1",
       "platform":"${p}",
       "format":"${dna.formats[0]}",
-      "title":"string (max 8 words, specific topic)",
+      "title":"specific post topic in 6-8 words",
       "priority":"Must Post|High Value|Good to Post",
-      "best_day":"string",
+      "best_day":"Monday",
       "best_time":"${dna.bestTimes[0]}",
-      "trend_used":"string",
-      "why_now":"string (max 15 words)",
-      "hook":"string (max 15 words, scroll-stopping opener)",
-      "caption":"string (full ${p}-native caption)",
-      "hashtags":["t1","t2","t3"${htags}],
-      "cta":"string",
-      "script":${needsScript ? '"string (full word-for-word script with [DIRECTION] notes)"' : '"null"'},
-      "carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},
-      "thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},
-      "posting_checklist":["step 1","step 2","step 3","step 4"],
-      "engagement_tip":"string"
+      "trend_used":"name of trend this leverages",
+      "why_now":"one sentence on timing — why post this THIS week",
+      "hook":"the exact scroll-stopping opening line (under 10 words)",
+      "caption":"FULL caption following the platform guide above — minimum 120 words for most platforms",
+      "hashtags":["#Tag1","#Tag2","#Tag3"${htags}],
+      "cta":"the exact call-to-action line",
+      "script":${needsScript ? '"FULL script following the format above — minimum 120 words of spoken content"' : '"null"'},
+      "carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"bold hook headline","body":"1-3 sentences of standalone value","design_note":"visual style description"}]' : '"null"'},
+      "thread_tweets":${needsThread ? '[{"num":1,"tweet":"tweet content under 240 chars"}]' : '"null"'},
+      "posting_checklist":["Specific action step 1","Specific action step 2","Specific action step 3","Specific action step 4"],
+      "engagement_tip":"one specific tip to boost comments in the first 30 minutes"
     },
-    {"id":"p2","platform":"${p}","format":"${dna.formats[0]}","title":"string","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"string","hashtags":["t1","t2","t3"${htags}],"cta":"string","script":${needsScript ? '"string"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step 1","step 2","step 3"],"engagement_tip":"string"},
-    {"id":"p3","platform":"${p}","format":"${dna.formats[0]}","title":"string","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"string","hashtags":["t1","t2","t3"${htags}],"cta":"string","script":${needsScript ? '"string"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step 1","step 2","step 3"],"engagement_tip":"string"}
+    {"id":"p2","platform":"${p}","format":"${dna.formats[1]||dna.formats[0]}","title":"completely different topic","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"FULL caption — 120+ words","hashtags":["#Tag1","#Tag2","#Tag3"${htags}],"cta":"string","script":${needsScript ? '"FULL script"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step1","step2","step3"],"engagement_tip":"string"},
+    {"id":"p3","platform":"${p}","format":"${dna.formats[2]||dna.formats[0]}","title":"third completely different topic","priority":"string","best_day":"string","best_time":"string","trend_used":"string","why_now":"string","hook":"string","caption":"FULL caption — 120+ words","hashtags":["#Tag1","#Tag2","#Tag3"${htags}],"cta":"string","script":${needsScript ? '"FULL script"' : '"null"'},"carousel_slides":${needsCarousel ? '[{"slide_num":1,"heading":"string","body":"string","design_note":"string"}]' : '"null"'},"thread_tweets":${needsThread ? '[{"num":1,"tweet":"string"}]' : '"null"'},"posting_checklist":["step1","step2","step3"],"engagement_tip":"string"}
   ]
 }`;
 }
@@ -1136,7 +1207,7 @@ function Workspace({profile, hKey, onUpgrade}){
         body:JSON.stringify({
           max_tokens: 6000,
           system:buildPrompt(profile,prevTitles,activePlatform),
-          messages:[{role:"user",content:`Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${activePlatform}. Write exactly 3 complete, platform-native posts for ${activePlatform} — each on a DIFFERENT topic. Use current live trends. Return ONLY raw JSON starting with {`}]
+          messages:[{role:"user",content:`Today is ${today}. Write 3 completely different, human-sounding ${activePlatform} posts for ${profile.brandName||"this brand"} in the "${profile.niche}" niche. Think about what's actually trending and relevant in this niche RIGHT NOW in 2025. Each post must be on a completely different topic and angle. Make them sound like a real person wrote them — specific, warm, and direct. Return ONLY raw JSON starting with {`}]
         })
       });
       clearInterval(tmr.current);
@@ -2064,7 +2135,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         system: buildPrompt(profile, []),
-        messages: [{ role: "user", content: `Today is ${today}. Research what is ACTUALLY TRENDING RIGHT NOW in "${profile.niche}" on ${(profile.platforms||["Instagram"])[0]}. Write 3 complete posts — all 3 for ${(profile.platforms||["Instagram"])[0]} only, each on a DIFFERENT topic and angle. Use real current trends you find. Each post needs a full word-for-word script (min 180 words) and carousel slides if applicable for this platform. Return ONLY raw JSON starting with {` }],
+        messages: [{ role: "user", content: `Today is ${today}. Write 3 completely different, human-sounding posts for ${(profile.platforms||["Instagram"])[0]} for a brand in the "${profile.niche}" space. Think about what real people in this niche are talking about RIGHT NOW in 2025. Each must be a different topic/angle. Make them sound like a real person wrote them — NOT like AI marketing copy. Each post needs a full word-for-word script (min 180 words) and carousel slides if applicable for this platform. Return ONLY raw JSON starting with {` }],
         max_tokens: 6000,
       })
     })
