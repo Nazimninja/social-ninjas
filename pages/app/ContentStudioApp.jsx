@@ -54,7 +54,7 @@ const PLANS = [
     platformCount: 2,
     color: "#5ba4f5",
     badge: null,
-    platformOptions: ["Instagram", "Facebook", "YouTube", "LinkedIn", "Twitter/X", "Threads"],
+    platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
       { icon: "🎬", text: "15 posts/month — video-first strategy" },
       { icon: "📽", text: "Full Reel/Short scripts — word-for-word, ready to film" },
@@ -83,7 +83,7 @@ const PLANS = [
     platformCount: 4,
     color: "#7C3AED",
     badge: "BEST VALUE",
-    platformOptions: ["Instagram", "Facebook", "YouTube", "LinkedIn", "Twitter/X", "Threads", "Pinterest", "Snapchat"],
+    platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
       { icon: "📅", text: "25 posts/month — 6 per week" },
       { icon: "🔍", text: "Deep trend research per platform" },
@@ -112,7 +112,7 @@ const PLANS = [
     platformCount: 999,
     color: "#E31313",
     badge: "AGENCY GRADE",
-    platformOptions: ["Instagram", "Facebook", "YouTube", "LinkedIn", "Twitter/X", "Threads", "Pinterest", "Snapchat", "TikTok", "All Platforms"],
+    platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
       { icon: "∞", text: "Unlimited posts — generate anytime" },
       { icon: "🔍", text: "Real-time viral trend research" },
@@ -180,116 +180,87 @@ function getPricing(countryCode, planIndex) {
 // ─────────────────────────────────────────────────────────────────
 const PLATFORM_DNA = {
   "Instagram": {
+    label: "Instagram & Facebook",
+    icon: "📸",
+    color: "#E1306C",
     formats: ["Reel","Carousel","Feed Post","Story"],
-    captionStyle: "Hook in line 1. Storytelling body. CTA at end. Max 150 words. Line breaks every 2–3 lines. 3–5 emojis max.",
+    captionStyle: "Hook line 1–5 words. Line break. Story/value body 80–150 words in short paragraphs. Line break. CTA. 3–5 emojis max. Hashtags after CTA.",
     hashtagCount: 10,
-    hashtagStyle: "Mix: 3 broad (1M+), 4 mid (100k–500k), 3 niche (<50k). No banned tags.",
-    scriptStyle: "15–30 second Reel. Hook (0–3s): must stop scroll. Body: value/story. End: CTA + audio cue.",
+    hashtagStyle: "Mix: 3 broad (1M+), 4 mid (100k–500k), 3 niche-specific (<50k). No banned tags.",
+    scriptStyle: "30–60 second Reel. Word-for-word. Hook (0–3s) stops scroll. Body: value/story in punchy lines. CTA at end.",
     bestTimes: ["7am","12pm","6pm","9pm"],
-    contentTypes: ["Reels get 3× reach — prioritise","Carousels save rate is highest","Talking head builds trust fastest"],
+    contentTypes: ["Reels get 3× reach — prioritise","Carousels save rate is highest","Talking head builds trust"],
     viralMechanics: "Pattern interrupt hooks, save-worthy value, comment bait questions",
     requiresScript: true,
     requiresCarousel: true,
-    requiresThread: false,
   },
-  "Facebook": {
-    formats: ["Video Post","Link Post","Story","Carousel Ad"],
-    captionStyle: "Conversational. Story-led. 50–300 words. Emotional triggers. Community language.",
-    hashtagCount: 3,
-    hashtagStyle: "3 hashtags max on Facebook. Broad, topic-level only.",
-    scriptStyle: "60–90 second Facebook video. Slow hook — don't rush. Story arc. Soft CTA at end.",
-    bestTimes: ["9am","1pm","3pm"],
-    contentTypes: ["Long-form video performs","Personal stories viral","Community questions drive comments"],
-    viralMechanics: "Relatable opinions, share-triggers, Facebook groups cross-posting",
-  },
-  "YouTube": {
-    formats: ["YouTube Short","Long-Form Video","Community Post"],
-    captionStyle: "VIDEO TITLE (not a social caption): 60 chars max, keyword-first for SEO. Example: 'How I Grew 10K Followers in 30 Days'. Then: SEO description 200+ words with timestamps, keywords in first 2 lines.",
+  "YouTube Shorts": {
+    label: "YouTube Shorts",
+    icon: "🩳",
+    color: "#FF0000",
+    formats: ["YouTube Short"],
+    captionStyle: "VIDEO TITLE (60 chars max, keyword-first). Example: 'I tested 7 AI tools for 30 days — here's the truth'",
     hashtagCount: 5,
-    hashtagStyle: "5 hashtags: channel topic + 4 searchable keyword tags. No spam.",
-    scriptStyle: "Choose ONE: (A) YouTube Short (60 sec max) — vertical video, hook in first 3 sec, fast delivery, loop-worthy ending. OR (B) Long-Form (8-15 min) — hook story first 60 sec, chapter outline with timestamps, full talking script. Always include [DIRECTION: camera/cut/text] notes. YouTube NEVER uses carousel slides.",
-    bestTimes: ["2pm","5pm","8pm Fri-Sun"],
-    contentTypes: ["Shorts for discovery — always generate first","Long-form for authority and watch time","Community posts for subscriber retention"],
-    viralMechanics: "Keyword-rich titles (search intent), strong thumbnail concept, retention hooks every 2 min, end-screen CTAs",
+    hashtagStyle: "#Shorts + 4 searchable niche tags.",
+    scriptStyle: "60-second vertical Short. Hook in first 2 seconds — visual + spoken. Fast delivery. Loop-worthy ending.",
+    bestTimes: ["9am","3pm","7pm"],
+    contentTypes: ["Shorts for channel discovery","Fast edits retain viewers","Trending topics × niche = viral"],
+    viralMechanics: "Strong title + thumbnail concept, keyword-rich description, loop ending",
     requiresScript: true,
     requiresCarousel: false,
-    requiresThread: false,
+  },
+  "YouTube": {
+    label: "YouTube Long Form",
+    icon: "▶️",
+    color: "#CC0000",
+    formats: ["Long-Form Video","Tutorial","Vlog"],
+    captionStyle: "VIDEO TITLE (60 chars, keyword-first, curiosity gap). Plus: SEO description 200+ words with timestamps and keywords in first 2 lines.",
+    hashtagCount: 5,
+    hashtagStyle: "Channel topic tag + 4 searchable keyword tags.",
+    scriptStyle: "8–15 minute video. Hook story first 60 sec. Chapter outline with timestamps. Full talking script with [DIRECTION] notes every 2–3 min.",
+    bestTimes: ["2pm","5pm","8pm Fri-Sun"],
+    contentTypes: ["Long-form for authority + watch time","Tutorial format converts best","Personal story gets shares"],
+    viralMechanics: "Keyword-rich titles, strong thumbnail concept, retention hooks every 2 min, end-screen CTAs",
+    requiresScript: true,
+    requiresCarousel: false,
   },
   "LinkedIn": {
-    formats: ["LinkedIn Post","LinkedIn Document Carousel","LinkedIn Video","Poll"],
-    captionStyle: "Line 1: bold opinion OR surprising stat — no fluff, no greetings. Data-backed professional insight. 150–300 words. Short paragraphs 1–2 lines max. This is NOT an Instagram caption — no emoji spam, professional voice. End with a thought-provoking question to drive comments.",
+    label: "LinkedIn",
+    icon: "💼",
+    color: "#0077B5",
+    formats: ["LinkedIn Post","LinkedIn Document","LinkedIn Video","Poll"],
+    captionStyle: "Line 1: bold opinion or surprising stat — no fluff, no greetings. 150–300 words. Short 1–2 line paragraphs. End with a question to drive comments. Professional but conversational.",
     hashtagCount: 5,
-    hashtagStyle: "5 precise professional hashtags. Industry-specific. e.g. #GrowthMarketing #B2BSaaS — NOT #viral #love",
-    scriptStyle: "LinkedIn Video (60–90 sec): Speak directly to camera, smart casual. Bold claim in first 5 sec. No background music. Subtitles CRITICAL. Structure: Hook claim → data/proof → actionable takeaway → invite comment. This is NOT a Reel — professional delivery only.",
+    hashtagStyle: "5 precise professional hashtags. Industry-specific. e.g. #GrowthMarketing #B2BSaaS",
+    scriptStyle: "60–90 sec LinkedIn video. Direct to camera, smart casual. Bold claim in first 5 sec. Hook claim → proof → takeaway → invite comment.",
     bestTimes: ["8am","12pm","5pm Tue–Thu"],
-    contentTypes: ["Document/PDF carousels get 3x saves — frameworks and lists perform best","Video posts get 5x reach vs text","Personal founder story + real data = highest engagement","Polls drive massive comment volume"],
-    viralMechanics: "Contrarian professional takes, personal story + hard data, save-worthy frameworks as Document carousels (NOT image carousels)",
+    contentTypes: ["Document carousels get 3× saves","Video posts get 5× reach","Personal story + data = highest engagement"],
+    viralMechanics: "Contrarian takes, personal story + hard data, save-worthy frameworks",
     requiresScript: false,
     requiresCarousel: true,
-    requiresThread: false,
-    isLinkedIn: true,
   },
   "Twitter/X": {
-    formats: ["Tweet Thread","Single Tweet","Reply Hook","Quote Tweet"],
-    captionStyle: "Tweet: max 280 chars. Punchy. Opinion-forward. Thread: Hook tweet → 8–12 numbered tweets → CTA tweet.",
+    label: "Twitter / X",
+    icon: "𝕏",
+    color: "#1DA1F2",
+    formats: ["Tweet Thread","Single Tweet","Reply Hook"],
+    captionStyle: "First tweet: max 240 chars, bold hook that makes people click 'show more'. Thread: 8–12 numbered tweets, each punchy and standalone.",
     hashtagCount: 2,
-    hashtagStyle: "1–2 hashtags only on X. Trending or niche-specific.",
-    scriptStyle: "Twitter/X video: 30–60 sec. No intro fluff. Jump straight in. Subtitles always.",
+    hashtagStyle: "1–2 hashtags only. Trending or niche-specific.",
+    scriptStyle: "Twitter/X video: 30–60 sec. No intro. Jump straight in. Subtitles always.",
     bestTimes: ["8am","12pm","5pm","9pm"],
     contentTypes: ["Threads go viral fastest","Hot takes with data","Replies to trending topics"],
     viralMechanics: "Controversial but true statements, thread hooks, reply farming",
-  },
-  "Threads": {
-    formats: ["Thread","Single Post","Reply"],
-    captionStyle: "Conversational, warm, authentic. Max 500 chars. Like texting a friend. No hashtags needed.",
-    hashtagCount: 0,
-    hashtagStyle: "No hashtags on Threads — algorithm ignores them.",
-    scriptStyle: "No video scripts needed — Threads is text-first.",
-    bestTimes: ["9am","1pm","7pm"],
-    contentTypes: ["Short opinions get reshared","Personal takes outperform brand content","Reply chains build following fast"],
-    viralMechanics: "Authentic unpopular opinions, Instagram crosspost, reply-driven growth",
-  },
-  "Pinterest": {
-    formats: ["Idea Pin","Standard Pin","Video Pin"],
-    captionStyle: "SEO-keyword rich description. 100–150 words. Focus on searchable terms. Seasonal awareness.",
-    hashtagCount: 5,
-    hashtagStyle: "5–10 descriptive tags matching search intent.",
-    scriptStyle: "Idea Pin: 3–5 slides. Step-by-step or how-to format. Visual-first.",
-    bestTimes: ["8pm","9pm Fri/Sat"],
-    contentTypes: ["How-to content pins best","Infographic style drives saves","Seasonal content is evergreen"],
-    viralMechanics: "SEO-optimised titles, tall format, save-worthy utility content",
-  },
-  "Snapchat": {
-    formats: ["Snap Story","Spotlight"],
-    captionStyle: "Very short. 1 line max. Casual, Gen Z tone. Entertainment-first.",
-    hashtagCount: 0,
-    hashtagStyle: "No hashtags on Snapchat.",
-    scriptStyle: "10–15 second Spotlight. Raw, authentic. No production needed. Sound-on assumed.",
-    bestTimes: ["12pm","10pm"],
-    contentTypes: ["Authentic behind-scenes works","Entertainment drives Spotlight","Story series builds retention"],
-    viralMechanics: "Raw authenticity, behind-scenes exclusivity, fast entertainment",
-  },
-  "TikTok": {
-    formats: ["TikTok Video","TikTok Live","Photo Mode"],
-    captionStyle: "Short caption: 1–3 lines. Trending sound name if relevant. 3–5 hashtags max.",
-    hashtagCount: 5,
-    hashtagStyle: "Mix trending sounds hashtags + niche + FYP. Max 5.",
-    scriptStyle: "15–60 sec TikTok. HOOK in first 1 second (text overlay + visual). Trending audio. Loop potential at end.",
-    bestTimes: ["7am","12pm","7pm","9pm"],
-    contentTypes: ["Trending audio × niche = viral","Duet/Stitch builds massive reach","POV format converts"],
-    viralMechanics: "Trending sound + niche pivot, fast hook, loop-worthy endings",
-  },
-  "All Platforms": {
-    formats: ["Multi-platform post","Platform-adapted content"],
-    captionStyle: "Write platform-native versions for each active platform.",
-    hashtagCount: 10,
-    hashtagStyle: "Adapt hashtags per platform.",
-    scriptStyle: "Write separate scripts per platform format.",
-    bestTimes: ["Multiple times per day"],
-    contentTypes: ["Cross-platform repurposing","Core content adapted per platform"],
-    viralMechanics: "Content ecosystem — one idea, many formats",
+    requiresScript: false,
+    requiresCarousel: false,
   },
 };
+
+// Map Facebook posts to Instagram DNA (merged)
+PLATFORM_DNA["Facebook"] = PLATFORM_DNA["Instagram"];
+
+// The 5 platforms users see in the UI
+const ACTIVE_PLATFORMS = ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"];
 
 // ─────────────────────────────────────────────────────────────────
 //  MY PROFILES
@@ -729,11 +700,11 @@ function PostCard({post, profile, index}){
 
   const isRealVal = v => v && v !== "null" && v !== "undefined";
   const tabs=[
-    {id:"caption", icon:"📋", label:"Caption", hint:"Copy & paste into your post"},
-    ...(isRealVal(post.script)?[{id:"script", icon:"🎬", label:"Script", hint:"Read on camera word-for-word"}]:[]),
-    ...(Array.isArray(post.carousel_slides)&&post.carousel_slides.length?[{id:"slides", icon:"🎠", label:"Slides", hint:"Each slide for Canva"}]:[]),
-    ...(Array.isArray(post.thread_tweets)&&post.thread_tweets.length?[{id:"thread", icon:"🧵", label:"Thread", hint:"Post tweets in order"}]:[]),
-    {id:"checklist", icon:"✅", label:"Checklist", hint:"Step-by-step posting guide"},
+    {id:"caption", icon:"", label:"Caption"},
+    ...(isRealVal(post.script)?[{id:"script", icon:"", label:"Script"}]:[]),
+    ...(Array.isArray(post.carousel_slides)&&post.carousel_slides.length?[{id:"slides", icon:"", label:"Slides"}]:[]),
+    ...(Array.isArray(post.thread_tweets)&&post.thread_tweets.length?[{id:"thread", icon:"", label:"Thread"}]:[]),
+    {id:"checklist", icon:"", label:"Checklist"},
   ];
 
   const priorityMap = {
@@ -908,36 +879,53 @@ function PostCard({post, profile, index}){
         {/* ════ SCRIPT TAB ════ */}
         {tab==="script"&&(
           <div style={{display:"grid",gap:12}}>
-            {/* Instruction banner */}
-            <div style={{background:"#070f1a",border:"1px solid rgba(56,189,248,0.2)",borderRadius:12,
-              padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
-              <span style={{fontSize:20,flexShrink:0}}>🎬</span>
-              <div>
-                <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",marginBottom:4}}>How to use this script</div>
-                <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.65}}>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>1. Open your camera</strong> → film in portrait (9:16 vertical)<br/>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>2. Read each line</strong> exactly as written — then look at camera<br/>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>3. [DIRECTION: ...]</strong> = action for you (don't say these out loud)<br/>
-                  <strong style={{color:"rgba(255,255,255,0.7)"}}>4. First 3 seconds</strong> = the hook line — nail this, it stops the scroll
-                </div>
+            {/* How to film guide */}
+            <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"14px 16px"}}>
+              <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.35)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>How to film this</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px 20px"}}>
+                {[
+                  ["Film vertical","9:16 portrait, good lighting"],
+                  ["Spoken lines","Say exactly what's written"],
+                  ["[DIRECTION]","Your action — don't say it out loud"],
+                  ["Hook is everything","Nail the first 3 seconds"],
+                ].map(([t,d],i)=>(
+                  <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                    <span style={{fontSize:11,color:"rgba(255,255,255,.6)",fontWeight:600,flexShrink:0,lineHeight:1.6}}>{t}</span>
+                    <span style={{fontSize:11,color:"rgba(255,255,255,.3)",lineHeight:1.6}}>{d}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* Script body */}
             {isRealVal(post.script)?(
-              <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:13,overflow:"hidden"}}>
-                <div style={{padding:"10px 16px",borderBottom:"1px solid rgba(255,255,255,0.06)",
-                  display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",
-                    color:"rgba(255,255,255,0.3)"}}>Word-for-word script · [brackets] = your directions</span>
+              <div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                  <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontWeight:500}}>Spoken lines only · [DIRECTION] = your action, not spoken</span>
                   <CopyBtn text={fixText(post.script)} label="Copy Script" sm/>
                 </div>
-                <pre style={{...MONO,maxHeight:500,fontSize:13,lineHeight:1.9}}>{fixText(post.script)}</pre>
+                <div style={{background:"#0a0c14",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
+                  {fixText(post.script).split("\n").map((line,i)=>{
+                    const isDir = line.trim().startsWith("[");
+                    if(!line.trim()) return <div key={i} style={{height:12}}/>;
+                    if(isDir) return(
+                      <div key={i} style={{fontSize:11,color:"rgba(255,255,255,.28)",fontStyle:"italic",
+                        fontFamily:"'JetBrains Mono',monospace",padding:"2px 0",letterSpacing:".1px"}}>
+                        {line}
+                      </div>
+                    );
+                    return(
+                      <div key={i} style={{fontSize:17,fontWeight:600,color:"rgba(255,255,255,.93)",
+                        letterSpacing:"-.3px",lineHeight:1.5,padding:"2px 0"}}>
+                        {line}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ):(
-              <div style={{background:"rgba(255,255,255,0.03)",borderRadius:12,padding:"24px",textAlign:"center",
-                color:"rgba(255,255,255,0.3)",fontSize:13}}>
-                No script generated for this post format. Use the Caption tab instead.
+              <div style={{textAlign:"center",padding:"32px",color:"rgba(255,255,255,.3)",fontSize:13}}>
+                No script for this format — use Caption tab.
               </div>
             )}
           </div>
@@ -1181,9 +1169,9 @@ function Workspace({profile, hKey, onUpgrade}){
   const [err,setErr]=useState(null);
   const [step,setStep]=useState(0);
   const tmr=useRef(null);
-  const platforms=(profile.platforms||[profile.sub||"Instagram"]);
-  // Single platform selection — generate one platform at a time for reliability
-  const [activePlatform, setActivePlatform] = useState(platforms[0] || "Instagram");
+  // Always show 5 focused platforms — merged IG/FB, YT Shorts, YT, LinkedIn, Twitter
+  const platforms = ACTIVE_PLATFORMS;
+  const [activePlatform, setActivePlatform] = useState("Instagram");
 
   useEffect(()=>{
     (async()=>{const h=await DB.get(hKey)||[];setHist(h);if(h.length>0)setResult(h[h.length-1]);})();
@@ -1327,12 +1315,14 @@ function Workspace({profile, hKey, onUpgrade}){
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {platforms.map(p=>{
               const active = activePlatform === p;
+              const dnaP = PLATFORM_DNA[p];
               return(
                 <button key={p}
                   onClick={()=>!gen&&!trialExhausted&&setActivePlatform(p)}
                   disabled={gen||trialExhausted}
                   className={"plat-pill"+(active?" active":"")}>
-                  {active && "✓ "}{p}
+                  <span style={{fontSize:14}}>{dnaP?.icon||"📲"}</span>
+                  {dnaP?.label||p}
                 </button>
               );
             })}
@@ -2461,7 +2451,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       const planParam = urlParams.get("plan");
       const isUpgrade = urlParams.get("upgrade") === "1";
       if (planParam === "trial") {
-        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
+        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
         setScreen("details");
       } else if (planParam) {
         const selectedPlan = PLANS.find(p => p.id === planParam);
@@ -2623,7 +2613,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
           ))}
         </div>
         <button onClick={()=>{
-          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube","LinkedIn","Facebook","Twitter/X","Threads"] });
+          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
           setScreen("details");
         }} className="sn-btn sn-btn-primary sn-btn-lg" style={{marginTop:24,width:"100%"}}>
           ⚡ Try 3 Posts Free — No Card Needed
@@ -2767,7 +2757,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         <div style={{fontSize:14,fontWeight:700,color:"rgba(255,255,255,0.5)",textAlign:"center",
           marginBottom:16,letterSpacing:"-.2px"}}>Common questions</div>
         {[["Do I need to know anything about content?","No. Just tell us your brand and what you sell. The AI does all the research and writing."],
-          ["What platforms do you support?","Instagram, Facebook, YouTube, LinkedIn, Twitter/X, Threads, Pinterest, Snapchat, TikTok."],
+          ["What platforms do you support?","Instagram, Facebook (same content), YouTube Shorts, YouTube Long-Form, LinkedIn, and Twitter/X."],
           ["Can I cancel anytime?","Yes. All plans are month-to-month. No contracts, no lock-in."],
           ["What does 'live trend research' mean?","Before writing your content, the AI searches the web to find what's actually trending this week in your niche — so every post rides current momentum, not last month's trends."],
           ["Is the content really unique?","Yes. The AI has permanent memory — it tracks every post generated and never repeats a topic or angle."],
@@ -3241,577 +3231,138 @@ Return ONLY raw JSON (no markdown fences):
 //  CLIENT PROFILE DASHBOARD
 // ─────────────────────────────────────────────────────────────────
 function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
-  const color = profile.color||"#7C3AED";
-  const [tips, setTips] = useState(null);
-  const [loadingTips, setLoadingTips] = useState(false);
   const [hist, setHist] = useState([]);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("content");
 
   useEffect(()=>{
-    (async()=>{
-      const h = await DB.get(hKey)||[];
-      setHist(h);
-    })();
-  },[hKey]);
-
-  const fetchTips = async() => {
-    setLoadingTips(true);
-    const h = await DB.get(hKey)||[];
-    const result = await generateWeeklyTips(profile, h);
-    if(result) {
-      setTips(result);
-      await DB.set(hKey+"_tips", {tips:result, date:new Date().toLocaleDateString("en-GB")});
-    }
-    setLoadingTips(false);
-  };
-
-  useEffect(()=>{
-    (async()=>{
-      const saved = await DB.get(hKey+"_tips");
-      if(saved?.tips) setTips(saved.tips);
-    })();
+    (async()=>{ const h = await DB.get(hKey)||[]; setHist(h); })();
   },[hKey]);
 
   const totalPosts = hist.flatMap(w=>w.posts||[]).length;
-  const totalWeeks = hist.length;
-  const platforms = profile.platforms||[profile.sub||"Instagram"];
-  const lastGenDate = hist[hist.length-1]?.date||"Not yet";
-
-  // Infographic ring component
-  const Ring = ({value, max=100, size=80, color:rc, label, sub}) => {
-    const pct = Math.min(value/max, 1);
-    const r = (size-10)/2;
-    const circ = 2*Math.PI*r;
-    const dash = circ*pct;
-    return (
-      <div style={{textAlign:"center"}}>
-        <svg width={size} height={size} style={{transform:"rotate(-90deg)"}}>
-          <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={8}/>
-          <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={rc} strokeWidth={8}
-            strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
-            style={{transition:"stroke-dasharray 1s ease"}}/>
-        </svg>
-        <div style={{marginTop:-size*0.7, position:"relative", zIndex:1}}>
-          <div style={{fontSize:size*0.2, fontWeight:800, color:rc, letterSpacing:"-0.5px"}}>{value}</div>
-        </div>
-        <div style={{fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.5)", marginTop:size*0.3+4, letterSpacing:"-.1px"}}>{label}</div>
-        {sub&&<div style={{fontSize:10, color:"rgba(255,255,255,0.28)"}}>{sub}</div>}
-      </div>
-    );
-  };
-
-  const phaseColor = {Building:"#5ba4f5",Momentum:"#f59e0b",Scaling:"#7C3AED",Dominating:"#E31313"};
-  const pc = phaseColor[tips?.growth_phase]||color;
+  const thisWeekPosts = hist[hist.length-1]?.posts?.length || 0;
+  const isTrial = profile.plan==="trial" || !profile.plan;
 
   const TABS = [
-    {id:"overview", label:"📊 Overview"},
-    {id:"tips", label:"💡 Weekly Tips"},
-    {id:"platforms", label:"📲 Platform Tips"},
-    {id:"content", label:"📝 Ongoing Content"},
-    {id:"history", label:"📅 Previous History"},
+    {id:"content", label:"Generate Content"},
+    {id:"history", label:"Past Content"},
+    {id:"profile", label:"Profile"},
   ];
 
   return (
-    <div style={{animation:"fadeUp .3s ease"}}>
-      {/* ── PROFILE HERO ── */}
-      <div style={{background:`linear-gradient(135deg,${profile.darkBg||"#020617"},#0B152B)`,
-        border:"1px solid rgba(255,255,255,.09)",borderRadius:22,padding:"24px",marginBottom:16,
-        position:"relative",overflow:"hidden"}}>
-        {/* BG glow */}
-        <div style={{position:"absolute",top:-60,right:-60,width:220,height:220,borderRadius:"50%",
-          background:"radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)",pointerEvents:"none"}}/>
+    <div style={{maxWidth:860,margin:"0 auto",padding:"0 0 60px"}}>
 
-        <div style={{display:"flex",alignItems:"flex-start",gap:16,flexWrap:"wrap",position:"relative"}}>
-          {/* Logo / avatar */}
-          <div style={{flexShrink:0}}>
-            {profile.logoPreview
-              ?<img src={profile.logoPreview} alt="logo"
-                style={{width:64,height:64,borderRadius:16,objectFit:"contain",
-                  background:"#fff",padding:6,border:"2px solid rgba(255,255,255,.16)"}}/>
-              :<div style={{width:64,height:64,borderRadius:16,
-                background:"linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04))",
-                border:"2px solid rgba(255,255,255,.14)",display:"flex",alignItems:"center",
-                justifyContent:"center",fontSize:28}}>{profile.emoji||"🏢"}</div>
-            }
-          </div>
-
-          <div style={{flex:1,minWidth:200}}>
-            <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:5}}>
-              <h2 style={{fontSize:20,fontWeight:800,letterSpacing:"-.5px",margin:0}}>
-                {profile.brandName||profile.name}</h2>
-              <span style={{background:"#052e16",color:"#4ade80",border:"1px solid #166534",
-                borderRadius:20,padding:"2px 10px",fontSize:10,fontWeight:700}}>● Active</span>
-              {profile.planName&&(
-                <span style={{background:"rgba(255,255,255,.08)",color,border:"1px solid rgba(255,255,255,.16)",
-                  borderRadius:20,padding:"2px 10px",fontSize:10,fontWeight:700}}>
-                  {profile.planName}</span>
-              )}
-            </div>
-            {profile.tagline&&(
-              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontStyle:"italic",marginBottom:6}}>
-                "{profile.tagline}"</div>
-            )}
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.38)",lineHeight:1.6,marginBottom:10,
-              maxWidth:480}}>{profile.businessContext}</div>
-            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-              {platforms.map(p=>(
-                <span key={p} style={{background:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.11)",color:"rgba(255,255,255,.6)",
-                  borderRadius:15,padding:"3px 11px",fontSize:11,fontWeight:700}}>{p}</span>
-              ))}
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div style={{display:"flex",flexDirection:"column",gap:8,flexShrink:0}}>
-            <button onClick={fetchTips} disabled={loadingTips}
-              style={{background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,.12)",
-                color:"rgba(255,255,255,0.8)",borderRadius:10,padding:"9px 18px",
-                fontSize:13,fontWeight:600,cursor:loadingTips?"not-allowed":"pointer",whiteSpace:"nowrap",
-                transition:"all .15s"}}>
-              {loadingTips?"⏳ Analysing...":"🔄 Refresh Analysis"}</button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── INFOGRAPHIC STATS ── */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
-        {[
-          {label:"Posts Created",value:totalPosts,sub:"all time",icon:"📝",color:"#5ba4f5"},
-          {label:"Weeks Active",value:totalWeeks,sub:"content weeks",icon:"📅",color:"#7C3AED"},
-          {label:"Platforms",value:platforms.length,sub:"active",icon:"📲",color:"#10b981"},
-          {label:"This Week",value:hist[hist.length-1]?.posts?.length||0,sub:"posts ready",icon:"🎯",color:color},
-        ].map((s,i)=>(
-          <div key={i} style={{background:"#020617",border:`1px solid ${s.color}20`,borderRadius:16,
-            padding:"16px 14px",textAlign:"center"}}>
-            <div style={{fontSize:22,marginBottom:6}}>{s.icon}</div>
-            <div style={{fontSize:28,fontWeight:800,color:s.color,letterSpacing:"-1px",lineHeight:1}}>
-              {s.value}</div>
-            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.5)",marginTop:4,letterSpacing:"-.1px"}}>
-              {s.label}</div>
-            <div style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>{s.sub}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── GROWTH PHASE BANNER (when tips available) ── */}
-      {tips?.growth_phase&&(
-        <div style={{background:`linear-gradient(135deg,${pc}15,${pc}05)`,
-          border:`1px solid ${pc}30`,borderRadius:14,padding:"14px 18px",marginBottom:16,
-          display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
-          <div>
-            <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-              color:"rgba(255,255,255,0.35)",marginBottom:3}}>Growth Phase</div>
-            <div style={{fontSize:20,fontWeight:800,color:pc,letterSpacing:"-.5px"}}>
-              {tips.growth_phase}</div>
-          </div>
-          <div style={{flex:1}}>
-            <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-              color:"rgba(255,255,255,0.35)",marginBottom:3}}>This Week's Focus</div>
-            <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,0.75)",letterSpacing:"-.2px"}}>
-              {tips.this_week_focus}</div>
-          </div>
-          {tips.score&&(
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                color:"rgba(255,255,255,0.35)",marginBottom:6}}>Account Score</div>
-              <div style={{position:"relative",width:72,height:72}}>
-                <svg width={72} height={72} style={{transform:"rotate(-90deg)"}}>
-                  <circle cx={36} cy={36} r={28} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={7}/>
-                  <circle cx={36} cy={36} r={28} fill="none" stroke={pc} strokeWidth={7}
-                    strokeDasharray={`${2*Math.PI*28*tips.score/100} ${2*Math.PI*28}`}
-                    strokeLinecap="round"/>
-                </svg>
-                <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
-                  fontSize:16,fontWeight:800,color:pc}}>{tips.score}</div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── COMPACT UPGRADE BANNER ── */}
-      {(profile.plan==="trial" || !profile.plan) && (
-        <div style={{background:"linear-gradient(135deg,rgba(56,189,248,0.1),rgba(56,189,248,0.04))",
-          border:"1px solid rgba(56,189,248,0.28)",borderRadius:12,padding:"10px 16px",
-          marginBottom:14,display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-          <span style={{fontSize:16}}>⚡</span>
+      {/* ── BRAND HEADER ── */}
+      <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:20,padding:"24px",marginBottom:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
+          {profile.logoPreview
+            ?<img src={profile.logoPreview} alt="logo" style={{width:52,height:52,borderRadius:12,objectFit:"contain",background:"#fff",padding:4}}/>
+            :<div style={{width:52,height:52,borderRadius:12,background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{profile.emoji||"🏢"}</div>
+          }
           <div style={{flex:1,minWidth:180}}>
-            <span style={{fontSize:13,fontWeight:700,color:"#f1f5f9"}}>You're on Free Trial — </span>
-            <span style={{fontSize:13,color:"rgba(255,255,255,0.5)"}}>Upgrade to unlock 15–unlimited posts/month</span>
+            <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:4}}>
+              <span style={{fontSize:17,fontWeight:700,letterSpacing:"-.4px"}}>{profile.brandName||profile.name}</span>
+              <span style={{background:"rgba(52,211,153,.08)",color:"#34d399",border:"1px solid rgba(52,211,153,.2)",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:600}}>● Active</span>
+              {profile.planName&&<span style={{background:"rgba(255,255,255,.06)",color:"rgba(255,255,255,.55)",border:"1px solid rgba(255,255,255,.09)",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:500}}>{profile.planName}</span>}
+            </div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,.35)",lineHeight:1.5}}>{profile.niche} · {profile.audience}</div>
           </div>
-          <button onClick={()=>typeof onUpgrade==='function' ? onUpgrade('starter') : (window.location.href=`${window.location.origin}/app/content-studio?plan=starter&upgrade=1`)}
-            style={{background:"linear-gradient(135deg,#38bdf8,#1d4ed8)",color:"#fff",
-              border:"none",borderRadius:8,padding:"8px 16px",fontSize:12,fontWeight:700,
-              cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,
-              boxShadow:"0 4px 14px rgba(56,189,248,0.3)"}}>
-            ⚡ Upgrade Now →</button>
+          <div style={{display:"flex",gap:16,alignItems:"center",flexShrink:0}}>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:22,fontWeight:800,color:"rgba(255,255,255,.9)",lineHeight:1}}>{totalPosts}</div>
+              <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:500,marginTop:2}}>Posts made</div>
+            </div>
+            <div style={{width:1,height:32,background:"rgba(255,255,255,.07)"}}/>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:22,fontWeight:800,color:"rgba(255,255,255,.9)",lineHeight:1}}>{hist.length}</div>
+              <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:500,marginTop:2}}>Weeks active</div>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Trial upgrade prompt */}
+        {isTrial&&(
+          <div style={{marginTop:16,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.08)",borderRadius:12,padding:"12px 16px",display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+            <div style={{flex:1,fontSize:13,color:"rgba(255,255,255,.55)"}}>
+              <strong style={{color:"rgba(255,255,255,.8)"}}>Free trial active</strong> — upgrade to generate unlimited content across all platforms
+            </div>
+            <button onClick={()=>typeof onUpgrade==="function"?onUpgrade("starter"):null}
+              style={{background:"#fff",color:"#08090d",border:"none",borderRadius:8,padding:"9px 18px",fontSize:13,fontWeight:700,cursor:"pointer",flexShrink:0,fontFamily:"'Sora',system-ui,sans-serif"}}>
+              Upgrade →
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* ── TABS ── */}
-      <div style={{display:"flex",gap:3,background:"rgba(255,255,255,0.04)",borderRadius:12,
-        padding:4,marginBottom:16,overflowX:"auto",scrollbarWidth:"none",
-        border:"1px solid rgba(255,255,255,0.06)"}}>
+      <div style={{display:"flex",gap:0,background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:4,marginBottom:16}}>
         {TABS.map(t=>(
           <button key={t.id} onClick={()=>setActiveTab(t.id)}
-            style={{padding:"8px 16px",borderRadius:9,fontSize:12,fontWeight:activeTab===t.id?700:500,
-              border:activeTab===t.id?`1px solid rgba(255,255,255,.16)`:"1px solid transparent",
-              cursor:"pointer",whiteSpace:"nowrap",transition:"all .2s",
-              background:activeTab===t.id?color:"transparent",
-              color:activeTab===t.id?"#ffffff":"rgba(255,255,255,0.45)",
-              boxShadow:activeTab===t.id?`0 2px 10px rgba(255,255,255,.14)`:"none"}}>
-            {t.label}</button>
+            style={{flex:1,padding:"10px 16px",borderRadius:9,fontSize:13,fontWeight:activeTab===t.id?600:400,
+              cursor:"pointer",border:"none",transition:"all .15s",fontFamily:"'Sora',system-ui,sans-serif",
+              background:activeTab===t.id?"rgba(255,255,255,.09)":"transparent",
+              color:activeTab===t.id?"rgba(255,255,255,.95)":"rgba(255,255,255,.35)"}}>
+            {t.label}
+          </button>
         ))}
       </div>
 
-      {/* ── OVERVIEW TAB ── */}
-      {activeTab==="overview"&&(
-        <div style={{display:"grid",gap:12}}>
-          {/* Profile details */}
-          <div style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,padding:"18px 20px"}}>
-            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-              color:"rgba(255,255,255,0.28)",marginBottom:14}}>Brand Profile</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-              {[
-                ["Audience",profile.audience],
-                ["Niche",profile.niche],
-                ["Brand Voice",profile.tone],
-                ["Avoid",profile.avoid||"Nothing specified"],
-                ["Plan",profile.planName],
-                ["Member Since",profile.joinDate],
-                ["Email",profile.email],
-                ["Website",profile.website||"Not provided"],
-              ].filter(([,v])=>v).map(([k,v])=>(
-                <div key={k} style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"10px 12px"}}>
-                  <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                    color:"rgba(255,255,255,0.3)",marginBottom:4}}>{k}</div>
-                  <div style={{fontSize:12,color:"rgba(255,255,255,0.68)",lineHeight:1.5,
-                    overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>
-                    {v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-
-
-          {/* ── SOCIAL ACCOUNTS PANEL ── */}
-          {profile.socialAccounts&&Object.values(profile.socialAccounts).some(v=>v)&&(
-            <div style={{background:"#020617",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,padding:"18px 20px"}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                color:"rgba(255,255,255,0.28)",marginBottom:14}}>🔗 Connected Social Accounts</div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8}}>
-                {[
-                  {key:"instagram",label:"Instagram",icon:"📸",prefix:"@",url:"https://instagram.com/"},
-                  {key:"linkedin",label:"LinkedIn",icon:"💼",prefix:"",url:"https://"},
-                  {key:"youtube",label:"YouTube",icon:"▶️",prefix:"",url:"https://"},
-                  {key:"tiktok",label:"TikTok",icon:"🎵",prefix:"@",url:"https://tiktok.com/@"},
-                  {key:"twitter",label:"Twitter/X",icon:"𝕏",prefix:"@",url:"https://x.com/"},
-                  {key:"facebook",label:"Facebook",icon:"👤",prefix:"",url:"https://"},
-                ].filter(a=>profile.socialAccounts[a.key]).map(a=>(
-                  <a key={a.key} href={a.url+profile.socialAccounts[a.key].replace("@","")}
-                    target="_blank" rel="noopener"
-                    style={{display:"flex",alignItems:"center",gap:10,
-                      background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,.08)",
-                      borderRadius:11,padding:"10px 13px",textDecoration:"none"}}>
-                    <span style={{fontSize:18}}>{a.icon}</span>
-                    <div style={{flex:1,overflow:"hidden"}}>
-                      <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",
-                        color:"rgba(255,255,255,0.3)",marginBottom:2}}>{a.label}</div>
-                      <div style={{fontSize:12,fontWeight:600,color:color,
-                        overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                        {a.prefix}{profile.socialAccounts[a.key].replace("@","")}</div>
-                    </div>
-                    {profile.followers?.[a.key]&&(
-                      <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",
-                        flexShrink:0}}>{profile.followers[a.key]}</div>
-                    )}
-                  </a>
-                ))}
-              </div>
-              <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:10}}>
-                AI analyses these accounts before every content generation to fill your specific gaps</div>
-            </div>
-          )}
-
-          {/* ── ACCOUNT ANALYSIS (quick wins) ── */}
-          {tips?.account_analysis&&(
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
-              {[
-                {label:"💪 Strengths",items:tips.account_analysis.strengths,col:"#10b981",bg:"#052e16"},
-                {label:"🚧 Gaps",items:tips.account_analysis.gaps,col:"#f59e0b",bg:"#1c1203"},
-                {label:"⚡ Quick Wins",items:tips.account_analysis.quick_wins,col:"#5ba4f5",bg:"#0a1628"},
-              ].map(({label,items,col,bg})=>(
-                <div key={label} style={{background:bg,border:`1px solid ${col}25`,borderRadius:14,padding:"14px 15px"}}>
-                  <div style={{fontSize:11,fontWeight:700,color:col,textTransform:"uppercase",
-                    letterSpacing:"1.5px",marginBottom:10}}>{label}</div>
-                  {(items||[]).slice(0,3).map((item,i)=>(
-                    <div key={i} style={{display:"flex",gap:7,alignItems:"flex-start",marginBottom:7}}>
-                      <div style={{width:16,height:16,borderRadius:"50%",background:`${col}20`,color:col,
-                        display:"flex",alignItems:"center",justifyContent:"center",
-                        fontSize:9,fontWeight:800,flexShrink:0,marginTop:1}}>
-                        {i+1}</div>
-                      <div style={{fontSize:11,color:"rgba(255,255,255,0.6)",lineHeight:1.5}}>{item}</div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Content summary donut */}
-          {totalPosts>0&&(
-            <div style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,
-              padding:"18px 20px"}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                color:"rgba(255,255,255,0.28)",marginBottom:16}}>Content Summary</div>
-              <div style={{display:"flex",gap:24,alignItems:"center",flexWrap:"wrap"}}>
-                <div style={{display:"flex",gap:20,flexWrap:"wrap"}}>
-                  <Ring value={totalPosts} max={Math.max(totalPosts,60)} size={76} color={color}
-                    label="Total Posts" sub="generated"/>
-                  <Ring value={totalWeeks} max={Math.max(totalWeeks,12)} size={76} color="#10b981"
-                    label="Weeks" sub="of content"/>
-                  <Ring value={platforms.length} max={10} size={76} color="#f59e0b"
-                    label="Platforms" sub="active"/>
-                </div>
-                <div style={{flex:1,minWidth:200}}>
-                  {hist.slice(-3).reverse().map((w,i)=>(
-                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                      <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",
-                        width:32,flexShrink:0}}>W{w.week}</div>
-                      <div style={{flex:1,background:"rgba(255,255,255,0.05)",borderRadius:4,height:6,overflow:"hidden"}}>
-                        <div style={{height:"100%",background:color,borderRadius:4,
-                          width:`${Math.min((w.posts?.length||0)/5*100,100)}%`,transition:"width 1s ease"}}/>
-                      </div>
-                      <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",width:20,textAlign:"right"}}>
-                        {w.posts?.length||0}</div>
-                    </div>
-                  ))}
-                  {hist.length===0&&<div style={{fontSize:12,color:"rgba(255,255,255,0.3)"}}>
-                    Generate your first week of content to see history here</div>}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {tips?.content_insights&&(
-            <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",borderRadius:14,
-              padding:"14px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                color:"rgba(255,255,255,.5)",marginBottom:7}}>🧠 AI Content Analysis</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.65)",lineHeight:1.7}}>
-                {tips.content_insights}</div>
-            </div>
-          )}
-
-          {!tips&&(
-            <div style={{background:"rgba(255,255,255,0.02)",border:"1px dashed rgba(255,255,255,0.08)",
-              borderRadius:14,padding:"20px",textAlign:"center"}}>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginBottom:10}}>
-                Get your personalised weekly analysis and growth tips</div>
-              <button onClick={fetchTips} disabled={loadingTips}
-                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"10px 22px",fontSize:13,fontWeight:700,
-                  cursor:loadingTips?"not-allowed":"pointer"}}>
-                {loadingTips?"Analysing your profile...":"🔍 Run AI Analysis"}</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── WEEKLY TIPS TAB ── */}
-      {activeTab==="tips"&&(
-        <div style={{display:"grid",gap:10}}>
-          {loadingTips&&(
-            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
-              borderRadius:14,border:"1px solid rgba(255,255,255,0.06)"}}>
-              <div style={{width:40,height:40,borderRadius:"50%",
-                border:"3px solid rgba(255,255,255,.08)",borderTop:`3px solid ${color}`,
-                margin:"0 auto 14px",animation:"spin .85s linear infinite"}}/>
-              <div style={{color:"rgba(255,255,255,0.5)",fontSize:13}}>Researching your niche and analysing your content…</div>
-            </div>
-          )}
-          {!tips&&!loadingTips&&(
-            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
-              borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
-              <div style={{fontSize:32,marginBottom:12}}>💡</div>
-              <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,0.45)",marginBottom:8,letterSpacing:"-.2px"}}>
-                No tips generated yet</div>
-              <div style={{fontSize:12,color:"rgba(255,255,255,0.28)",marginBottom:16}}>
-                Click below to get personalised weekly growth tips for {profile.brandName||profile.name}</div>
-              <button onClick={fetchTips}
-                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"11px 24px",fontSize:13,fontWeight:700,cursor:"pointer"}}>
-                🔍 Analyse & Get Tips</button>
-            </div>
-          )}
-          {tips?.weekly_tips?.map((tip,i)=>(
-            <div key={i} style={{background:"#020617",border:`1px solid ${
-              tip.priority==="High"?"#78510a40":"rgba(255,255,255,0.07)"}`,borderRadius:14,padding:"16px 18px"}}>
-              <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-                <div style={{width:32,height:32,borderRadius:9,
-                  background:tip.priority==="High"?"#78510a":"rgba(255,255,255,0.07)",
-                  display:"flex",alignItems:"center",justifyContent:"center",
-                  fontSize:13,fontWeight:800,color:tip.priority==="High"?"#e8b86d":"rgba(255,255,255,0.4)",
-                  flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,flexWrap:"wrap"}}>
-                    <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px"}}>{tip.title}</div>
-                    <span style={{fontSize:10,fontWeight:700,borderRadius:5,padding:"2px 8px",
-                      background:tip.priority==="High"?"#78510a":"rgba(255,255,255,0.07)",
-                      color:tip.priority==="High"?"#e8b86d":"rgba(255,255,255,0.4)"}}>
-                      {tip.priority==="High"?"🔴 High Priority":"🟡 Medium"}</span>
-                    {tip.impact&&<span style={{fontSize:11,color:"#4ade80",fontWeight:600}}>
-                      📈 {tip.impact}</span>}
-                  </div>
-                  <div style={{fontSize:13,color:"rgba(255,255,255,0.55)",lineHeight:1.7}}>{tip.detail}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-          {tips&&(
-            <button onClick={fetchTips} disabled={loadingTips}
-              style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",
-                color:"rgba(255,255,255,0.45)",borderRadius:10,padding:"10px",
-                fontSize:12,fontWeight:600,cursor:loadingTips?"not-allowed":"pointer"}}>
-              {loadingTips?"Refreshing...":"↻ Refresh Tips"}</button>
-          )}
-        </div>
-      )}
-
-      {/* ── PLATFORM TIPS TAB ── */}
-      {activeTab==="platforms"&&(
-        <div style={{display:"grid",gap:10}}>
-          {!tips?.platform_tips&&!loadingTips&&(
-            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
-              borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
-              <button onClick={fetchTips}
-                style={{background:`linear-gradient(135deg,${color},rgba(255,255,255,.5))`,color:"#fff",
-                  border:"none",borderRadius:10,padding:"11px 24px",fontSize:13,fontWeight:700,cursor:"pointer"}}>
-                🔍 Get Platform-Specific Tips</button>
-            </div>
-          )}
-          {tips?.platform_tips?.map((pt,i)=>(
-            <div key={i} style={{background:"#020617",border:"1px solid rgba(255,255,255,.07)",borderRadius:14,padding:"16px 18px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                <span style={{background:"rgba(255,255,255,.08)",color,border:"1px solid rgba(255,255,255,.14)",
-                  borderRadius:20,padding:"3px 12px",fontSize:11,fontWeight:700}}>{pt.platform}</span>
-              </div>
-              <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.75)",marginBottom:6,letterSpacing:"-.2px"}}>
-                {pt.tip}</div>
-              <div style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:8,
-                padding:"8px 11px",fontSize:12,color:color,fontWeight:600}}>
-                → Action: {pt.action}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ── ONGOING CONTENT TAB ── */}
+      {/* ── CONTENT TAB ── */}
       {activeTab==="content"&&(
-        <div style={{display:"grid",gap:32}}>
-          {hist.length===0&&(
-            <div style={{textAlign:"center",padding:"48px 20px",background:"rgba(255,255,255,0.02)",
-              borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
-              <div style={{fontSize:36,marginBottom:12}}>📝</div>
-              <div style={{fontSize:15,fontWeight:700,color:"rgba(255,255,255,0.45)",marginBottom:8}}>No content generated yet</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.28)",marginBottom:16}}>
-                Scroll down to the Content Generator section below to create your first week of posts</div>
-              <div style={{fontSize:12,color:"rgba(255,255,255,0.2)"}}>↓ Content Generator is right below on this page</div>
-            </div>
-          )}
-          {hist.length>0&&(()=>{
-            const latest = hist[hist.length-1];
-            return (
-              <div style={{animation:"fadeUp .3s ease"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-                  <div style={{height:1,flex:1,background:"rgba(255,255,255,.08)"}}/>
-                  <div style={{background:color,color:"#fff",borderRadius:20,padding:"4px 16px",
-                    fontSize:11,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase"}}>
-                    Week {latest.week} · {latest.date}
-                  </div>
-                  <div style={{height:1,flex:1,background:"rgba(255,255,255,.08)"}}/>
-                </div>
-                {latest.posts?.length>0&&<WeekCal posts={latest.posts} color={color}/>}
-                <TrendCards trends={latest.trends} color={color}/>
-                <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-                  color:"rgba(255,255,255,0.28)",marginBottom:14}}>
-                  📝 {latest.posts?.length||0} Posts — Platform-native content ready to publish
-                </div>
-                <div style={{display:"grid",gap:20}}>
-                  {latest.posts?.map((p,i)=><PostCard key={i} post={p} profile={profile} index={i}/>)}
-                </div>
-              </div>
-            );
-          })()}
+        <Workspace profile={profile} hKey={hKey} onUpgrade={onUpgrade}/>
+      )}
 
-          {/* Generator embedded directly in Ongoing Content */}
-          <div style={{paddingTop:28,borderTop:"1px solid rgba(255,255,255,0.08)"}}>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
-              <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
-              <div style={{display:"flex",alignItems:"center",gap:8,
-                background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.11)",borderRadius:24,
-                padding:"7px 20px"}}>
-                <span style={{fontSize:15}}>⚡</span>
-                <span style={{fontSize:13,fontWeight:700,color,letterSpacing:"-.2px"}}>Content Generator</span>
-              </div>
-              <div style={{height:1,flex:1,background:"rgba(255,255,255,.04)"}}/>
+      {/* ── HISTORY TAB ── */}
+      {activeTab==="history"&&(
+        <div>
+          {hist.length===0?(
+            <div style={{textAlign:"center",padding:"60px 20px",color:"rgba(255,255,255,.3)",fontSize:14}}>
+              No content generated yet. Go to <button onClick={()=>setActiveTab("content")} style={{background:"none",border:"none",color:"rgba(255,255,255,.6)",cursor:"pointer",textDecoration:"underline",fontFamily:"'Sora',system-ui,sans-serif"}}>Generate Content</button> to create your first posts.
             </div>
-            <Workspace profile={profile} hKey={hKey}
-              onUpgrade={(planId)=>typeof onUpgrade==='function' ? onUpgrade(planId) : (window.location.href=`${window.location.origin}/app/content-studio?plan=${planId}&upgrade=1`)}/>
-          </div>
+          ):(
+            hist.slice().reverse().map((week,wi)=>(
+              <div key={wi} style={{marginBottom:24}}>
+                <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.35)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:10}}>
+                  Week {hist.length-wi} · {week.date||""}
+                </div>
+                <div style={{display:"grid",gap:10}}>
+                  {(week.posts||[]).map((post,pi)=>(
+                    <PostCard key={pi} post={post} num={pi+1}/>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       )}
 
-      {/* ── PREVIOUS HISTORY TAB ── */}
-      {activeTab==="history"&&(
-        <div style={{display:"grid",gap:10}}>
-          {hist.length<=1&&(
-            <div style={{textAlign:"center",padding:"40px",background:"rgba(255,255,255,0.02)",
-              borderRadius:14,border:"1px dashed rgba(255,255,255,0.07)"}}>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginBottom:6}}>Previous weeks appear here</div>
-              <div style={{fontSize:11,color:"rgba(255,255,255,0.2)"}}>
-                {hist.length===0?"No content generated yet":"Generate more weeks to see history here"}
+      {/* ── PROFILE TAB ── */}
+      {activeTab==="profile"&&(
+        <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:16,padding:"24px"}}>
+          <h3 style={{fontSize:15,fontWeight:600,marginBottom:20,color:"rgba(255,255,255,.8)"}}>Brand Profile</h3>
+          <div style={{display:"grid",gap:14}}>
+            {[
+              {label:"Brand Name",value:profile.brandName||profile.name},
+              {label:"Niche",value:profile.niche},
+              {label:"Target Audience",value:profile.audience},
+              {label:"Brand Voice",value:profile.tone},
+              {label:"Business Context",value:profile.businessContext},
+              {label:"Platforms",value:(profile.platforms||[profile.sub||"Instagram"]).join(", ")},
+              {label:"Email",value:profile.email},
+              {label:"Plan",value:profile.planName||"Free Trial"},
+              {label:"Member Since",value:profile.joinDate},
+            ].filter(r=>r.value).map((row,i)=>(
+              <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+                <div style={{fontSize:12,fontWeight:500,color:"rgba(255,255,255,.3)",width:120,flexShrink:0,paddingTop:2}}>{row.label}</div>
+                <div style={{fontSize:13,color:"rgba(255,255,255,.7)",flex:1,lineHeight:1.5}}>{row.value}</div>
               </div>
-            </div>
-          )}
-          {hist.slice(0,-1).reverse().map((w,i)=>(
-            <div key={i} style={{background:"#020617",border:"1px solid rgba(255,255,255,0.07)",
-              borderRadius:14,padding:"16px 18px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                <div>
-                  <span style={{background:color,color:"#fff",borderRadius:6,
-                    padding:"2px 10px",fontSize:11,fontWeight:700,marginRight:8}}>Week {w.week}</span>
-                  <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>{w.date}</span>
-                </div>
-                <span style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.45)"}}>
-                  {w.posts?.length||0} posts</span>
-              </div>
-              <div style={{display:"grid",gap:5}}>
-                {w.posts?.map((p,pi)=>(
-                  <div key={pi} style={{display:"flex",alignItems:"center",gap:8,
-                    background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"7px 11px"}}>
-                    <span style={{background:"rgba(255,255,255,.07)",color,borderRadius:4,
-                      padding:"1px 7px",fontSize:10,fontWeight:700,flexShrink:0}}>{p.format}</span>
-                    <span style={{fontSize:12,color:"rgba(255,255,255,0.6)",flex:1,
-                      overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.title}</span>
-                    <span style={{fontSize:10,color:"rgba(255,255,255,0.28)",flexShrink:0}}>
-                      {p.best_day}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-
-// ─────────────────────────────────────────────────────────────────
-//  PORTAL CLIENT VIEW — unified single-page layout
-// ─────────────────────────────────────────────────────────────────
 function PortalClientView({client, onHome, onUpgrade}){
   const color = client.color||"#7C3AED";
   const hKey = `snstudio_hist_${client.id}`;
