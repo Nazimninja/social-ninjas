@@ -56,16 +56,14 @@ const PLANS = [
     badge: null,
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
-      { icon: "🎬", text: "15 posts/month — video-first strategy" },
-      { icon: "📽", text: "Full Reel/Short scripts — word-for-word, ready to film" },
-      { icon: "🔍", text: "Live trend research before every generation" },
-      { icon: "✍️", text: "Platform-native captions + hooks" },
-      { icon: "📌", text: "Viral hashtag sets per post" },
-      { icon: "🗓", text: "Weekly content calendar with best posting times" },
-      { icon: "📊", text: "Client profile dashboard — track your growth" },
-      { icon: "♻️", text: "Content memory — AI never repeats" },
-      { icon: "📲", text: "Choose 2 platforms" },
-      { icon: "📧", text: "Email support" },
+      { icon: "📸", text: "Instagram & Facebook content — captions, Reels, carousels" },
+      { icon: "🩳", text: "YouTube Shorts — 60-sec script, title, description" },
+      { icon: "🎬", text: "Word-for-word scripts — filmed in portrait, ready to read" },
+      { icon: "🎠", text: "Carousel slide copy — paste straight into Canva" },
+      { icon: "🔍", text: "GPT-researched trends in your niche before every post" },
+      { icon: "♻️", text: "Permanent memory — AI never repeats a topic or angle" },
+      { icon: "📅", text: "Best day + time to post per platform" },
+      { icon: "📲", text: "Choose 2 platforms from our 5" },
     ],
     guarantee: "Try free — 3 posts generated instantly, no card required",
     perPost: "₹267/post",
@@ -85,16 +83,15 @@ const PLANS = [
     badge: "BEST VALUE",
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
-      { icon: "📅", text: "25 posts/month — 6 per week" },
-      { icon: "🔍", text: "Deep trend research per platform" },
-      { icon: "✍️", text: "Platform-native captions + Reel scripts" },
-      { icon: "🎠", text: "Full carousel slide copy per post" },
-      { icon: "📌", text: "Platform-optimised hashtag strategy" },
-      { icon: "🗓", text: "Full content calendar — all 3 platforms" },
-      { icon: "📈", text: "Weekly trend report — your niche only" },
-      { icon: "📲", text: "Choose 4 platforms" },
+      { icon: "📸", text: "Instagram & Facebook — Reels, carousels, feed posts" },
+      { icon: "▶️", text: "YouTube Long-Form — full script, title, SEO description" },
+      { icon: "💼", text: "LinkedIn — professional posts + document carousels" },
+      { icon: "𝕏", text: "Twitter/X — tweet threads with hooks" },
+      { icon: "🎬", text: "Full teleprompter scripts per video post" },
+      { icon: "🔍", text: "Trend research + content that rides current moments" },
+      { icon: "♻️", text: "Permanent memory — never repeats a topic" },
+      { icon: "📲", text: "Choose 4 of 5 platforms" },
       { icon: "⚡", text: "Priority support — 24hr response" },
-      { icon: "📞", text: "Monthly 30-min strategy call" },
     ],
     guarantee: "Full refund if not satisfied within 7 days — zero questions",
     perPost: "₹260/post",
@@ -114,16 +111,16 @@ const PLANS = [
     badge: "AGENCY GRADE",
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
-      { icon: "∞", text: "Unlimited posts — generate anytime" },
-      { icon: "🔍", text: "Real-time viral trend research" },
-      { icon: "✍️", text: "Every content format — posts, reels, carousels, stories" },
-      { icon: "🎬", text: "Word-for-word Reel + YouTube scripts" },
-      { icon: "🎠", text: "Complete carousel decks with CTA slides" },
-      { icon: "📌", text: "Competitor gap analysis per generation" },
-      { icon: "📲", text: "Every platform — no limits" },
-      { icon: "✉️", text: "Priority email support — 24hr response" },
-      { icon: "📞", text: "Bi-weekly strategy call — agency founder" },
-      { icon: "🔄", text: "Cancel anytime — no contracts" },
+      { icon: "📸", text: "Instagram & Facebook — Reels, carousels, stories, feed" },
+      { icon: "🩳", text: "YouTube Shorts — viral 60-sec script + title" },
+      { icon: "▶️", text: "YouTube Long-Form — full chapter script + SEO" },
+      { icon: "💼", text: "LinkedIn — posts + document carousel decks" },
+      { icon: "𝕏", text: "Twitter/X — threads that get shared" },
+      { icon: "∞", text: "Unlimited generations — never runs out" },
+      { icon: "🎬", text: "Full teleprompter scripts for every video platform" },
+      { icon: "♻️", text: "AI remembers every post — zero repetition" },
+      { icon: "📞", text: "Bi-weekly strategy call with agency founder" },
+      { icon: "🔄", text: "Cancel anytime — no contracts, no lock-in" },
     ],
     guarantee: "Cancel anytime. No lock-in. No questions.",
     perPost: "Unlimited",
@@ -2607,7 +2604,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         </p>
         {/* Feature pills */}
         <div style={{display:"flex",flexWrap:"wrap",gap:7,justifyContent:"center",marginBottom:10}}>
-          {["✓ Live trend research","✓ Platform-native captions","✓ Reel scripts","✓ Carousel copy","✓ Thread writer","✓ Hashtag strategy","✓ Posting checklist","✓ Never repeats"].map(f=>(
+          {["✓ Instagram & Facebook","✓ YouTube Shorts","✓ YouTube Long-Form","✓ LinkedIn","✓ Twitter/X","✓ Reel scripts","✓ Carousel slides","✓ Never repeats"].map(f=>(
             <span key={f} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",
               borderRadius:30,padding:"5px 13px",fontSize:12,color:"rgba(255,255,255,0.65)"}}>{f}</span>
           ))}
@@ -2684,11 +2681,11 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                   {pl.platformCount===999?"All platforms included":"Pick "+pl.platformCount+" from"}</div>
                 <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
                   {(pl.platformCount===999
-                    ? ["📸","▶️","💼","𝕏","🎵","🧵","👤","📌","👻"]
+                    ? ["📸 IG/FB","🩳 YT Shorts","▶️ YouTube","💼 LinkedIn","𝕏 Twitter"]
                     : pl.platformOptions.slice(0,pl.platformCount===2?4:8)
                   ).map((ic,i)=>{
-                    const names={"📸":"IG","▶️":"YT","💼":"LI","𝕏":"X","🎵":"TK","🧵":"Th","👤":"FB","📌":"Pin","👻":"SC"};
-                    const allIcons={"Instagram":"📸","Facebook":"👤","YouTube":"▶️","LinkedIn":"💼","Twitter/X":"𝕏","Threads":"🧵","Pinterest":"📌","Snapchat":"👻","TikTok":"🎵"};
+                    const names={"📸":"IG/FB","🩳":"Shorts","▶️":"YouTube","💼":"LinkedIn","𝕏":"Twitter"};
+                    const allIcons={"Instagram":"📸","YouTube Shorts":"🩳","YouTube":"▶️","LinkedIn":"💼","Twitter/X":"𝕏","Facebook":"👤"};
                     const isEmoji = typeof ic === "string" && ic.length <= 2;
                     const displayIcon = isEmoji ? ic : (allIcons[ic]||"📲");
                     const displayName = isEmoji ? (names[ic]||"") : ic.split("/")[0].substring(0,3);
@@ -2703,12 +2700,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                       </div>
                     );
                   })}
-                  {pl.platformCount===999&&(
-                    <div style={{display:"flex",alignItems:"center",
-                      background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.1)",
-                      borderRadius:6,padding:"3px 8px",fontSize:9,fontWeight:700,
-                      color:"rgba(255,255,255,.35)"}}>+more</div>
-                  )}
+                  {/* all 5 platforms shown */}
                 </div>
               </div>
 
@@ -2742,7 +2734,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       {/* Social proof */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:36}}>
         {[["150+","Brands Growing","India · UAE · US · UK"],
-          ["2.4M+","Posts Created","Across all niches"],
+          ["10K+","Posts Generated","Across 5 platforms"],
           ["4.9★","Client Rating","Verified reviews"]].map(([n,l,s])=>(
           <div key={n} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderRadius:14,padding:"18px",textAlign:"center",boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
             <div style={{fontSize:28,fontWeight:800,color:CONFIG.accentColor,letterSpacing:"-.8px"}}>{n}</div>
@@ -3667,24 +3659,39 @@ export default function App(){
         <div style={{width:52,height:52,borderRadius:14,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,margin:"0 auto 22px"}}>🥷</div>
         <div style={{fontSize:12,fontWeight:700,color:CONFIG.accentColor,textTransform:"uppercase",
           letterSpacing:"2.5px",marginBottom:10}}>{CONFIG.brandName}</div>
-        <h1 style={{fontSize:40,fontWeight:800,letterSpacing:"-1.4px",lineHeight:1.08,margin:"0 0 14px",
-          background:"linear-gradient(155deg,#fff 40%,#7BA8D4)",
-          WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>
-          Content that actually converts.
+        <h1 style={{fontSize:"clamp(30px,7vw,50px)",fontWeight:800,letterSpacing:"-2px",lineHeight:1.05,margin:"0 0 16px",color:"rgba(255,255,255,.95)"}}>
+          Content that<br/>actually converts.
         </h1>
-        <p style={{color:"rgba(255,255,255,0.42)",fontSize:15,marginBottom:28,lineHeight:1.7}}>
-          AI that researches trends, writes platform-native captions and scripts, and hands you content that's ready to post — every single week.
+        <p style={{color:"rgba(255,255,255,.42)",fontSize:15,marginBottom:28,lineHeight:1.7,maxWidth:420,margin:"0 auto 28px"}}>
+          AI writes your captions, Reel scripts, carousels and threads — platform-native, every week, ready to post.
         </p>
+
+        {/* Platform pills */}
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",marginBottom:28}}>
+          {[
+            {icon:"📸",label:"Instagram"},
+            {icon:"👤",label:"Facebook"},
+            {icon:"🩳",label:"YT Shorts"},
+            {icon:"▶️",label:"YouTube"},
+            {icon:"💼",label:"LinkedIn"},
+            {icon:"𝕏",label:"Twitter/X"},
+          ].map(p=>(
+            <span key={p.label} style={{background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.1)",borderRadius:20,padding:"6px 13px",fontSize:12,fontWeight:500,color:"rgba(255,255,255,.6)",display:"inline-flex",alignItems:"center",gap:5}}>
+              {p.icon} {p.label}
+            </span>
+          ))}
+        </div>
+
         <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",marginBottom:24}}>
           <button onClick={()=>setPortalView("onboarding")}
             className="sn-btn sn-btn-primary sn-btn-lg">
-            Get started free →</button>
+            Try 3 posts free →</button>
           {activeClient&&(
             <button onClick={()=>setPortalView("workspace")}
-              style={{background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",
-                color:"rgba(255,255,255,0.85)",borderRadius:13,padding:"14px 22px",
-                fontSize:14,fontWeight:700,cursor:"pointer"}}>
-              📁 My Studio →</button>
+              style={{background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.12)",
+                color:"rgba(255,255,255,.75)",borderRadius:10,padding:"14px 22px",
+                fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Sora',system-ui,sans-serif"}}>
+              My Studio →</button>
           )}
         </div>
         {activeClient&&(
