@@ -1,5 +1,31 @@
 import crypto from 'crypto';
 
+const KV_URL   = process.env.KV_REST_API_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN;
+
+async function kvGet(key) {
+  if (!KV_URL || !KV_TOKEN) return null;
+  try {
+    const r = await fetch(`${KV_URL}/get/${encodeURIComponent(key)}`, {
+      headers: { Authorization: `Bearer ${KV_TOKEN}` }
+    });
+    const d = await r.json();
+    return d.result ? JSON.parse(d.result) : null;
+  } catch { return null; }
+}
+
+async function kvSet(key, value) {
+  if (!KV_URL || !KV_TOKEN) return false;
+  try {
+    await fetch(`${KV_URL}/set/${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${KV_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value: JSON.stringify(value) })
+    });
+    return true;
+  } catch { return false; }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -52,7 +78,7 @@ export default async function handler(req, res) {
       try {
         const clientData = {
           paymentId,
-          email,
+          email: email.toLowerCase().trim(),
           phone,
           amount,
           planName: notes.plan || 'Unknown',
@@ -62,11 +88,30 @@ export default async function handler(req, res) {
           verifiedAt: new Date().toISOString(),
         };
 
-        await fetch(`${process.env.VERCEL_URL || 'http://localhost:3001'}/api/clients`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(clientData),
-        });
+        if (KV_URL && KV_TOKEN) {
+          // Direct sync to Redis (Production)
+          console.log('[Webhook] Syncing directly to Redis');
+          const stored = await kvGet('sn_clients') || [];
+          const idx = stored.findIndex(c => c.email?.toLowerCase().trim() === clientData.email);
+          if (idx >= 0) {
+            stored[idx] = { ...stored[idx], ...clientData, id: stored[idx].id || `client_${Date.now()}` };
+          } else {
+            clientData.id = `client_${Date.now()}`;
+            stored.push(clientData);
+          }
+          await kvSet('sn_clients', stored);
+        } else {
+          // Local development fallback
+          const targetUrl = process.env.VERCEL_URL 
+            ? `https://${process.env.VERCEL_URL}/api/data?resource=clients`
+            : 'http://localhost:3001/api/clients';
+          console.log(`[Webhook] Syncing via fetch to ${targetUrl}`);
+          await fetch(targetUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clientData),
+          });
+        }
       } catch (e) {
         console.error('Failed to sync payment to clients:', e);
       }

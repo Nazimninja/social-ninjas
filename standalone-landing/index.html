@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Social Ninja's — AI Content Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=optional" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════
    SOCIAL NINJA'S — LIQUID GLASS LANDING  v5
@@ -107,8 +107,8 @@ h1,h2,.sh2,.h1,.cta-h{font-family:var(--fh)!important;font-weight:700;letter-spa
 .hp-l{font-size:10px;font-weight:400;color:var(--t3);letter-spacing:.02em}
 
 /* floating cards */
-.fcards{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
-.fc{position:absolute;border-radius:18px;padding:14px 16px;background:rgba(8,16,31,.82);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:1px solid rgba(255,255,255,.09);box-shadow:0 24px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07)}
+.fccards{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.fc{position:absolute;border-radius:18px;padding:14px 16px;background:rgba(8,16,31,.82);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:1px solid rgba(255,255,255,.09);box-shadow:0 24px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07);will-change:transform}
 .fc1{left:2%;top:26%;width:182px;animation:ff1 8s ease-in-out infinite}
 .fc2{right:2%;top:18%;width:204px;animation:ff2 10s ease-in-out infinite}
 .fc3{left:3%;bottom:16%;width:170px;animation:ff3 9s ease-in-out infinite}
@@ -120,8 +120,8 @@ h1,h2,.sh2,.h1,.cta-h{font-family:var(--fh)!important;font-weight:700;letter-spa
 .fcbig{font-size:22px;font-weight:600;color:var(--t1);letter-spacing:-.5px;line-height:1;margin-bottom:2px}
 .fcsub{font-size:9.5px;color:var(--t3);font-weight:400}
 .fcbar{height:2px;border-radius:2px;background:rgba(255,255,255,.06);margin-top:10px;overflow:hidden}
-.fcfill{height:100%;border-radius:2px;animation:fa 3.5s ease-in-out infinite alternate}
-@keyframes fa{from{width:32%}to{width:88%}}
+.fcfill{height:100%;width:100%;transform-origin:left;border-radius:2px;animation:fa 3.5s ease-in-out infinite alternate}
+@keyframes fa{from{transform:scaleX(0.32)}to{transform:scaleX(0.88)}}
 .fcrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .fckw{font-size:9.5px;font-family:var(--fm);color:var(--t2)}
 .fcbd{font-size:7.5px;font-weight:600;padding:2px 6px;border-radius:6px}

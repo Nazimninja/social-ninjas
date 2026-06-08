@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle } from 'lucide-react';
+import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';
 import SEO from '../components/SEO';
 import { submitToGoogleSheets } from '../services/googleSheets';
 
@@ -95,7 +95,8 @@ const Contact: React.FC = () => {
             <div className="reveal d3" style={{display:'flex',flexDirection:'column',gap:18}}>
               {[
                 {icon:Mail,label:'Email',val:'info@socialninjas.in',href:'mailto:info@socialninjas.in'},
-                {icon:Phone,label:'Instagram',val:'@socialninja.s',href:'https://www.instagram.com/socialninja.s/'},
+                {icon:Phone,label:'WhatsApp Support',val:'+91 81477 57479',href:'https://wa.me/918147757479'},
+                {icon:Instagram,label:'Instagram',val:'@socialninja.s',href:'https://www.instagram.com/socialninja.s/'},
                 {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
               ].map(({icon:Ico,label,val,href})=>(
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:14}}>

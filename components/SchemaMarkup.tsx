@@ -9,7 +9,7 @@ export const SchemaMarkup = () => {
         "image": "https://socialninjas.in/og-image.png",
         "@id": "https://socialninjas.in",
         "url": "https://socialninjas.in",
-        "telephone": "+918892587979",
+        "telephone": "+918147757479",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Business Bay",

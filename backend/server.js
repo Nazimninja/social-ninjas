@@ -93,6 +93,12 @@ const writeHistory = (data) => {
     }
 };
 
+function sanitizeClient(c) {
+    if (!c) return null;
+    const { password, hash, token, secret, apiKey, key, ...safe } = c;
+    return safe;
+}
+
 // GET all blogs
 app.get('/api/blogs', (req, res) => {
     const data = readBlogs();
@@ -147,7 +153,7 @@ app.delete('/api/blogs/:id', (req, res) => {
 // GET all clients
 app.get('/api/clients', (req, res) => {
     const clients = readClients();
-    res.json(Object.values(clients));
+    res.json(Object.values(clients).map(sanitizeClient));
 });
 
 // POST or UPDATE a client
@@ -485,7 +491,7 @@ app.all('/api/data', async (req, res) => {
     // CLIENTS
     if (resource === 'clients') {
         if (req.method === 'GET') {
-            return res.json(Object.values(readClients()));
+            return res.json(Object.values(readClients()).map(sanitizeClient));
         }
         if (req.method === 'POST') {
             const clients = readClients();

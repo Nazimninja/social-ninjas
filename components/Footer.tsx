@@ -26,6 +26,8 @@ const Footer: React.FC = () => {
               <img
                 src="/logo.png"
                 alt="Social Ninja's"
+                width={56}
+                height={56}
                 style={{ width: 56, height: 56, objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(91,164,245,0.5))' }}
               />
               <div>
@@ -46,7 +48,7 @@ const Footer: React.FC = () => {
                 { Icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61553674457871', label: 'Facebook' },
                 { Icon: Linkedin, href: 'https://www.linkedin.com/company/99078419/', label: 'LinkedIn' },
                 { Icon: Mail, href: 'mailto:info@socialninjas.in', label: 'Email' },
-                { Icon: Phone, href: 'tel:+918892587979', label: 'Phone' },
+                { Icon: Phone, href: 'tel:+918147757479', label: 'Phone' },
               ].map(({ Icon, href, label }) => (
                 <a key={label} href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
@@ -164,10 +166,10 @@ const Footer: React.FC = () => {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
-            <a href="mailto:hello@socialninjas.in" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, textDecoration: 'none', transition: 'color .2s' }}
+            <a href="mailto:info@socialninjas.in" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, textDecoration: 'none', transition: 'color .2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#5ba4f5')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
-            >hello@socialninjas.in</a>
+            >info@socialninjas.in</a>
           </div>
         </div>
       </div>

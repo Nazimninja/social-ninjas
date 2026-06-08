@@ -299,14 +299,16 @@ const MY_PROFILES = {
 // ─────────────────────────────────────────────────────────────────
 //  GOOGLE OAUTH CONFIG
 // ─────────────────────────────────────────────────────────────────
-const GOOGLE_CLIENT_ID = "148307495726-m3rorieqqq3rdom6kase7k0sl3n9l6lu.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta?.env?.VITE_GOOGLE_CLIENT_ID || "148307495726-m3rorieqqq3rdom6kase7k0sl3n9l6lu.apps.googleusercontent.com";
 
 // Load Google Identity Services script once
 function loadGoogleScript() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (window.google?.accounts) { resolve(); return; }
-    if (document.getElementById("google-gsi-script")) {
-      document.getElementById("google-gsi-script").addEventListener("load", resolve);
+    const existing = document.getElementById("google-gsi-script");
+    if (existing) {
+      existing.addEventListener("load", resolve);
+      existing.addEventListener("error", reject);
       return;
     }
     const s = document.createElement("script");
@@ -315,6 +317,7 @@ function loadGoogleScript() {
     s.async = true;
     s.defer = true;
     s.onload = resolve;
+    s.onerror = (e) => reject(new Error("Failed to load Google script (possibly blocked by an ad blocker)"));
     document.head.appendChild(s);
   });
 }
@@ -1851,7 +1854,7 @@ function PaymentStep({plan, formData, onVerified}){
           <button onClick={confirm} disabled={checking}
             style={{width:"100%",background:checking?"rgba(255,255,255,0.05)":
               "#fff",
-              color:checking?"rgba(255,255,255,0.3)":"#fff",border:"none",borderRadius:11,
+              color:checking?"rgba(255,255,255,0.3)":"#08090d",border:"none",borderRadius:11,
               padding:"12px",fontSize:14,fontWeight:700,cursor:checking?"not-allowed":"pointer"}}>
             {checking?"Saving...":"✓ Confirm Payment & Continue →"}
           </button>
@@ -2767,7 +2770,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
   if(screen==="details"&&plan) return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
       <button onClick={()=>setScreen("plans")}
-        style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'Outfit', 'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
+        style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",color:"rgba(255,255,255,0.55)",borderRadius:50,padding:"7px 16px",fontSize:12.5,cursor:"pointer",marginBottom:20,fontWeight:400,backdropFilter:"blur(20px)",fontFamily:"'DM Sans',sans-serif",letterSpacing:"-.1px"}}>← Back to Plans</button>
 
       {/* Plan badge */}
       <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,
@@ -2988,7 +2991,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
                   style={{padding:"8px 16px",borderRadius:25,fontSize:13,fontWeight:600,
                     cursor:disabled?"not-allowed":"pointer",transition:"all .15s",
                     background:sel?"#fff":disabled?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.05)",
-                    color:sel?"#fff":disabled?"rgba(255,255,255,0.2)":"rgba(255,255,255,0.65)",
+                    color:sel?"#08090d":disabled?"rgba(255,255,255,0.2)":"rgba(255,255,255,0.65)",
                     border:`1.5px solid ${sel?"rgba(255,255,255,.5)":disabled?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.12)"}`,
                     opacity:disabled?0.45:1}}>
                   {sel?"✓ ":""}{p}
@@ -3009,7 +3012,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
       <button onClick={submitDetails} disabled={savingData}
         style={{width:"100%",marginTop:22,
           background:"#fff",
-          color:"#fff",border:"none",borderRadius:13,padding:"14px",
+          color:"#08090d",border:"none",borderRadius:13,padding:"14px",
           fontSize:15,fontWeight:700,cursor:savingData?"not-allowed":"pointer",letterSpacing:"-.2px",
           opacity: savingData ? 0.7 : 1}}>
         {savingData ? "Processing..." : plan.isTrialFlow ? "⚡ Generate My 3 Free Posts →" : isUpgradeFlow ? "Continue to Payment →" : "Continue to Payment →"}

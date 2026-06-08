@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MessageSquare, Send, Sparkles, ChevronDown, User, X, Bot } from 'lucide-react';
-import { GoogleGenAI } from "@google/genai";
 
 interface Message {
   role: 'user' | 'model';

@@ -27,6 +27,12 @@ async function kvSet(key, value) {
   } catch { return false; }
 }
 
+function sanitizeClient(c) {
+  if (!c) return null;
+  const { password, hash, token, secret, apiKey, key, ...safe } = c;
+  return safe;
+}
+
 // Seed blogs — shown until admin creates real ones
 const SEED_BLOGS = [
   {
@@ -127,8 +133,8 @@ export default async function handler(req, res) {
   // ── CLIENTS ───────────────────────────────────────────────────
   if (resource === 'clients') {
     if (req.method === 'GET') {
-      const stored = await kvGet('sn_clients');
-      return res.json(stored || []);
+      const stored = await kvGet('sn_clients') || [];
+      return res.json(stored.map(sanitizeClient));
     }
     if (req.method === 'POST') {
       const body = req.body;

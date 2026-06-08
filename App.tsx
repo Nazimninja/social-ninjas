@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ChatBot from './components/ChatBot';
-import WhatsAppWidget from './components/WhatsAppWidget';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/PageTransition';
 import SchemaMarkup from './components/SchemaMarkup';
@@ -34,6 +32,9 @@ const ContentStudio = lazy(() => import('./pages/app/ContentStudioApp.jsx'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Admin = lazy(() => import('./pages/Admin'));
+
+const ChatBot = lazy(() => import('./components/ChatBot'));
+const WhatsAppWidget = lazy(() => import('./components/WhatsAppWidget'));
 
 // Premium Loading State
 const LoadingFallback = () => (
@@ -117,8 +118,16 @@ const MainLayout: React.FC = () => {
         <AnimatedRoutes />
       </Suspense>
       {!isPromoPage && <Footer />}
-      {!isPromoPage && <WhatsAppWidget />}
-      {!isPromoPage && <ChatBot />}
+      {!isPromoPage && (
+        <Suspense fallback={null}>
+          <WhatsAppWidget />
+        </Suspense>
+      )}
+      {!isPromoPage && (
+        <Suspense fallback={null}>
+          <ChatBot />
+        </Suspense>
+      )}
     </div>
   );
 };
