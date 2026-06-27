@@ -85,19 +85,19 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* AI Products */}
+          {/* Tools Column */}
           <div>
-            <h4 style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Bricolage Grotesque',system-ui" }}>AI Products</h4>
+            <h4 style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Bricolage Grotesque',system-ui" }}>Growth Tools</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'AI Content Studio', path: '/standalone-landing/' },
-                { label: 'Lead Agent (Soon)', path: '/ai-products' },
-                { label: 'Ad Copy Gen (Soon)', path: '/ai-products' },
-                { label: 'Analytics AI (Soon)', path: '/ai-products' },
-              ].map(({ label, path }) => (
+                { label: 'AI Content Studio', path: '/standalone-landing/', external: true },
+                { label: 'WhatsApp Link Gen', path: 'https://linkwa.in', external: true },
+                { label: 'US Take-Home Pay Calc', path: 'https://salarytools.us/salary-calculator', external: true },
+                { label: 'Hourly ↔ Salary Conv', path: 'https://salarytools.us', external: true },
+              ].map(({ label, path, external }) => (
                 <li key={label}>
-                  {path.startsWith('/content-studio') ? (
-                    <a href={path} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                  {external ? (
+                    <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: 'rgba(255,255,255,0.38)', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                       onMouseEnter={e => (e.currentTarget.style.color = '#5ba4f5')}
                       onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
                     >{label}</a>

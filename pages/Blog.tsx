@@ -94,6 +94,7 @@ const Blog: React.FC = () => {
   useReveal();
   const [apiPosts, setApiPosts] = useState<any[]>([]);
   const [activeFilter, setActiveFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Check if we already have static posts (avoid fetching if possible or merge)
@@ -103,7 +104,16 @@ const Blog: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const cats = ['All', 'AI & Automation', 'Content Strategy', 'Performance Marketing'];
+  const cats = ['All', 'AI & Automation', 'Content Strategy', 'Performance Marketing', 'SEO & Growth'];
+
+  const filteredPosts = POSTS.filter(p => {
+    const matchesCategory = activeFilter === 'All' || p.category === activeFilter;
+    const matchesSearch = searchQuery.trim() === '' || 
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      p.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.content && p.content.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
@@ -124,12 +134,55 @@ const Blog: React.FC = () => {
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: 'rgba(255,255,255,0.96)' }}>
                 Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
-              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.72, maxWidth: 400, marginBottom: 32 }}>
+              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.72, maxWidth: 400, marginBottom: 24 }}>
                 Real numbers, real case studies, and the exact frameworks we use to scale brands from ₹5L to ₹50L monthly revenue.
               </p>
+              
+              {/* Search Bar */}
+              <div className="reveal d2" style={{ marginBottom: 24, maxWidth: 400, position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: 50,
+                    padding: '12px 20px 12px 44px',
+                    color: '#fff',
+                    fontSize: 14,
+                    outline: 'none',
+                    transition: 'all 0.3s',
+                    fontFamily: "'DM Sans', sans-serif"
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.border = '1px solid #5ba4f560';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(91, 164, 245, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                />
+                <svg
+                  style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)', width: 16, height: 16 }}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+
               <div className="reveal d3" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {cats.map(cat => (
-                  <button key={cat} onClick={() => setActiveFilter(cat)} style={{
+                  <button key={cat} onClick={() => { setActiveFilter(cat); }} style={{
                     fontFamily: "'DM Sans',system-ui", fontSize: 12.5, fontWeight: activeFilter === cat ? 600 : 400,
                     padding: '7px 16px', borderRadius: 50, cursor: 'pointer', transition: 'all .2s',
                     background: activeFilter === cat ? 'rgba(91,164,245,0.15)' : 'rgba(255,255,255,0.05)',
@@ -158,18 +211,91 @@ const Blog: React.FC = () => {
         {/* Section label */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
-            Latest dispatches — {POSTS.filter(p => activeFilter === 'All' || p.category === activeFilter).length} posts
+            Latest dispatches — {filteredPosts.length} posts
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>Click any post to expand</div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>Click any post to read</div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {POSTS
-            .filter(p => activeFilter === 'All' || p.category === activeFilter)
-            .map((post, i) => (
-              <BlogCard key={post.id} post={post} index={i} featured={i === 0} />
-            ))}
-        </div>
+        {filteredPosts.length > 0 ? (
+          <div>
+            {/* Featured Post Card */}
+            <div style={{ marginBottom: 32 }}>
+              <BlogCard post={filteredPosts[0]} index={0} featured={true} />
+            </div>
+
+            {/* Redesigned 2-column post grid + embedded newsletter subscription unit */}
+            <div className="blog-posts-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24 }}>
+              {filteredPosts.slice(1).map((post, i) => (
+                <BlogCard key={post.id} post={post} index={i + 1} featured={false} />
+              ))}
+              
+              {/* Premium Interactive Newsletter Subscription Card */}
+              <div
+                className="glass-card reveal"
+                style={{
+                  borderRadius: 24,
+                  padding: '32px 34px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'linear-gradient(135deg, rgba(91,164,245,0.05), rgba(255,255,255,0.01))',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  minHeight: 280,
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(91,164,245,0.38), transparent)' }} />
+                <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 10, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
+                  Get growth breakdowns in your inbox
+                </h3>
+                <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: 20 }}>
+                  Weekly strategies on AI automation, performance marketing, and client scaling. Straight to the point, zero fluff.
+                </p>
+                <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed! Welcome to the ninja circle.'); }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your work email"
+                    style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: 14,
+                      padding: '12px 16px',
+                      color: '#fff',
+                      fontSize: 13,
+                      outline: 'none',
+                      fontFamily: "'DM Sans', sans-serif"
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    style={{
+                      fontSize: 13,
+                      padding: '12px 20px',
+                      borderRadius: 14,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #1d4ed8, #5ba4f5)',
+                      color: '#fff'
+                    }}
+                  >
+                    Subscribe to Newsletter →
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 24, background: 'rgba(255,255,255,0.01)' }}>
+            <div style={{ fontSize: 44, marginBottom: 14 }}>🔍</div>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>No articles found</h3>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5 }}>Try adjusting your search terms or category filters.</p>
+          </div>
+        )}
+
 
         {/* Admin-created posts from API */}
         {apiPosts.length > 0 && (
@@ -216,7 +342,7 @@ const Blog: React.FC = () => {
       </div>
 
       <style>{`
-        @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:36px!important;} .hero-grid-cols>div:last-child{display:none;} }
+        @media(max-width:900px){ .hero-grid-cols{grid-template-columns:1fr!important;gap:36px!important;} .hero-grid-cols>div:last-child{display:none;} .blog-posts-grid{grid-template-columns:1fr!important;} }
         @media(max-width:768px){ .blog-title{font-size:clamp(17px,4.5vw,22px)!important;} }
         @media(max-width:640px){ .api-grid{grid-template-columns:1fr!important;} }
       `}</style>

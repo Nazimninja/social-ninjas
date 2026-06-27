@@ -3,12 +3,267 @@ import { Bot, TrendingUp, BarChart3 } from 'lucide-react';
 
 export const POSTS = [
   {
+    id: 'hubspot-ai-agent-sales-pipeline',
+    category: 'AI & Automation',
+    color: '#5ba4f5',
+    icon: React.createElement(Bot, { size: 18 }),
+    readTime: '7 min',
+    date: 'Jun 15, 2026',
+    publishedAt: '2026-06-15T10:00:00Z',
+    author: "Social Ninja's Team",
+    title: 'The HubSpot + AI Agent Stack: How to Automate 90% of B2B Sales Operations',
+    excerpt: 'B2B client acquisition is expensive. Here is the exact architectural blueprint to connect HubSpot CRM with custom LLM agents to automate prospecting, scheduling, and follow-ups.',
+    stat: { value: '90%', label: 'Of CRM data entry automated' },
+    sections: [
+      {
+        heading: 'Why B2B Sales Teams are Wasting Hours on CRM Data',
+        body: 'In B2B sales, momentum is everything. Yet, high-performing sales executives spend up to 4 hours per day manually logging calls, updating lead stages, and writing personalized follow-up emails in CRM tools like HubSpot. This operational overhead slows down response times, leads to incomplete client profiles, and ultimately drives up customer acquisition costs (CAC). By connecting HubSpot with custom AI agents, you can completely eliminate manual data entry.',
+        highlight: 'The average sales representative spends only 34% of their day actually selling. The rest is eaten by CRM administration.',
+        highlightColor: '#5ba4f5',
+      },
+      {
+        heading: 'The Architecture: Connecting HubSpot Webhooks to LLM Agents',
+        body: 'Automating your CRM pipeline requires three core architectural layers: a trigger webhook from HubSpot, an orchestration layer (like crewAI or custom LangChain scripts running on Node/Python), and an LLM API connector. When a prospect fills out an inquiry form, HubSpot triggers a webhook containing company metadata. The AI agent immediately crawls the prospect\'s domain, extracts their product categories, identifies recent press releases, and synthesizes a tailored B2B script.',
+        list: [
+          'HubSpot Webhook Trigger: Instantly fires when a lead is created or moves to a new pipeline stage.',
+          'Agent Enrichment Hook: Scrapes company websites, LinkedIn profiles, and news feeds in under 5 seconds.',
+          'Personalized Email Copy: Generates a bespoke value proposition highlighting specific pain points.',
+          'Calendar Integration: Inserts a direct booking link and syncs the calendar event back to HubSpot.'
+        ],
+      },
+      {
+        heading: 'Achieving Positive Pipeline ROI',
+        body: 'Integrating custom LLM workflows into HubSpot doesn\'t just save time—it improves booking rates by responding to high-value leads with bespoke personalization in under a minute. Social Ninja\'s builds custom B2B sales pipelines that optimize every stage of client engagement, letting you scale outbound campaigns without expanding your administrative team.',
+        highlight: 'One enterprise client saw their meeting booking rate increase by 143% in the first 30 days of deploying HubSpot AI agents.',
+        highlightColor: '#2fcf8e',
+      },
+    ],
+    content: `
+## Why B2B Sales Teams are Wasting Hours on CRM Data
+
+In B2B sales, momentum is everything. Yet, high-performing sales executives spend up to 4 hours per day manually logging calls, updating lead stages, and writing personalized follow-up emails in CRM tools like HubSpot. This operational overhead slows down response times, leads to incomplete client profiles, and ultimately drives up customer acquisition costs (CAC). 
+
+By connecting HubSpot with custom **AI sales automation agents**, you can completely eliminate manual data entry.
+
+**The average sales representative spends only 34% of their day actually selling. The rest is eaten by CRM administration.**
+
+## The Architecture: Connecting HubSpot Webhooks to LLM Agents
+
+Automating your CRM pipeline requires three core architectural layers:
+1. **HubSpot Webhook Trigger**: Fires immediately when a lead is created or moves to a new pipeline stage (e.g. *Meeting Requested*).
+2. **Agent Enrichment Hook**: Scrapes the prospect's company website, LinkedIn profile, and recent news feeds in under 5 seconds to gather intelligence.
+3. **Personalized Copywriting**: Generates a bespoke value proposition highlighting specific pain points.
+4. **Calendar Integration**: Inserts a direct booking link and syncs the booked calendar event back to the HubSpot contact card.
+
+By coupling LLMs with API connectors, you can build a system that qualifies leads and scripts custom proposals on autopilot.
+
+## Achieving Positive Pipeline ROI
+
+Integrating custom LLM workflows into HubSpot doesn't just save time—it improves booking rates by responding to high-value leads with bespoke personalization in under a minute. 
+
+Social Ninja's builds custom B2B sales pipelines that optimize every stage of client engagement, letting you scale outbound campaigns without expanding your administrative team.
+    `,
+    cta: 'Automate Your CRM Pipeline →',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'gcc-scaling-paid-media-dubai',
+    category: 'Performance Marketing',
+    color: '#9b8ef0',
+    icon: React.createElement(BarChart3, { size: 18 }),
+    readTime: '8 min',
+    date: 'Jun 14, 2026',
+    publishedAt: '2026-06-14T11:00:00Z',
+    author: "Social Ninja's Team",
+    title: 'The GCC Expansion Playbook: Scaling Paid Media to ₹50L/Month in Dubai and Saudi Arabia',
+    excerpt: 'Dubai and Riyadh have some of the highest average order values (AOV) in the world—and the highest ad costs. Here is our mathematical framework for scaling Meta and Google ads profitably in the GCC.',
+    stat: { value: '₹50L+', label: 'Scale threshold with 3.8x average ROAS' },
+    sections: [
+      {
+        heading: 'The High-AOV Goldmine of the Middle East',
+        body: 'The GCC region—specifically Dubai, Abu Dhabi, Riyadh, and Jeddah—represents one of the most lucrative digital marketing environments globally. Consumers in these cities exhibit high disposable income, resulting in Average Order Values (AOV) that are 3x to 5x higher than in India. However, entering these markets is not simple. Customer acquisition costs (CAC) on Meta and Google Ads are premium, and bidding strategies that work elsewhere fail when deployed in the GCC.',
+        highlight: 'Higher ad costs (CPM) in Dubai require specialized high-basket offers to remain profitable.',
+        highlightColor: '#9b8ef0',
+      },
+      {
+        heading: 'Locational Targeting and Creative Localization',
+        body: 'To win paid ads in Dubai and Saudi Arabia, you need to structure your media buying around two core concepts: locational audience mapping and creative localization. Don\'t treat Saudi Arabia and UAE as a single demographic. Saudi Arabia responds heavily to localized, high-end Arabic video content, whereas Dubai operates primarily on high-fidelity English creative featuring luxury aesthetics.',
+        list: [
+          'High-Net-Worth Target Filters: Target specific postal zones and interests like luxury fashion, real estate, and B2B software services.',
+          'Bilingual Funnels: Deploy dedicated Arabic landers for Saudi Arabia and English landers for UAE to double conversion rates.',
+          'High-AOV Bundling: Create high-basket bundles to absorb high CAC and protect net margins.',
+          'Double-Source Attribution: Use advanced tracking to bypass Safari\'s privacy restrictions (which account for 78% of mobile traffic in GCC).'
+        ],
+      },
+      {
+        heading: 'Managing CAC with mathematical precision',
+        body: 'Successful expansion to the Middle East requires mapping out your gross margins before spending a single dollar. If your unit economics are not set up for high ad spend, you will burn capital. At Social Ninja\'s, we help international brands scale profitably in the GCC market using profit-focused media buying, high-converting creatives, and AI-driven bidding scripts.',
+        highlight: 'The GCC region rewards brands that understand their unit economics and creative velocity.',
+        highlightColor: '#2fcf8e',
+      },
+    ],
+    content: `
+## The High-AOV Goldmine of the Middle East
+
+The GCC region—specifically Dubai, Abu Dhabi, Riyadh, and Jeddah—represents one of the most lucrative digital marketing environments globally. Consumers in these cities exhibit high disposable income, resulting in Average Order Values (AOV) that are 3x to 5x higher than in India. 
+
+However, entering these markets is not simple. Customer acquisition costs (CAC) on Meta and Google Ads are premium, and bidding strategies that work elsewhere fail when deployed in the GCC.
+
+**Higher ad costs (CPMs) in Dubai require specialized high-basket offers to remain profitable.**
+
+## Locational Targeting and Creative Localization
+
+To win paid ads in Dubai and Saudi Arabia, you need to structure your media buying around two core concepts: locational audience mapping and creative localization. 
+
+- **Dubai and UAE**: Operate primarily on high-fidelity English creative featuring premium luxury aesthetics. 
+- **Saudi Arabia (KSA)**: Responds heavily to localized, native Arabic video content. Deploying generic English creatives in Saudi Arabia yields 60% lower conversion rates.
+- **HNWI Targeting**: Filter campaigns for high-income zones and interest groups like luxury travel, premium automobiles, and real estate.
+- **Safari/iOS Tracking**: Bypass Apple's cookie privacy restrictions (Safari accounts for 78% of mobile traffic in Dubai) by using first-party APIs.
+
+## Managing CAC with Mathematical Precision
+
+Successful expansion to the Middle East requires mapping out your gross margins before spending a single dollar. If your unit economics are not set up for high ad spend, you will burn capital. 
+
+At Social Ninja's, we help international brands scale profitably in the GCC market using profit-focused media buying, high-converting creatives, and AI-driven bidding scripts.
+    `,
+    cta: 'Get a GCC Growth Consultation →',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'generative-engine-optimization-geo',
+    category: 'SEO & Growth',
+    color: '#e8b86d',
+    icon: React.createElement(TrendingUp, { size: 18 }),
+    readTime: '6 min',
+    date: 'Jun 14, 2026',
+    publishedAt: '2026-06-14T10:00:00Z',
+    author: "Social Ninja's Team",
+    title: 'Generative Engine Optimization (GEO): How to Rank inside Perplexity, ChatGPT, and Claude',
+    excerpt: 'SEO is shifting from Google algorithms to LLM search engines. Here is the framework for optimizing your brand to ensure AI models cite you as a top recommendation.',
+    stat: { value: '73%', label: 'Of AI-sourced queries lead to conversion clicks' },
+    sections: [
+      {
+        heading: 'The Death of Blue Links: The Rise of GEO',
+        body: 'Search is experiencing its biggest shift since the late 90s. Users are no longer Googling and clicking through lists of links; they are asking Perplexity, ChatGPT, and Claude directly. This behavior shift has spawned Generative Engine Optimization (GEO). If your business is not referenced, quoted, or recommended in these AI search summaries, you do not exist to a rapidly growing segment of buyers.',
+        highlight: 'Traditional SEO is about ranking for keywords. GEO is about becoming part of the LLM\'s dataset and reference citation system.',
+        highlightColor: '#e8b86d',
+      },
+      {
+        heading: 'How Generative Search Engines Decide Whom to Cite',
+        body: 'Unlike search engine crawlers that score page structure and backlink quantity, Large Language Models build a unified understanding of subjects. To be cited by an LLM in its search summaries, your website needs to meet specific semantic and credibility markers that models look for when answering user queries.',
+        list: [
+          'Information Richness: Write depth-oriented content that answers multiple connected long-tail questions on a single page.',
+          'Cite Authority Sources: Back up claims with statistics, surveys, and third-party links, as LLMs cross-reference information.',
+          'Schema Markup & Structured Data: Help LLMs crawl your site by exposing structured JSON-LD data for products, FAQs, and articles.',
+          'Mention Frequency & Co-occurrence: Get mentioned in reputable directories, news publications, and industry lists next to your target keywords.'
+        ],
+      },
+      {
+        heading: 'Your Actionable GEO Playbook for 2026',
+        body: 'Transitioning to GEO requires a content restructure. Stop writing thin 500-word SEO blogs. Instead, create comprehensive master resources that address technical nuances, provide downloadable templates, and speak directly to user intent. At Social Ninja\'s, we build GEO-optimized growth systems that ensure AI models surface your brand when high-intent prospects search.',
+        highlight: 'The brands that win the AI search era are those that focus on authority, semantic depth, and third-party mentions.',
+        highlightColor: '#5ba4f5',
+      },
+    ],
+    content: `
+## The Death of Blue Links: The Rise of GEO
+
+Search is experiencing its biggest shift since the late 90s. Users are no longer Googling and clicking through lists of links; they are asking Perplexity, ChatGPT, and Claude directly. This behavior shift has spawned **Generative Engine Optimization (GEO)**. 
+
+If your business is not referenced, quoted, or recommended in these AI search summaries, you do not exist to a rapidly growing segment of buyers.
+
+**Traditional SEO is about ranking for keywords. GEO is about becoming part of the LLM's dataset and reference citation system.**
+
+## How Generative Search Engines Decide Whom to Cite
+
+Unlike traditional search engine crawlers that score page structure and backlink quantity, Large Language Models build a unified understanding of concepts. To be cited by an LLM in its search summaries, your website needs to meet specific semantic and credibility markers:
+
+1. **Information Richness**: Write depth-oriented content that answers multiple connected long-tail questions on a single page.
+2. **Cite Authority Sources**: Back up claims with statistics, surveys, and third-party links. LLMs trust content that is anchored in verifiable data.
+3. **Schema Markup & Structured Data**: Help LLMs crawl your site by exposing structured JSON-LD data for products, FAQs, and articles.
+4. **Mention Frequency & Co-occurrence**: Get mentioned in reputable directories, news publications, and industry lists next to your target keywords.
+
+## Your Actionable GEO Playbook for 2026
+
+Transitioning to GEO requires a content restructure. Stop writing thin 500-word SEO blogs. Instead, create comprehensive master resources that address technical nuances, provide downloadable templates, and speak directly to user intent. 
+
+At Social Ninja's, we build GEO-optimized growth systems that ensure AI models surface your brand when high-intent prospects search.
+    `,
+    cta: 'Get a GEO Readiness Audit →',
+    ctaHref: '/contact',
+  },
+  {
+    id: 'rise-of-autonomous-ai-agents',
+    category: 'AI & Automation',
+    color: '#5ba4f5',
+    icon: React.createElement(Bot, { size: 18 }),
+    readTime: '5 min',
+    date: 'Jun 12, 2026',
+    publishedAt: '2026-06-12T10:00:00Z',
+    author: "Social Ninja's Team",
+    title: 'The Rise of Autonomous AI Agents: Why Your Next Hire Will Be a Digital Worker',
+    excerpt: 'Forget simple chatbots. Autonomous AI agents are running complex workflows, qualifying prospects, and syncing CRM data on autopilot. Here is how to build your digital workforce.',
+    stat: { value: '10×', label: 'Reduction in operational cost per qualified lead' },
+    sections: [
+      {
+        heading: 'The Evolution from Automated Flows to Autonomous Agents',
+        body: 'For years, automation meant setting up rigid, rule-based triggers in tools like Zapier. If X happens, do Y. But modern business operations are rarely linear. Enter autonomous AI agents. Unlike traditional software, agents are goal-oriented. You give them an objective, a set of tools (email, CRM access, APIs), and the autonomy to figure out the steps to achieve it.',
+        highlight: 'Rule-based automation breaks when something unexpected occurs. AI agents reason, adapt, and solve problems dynamically.',
+        highlightColor: '#5ba4f5',
+      },
+      {
+        heading: 'What an AI Worker Can Do for Your Brand Today',
+        body: 'AI workers are transforming critical departments by executing end-to-end workflows that previously required teams of humans. By coupling LLMs with API connectors, brands are automating complex business tasks 24/7.',
+        list: [
+          'Autonomous Lead Nurturing: Instantly researching a new lead, crafting a hyper-personalized response based on their company website, and following up via WhatsApp.',
+          'Dynamic CRM Management: Listening to sales calls, extracting key pain points, and updating Salesforce or HubSpot with structured summaries and action items.',
+          'AI-Powered Competitor Analysis: Scanning competitor pricing, social media announcements, and reviews daily to compile weekly action summaries for your marketing team.',
+          'Omnichannel Customer Support: Resolving 85% of complex customer support tickets across email, SMS, and WhatsApp without human intervention.'
+        ],
+      },
+      {
+        heading: 'Building a Resilient Agentic Architecture',
+        body: 'Deploying AI agents successfully requires an orchestration framework. By combining agent tasks with human guardrails, you build a hybrid workflow that scales efficiency while maintaining brand safety. Social Ninja\'s specializes in deploying custom AI automation agents that integrate seamlessly with your existing tech stack, letting you scale operations without increasing headcount.',
+        highlight: 'A single AI agent running 24/7 can handle the workload of 3 full-time operations reps at a fraction of the cost.',
+        highlightColor: '#2fcf8e',
+      },
+    ],
+    content: `
+## The Evolution from Automated Flows to Autonomous Agents
+
+For years, automation meant setting up rigid, rule-based triggers in tools like Zapier. *If X happens, do Y.* But modern business operations are rarely linear. 
+
+Enter **autonomous AI agents**. Unlike traditional software, agents are goal-oriented. You give them an objective, a set of tools (email, CRM access, APIs), and the autonomy to figure out the steps required to achieve it.
+
+**Rule-based automation breaks when something unexpected occurs. AI agents reason, adapt, and solve problems dynamically.**
+
+## What an AI Worker Can Do for Your Brand Today
+
+AI workers are transforming critical departments by executing end-to-end workflows that previously required teams of humans:
+
+- **Autonomous Lead Nurturing**: Instantly researching a new lead, crafting a hyper-personalized response based on their company website, and following up via WhatsApp.
+- **Dynamic CRM Management**: Listening to sales calls, extracting key pain points, and updating Salesforce or HubSpot with structured summaries and action items.
+- **AI-Powered Competitor Analysis**: Scanning competitor pricing, social media announcements, and reviews daily to compile weekly action summaries.
+- **Omnichannel Support**: Resolving 85% of complex customer support tickets across email, SMS, and WhatsApp without human intervention.
+
+## Building a Resilient Agentic Architecture
+
+Deploying AI agents successfully requires an orchestration framework. By combining agent tasks with human guardrails, you build a hybrid workflow that scales efficiency while maintaining brand safety. 
+
+Social Ninja's specializes in deploying custom AI automation agents that integrate seamlessly with your existing tech stack, letting you scale operations without increasing headcount.
+    `,
+    cta: 'Build Your AI Agent Workflow →',
+    ctaHref: '/contact',
+  },
+  {
     id: 'ai-lead-response',
     category: 'AI & Automation',
     color: '#5ba4f5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Mar 8, 2026',
+    publishedAt: '2026-03-08T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'Why 70% of Your Leads Go Cold — And How AI Fixes It in 60 Seconds',
     excerpt: 'The average company takes 47 hours to respond to a lead. Your competitor responds in 0.8 seconds. Here\'s the math behind why that\'s costing you millions.',
     stat: { value: '47hrs', label: 'Avg response time across industries' },
@@ -63,6 +318,8 @@ An AI sales agent sits on every entry point — your website, WhatsApp, Instagra
     icon: React.createElement(TrendingUp, { size: 18 }),
     readTime: '4 min',
     date: 'Mar 1, 2026',
+    publishedAt: '2026-03-01T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'The Posting Frequency Myth: Why Posting More Is Killing Your Reach',
     excerpt: 'Most brands post 7× a week and get 0.3% engagement. The top 10% post 3× a week and dominate. The difference isn\'t effort — it\'s intelligence.',
     stat: { value: '3.2×', label: 'Posts/week by top 10% of accounts' },
@@ -117,6 +374,8 @@ Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each
     icon: React.createElement(BarChart3, { size: 18 }),
     readTime: '6 min',
     date: 'Feb 22, 2026',
+    publishedAt: '2026-02-22T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'ROAS Is a Vanity Metric. Here\'s the Framework That Actually Tells You If Ads Are Working.',
     excerpt: 'A 4× ROAS sounds incredible. But if your margins are 25%, you\'re losing money on every sale. Here\'s the metric stack that actually predicts business health.',
     stat: { value: '4×', label: 'ROAS that actually loses money (25% margins)' },
@@ -176,6 +435,8 @@ The brands that dominate paid media connect three data streams: their ad platfor
     icon: React.createElement(BarChart3, { size: 18 }),
     readTime: '7 min',
     date: 'Jun 8, 2026',
+    publishedAt: '2026-06-08T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'How to Choose a Performance Marketing Agency in India: 7 Hard Questions to Ask',
     excerpt: 'Looking for a performance marketing partner? Don\'t fall for vanity metrics like CTR or impressions. Here are the 7 hard-hitting questions you must ask to find an agency that drives real profit.',
     stat: { value: '3-10x', label: 'Typical ROAS scaling with profit-focused campaigns' },
@@ -246,6 +507,8 @@ If you are ready to audit your current campaigns, explore our [Performance Marke
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Jun 5, 2026',
+    publishedAt: '2026-06-05T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'The Autopilot Growth Engine: How AI-Powered Marketing Automation Drives Sales 24/7',
     excerpt: 'How leading global brands are replacing slow, manual lead qualification with instant, conversational AI agents that book meetings, follow up, and close deals on autopilot.',
     stat: { value: '0.8s', label: 'Average AI reply time to customer inquiries' },
@@ -304,6 +567,8 @@ Automating your lead qualification isn't just about saving time—it's about max
     icon: React.createElement(TrendingUp, { size: 18 }),
     readTime: '6 min',
     date: 'May 28, 2026',
+    publishedAt: '2026-05-28T09:00:00Z',
+    author: "Social Ninja's Team",
     title: 'Instagram SEO Secrets: How to Optimize Your Profile and Reels for Search Traffic',
     excerpt: 'Social media search is replacing traditional Google queries for Gen Z. Here is the step-by-step guide to ranking your Reels, optimizing your bio, and driving free organic traffic using Instagram SEO.',
     stat: { value: '40%', label: 'Of Gen Z users search on social platforms over Google' },

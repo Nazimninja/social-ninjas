@@ -33,6 +33,7 @@ const About: React.FC = () => {
         title="About Us | Social Ninja's"
         description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work."
         keywords="about social ninjas, performance marketing team, AI agency India, digital marketing team, growth marketing experts, AI marketing company, social media agency team"
+        faq={faqs}
       />
 
       {/* HERO */}

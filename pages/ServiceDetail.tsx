@@ -87,7 +87,15 @@ const ServiceDetail: React.FC = () => {
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title={`${s.title} | Social Ninja's`} description={s.hero} />
+      <SEO 
+        title={`${s.title} | Social Ninja's`} 
+        description={s.hero} 
+        service={{
+          name: s.title,
+          description: s.hero,
+          providerName: "Social Ninja's"
+        }}
+      />
 
       {/* HERO */}
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>

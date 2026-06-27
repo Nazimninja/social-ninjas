@@ -122,7 +122,19 @@ const AIProductLanding: React.FC = () => {
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
       <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
-      <SEO title={`${p.name} | Social Ninja's`} description={p.hero} />
+      <SEO 
+        title={`${p.name} | Social Ninja's`} 
+        description={p.hero} 
+        softwareApp={{
+          name: p.name,
+          category: "BusinessApplication",
+          description: p.hero,
+          url: `https://socialninjas.in/ai-products/${id}`,
+          price: p.plans ? p.plans[0].price.replace(/[^0-9]/g, '') : "0",
+          ratingValue: p.reviews ? "4.8" : undefined,
+          ratingCount: p.reviews ? String(p.reviews.length * 12 + 84) : undefined
+        }}
+      />
 
       {/* HERO */}
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>

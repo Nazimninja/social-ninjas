@@ -16,6 +16,22 @@ interface SEOProps {
     tags: string[];
     author: string;
   };
+  faq?: { q: string; a: string }[];
+  softwareApp?: {
+    name: string;
+    category?: string;
+    description: string;
+    url: string;
+    price?: string;
+    ratingValue?: string;
+    ratingCount?: string;
+  };
+  service?: {
+    name: string;
+    description: string;
+    price?: string;
+    providerName?: string;
+  };
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -24,7 +40,10 @@ const SEO: React.FC<SEOProps> = ({
   image = 'https://socialninjas.in/og-image.png',
   type = 'website',
   keywords,
-  article
+  article,
+  faq,
+  softwareApp,
+  service
 }) => {
   const location = useLocation();
   const canonicalUrl = `https://socialninjas.in${location.pathname}`;
@@ -72,6 +91,79 @@ const SEO: React.FC<SEOProps> = ({
       "query-input": "required name=search_term_string"
     }
   };
+
+  const articleSchema = article ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": title || fullTitle,
+    "description": description || defaultDescription,
+    "image": image,
+    "datePublished": article.publishedTime,
+    "dateModified": article.modifiedTime || article.publishedTime,
+    "author": {
+      "@type": "Person",
+      "name": article.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Social Ninja's",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://socialninjas.in/ninja-logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    }
+  } : null;
+
+  const faqSchema = faq && faq.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faq.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  } : null;
+
+  const softwareAppSchema = softwareApp ? {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": softwareApp.name,
+    "operatingSystem": "Web",
+    "applicationCategory": softwareApp.category || "BusinessApplication",
+    "description": softwareApp.description,
+    "url": softwareApp.url,
+    "offers": {
+      "@type": "Offer",
+      "price": softwareApp.price || "0",
+      "priceCurrency": "INR"
+    },
+    ...(softwareApp.ratingValue && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": softwareApp.ratingValue,
+        "ratingCount": softwareApp.ratingCount || "100"
+      }
+    })
+  } : null;
+
+  const serviceSchema = service ? {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": service.name,
+    "description": service.description,
+    "provider": {
+      "@type": "Organization",
+      "name": service.providerName || "Social Ninja's",
+      "url": "https://socialninjas.in"
+    }
+  } : null;
 
   return (
     <Helmet>
@@ -125,6 +217,26 @@ const SEO: React.FC<SEOProps> = ({
       <script type="application/ld+json">
         {JSON.stringify(websiteSchema)}
       </script>
+      {articleSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      )}
+      {faqSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      )}
+      {softwareAppSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(softwareAppSchema)}
+        </script>
+      )}
+      {serviceSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(serviceSchema)}
+        </script>
+      )}
     </Helmet>
   );
 };

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, Clock, Tag, Share2, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
+import AdSense from '../components/AdSense';
 
 import { POSTS, categoryColors } from '../data/blogPosts';
 
@@ -11,6 +12,38 @@ const BlogPost: React.FC = () => {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [related, setRelated] = useState<any[]>([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.pageYOffset / totalHeight) * 100;
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const renderBlogContent = (content: string) => {
+    const headings = content.split('\n## ');
+    if (headings.length <= 2) {
+      return <ReactMarkdown>{content}</ReactMarkdown>;
+    }
+    
+    const firstHalf = headings.slice(0, 2).join('\n## ');
+    const secondHalf = '\n## ' + headings.slice(2).join('\n## ');
+    
+    return (
+      <>
+        <ReactMarkdown>{firstHalf}</ReactMarkdown>
+        <AdSense client="ca-pub-7295477262076788" slot="1337170960" />
+        <ReactMarkdown>{secondHalf}</ReactMarkdown>
+      </>
+    );
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -60,6 +93,17 @@ const BlogPost: React.FC = () => {
 
   return (
     <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      {/* Reading Progress Bar */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: `${scrollProgress}%`,
+        height: '4px',
+        background: 'linear-gradient(90deg, #5ba4f5, #2fcf8e)',
+        zIndex: 9999,
+        transition: 'width 0.08s ease-out'
+      }} />
       <div className="amb-1" /><div className="amb-2" />
       <SEO
         title={`${post.title} | Social Ninja's Blog`}
@@ -108,9 +152,96 @@ const BlogPost: React.FC = () => {
         {/* Excerpt */}
         <p style={{ fontSize: 18, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.7, marginBottom: 40, paddingBottom: 40, borderBottom: '1px solid rgba(255,255,255,0.08)', fontStyle: 'italic' }}>{post.excerpt}</p>
 
+        {/* AdSense Unit */}
+        <AdSense client="ca-pub-7295477262076788" slot="1337170960" />
+
         {/* Content */}
         <div className="blog-content">
-          <ReactMarkdown>{post.content || ''}</ReactMarkdown>
+          {renderBlogContent(post.content || '')}
+        </div>
+
+        {/* Share Article Section */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          padding: '20px 0',
+          margin: '44px 0 28px',
+          flexWrap: 'wrap',
+          gap: 14
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>Liked this breakdown? Share it:</div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <button
+              onClick={() => {
+                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}`;
+                window.open(twitterUrl, '_blank');
+              }}
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                color: '#fff',
+                padding: '8px 16px',
+                borderRadius: 12,
+                fontSize: 12.5,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.2s',
+                fontFamily: "'DM Sans', sans-serif"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
+            >
+              Twitter
+            </button>
+            <button
+              onClick={() => {
+                const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+                window.open(linkedinUrl, '_blank');
+              }}
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                color: '#fff',
+                padding: '8px 16px',
+                borderRadius: 12,
+                fontSize: 12.5,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.2s',
+                fontFamily: "'DM Sans', sans-serif"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
+            >
+              LinkedIn
+            </button>
+            <button
+              onClick={share}
+              style={{
+                background: 'rgba(91,164,245,0.1)',
+                border: '1px solid rgba(91,164,245,0.25)',
+                color: '#5ba4f5',
+                padding: '8px 16px',
+                borderRadius: 12,
+                fontSize: 12.5,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.2s',
+                fontFamily: "'DM Sans', sans-serif"
+              }}
+            >
+              Copy Link
+            </button>
+          </div>
         </div>
 
         {/* Author card */}
