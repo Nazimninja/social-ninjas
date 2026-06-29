@@ -6,7 +6,7 @@ import SEO from '../components/SEO';
 
 const NotFound: React.FC = () => {
     return (
-        <div className="page-bg" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"80px 24px",minHeight:"100vh"}}>
+        <div className="page-wrap" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"80px 24px",minHeight:"100vh"}}>
             <SEO
                 title="Page Not Found | Social Ninja's"
                 description="The page you are looking for does not exist."

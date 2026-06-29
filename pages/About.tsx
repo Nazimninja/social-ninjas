@@ -27,8 +27,8 @@ const About: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO
         title="About Us | Social Ninja's"
         description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work."
@@ -37,12 +37,12 @@ const About: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
             <div>
-              <div className="eyebrow reveal">Who We Are</div>
+              <div className="pill reveal">Who We Are</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,68px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.04, marginBottom: 20, color: '#141414' }}>
                 We're not a big agency.<br /><span style={{ color: '#0065ff' }}>We're your growth team.</span>
               </h1>
@@ -67,7 +67,7 @@ const About: React.FC = () => {
 
       {/* OUR STORY */}
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Our Story</div>
+        <div className="pill reveal" style={{ justifyContent: 'center' }}>Our Story</div>
         <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>
           We built what we wished we could hire.
         </h2>
@@ -82,9 +82,9 @@ const About: React.FC = () => {
       </div>
 
       {/* VALUES */}
-      <div style={{ borderTop: '1px solid #ededed', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
+      <div style={{ borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>How We Think</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Think</div>
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: 'rgba(255,255,255,0.95)' }}>Three rules we never break.</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
             {[
@@ -106,7 +106,7 @@ const About: React.FC = () => {
 
       {/* FAQ */}
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Common Questions</div>
+        <div className="pill reveal" style={{ justifyContent: 'center' }}>Common Questions</div>
         <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>Things people usually ask us.</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {faqs.map((faq, i) => (

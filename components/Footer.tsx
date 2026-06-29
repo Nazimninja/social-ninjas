@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
                 <li key={label}>
                   <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                     onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                   >{label}</Link>
                 </li>
               ))}
@@ -97,12 +97,12 @@ const Footer: React.FC = () => {
                   {external ? (
                     <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                       onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
-                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                     >{label}</a>
                   ) : (
                     <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                       onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
-                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                     >{label}</Link>
                   )}
                 </li>
@@ -126,7 +126,7 @@ const Footer: React.FC = () => {
                 <li key={label}>
                   <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                     onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.38)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                   >{label}</Link>
                 </li>
               ))}

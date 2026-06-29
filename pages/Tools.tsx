@@ -139,8 +139,8 @@ const Tools: React.FC = () => {
   useReveal();
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO
         title="Free Tools & AI Products | Social Ninja's"
         description="Explore our suite of AI products and free growth tools. Generate WhatsApp links, calculate tax breakdowns, convert hourly wages, and automate content."
@@ -148,14 +148,14 @@ const Tools: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Agency Tools</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>Agency Tools</div>
           <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
             Growth systems & calculators<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>built for high-performing brands.</span>
           </h1>
-          <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,18px)', fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, maxWidth: 600, margin: '0 auto' }}>
+          <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,17px)', fontWeight: 400, color: '#717171', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>
             We build tools that save you time, optimize your digital marketing campaigns, and give you accurate mathematical breakdowns of your finances.
           </p>
         </div>
@@ -166,10 +166,10 @@ const Tools: React.FC = () => {
         {toolCategories.map((category, catIdx) => (
           <div key={catIdx} className="reveal">
             <div style={{ marginBottom: 36 }}>
-              <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: '28px', fontWeight: 700, letterSpacing: '-1px', color: 'rgba(255,255,255,0.95)', marginBottom: 8 }}>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: '26px', fontWeight: 900, letterSpacing: '-1px', color: '#141414', marginBottom: 8 }}>
                 {category.title}
               </h2>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.48)' }}>
+              <p style={{ fontSize: 14, color: '#717171' }}>
                 {category.desc}
               </p>
             </div>
@@ -185,13 +185,13 @@ const Tools: React.FC = () => {
                         <div style={{ width: 44, height: 44, borderRadius: 12, background: `${t.color}14`, border: `1px solid ${t.color}24`, display: 'flex', alignItems: 'center', justifycontent: 'center', alignContent: 'center', justifyContent: 'center' }}>
                           <IconComponent size={20} color={t.color} strokeWidth={2} />
                         </div>
-                        <span style={{ fontSize: 9.5, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: t.badge.includes('Live') ? 'rgba(47,207,142,0.1)' : '#f5f5f5', border: t.badge.includes('Live') ? '1px solid rgba(47,207,142,0.2)' : '1px solid rgba(255,255,255,0.08)', color: t.badge.includes('Live') ? '#2fcf8e' : 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        <span style={{ fontSize: 9.5, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: t.badge.includes('Live') ? 'rgba(59,162,19,0.1)' : '#f5f5f5', border: t.badge.includes('Live') ? '1px solid rgba(59,162,19,0.2)' : '1px solid #ededed', color: t.badge.includes('Live') ? '#3ba213' : '#adadad', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                           {t.badge}
                         </span>
                       </div>
 
                       {/* Tool Title */}
-                      <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 19, fontWeight: 700, color: '#fff', letterSpacing: '-0.3px', marginBottom: 4 }}>
+                      <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 19, fontWeight: 700, color: '#141414', letterSpacing: '-0.3px', marginBottom: 4 }}>
                         {t.name}
                       </h3>
                       <div style={{ fontSize: 13, fontWeight: 500, color: t.color, marginBottom: 12 }}>
@@ -199,7 +199,7 @@ const Tools: React.FC = () => {
                       </div>
 
                       {/* Description */}
-                      <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.48)', lineHeight: 1.6, marginBottom: 24 }}>
+                      <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.6, marginBottom: 24 }}>
                         {t.desc}
                       </p>
                     </div>
@@ -211,8 +211,8 @@ const Tools: React.FC = () => {
                           <button style={{
                             width: '100%', padding: '12px 18px', borderRadius: 12,
                             background: '#f5f5f5',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            color: 'rgba(255,255,255,0.85)',
+                            border: '1px solid #ededed',
+                          color: '#141414',
                             fontSize: 13.5, fontWeight: 600,
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                             transition: 'all 0.2s',
@@ -225,7 +225,7 @@ const Tools: React.FC = () => {
                           onMouseLeave={e => { 
                             (e.currentTarget as HTMLElement).style.background = '#f5f5f5'; 
                             (e.currentTarget as HTMLElement).style.borderColor = '#ededed';
-                            (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)';
+                            (e.currentTarget as HTMLElement).style.color = '#141414';
                           }}
                           >
                             {t.btnText}
@@ -238,7 +238,7 @@ const Tools: React.FC = () => {
                             width: '100%', padding: '12px 18px', borderRadius: 12,
                             background: t.badge.includes('Live') ? `linear-gradient(135deg, ${t.color}cc, ${t.color})` : '#f5f5f5',
                             border: t.badge.includes('Live') ? 'none' : '1px solid rgba(255,255,255,0.08)',
-                            color: '#fff',
+                            color: '#141414',
                             fontSize: 13.5, fontWeight: 600,
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                             transition: 'all 0.2s',
@@ -277,12 +277,12 @@ const Tools: React.FC = () => {
 
       {/* FOOTER CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>
+        <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#0065ff,transparent)' }} />
+          <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>
             Have an idea for a custom system?
           </h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
+          <p style={{ fontSize: 15, fontWeight: 400, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
             Our engineering team builds custom AI integrations, data scrapers, automated workflows, and internal calculators for brands looking to automate their growth.
           </p>
           <Link to="/contact">

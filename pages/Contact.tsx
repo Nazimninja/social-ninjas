@@ -60,8 +60,8 @@ const Contact: React.FC = () => {
   };
 
   if(done) return (
-    <div className="page-bg" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh'}}>
-      <div className="amb-1"/><div className="amb-2"/>
+    <div className="page-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh'}}>
+      
       <div style={{textAlign:'center',padding:'48px 32px',maxWidth:520}}>
         <div style={{width:72,height:72,borderRadius:'50%',background:'rgba(52,211,153,0.12)',border:'1px solid rgba(52,211,153,0.3)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',boxShadow:'0 0 32px rgba(52,211,153,0.2)'}}>
           <CheckCircle size={32} color="#34d399"/>
@@ -73,8 +73,8 @@ const Contact: React.FC = () => {
   );
 
   return (
-    <div className="page-bg" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
-      <div className="amb-1"/><div className="amb-2"/><div className="amb-3"/>
+    <div className="page-wrap" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
+      
       <SEO
         title="Contact Social Ninja's | Book Strategy Call"
         description="Initiate your growth audit. Book a strategy call with our team and see how we'd grow your business with AI-powered marketing."
@@ -86,7 +86,7 @@ const Contact: React.FC = () => {
 
           {/* LEFT */}
           <div>
-            <div className="eyebrow reveal">Get In Touch</div>
+            <div className="pill reveal">Get In Touch</div>
             <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'#141414'}}>
               Let's build your<br/><em style={{background:'linear-gradient(135deg,#5ba4f5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
             </h1>

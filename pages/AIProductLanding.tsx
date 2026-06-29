@@ -110,7 +110,7 @@ const AIProductLanding: React.FC = () => {
   };
 
   if (!p) return (
-    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 20 }}>
+    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#141414', gap: 20 }}>
       <div style={{ fontSize: 48 }}>🔍</div>
       <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: "'Bricolage Grotesque',system-ui" }}>Product not found</h1>
       <Link to="/ai-products"><button className="btn-primary">See All Products</button></Link>
@@ -120,8 +120,8 @@ const AIProductLanding: React.FC = () => {
   const isLive = p.badge.includes('Live');
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO 
         title={`${p.name} | Social Ninja's`} 
         description={p.hero} 
@@ -137,8 +137,8 @@ const AIProductLanding: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <Link to="/ai-products" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
             <ArrowLeft size={14} /> Back to AI Products
@@ -155,7 +155,7 @@ const AIProductLanding: React.FC = () => {
             {isLive && <button onClick={() => handleNavigate('/app/content-studio?plan=starter')} className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button>}
           </div>
           {/* Stats row */}
-          <div className="reveal d4" style={{ display: 'flex', justifyContent: 'center', gap: 0, marginTop: 56, background: '#f5f5f5', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 50, padding: '16px 8px', maxWidth: 640, margin: '56px auto 0', flexWrap: 'wrap' }}>
+          <div className="reveal d4" style={{ display: 'flex', justifyContent: 'center', gap: 0, marginTop: 56, background: '#f5f5f5', border: '1px solid #ededed', borderRadius: 50, padding: '16px 8px', maxWidth: 640, margin: '56px auto 0', flexWrap: 'wrap' }}>
             {p.stats.map(([n, l]: string[]) => (
               <div key={l} style={{ textAlign: 'center', padding: '4px 24px', borderRight: '1px solid rgba(255,255,255,0.07)' }} className="last-no-border">
                 <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 20, fontWeight: 700, color: p.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{n}</div>
@@ -183,7 +183,7 @@ const AIProductLanding: React.FC = () => {
       {/* HOW IT WORKS */}
       <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>How It Works</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>How It Works</div>
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 48, color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
             Simple to use. Powerful results.
           </h2>
@@ -201,7 +201,7 @@ const AIProductLanding: React.FC = () => {
 
       {/* FEATURES */}
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Features</div>
+        <div className="pill reveal" style={{ justifyContent: 'center' }}>Features</div>
         <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 40, color: 'rgba(255,255,255,0.95)' }}>
           Everything you get, in detail.
         </h2>
@@ -219,7 +219,7 @@ const AIProductLanding: React.FC = () => {
       {p.reviews && (
         <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Real Results</div>
+            <div className="pill reveal" style={{ justifyContent: 'center' }}>Real Results</div>
             <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 48, color: 'rgba(255,255,255,0.95)' }}>
               What users are saying.
             </h2>
@@ -248,7 +248,7 @@ const AIProductLanding: React.FC = () => {
       {/* PRICING (only for live products) */}
       {p.plans && (
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Pricing</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>Pricing</div>
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 12, color: 'rgba(255,255,255,0.95)' }}>
             Start free. Upgrade when ready.
           </h2>

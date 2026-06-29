@@ -75,7 +75,7 @@ const BlogPost: React.FC = () => {
     <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
       <SEO title="Post Not Found | Social Ninja's Blog" description="This blog post could not be found." />
       <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-      <h1 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}>Post Not Found</h1>
+      <h1 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 32, fontWeight: 800, color: '#141414', marginBottom: 12 }}>Post Not Found</h1>
       <p style={{ color: 'rgba(255,255,255,0.45)', marginBottom: 28 }}>This post may have been moved or deleted.</p>
       <Link to="/blog"><button className="btn-primary" style={{ fontSize: 14 }}>← Back to Blog</button></Link>
     </div>
@@ -92,7 +92,7 @@ const BlogPost: React.FC = () => {
   };
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       {/* Reading Progress Bar */}
       <div style={{
         position: 'fixed',
@@ -104,7 +104,7 @@ const BlogPost: React.FC = () => {
         zIndex: 9999,
         transition: 'width 0.08s ease-out'
       }} />
-      <div className="amb-1" /><div className="amb-2" />
+      
       <SEO
         title={`${post.title} | Social Ninja's Blog`}
         description={post.excerpt}
@@ -119,12 +119,12 @@ const BlogPost: React.FC = () => {
       />
 
       {/* Back nav */}
-      <div style={{ position: 'sticky', top: 62, zIndex: 50, background: 'rgba(7,16,30,0.85)', backdropFilter: 'blur(24px)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '12px 28px' }}>
+      <div style={{ position: 'sticky', top: 62, zIndex: 50, background: 'rgba(7,16,30,0.85)', backdropFilter: 'blur(24px)', borderBottom: '1px solid #ededed', padding: '12px 28px' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link to="/blog" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', transition: 'color .2s' }}>
             <ArrowLeft size={14} /> All Posts
           </Link>
-          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.45)', background: '#f5f5f5', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
+          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.45)', background: '#f5f5f5', border: '1px solid #e0e0e0', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
             <Share2 size={12} /> Share
           </button>
         </div>
@@ -181,8 +181,8 @@ const BlogPost: React.FC = () => {
               }}
               style={{
                 background: '#f5f5f5',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: '#fff',
+                border: '1px solid #ededed',
+                color: '#141414',
                 padding: '8px 16px',
                 borderRadius: 12,
                 fontSize: 12.5,
@@ -205,8 +205,8 @@ const BlogPost: React.FC = () => {
               }}
               style={{
                 background: '#f5f5f5',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: '#fff',
+                border: '1px solid #ededed',
+                color: '#141414',
                 padding: '8px 16px',
                 borderRadius: 12,
                 fontSize: 12.5,

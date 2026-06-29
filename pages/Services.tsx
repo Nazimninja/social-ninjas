@@ -26,8 +26,8 @@ const services = [
 const Services: React.FC = () => {
   useReveal();
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO
         title="Services | Social Ninja's"
         description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow. Book a free strategy call."
@@ -35,10 +35,10 @@ const Services: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>What We Do</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>What We Do</div>
           <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6vw,80px)', fontWeight: 700, letterSpacing: '-2.5px', lineHeight: 1.02, marginBottom: 20, color: '#141414' }}>
             Everything your brand needs<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to get more customers.</span>
           </h1>
@@ -89,7 +89,7 @@ const Services: React.FC = () => {
       <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>How We Work</div>
+            <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Work</div>
             <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
               From your first call to<br /><span style={{ color: '#0065ff' }}>real results in 30 days.</span>
             </h2>

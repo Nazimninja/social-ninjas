@@ -77,7 +77,7 @@ const ServiceDetail: React.FC = () => {
   const s = id ? servicesData[id] : null;
 
   if (!s) return (
-    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 20 }}>
+    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#141414', gap: 20 }}>
       <div style={{ fontSize: 48 }}>🔍</div>
       <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: "'Bricolage Grotesque',system-ui" }}>Service not found</h1>
       <Link to="/services"><button className="btn-primary">See All Services</button></Link>
@@ -85,8 +85,8 @@ const ServiceDetail: React.FC = () => {
   );
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO 
         title={`${s.title} | Social Ninja's`} 
         description={s.hero} 
@@ -98,8 +98,8 @@ const ServiceDetail: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <Link to="/services" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
             <ArrowLeft size={14} /> Back to Services
@@ -145,7 +145,7 @@ const ServiceDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>What's Included</div>
+        <div className="pill reveal" style={{ justifyContent: 'center' }}>What's Included</div>
         <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 40, color: 'rgba(255,255,255,0.95)' }}>
           Here's exactly what you get.
         </h2>

@@ -14,17 +14,17 @@ function useReveal() {
 const GrowthSystems: React.FC = () => {
   useReveal();
   return (
-    <div className="page-bg" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
-      <div className="amb-1"/><div className="amb-2"/><div className="amb-3"/>
+    <div className="page-wrap" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
+      
       <SEO title="Growth Systems | Social Ninja's" description="AI-powered growth systems that scale your business 24/7." keywords="AI growth systems, sales automation, lead generation automation"/>
 
       {/* HERO */}
       <div style={{position:'relative',paddingTop:140,paddingBottom:88,overflow:'hidden',borderBottom:'1px solid rgba(255,255,255,0.07)'}}>
-        <div className="hero-grid"/>
+        
         <div style={{maxWidth:1100,margin:'0 auto',padding:'0 28px',position:'relative',zIndex:2}}>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'center'}} className="hero-grid-cols">
             <div>
-              <div className="eyebrow reveal">AI Growth Systems</div>
+              <div className="pill reveal">AI Growth Systems</div>
               <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(40px,6vw,78px)',fontWeight:400,letterSpacing:'-2px',lineHeight:1.02,marginBottom:20,color:'#141414'}}>
                 Your competitor just booked a call<br/><em style={{background:'linear-gradient(135deg,#5ba4f5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>while you were sleeping.</em>
               </h1>
@@ -56,7 +56,7 @@ const GrowthSystems: React.FC = () => {
 
       {/* SYSTEMS */}
       <div style={{maxWidth:1100,margin:'0 auto',padding:'88px 28px',position:'relative',zIndex:1}}>
-        <div className="eyebrow reveal" style={{justifyContent:'center'}}>Core Systems</div>
+        <div className="pill reveal" style={{justifyContent:'center'}}>Core Systems</div>
         <h2 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(28px,4vw,48px)',fontWeight:400,letterSpacing:'-1px',textAlign:'center',marginBottom:56,color:'rgba(255,255,255,0.95)',lineHeight:1.1}}>Four systems that <em>generate revenue</em> while you sleep.</h2>
         <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:14}} className="two-cols">
           {[

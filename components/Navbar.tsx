@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
           <Link to="/contact" style={{ textDecoration: 'none' }}>
             <button style={{
               fontFamily: "'Inter', system-ui, sans-serif",
-              fontSize: 13.5, fontWeight: 600, color: '#fff',
+              fontSize: 13.5, fontWeight: 600, color: '#141414',
               background: '#0065ff',
               border: 'none', borderRadius: 8, padding: '8px 18px',
               cursor: 'pointer',

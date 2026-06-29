@@ -27,10 +27,10 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
           borderRadius: 24,
           padding: '22px',
           overflow: 'hidden',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid #ededed',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           cursor: 'pointer',
-          background: 'rgba(255,255,255,0.02)',
+          background: '#fafafa',
           display: 'flex',
           flexDirection: 'column',
           height: '100%'
@@ -167,8 +167,8 @@ const Blog: React.FC = () => {
   });
 
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      
       <SEO
         title="Blog | Social Ninja's — AI, Marketing & Growth Intelligence"
         description="Weekly breakdowns on AI automation, performance marketing, content strategy and social media growth. Real tactics, real numbers."
@@ -176,12 +176,12 @@ const Blog: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 64, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 64, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }} className="hero-grid-cols">
             <div>
-              <div className="eyebrow reveal"><Rss size={12} />Intelligence Feed · Weekly</div>
+              <div className="pill reveal"><Rss size={12} />Intelligence Feed · Weekly</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: '#141414' }}>
                 Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
@@ -199,10 +199,10 @@ const Blog: React.FC = () => {
                   style={{
                     width: '100%',
                     background: '#f5f5f5',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid #ededed',
                     borderRadius: 50,
                     padding: '12px 20px 12px 44px',
-                    color: '#fff',
+                    color: '#141414',
                     fontSize: 14,
                     outline: 'none',
                     transition: 'all 0.3s',
@@ -286,7 +286,7 @@ const Blog: React.FC = () => {
                 style={{
                   borderRadius: 24,
                   padding: '32px 34px',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid #ededed',
                   background: 'linear-gradient(135deg, rgba(91,164,245,0.05), rgba(255,255,255,0.01))',
                   display: 'flex',
                   flexDirection: 'column',
@@ -297,7 +297,7 @@ const Blog: React.FC = () => {
                 }}
               >
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(91,164,245,0.38), transparent)' }} />
-                <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 10, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
+                <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 22, fontWeight: 800, color: '#141414', marginBottom: 10, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
                   Get growth breakdowns in your inbox
                 </h3>
                 <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.6, marginBottom: 20 }}>
@@ -310,10 +310,10 @@ const Blog: React.FC = () => {
                     placeholder="Enter your work email"
                     style={{
                       background: '#f5f5f5',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      border: '1px solid #ededed',
                       borderRadius: 14,
                       padding: '12px 16px',
-                      color: '#fff',
+                      color: '#141414',
                       fontSize: 13,
                       outline: 'none',
                       fontFamily: "'DM Sans', sans-serif"
@@ -330,7 +330,7 @@ const Blog: React.FC = () => {
                       cursor: 'pointer',
                       border: 'none',
                       background: 'linear-gradient(135deg, #1d4ed8, #5ba4f5)',
-                      color: '#fff'
+                      color: '#141414'
                     }}
                   >
                     Subscribe to Newsletter →
@@ -340,9 +340,9 @@ const Blog: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 24, background: 'rgba(255,255,255,0.01)' }}>
+          <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 24, background: '#fafafa' }}>
             <div style={{ fontSize: 44, marginBottom: 14 }}>🔍</div>
-            <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>No articles found</h3>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 20, fontWeight: 700, color: '#141414', marginBottom: 8 }}>No articles found</h3>
             <p style={{ color: '#888', fontSize: 13.5 }}>Try adjusting your search terms or category filters.</p>
           </div>
         )}

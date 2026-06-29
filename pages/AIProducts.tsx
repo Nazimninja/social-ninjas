@@ -65,8 +65,8 @@ const products = [
 const AIProducts: React.FC = () => {
   useReveal();
   return (
-    <div className="page-bg" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      <div className="amb-1" /><div className="amb-2" /><div className="amb-3" />
+    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+      
       <SEO
         title="AI Products | Social Ninja's"
         description="AI tools built for brands that want to grow — Content Studio, AI Sales Agent, Ad Copy Generator, Reporting Assistant. Try free."
@@ -74,10 +74,10 @@ const AIProducts: React.FC = () => {
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div className="hero-grid" />
+      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
+        
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>AI Products</div>
+          <div className="pill reveal" style={{ justifyContent: 'center' }}>AI Products</div>
           <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
             Tools that do the work<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>you don't have time for.</span>
           </h1>
@@ -105,7 +105,7 @@ const AIProducts: React.FC = () => {
               <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, marginBottom: 28, maxWidth: 460 }}>{p.desc}</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 32 }}>
                 {p.stats.map(([n,l]) => (
-                  <div key={l} style={{ background: '#f5f5f5', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: '14px 10px', textAlign: 'center' }}>
+                  <div key={l} style={{ background: '#f5f5f5', border: '1px solid #ededed', borderRadius: 13, padding: '14px 10px', textAlign: 'center' }}>
                     <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 17, fontWeight: 700, color: p.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{n}</div>
                     <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 4, lineHeight: 1.3 }}>{l}</div>
                   </div>
