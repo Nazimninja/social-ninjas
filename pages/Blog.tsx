@@ -25,7 +25,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
         className={`glass-card reveal d${index + 1}`}
         style={{
           borderRadius: 24,
-          padding: '28px 30px',
+          padding: '22px',
           overflow: 'hidden',
           border: '1px solid rgba(255,255,255,0.08)',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -46,6 +46,57 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
           e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
         }}
       >
+        {/* Visual Thumbnail Header */}
+        <div style={{
+          height: 150,
+          borderRadius: 16,
+          marginBottom: 18,
+          background: `linear-gradient(135deg, ${post.color}18, ${post.color}03)`,
+          border: `1px solid ${post.color}20`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          {/* Tech Grid Pattern */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.08,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '16px 16px'
+          }} />
+          
+          {/* Glowing Radial Orb */}
+          <div style={{
+            position: 'absolute',
+            width: 120,
+            height: 120,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${post.color}25, transparent 65%)`,
+            filter: 'blur(10px)',
+            pointerEvents: 'none'
+          }} />
+
+          {/* Large Glowing Icon Badge */}
+          <div style={{
+            width: 54,
+            height: 54,
+            borderRadius: '50%',
+            background: `linear-gradient(135deg, ${post.color}25, ${post.color}10)`,
+            border: `1px solid ${post.color}35`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: post.color,
+            boxShadow: `0 8px 24px ${post.color}15, inset 0 1px 0 rgba(255,255,255,0.1)`,
+            zIndex: 2
+          }}>
+            {React.cloneElement(post.icon, { size: 24 })}
+          </div>
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flex: 1, marginBottom: 20 }}>
           <div>
             {/* Category + meta */}
@@ -62,13 +113,13 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
             {/* Title */}
             <h2 className="blog-title" style={{
               fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
-              fontSize: featured ? 'clamp(22px,3vw,32px)' : 'clamp(18px,2.2vw,24px)',
-              fontWeight: 800, letterSpacing: '-0.5px', lineHeight: 1.2,
-              color: 'rgba(255,255,255,0.95)', marginBottom: 14,
+              fontSize: featured ? 'clamp(22px,3vw,30px)' : 'clamp(17px,2vw,22px)',
+              fontWeight: 800, letterSpacing: '-0.5px', lineHeight: 1.25,
+              color: 'rgba(255,255,255,0.95)', marginBottom: 10,
             }}>{post.title}</h2>
             
             {/* Excerpt */}
-            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>{post.excerpt}</p>
+            <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.6, margin: 0 }}>{post.excerpt}</p>
           </div>
           
           {/* Stat badge */}
