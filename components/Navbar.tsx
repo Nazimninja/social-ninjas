@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
     }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', position: 'relative', zIndex: 50 }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', position: 'relative', zIndex: 70 }}>
           <img src="/logo.png" alt="Social Ninja's" width={56} height={56} style={{ width: 56, height: 56, objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(91,164,245,0.5))', flexShrink: 0 }} />
           <div>
             <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 17, fontWeight: 600, letterSpacing: '-0.3px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Toggle */}
         <button
-          style={{ color: 'rgba(255,255,255,0.85)', background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'none', position: 'relative', zIndex: 50 }}
+          style={{ color: 'rgba(255,255,255,0.85)', background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'none', position: 'relative', zIndex: 70 }}
           className="show-mobile"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
