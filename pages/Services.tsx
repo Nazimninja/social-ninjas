@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -85,8 +85,7 @@ const Services: React.FC = () => {
         </div>
       </div>
 
-      {/* HOW IT WORKS */}
-      <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
+      <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: '#fafafa', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Work</div>

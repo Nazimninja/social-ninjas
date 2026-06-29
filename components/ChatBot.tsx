@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MessageSquare, Send, Sparkles, ChevronDown, User, X, Bot } from 'lucide-react';
@@ -214,7 +214,7 @@ const ChatBot: React.FC = () => {
       */}
       <div
         className={`
-            fixed z-[100] flex flex-col bg-brand-surface/95 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 overflow-hidden
+            fixed z-[100] flex flex-col bg-neutral-50/95 backdrop-blur-xl border border-neutral-200 shadow-2xl transition-all duration-500 overflow-hidden
             
             /* Mobile Styles: Safe area aware */
             inset-0 w-full h-[100dvh] rounded-none origin-center safe-area-top
@@ -227,14 +227,14 @@ const ChatBot: React.FC = () => {
       >
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-brand-surface to-brand-dark border-b border-white/10 p-4 md:p-5 flex items-center justify-between shrink-0">
+        <div className="bg-gradient-to-r from-brand-surface to-brand-dark border-b border-neutral-200 p-4 md:p-5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center text-white shadow-lg relative border border-white/10">
+            <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center text-neutral-900 shadow-lg relative border border-neutral-200">
               <Sparkles size={18} />
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-brand-dark"></div>
             </div>
             <div>
-              <h3 className="font-display font-bold text-white text-sm tracking-wide">Social Ninja AI</h3>
+              <h3 className="font-display font-bold text-neutral-900 text-sm tracking-wide">Social Ninja AI</h3>
               <p className="text-[10px] text-brand-primary font-bold uppercase tracking-wider flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Online Now
               </p>
@@ -244,7 +244,7 @@ const ChatBot: React.FC = () => {
           {/* Close Button */}
           <button
             onClick={() => setIsOpen(false)}
-            className="text-neutral-400 hover:text-white hover:bg-white/10 rounded-full p-2 transition-colors active:scale-95 touch-manipulation"
+            className="text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-full p-2 transition-colors active:scale-95 touch-manipulation"
             aria-label="Close Chat"
           >
             {/* Chevron on Desktop, X on Mobile for clarity */}
@@ -254,13 +254,13 @@ const ChatBot: React.FC = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-6 bg-brand-dark/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+        <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-6 bg-neutral-50/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           {messages.map((msg, idx) => (
             <div key={idx} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up gap-3`}>
 
               {/* Avatar for Model (Left) */}
               {msg.role === 'model' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white shrink-0 shadow-[0_0_15px_rgba(56,189,248,0.3)] mt-1 border border-white/10">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-neutral-900 shrink-0 shadow-[0_0_15px_rgba(56,189,248,0.3)] mt-1 border border-neutral-200">
                   <Bot size={16} />
                 </div>
               )}
@@ -268,14 +268,14 @@ const ChatBot: React.FC = () => {
               {/* Message Bubble */}
               <div className={`max-w-[75%] p-3.5 md:p-4 text-sm leading-relaxed shadow-xl backdrop-blur-sm ${msg.role === 'user'
                 ? 'bg-white text-black font-semibold rounded-2xl rounded-tr-none'
-                : 'bg-white/5 text-neutral-100 border border-white/10 rounded-2xl rounded-tl-none'
+                : 'bg-neutral-50 text-neutral-100 border border-neutral-200 rounded-2xl rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
 
               {/* Avatar for User (Right) */}
               {msg.role === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-brand-surface border border-white/20 flex items-center justify-center text-neutral-400 shrink-0 mt-1 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-neutral-50 border border-neutral-300 flex items-center justify-center text-neutral-600 shrink-0 mt-1 shadow-sm">
                   <User size={16} />
                 </div>
               )}
@@ -285,10 +285,10 @@ const ChatBot: React.FC = () => {
           {/* Loading Indicator */}
           {isTyping && (
             <div className="flex justify-start animate-fade-in-up gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white shrink-0 shadow-[0_0_15px_rgba(56,189,248,0.3)] mt-1 border border-white/10">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-neutral-900 shrink-0 shadow-[0_0_15px_rgba(56,189,248,0.3)] mt-1 border border-neutral-200">
                 <Bot size={16} />
               </div>
-              <div className="bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none flex gap-1.5 items-center">
+              <div className="bg-neutral-50 border border-neutral-200 p-4 rounded-2xl rounded-tl-none flex gap-1.5 items-center">
                 <span className="w-1.5 h-1.5 bg-brand-primary/50 rounded-full animate-bounce"></span>
                 <span className="w-1.5 h-1.5 bg-brand-primary/50 rounded-full animate-bounce delay-100"></span>
                 <span className="w-1.5 h-1.5 bg-brand-primary/50 rounded-full animate-bounce delay-200"></span>
@@ -299,14 +299,14 @@ const ChatBot: React.FC = () => {
         </div>
 
         {/* Input Area - safe-area-bottom handled via utility class in index.html, but reinforcing here */}
-        <div className="p-4 bg-brand-dark/80 backdrop-blur-md border-t border-white/10 shrink-0 safe-area-bottom">
+        <div className="p-4 bg-white/80 backdrop-blur-md border-t border-neutral-200 shrink-0 safe-area-bottom">
           {/* Progress Indicator for Lead Gen */}
           {step !== 'AI_CHAT' && step !== 'INIT' && (
             <div className="flex gap-1.5 mb-4 justify-center px-8">
-              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['NAME', 'PHONE', 'EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-white/10'}`}></div>
-              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['PHONE', 'EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-white/10'}`}></div>
-              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-white/10'}`}></div>
-              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${step === 'GOAL' ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-white/10'}`}></div>
+              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['NAME', 'PHONE', 'EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-neutral-100'}`}></div>
+              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['PHONE', 'EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-neutral-100'}`}></div>
+              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${['EMAIL', 'GOAL'].includes(step) ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-neutral-100'}`}></div>
+              <div className={`h-1 rounded-full flex-1 transition-all duration-500 ${step === 'GOAL' ? 'bg-brand-primary shadow-[0_0_10px_rgba(56,189,248,0.5)]' : 'bg-neutral-100'}`}></div>
             </div>
           )}
 
@@ -325,7 +325,7 @@ const ChatBot: React.FC = () => {
                       step === 'GOAL' ? "e.g. Get more leads..." :
                         "Type a message..."
               }
-              className="w-full bg-brand-surface border border-white/10 rounded-full pl-5 pr-14 py-4 md:py-3.5 text-base text-white focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 focus:outline-none placeholder:text-neutral-500 transition-all shadow-inner"
+              className="w-full bg-neutral-50 border border-neutral-200 rounded-full pl-5 pr-14 py-4 md:py-3.5 text-base text-neutral-900 focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 focus:outline-none placeholder:text-neutral-500 transition-all shadow-inner"
             />
             <button
               onClick={handleSend}

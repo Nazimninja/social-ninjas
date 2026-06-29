@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart3, Clock, ShieldCheck, Plus, Minus } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -81,8 +81,7 @@ const About: React.FC = () => {
         </div>
       </div>
 
-      {/* VALUES */}
-      <div style={{ borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
+      <div style={{ borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed', padding: '80px 28px', background: '#fafafa', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Think</div>
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: '#141414' }}>Three rules we never break.</h2>

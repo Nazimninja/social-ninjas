@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, Clock, Tag, Share2, ArrowRight } from 'lucide-react';
@@ -146,8 +146,7 @@ const BlogPost: React.FC = () => {
           <div style={{ fontSize: 12, color: '#adadad' }}>By {post.author || "Social Ninja's Team"}</div>
         </div>
 
-        {/* Title */}
-        <h1 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, letterSpacing: '-2px', lineHeight: 1.05, color: 'rgba(255,255,255,0.97)', marginBottom: 20 }}>{post.title}</h1>
+        <h1 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, letterSpacing: '-2px', lineHeight: 1.05, color: '#141414', marginBottom: 20 }}>{post.title}</h1>
 
         {/* Excerpt */}
         <p style={{ fontSize: 18, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.7, marginBottom: 40, paddingBottom: 40, borderBottom: '1px solid #ededed', fontStyle: 'italic' }}>{post.excerpt}</p>

@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -100,7 +100,7 @@ const AIProducts: React.FC = () => {
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{p.icon}</div>
                 <div style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: p.badge.includes('Live') ? 'rgba(47,207,142,0.12)' : '#f0f0f0', border: p.badge.includes('Live') ? '1px solid rgba(47,207,142,0.25)' : '1px solid #e5e5e5', color: p.badge.includes('Live') ? '#2fcf8e' : '#717171' }}>{p.badge}</div>
               </div>
-              <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.06, color: 'rgba(255,255,255,0.97)', marginBottom: 8 }}>{p.name}</h2>
+              <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.06, color: '#141414', marginBottom: 8 }}>{p.name}</h2>
               <div style={{ fontSize: 16, fontWeight: 500, color: p.color, marginBottom: 16, letterSpacing: '-0.2px' }}>{p.tagline}</div>
               <p style={{ fontSize: 15, fontWeight: 300, color: '#717171', lineHeight: 1.72, marginBottom: 28, maxWidth: 460 }}>{p.desc}</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 32 }}>
@@ -125,7 +125,7 @@ const AIProducts: React.FC = () => {
                 <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: p.color, marginBottom: 18 }}>What's included</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: p.plans ? 28 : 0 }}>
                   {p.features.map((f, j) => (
-                    <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13.5, color: 'rgba(255,255,255,0.68)' }}>
+                    <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13.5, color: '#525252' }}>
                       <CheckCircle2 size={14} color={p.color} strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />{f}
                     </div>
                   ))}

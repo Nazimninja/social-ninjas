@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ArrowRight, Star } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -180,8 +180,7 @@ const AIProductLanding: React.FC = () => {
         </div>
       </div>
 
-      {/* HOW IT WORKS */}
-      <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
+      <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: '#fafafa', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="pill reveal" style={{ justifyContent: 'center' }}>How It Works</div>
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 48, color: '#141414', lineHeight: 1.1 }}>
@@ -217,7 +216,7 @@ const AIProductLanding: React.FC = () => {
 
       {/* REVIEWS (only for live products) */}
       {p.reviews && (
-        <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
+        <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: '#fafafa', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <div className="pill reveal" style={{ justifyContent: 'center' }}>Real Results</div>
             <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 48, color: '#141414' }}>
@@ -233,7 +232,7 @@ const AIProductLanding: React.FC = () => {
                     <div style={{ fontSize: 9, padding: '2px 8px', borderRadius: 50, background: 'rgba(47,207,142,0.12)', border: '1px solid rgba(47,207,142,0.25)', color: '#34d399', fontWeight: 700, letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>✓ VERIFIED</div>
                   </div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: p.color, marginBottom: 12, letterSpacing: '-0.2px' }}>{(r as any).result || ""}</div>
-                  <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.68)', lineHeight: 1.72, marginBottom: 18 }}>"{r.text}"</p>
+                  <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.72, marginBottom: 18 }}>"{r.text}"</p>
                   <div style={{ paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#1a1a1a' }}>{r.name}</div>
                     <div style={{ fontSize: 11, color: '#717171', marginTop: 2 }}>{r.role}</div>

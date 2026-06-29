@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Instagram, Heart, MessageCircle, ExternalLink } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
@@ -43,7 +43,7 @@ const MOCK_POSTS = [
 
 const InstagramFeed: React.FC = () => {
     return (
-        <section className="py-20 bg-brand-dark border-t border-white/5 relative overflow-hidden">
+        <section className="py-20 bg-white border-t border-neutral-200 relative overflow-hidden">
             {/* Decorative Blur */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -55,7 +55,7 @@ const InstagramFeed: React.FC = () => {
                                 <Instagram size={20} />
                                 <span className="text-xs font-bold tracking-widest uppercase">@socialninja.s</span>
                             </div>
-                            <h2 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight">
+                            <h2 className="text-3xl md:text-5xl font-display font-bold text-neutral-900 tracking-tight">
                                 Latest from the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]">Gram</span>
                             </h2>
                         </div>
@@ -64,7 +64,7 @@ const InstagramFeed: React.FC = () => {
                             href="https://www.instagram.com/socialninja.s/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group flex items-center gap-2 text-sm font-bold text-white uppercase tracking-wider hover:text-brand-primary transition-colors"
+                            className="group flex items-center gap-2 text-sm font-bold text-neutral-900 uppercase tracking-wider hover:text-brand-primary transition-colors"
                         >
                             Follow Us
                             <ExternalLink size={16} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
@@ -79,7 +79,7 @@ const InstagramFeed: React.FC = () => {
                                 href={post.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group relative block aspect-square rounded-2xl overflow-hidden bg-white/5"
+                                className="group relative block aspect-square rounded-2xl overflow-hidden bg-neutral-50"
                             >
                                 {/* Image */}
                                 <img
@@ -89,8 +89,8 @@ const InstagramFeed: React.FC = () => {
                                 />
 
                                 {/* Overlay */}
-                                <div className="absolute inset-0 bg-brand-dark/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                                    <div className="flex items-center gap-6 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                                    <div className="flex items-center gap-6 text-neutral-900 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                         <div className="flex items-center gap-2">
                                             <Heart size={20} className="fill-white" />
                                             <span className="font-bold">{post.likes}</span>
@@ -104,7 +104,7 @@ const InstagramFeed: React.FC = () => {
 
                                 {/* Corner Icon */}
                                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-100">
-                                    <Instagram size={20} className="text-white drop-shadow-lg" />
+                                    <Instagram size={20} className="text-neutral-900 drop-shadow-lg" />
                                 </div>
                             </a>
                         </ScrollReveal>

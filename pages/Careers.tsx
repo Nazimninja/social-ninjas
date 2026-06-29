@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useRef } from 'react';
 import { Briefcase, Globe, Zap, Layers, ArrowRight, CheckCircle2, User, Mail, Phone, Link as LinkIcon, FileText, Loader2, Send } from 'lucide-react';
 import Button from '../components/Button';
@@ -155,7 +155,7 @@ const Careers: React.FC = () => {
     };
 
     return (
-        <div className="pt-24 pb-16 min-h-screen bg-brand-dark">
+        <div className="pt-24 pb-16 min-h-screen bg-white">
             <SEO
                 title="Careers at Social Ninja's | Hiring Elite Marketers & Creatives"
                 description="Join the special forces of digital marketing. We are hiring performance marketers, video editors, and AI engineers who want to build systems, not just campaigns."
@@ -167,16 +167,16 @@ const Careers: React.FC = () => {
                 {/* Header */}
                 <div className="max-w-4xl mx-auto text-center mb-20 animate-fade-in-up">
                     <span className="text-brand-primary font-bold tracking-[0.2em] text-xs uppercase mb-6 block">Join the Team</span>
-                    <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
+                    <h1 className="font-display text-5xl md:text-7xl font-bold text-neutral-900 mb-8 leading-tight">
                         Build Your Career at <br />
                         <span className="text-transparent bg-clip-text bg-gradient-premium">Social Ninja's.</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-neutral-400 font-light leading-relaxed mb-8">
+                    <p className="text-xl md:text-2xl text-neutral-600 font-light leading-relaxed mb-8">
                         Work on real brands, real growth challenges, and performance-driven digital systems.
                     </p>
-                    <div className="bg-brand-surface border border-white/5 p-8 rounded-2xl max-w-3xl mx-auto text-left relative">
+                    <div className="bg-neutral-50 border border-neutral-200 p-8 rounded-2xl max-w-3xl mx-auto text-left relative">
                         <div className="absolute top-0 left-0 w-1 h-full bg-brand-primary rounded-l-2xl"></div>
-                        <p className="text-neutral-300 leading-relaxed text-lg">
+                        <p className="text-neutral-700 leading-relaxed text-lg">
                             Social Ninja’s works with ambitious brands that demand excellence. We value ownership, quality, and execution speed. This is not a place for shortcuts or generic work. If you are ready to master the craft of digital growth and build systems that scale, you belong here.
                         </p>
                     </div>
@@ -185,19 +185,19 @@ const Careers: React.FC = () => {
                 {/* Why Work With Us */}
                 <div className="mb-24">
                     <div className="flex items-center gap-4 mb-10 justify-center md:justify-start">
-                        <div className="h-px bg-white/10 w-12 md:w-20"></div>
+                        <div className="h-px bg-neutral-100 w-12 md:w-20"></div>
                         <h2 className="text-neutral-500 font-bold uppercase tracking-widest text-sm text-center">Why Join Us</h2>
-                        <div className="h-px bg-white/10 w-12 md:w-20"></div>
+                        <div className="h-px bg-neutral-100 w-12 md:w-20"></div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {benefits.map((item, i) => (
-                            <div key={i} className="bg-brand-surface border border-white/5 p-8 rounded-2xl hover:border-brand-primary/30 transition-all duration-300 group hover:-translate-y-1">
-                                <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-brand-dark transition-colors">
+                            <div key={i} className="bg-neutral-50 border border-neutral-200 p-8 rounded-2xl hover:border-brand-primary/30 transition-all duration-300 group hover:-translate-y-1">
+                                <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-neutral-900 transition-colors">
                                     <item.icon size={24} />
                                 </div>
-                                <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-                                <p className="text-neutral-400 text-sm leading-relaxed">{item.desc}</p>
+                                <h3 className="text-lg font-bold text-neutral-900 mb-3">{item.title}</h3>
+                                <p className="text-neutral-600 text-sm leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -205,23 +205,23 @@ const Careers: React.FC = () => {
 
                 {/* Open Roles */}
                 <div className="max-w-4xl mx-auto mb-24">
-                    <h2 className="font-display text-4xl font-bold text-white mb-8 text-center">Open Roles</h2>
+                    <h2 className="font-display text-4xl font-bold text-neutral-900 mb-8 text-center">Open Roles</h2>
                     <p className="text-neutral-500 text-center mb-12 uppercase tracking-wider text-xs font-bold">Roles are updated based on current requirements</p>
 
                     <div className="space-y-4">
                         {roles.map((role, i) => (
-                            <div key={i} className="bg-brand-surface/50 border border-white/5 p-6 md:p-8 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:bg-brand-surface transition-colors group">
+                            <div key={i} className="bg-neutral-50/50 border border-neutral-200 p-6 md:p-8 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:bg-neutral-50 transition-colors group">
                                 <div className="flex-grow">
                                     <div className="flex items-center gap-3 mb-2">
-                                        <h3 className="text-xl font-bold text-white">{role.title}</h3>
-                                        <span className="text-xs font-bold bg-white/5 border border-white/10 text-brand-primary px-3 py-1 rounded-full uppercase tracking-wider">{role.type}</span>
+                                        <h3 className="text-xl font-bold text-neutral-900">{role.title}</h3>
+                                        <span className="text-xs font-bold bg-neutral-50 border border-neutral-200 text-brand-primary px-3 py-1 rounded-full uppercase tracking-wider">{role.type}</span>
                                     </div>
-                                    <p className="text-neutral-400 text-sm">{role.desc}</p>
+                                    <p className="text-neutral-600 text-sm">{role.desc}</p>
                                 </div>
                                 <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
                                     <Button
                                         variant="outline"
-                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-white/20 hover:border-brand-primary hover:bg-brand-primary hover:text-brand-dark"
+                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-neutral-300 hover:border-brand-primary hover:bg-brand-primary hover:text-neutral-900"
                                         onClick={() => handleApplyClick(role.title)}
                                     >
                                         Apply Now
@@ -234,15 +234,15 @@ const Careers: React.FC = () => {
 
                 {/* Application Form Section */}
                 <div ref={formRef} className="max-w-3xl mx-auto">
-                    <div className="bg-brand-surface border border-white/5 p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+                    <div className="bg-neutral-50 border border-neutral-200 p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
                         {/* Background Elements */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 blur-[80px] rounded-full pointer-events-none"></div>
 
                         {!isSuccess ? (
                             <div className="relative z-10">
                                 <div className="text-center mb-10">
-                                    <h3 className="font-display text-3xl font-bold text-white mb-4">Apply Now</h3>
-                                    <p className="text-neutral-400 text-sm">Submit your application. We review every portfolio personally.</p>
+                                    <h3 className="font-display text-3xl font-bold text-neutral-900 mb-4">Apply Now</h3>
+                                    <p className="text-neutral-600 text-sm">Submit your application. We review every portfolio personally.</p>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -254,7 +254,7 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="text"
-                                                className={`w-full bg-brand-dark border ${errors.name ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-white border ${errors.name ? 'border-amber-500/50 animate-shake' : 'border-neutral-200 focus:border-brand-primary'} rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors`}
                                                 placeholder="Your full name"
                                                 value={formData.name}
                                                 onChange={(e) => handleChange('name', e.target.value)}
@@ -269,7 +269,7 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="email"
-                                                className={`w-full bg-brand-dark border ${errors.email ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-white border ${errors.email ? 'border-amber-500/50 animate-shake' : 'border-neutral-200 focus:border-brand-primary'} rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors`}
                                                 placeholder="you@example.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleChange('email', e.target.value)}
@@ -286,7 +286,7 @@ const Careers: React.FC = () => {
                                             </label>
                                             <input
                                                 type="tel"
-                                                className={`w-full bg-brand-dark border ${errors.phone ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                                className={`w-full bg-white border ${errors.phone ? 'border-amber-500/50 animate-shake' : 'border-neutral-200 focus:border-brand-primary'} rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors`}
                                                 placeholder="+91 00000 00000"
                                                 value={formData.phone}
                                                 onChange={(e) => handleChange('phone', e.target.value)}
@@ -301,7 +301,7 @@ const Careers: React.FC = () => {
                                             </label>
                                             <div className="relative">
                                                 <select
-                                                    className={`w-full bg-brand-dark border ${errors.role ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors appearance-none cursor-pointer`}
+                                                    className={`w-full bg-white border ${errors.role ? 'border-amber-500/50 animate-shake' : 'border-neutral-200 focus:border-brand-primary'} rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors appearance-none cursor-pointer`}
                                                     value={formData.role}
                                                     onChange={(e) => handleChange('role', e.target.value)}
                                                 >
@@ -326,7 +326,7 @@ const Careers: React.FC = () => {
                                         </label>
                                         <input
                                             type="url"
-                                            className={`w-full bg-brand-dark border ${errors.portfolio ? 'border-amber-500/50 animate-shake' : 'border-white/10 focus:border-brand-primary'} rounded-lg p-3 text-base text-white focus:outline-none transition-colors`}
+                                            className={`w-full bg-white border ${errors.portfolio ? 'border-amber-500/50 animate-shake' : 'border-neutral-200 focus:border-brand-primary'} rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors`}
                                             placeholder="https://linkedin.com/in/yourprofile"
                                             value={formData.portfolio}
                                             onChange={(e) => handleChange('portfolio', e.target.value)}
@@ -341,7 +341,7 @@ const Careers: React.FC = () => {
                                         </label>
                                         <textarea
                                             rows={4}
-                                            className="w-full bg-brand-dark border border-white/10 focus:border-brand-primary rounded-lg p-3 text-base text-white focus:outline-none transition-colors resize-none"
+                                            className="w-full bg-white border border-neutral-200 focus:border-brand-primary rounded-lg p-3 text-base text-neutral-900 focus:outline-none transition-colors resize-none"
                                             placeholder="Tell us about your best work or why you want to join Social Ninja's..."
                                             value={formData.message}
                                             onChange={(e) => handleChange('message', e.target.value)}
@@ -378,8 +378,8 @@ const Careers: React.FC = () => {
                                 <div className="w-20 h-20 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary mx-auto mb-8 border border-brand-primary/20">
                                     <CheckCircle2 size={40} />
                                 </div>
-                                <h3 className="font-display text-3xl font-bold text-white mb-4">Application Received!</h3>
-                                <p className="text-neutral-400 max-w-md mx-auto mb-8 leading-relaxed">
+                                <h3 className="font-display text-3xl font-bold text-neutral-900 mb-4">Application Received!</h3>
+                                <p className="text-neutral-600 max-w-md mx-auto mb-8 leading-relaxed">
                                     Thank you for your interest in Social Ninja's. Our recruitment team will review your portfolio and contact you if your profile matches our requirements.
                                 </p>
                                 <Button
