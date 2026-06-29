@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 
 const servicesData: Record<string, any> = {
   'ai-automation': {
-    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '🤖', color: '#5ba4f5',
+    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '🤖', color: '#0065ff',
     hero: 'Most businesses lose customers simply because they were too slow to reply. The average company takes 47 hours to respond to a new lead. By then, they\'ve already bought from a competitor. We fix that.',
     problem: 'Your team can\'t be online 24/7. Leads come in on weekends, at midnight, during meetings. Every hour without a reply is a sale you might be losing.',
     solution: 'We deploy an AI agent that handles every incoming lead instantly — answering questions, qualifying them, and booking calls into your calendar. Your team only gets involved when someone is ready to buy.',
@@ -77,7 +77,7 @@ const ServiceDetail: React.FC = () => {
   const s = id ? servicesData[id] : null;
 
   if (!s) return (
-    <div style={{ minHeight: '100vh', background: '#07101e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 20 }}>
+    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 20 }}>
       <div style={{ fontSize: 48 }}>🔍</div>
       <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: "'Bricolage Grotesque',system-ui" }}>Service not found</h1>
       <Link to="/services"><button className="btn-primary">See All Services</button></Link>
@@ -109,7 +109,7 @@ const ServiceDetail: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
                 <div style={{ width: 56, height: 56, borderRadius: 16, background: `${s.color}14`, border: `1px solid ${s.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>{s.icon}</div>
               </div>
-              <h1 className="reveal" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,70px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.02, marginBottom: 16, color: 'rgba(255,255,255,0.96)' }}>
+              <h1 className="reveal" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,70px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.02, marginBottom: 16, color: '#141414' }}>
                 {s.title}
               </h1>
               <div className="reveal d1" style={{ fontSize: 18, fontWeight: 400, color: s.color, marginBottom: 20, letterSpacing: '-0.2px' }}>{s.tagline}</div>
@@ -123,7 +123,7 @@ const ServiceDetail: React.FC = () => {
                 {s.stats.map(([n, l]: string[]) => (
                   <div key={l} className="glass-card" style={{ padding: '24px 20px', borderRadius: 18, textAlign: 'center', borderTop: `2px solid ${s.color}30` }}>
                     <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 700, color: s.color, letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{l}</div>
+                    <div style={{ fontSize: 12, color: '#888', lineHeight: 1.5 }}>{l}</div>
                   </div>
                 ))}
               </div>
@@ -161,9 +161,9 @@ const ServiceDetail: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${s.color}50,transparent)` }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.08, marginBottom: 14, color: 'rgba(255,255,255,0.96)' }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.08, marginBottom: 14, color: '#141414' }}>
             Ready to get started?
           </h2>
           <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>

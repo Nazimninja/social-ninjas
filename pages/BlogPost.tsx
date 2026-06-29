@@ -65,14 +65,14 @@ const BlogPost: React.FC = () => {
   }, [id]);
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#07101e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2px solid rgba(91,164,245,0.3)', borderTopColor: '#5ba4f5', animation: 'spin 0.8s linear infinite' }} />
+    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2px solid rgba(91,164,245,0.3)', borderTopColor: '#0065ff', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
   if (!post) return (
-    <div style={{ minHeight: '100vh', background: '#07101e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
+    <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
       <SEO title="Post Not Found | Social Ninja's Blog" description="This blog post could not be found." />
       <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
       <h1 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}>Post Not Found</h1>
@@ -124,7 +124,7 @@ const BlogPost: React.FC = () => {
           <Link to="/blog" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', transition: 'color .2s' }}>
             <ArrowLeft size={14} /> All Posts
           </Link>
-          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.45)', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
+          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.45)', background: '#f5f5f5', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
             <Share2 size={12} /> Share
           </button>
         </div>
@@ -137,7 +137,7 @@ const BlogPost: React.FC = () => {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: `${color}14`, border: `1px solid ${color}28`, borderRadius: 50, padding: '4px 12px', fontSize: 11, fontWeight: 600, color }}>
             <Tag size={10} />{post.category || 'Insights'}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'rgba(255,255,255,0.38)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#717171' }}>
             <Clock size={11} />{post.readTime || '5 min read'}
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
@@ -172,7 +172,7 @@ const BlogPost: React.FC = () => {
           flexWrap: 'wrap',
           gap: 14
         }}>
-          <div style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>Liked this breakdown? Share it:</div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: '#717171' }}>Liked this breakdown? Share it:</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <button
               onClick={() => {
@@ -180,7 +180,7 @@ const BlogPost: React.FC = () => {
                 window.open(twitterUrl, '_blank');
               }}
               style={{
-                background: 'rgba(255,255,255,0.04)',
+                background: '#f5f5f5',
                 border: '1px solid rgba(255,255,255,0.08)',
                 color: '#fff',
                 padding: '8px 16px',
@@ -193,8 +193,8 @@ const BlogPost: React.FC = () => {
                 transition: 'all 0.2s',
                 fontFamily: "'DM Sans', sans-serif"
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#ededed'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#f5f5f5'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
             >
               Twitter
             </button>
@@ -204,7 +204,7 @@ const BlogPost: React.FC = () => {
                 window.open(linkedinUrl, '_blank');
               }}
               style={{
-                background: 'rgba(255,255,255,0.04)',
+                background: '#f5f5f5',
                 border: '1px solid rgba(255,255,255,0.08)',
                 color: '#fff',
                 padding: '8px 16px',
@@ -217,8 +217,8 @@ const BlogPost: React.FC = () => {
                 transition: 'all 0.2s',
                 fontFamily: "'DM Sans', sans-serif"
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#ededed'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#f5f5f5'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'; }}
             >
               LinkedIn
             </button>
@@ -227,7 +227,7 @@ const BlogPost: React.FC = () => {
               style={{
                 background: 'rgba(91,164,245,0.1)',
                 border: '1px solid rgba(91,164,245,0.25)',
-                color: '#5ba4f5',
+                color: '#0065ff',
                 padding: '8px 16px',
                 borderRadius: 12,
                 fontSize: 12.5,
@@ -245,11 +245,11 @@ const BlogPost: React.FC = () => {
         </div>
 
         {/* Author card */}
-        <div style={{ marginTop: 56, padding: '24px', background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 18, display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div style={{ marginTop: 56, padding: '24px', background: '#f5f5f5', backdropFilter: 'blur(20px)', border: '1px solid #ededed', borderRadius: 18, display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#1d4ed8,#5ba4f5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🥷</div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,0.9)', marginBottom: 3 }}>{post.author || "Social Ninja's Team"}</div>
-            <div style={{ fontSize: 12.5, fontWeight: 300, color: 'rgba(255,255,255,0.42)', lineHeight: 1.6 }}>Performance marketing, AI automation, and content strategy for ambitious brands. <Link to="/about" style={{ color: '#5ba4f5', textDecoration: 'none' }}>About us →</Link></div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#141414', marginBottom: 3 }}>{post.author || "Social Ninja's Team"}</div>
+            <div style={{ fontSize: 12.5, fontWeight: 300, color: 'rgba(255,255,255,0.42)', lineHeight: 1.6 }}>Performance marketing, AI automation, and content strategy for ambitious brands. <Link to="/about" style={{ color: '#0065ff', textDecoration: 'none' }}>About us →</Link></div>
           </div>
         </div>
       </article>
@@ -257,14 +257,14 @@ const BlogPost: React.FC = () => {
       {/* Related posts */}
       {related.length > 0 && (
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#5ba4f5', marginBottom: 24 }}>More in {post.category}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#0065ff', marginBottom: 24 }}>More in {post.category}</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="related-grid">
             {related.map((r:any) => (
               <Link key={r.id} to={`/blog/${r.id}`} style={{ textDecoration: 'none' }}>
                 <div className="glass-card" style={{ padding: 24, borderRadius: 18, height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
+                  <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 15, fontWeight: 700, color: '#1a1a1a', lineHeight: 1.3, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
                   <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.42)', lineHeight: 1.62, flex: 1 }}>{r.excerpt}</p>
-                  <div style={{ fontSize: 11, color: '#5ba4f5', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>Read <ArrowRight size={11} /></div>
+                  <div style={{ fontSize: 11, color: '#0065ff', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>Read <ArrowRight size={11} /></div>
                 </div>
               </Link>
             ))}
@@ -274,9 +274,9 @@ const BlogPost: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
-        <div style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(40px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 22, padding: '44px 36px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(40px)', border: '1px solid #ededed', borderRadius: 22, padding: '44px 36px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.35),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,36px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 10, color: 'rgba(255,255,255,0.96)', lineHeight: 1.1 }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,36px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 10, color: '#141414', lineHeight: 1.1 }}>
             Ready to implement this?
           </h2>
           <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 24 }}>Book a free 30-minute strategy session — we'll apply these frameworks to your business.</p>

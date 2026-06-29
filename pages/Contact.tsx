@@ -66,8 +66,8 @@ const Contact: React.FC = () => {
         <div style={{width:72,height:72,borderRadius:'50%',background:'rgba(52,211,153,0.12)',border:'1px solid rgba(52,211,153,0.3)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',boxShadow:'0 0 32px rgba(52,211,153,0.2)'}}>
           <CheckCircle size={32} color="#34d399"/>
         </div>
-        <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:36,fontWeight:400,letterSpacing:'-1px',color:'rgba(255,255,255,0.96)',marginBottom:12}}>Message received.</h2>
-        <p style={{fontSize:15,fontWeight:300,color:'rgba(255,255,255,0.5)',lineHeight:1.7}}>We'll review your brief and get back within 24 hours with a tailored growth plan.</p>
+        <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:36,fontWeight:400,letterSpacing:'-1px',color:'#141414',marginBottom:12}}>Message received.</h2>
+        <p style={{fontSize:15,fontWeight:300,color:'#717171',lineHeight:1.7}}>We'll review your brief and get back within 24 hours with a tailored growth plan.</p>
       </div>
     </div>
   );
@@ -87,10 +87,10 @@ const Contact: React.FC = () => {
           {/* LEFT */}
           <div>
             <div className="eyebrow reveal">Get In Touch</div>
-            <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'rgba(255,255,255,0.96)'}}>
+            <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'#141414'}}>
               Let's build your<br/><em style={{background:'linear-gradient(135deg,#5ba4f5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
             </h1>
-            <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'rgba(255,255,255,0.5)',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
+            <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'#717171',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
 
             <div className="reveal d3" style={{display:'flex',flexDirection:'column',gap:18}}>
               {[
@@ -128,13 +128,13 @@ const Contact: React.FC = () => {
               <div style={{padding:'20px 28px',borderBottom:'1px solid rgba(255,255,255,0.07)',display:'flex',alignItems:'center',gap:8}}>
                 {[1,2,3].map(s=>(
                   <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'rgba(255,255,255,0.05)',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'rgba(255,255,255,0.1)'}`,color:s<step?'#34d399':s===step?'#5ba4f5':'rgba(255,255,255,0.35)',fontFamily:"'JetBrains Mono',monospace"}}>
+                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#0065ff':'rgba(255,255,255,0.35)',fontFamily:"'JetBrains Mono',monospace"}}>
                       {s<step?'✓':s}
                     </div>
-                    {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'rgba(255,255,255,0.06)',transition:'background .4s'}}/>}
+                    {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'#f0f0f0',transition:'background .4s'}}/>}
                   </React.Fragment>
                 ))}
-                <span style={{marginLeft:'auto',fontSize:11,color:'rgba(255,255,255,0.3)',fontFamily:"'JetBrains Mono'"}}>Step {step} of 3</span>
+                <span style={{marginLeft:'auto',fontSize:11,color:'#adadad',fontFamily:"'JetBrains Mono'"}}>Step {step} of 3</span>
               </div>
 
               <form onSubmit={submit} style={{padding:28}}>

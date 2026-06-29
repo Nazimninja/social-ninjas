@@ -36,7 +36,7 @@ const toolCategories = [
         name: 'AI Content Studio',
         tagline: 'Your whole week of content written in 60s.',
         desc: 'Researches live trends in your exact niche, then writes your captions, scripts, carousels, and hashtags for all 7 major platforms. Native writing, infinite memory.',
-        color: '#5ba4f5',
+        color: '#0065ff',
         link: 'https://contentstudio.socialninjas.in',
         external: true,
         btnText: '⚡ Try Content Studio Free'
@@ -152,7 +152,7 @@ const Tools: React.FC = () => {
         <div className="hero-grid" />
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>Agency Tools</div>
-          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: 'rgba(255,255,255,0.96)' }}>
+          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
             Growth systems & calculators<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>built for high-performing brands.</span>
           </h1>
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,18px)', fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, maxWidth: 600, margin: '0 auto' }}>
@@ -185,7 +185,7 @@ const Tools: React.FC = () => {
                         <div style={{ width: 44, height: 44, borderRadius: 12, background: `${t.color}14`, border: `1px solid ${t.color}24`, display: 'flex', alignItems: 'center', justifycontent: 'center', alignContent: 'center', justifyContent: 'center' }}>
                           <IconComponent size={20} color={t.color} strokeWidth={2} />
                         </div>
-                        <span style={{ fontSize: 9.5, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: t.badge.includes('Live') ? 'rgba(47,207,142,0.1)' : 'rgba(255,255,255,0.05)', border: t.badge.includes('Live') ? '1px solid rgba(47,207,142,0.2)' : '1px solid rgba(255,255,255,0.08)', color: t.badge.includes('Live') ? '#2fcf8e' : 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        <span style={{ fontSize: 9.5, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: t.badge.includes('Live') ? 'rgba(47,207,142,0.1)' : '#f5f5f5', border: t.badge.includes('Live') ? '1px solid rgba(47,207,142,0.2)' : '1px solid rgba(255,255,255,0.08)', color: t.badge.includes('Live') ? '#2fcf8e' : 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                           {t.badge}
                         </span>
                       </div>
@@ -210,7 +210,7 @@ const Tools: React.FC = () => {
                         <a href={t.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                           <button style={{
                             width: '100%', padding: '12px 18px', borderRadius: 12,
-                            background: 'rgba(255,255,255,0.04)',
+                            background: '#f5f5f5',
                             border: '1px solid rgba(255,255,255,0.08)',
                             color: 'rgba(255,255,255,0.85)',
                             fontSize: 13.5, fontWeight: 600,
@@ -223,8 +223,8 @@ const Tools: React.FC = () => {
                             (e.currentTarget as HTMLElement).style.color = '#fff';
                           }}
                           onMouseLeave={e => { 
-                            (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; 
-                            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+                            (e.currentTarget as HTMLElement).style.background = '#f5f5f5'; 
+                            (e.currentTarget as HTMLElement).style.borderColor = '#ededed';
                             (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)';
                           }}
                           >
@@ -236,7 +236,7 @@ const Tools: React.FC = () => {
                         <Link to={t.link} style={{ textDecoration: 'none' }}>
                           <button style={{
                             width: '100%', padding: '12px 18px', borderRadius: 12,
-                            background: t.badge.includes('Live') ? `linear-gradient(135deg, ${t.color}cc, ${t.color})` : 'rgba(255,255,255,0.04)',
+                            background: t.badge.includes('Live') ? `linear-gradient(135deg, ${t.color}cc, ${t.color})` : '#f5f5f5',
                             border: t.badge.includes('Live') ? 'none' : '1px solid rgba(255,255,255,0.08)',
                             color: '#fff',
                             fontSize: 13.5, fontWeight: 600,
@@ -246,16 +246,16 @@ const Tools: React.FC = () => {
                           }}
                           onMouseEnter={e => {
                             if (!t.badge.includes('Live')) {
-                              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
-                              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                              (e.currentTarget as HTMLElement).style.background = '#ededed';
+                              (e.currentTarget as HTMLElement).style.borderColor = '#d0d0d0';
                             } else {
                               (e.currentTarget as HTMLElement).style.boxShadow = `0 6px 24px ${t.color}40`;
                             }
                           }}
                           onMouseLeave={e => {
                             if (!t.badge.includes('Live')) {
-                              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
-                              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+                              (e.currentTarget as HTMLElement).style.background = '#f5f5f5';
+                              (e.currentTarget as HTMLElement).style.borderColor = '#ededed';
                             } else {
                               (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 16px ${t.color}28`;
                             }
@@ -277,9 +277,9 @@ const Tools: React.FC = () => {
 
       {/* FOOTER CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 28, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: 'rgba(255,255,255,0.96)', lineHeight: 1.08 }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>
             Have an idea for a custom system?
           </h2>
           <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>

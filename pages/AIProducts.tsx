@@ -19,7 +19,7 @@ const products = [
     id: 'content-studio', badge: '🟢 Live Now', icon: '⚡', name: 'AI Content Studio',
     tagline: 'Your whole week of content — written in 60 seconds.',
     desc: 'Tell the AI about your brand once. Every week it looks up what\'s trending in your niche, then writes your captions, Reel scripts, carousel slides, and hashtags. All platform-specific. All ready to copy and post.',
-    color: '#5ba4f5',
+    color: '#0065ff',
     tryLink: '/standalone-landing/',
     learnLink: '/standalone-landing/',
     stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
@@ -78,7 +78,7 @@ const AIProducts: React.FC = () => {
         <div className="hero-grid" />
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <div className="eyebrow reveal" style={{ justifyContent: 'center' }}>AI Products</div>
-          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: 'rgba(255,255,255,0.96)' }}>
+          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
             Tools that do the work<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>you don't have time for.</span>
           </h1>
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,18px)', fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, maxWidth: 560, margin: '0 auto 40px' }}>
@@ -98,14 +98,14 @@ const AIProducts: React.FC = () => {
             <div style={{ order: i % 2 === 0 ? 0 : 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{p.icon}</div>
-                <div style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: p.badge.includes('Live') ? 'rgba(47,207,142,0.12)' : 'rgba(255,255,255,0.06)', border: p.badge.includes('Live') ? '1px solid rgba(47,207,142,0.25)' : '1px solid rgba(255,255,255,0.1)', color: p.badge.includes('Live') ? '#2fcf8e' : 'rgba(255,255,255,0.5)' }}>{p.badge}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: p.badge.includes('Live') ? 'rgba(47,207,142,0.12)' : '#f0f0f0', border: p.badge.includes('Live') ? '1px solid rgba(47,207,142,0.25)' : '1px solid rgba(255,255,255,0.1)', color: p.badge.includes('Live') ? '#2fcf8e' : '#717171' }}>{p.badge}</div>
               </div>
               <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.06, color: 'rgba(255,255,255,0.97)', marginBottom: 8 }}>{p.name}</h2>
               <div style={{ fontSize: 16, fontWeight: 500, color: p.color, marginBottom: 16, letterSpacing: '-0.2px' }}>{p.tagline}</div>
               <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.72, marginBottom: 28, maxWidth: 460 }}>{p.desc}</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 32 }}>
                 {p.stats.map(([n,l]) => (
-                  <div key={l} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: '14px 10px', textAlign: 'center' }}>
+                  <div key={l} style={{ background: '#f5f5f5', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: '14px 10px', textAlign: 'center' }}>
                     <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 17, fontWeight: 700, color: p.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{n}</div>
                     <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 4, lineHeight: 1.3 }}>{l}</div>
                   </div>
@@ -132,17 +132,17 @@ const AIProducts: React.FC = () => {
                 </div>
                 {p.plans && (
                   <>
-                    <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '24px 0' }} />
+                    <div style={{ height: 1, background: '#ededed', margin: '24px 0' }} />
                     <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 14 }}>Pricing</div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                       {p.plans.map((pl: any) => (
-                        <div key={pl.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: 12, background: pl.popular ? 'rgba(91,164,245,0.1)' : 'rgba(255,255,255,0.04)', border: pl.popular ? '1px solid rgba(91,164,245,0.25)' : '1px solid rgba(255,255,255,0.07)' }}>
+                        <div key={pl.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: 12, background: pl.popular ? 'rgba(91,164,245,0.1)' : '#f5f5f5', border: pl.popular ? '1px solid rgba(91,164,245,0.25)' : '1px solid rgba(255,255,255,0.07)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ fontSize: 13, fontWeight: pl.popular ? 700 : 400, color: pl.popular ? '#5ba4f5' : 'rgba(255,255,255,0.75)' }}>{pl.name}</span>
-                            {pl.popular && <span style={{ fontSize: 9, fontWeight: 700, background: 'rgba(91,164,245,0.15)', border: '1px solid rgba(91,164,245,0.25)', borderRadius: 20, padding: '2px 7px', color: '#5ba4f5' }}>POPULAR</span>}
+                            <span style={{ fontSize: 13, fontWeight: pl.popular ? 700 : 400, color: pl.popular ? '#0065ff' : 'rgba(255,255,255,0.75)' }}>{pl.name}</span>
+                            {pl.popular && <span style={{ fontSize: 9, fontWeight: 700, background: 'rgba(91,164,245,0.15)', border: '1px solid rgba(91,164,245,0.25)', borderRadius: 20, padding: '2px 7px', color: '#0065ff' }}>POPULAR</span>}
                           </div>
                           <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 18, fontWeight: 700, color: pl.popular ? '#5ba4f5' : 'rgba(255,255,255,0.88)', letterSpacing: '-0.5px' }}>{pl.price}<span style={{ fontSize: 12, fontWeight: 400 }}>/mo</span></div>
+                            <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 18, fontWeight: 700, color: pl.popular ? '#0065ff' : '#1a1a1a', letterSpacing: '-0.5px' }}>{pl.price}<span style={{ fontSize: 12, fontWeight: 400 }}>/mo</span></div>
                             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>{pl.note}</div>
                           </div>
                         </div>
@@ -159,9 +159,9 @@ const AIProducts: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 26, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 26, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.35),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4.5vw,50px)', fontWeight: 700, letterSpacing: '-2px', marginBottom: 14, color: 'rgba(255,255,255,0.96)', lineHeight: 1.06 }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4.5vw,50px)', fontWeight: 700, letterSpacing: '-2px', marginBottom: 14, color: '#141414', lineHeight: 1.06 }}>
             Want to know when new<br />tools launch?
           </h2>
           <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>

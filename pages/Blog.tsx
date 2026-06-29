@@ -107,7 +107,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: 'rgba(255,255,255,0.35)' }}>
                 <Clock size={11} />{post.readTime} read
               </div>
-              <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.3)' }}>{post.date}</div>
+              <div style={{ fontSize: 11.5, color: '#adadad' }}>{post.date}</div>
             </div>
             
             {/* Title */}
@@ -126,7 +126,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
           {featured && post.stat && (
             <div style={{ flexShrink: 0, textAlign: 'center', background: `${post.color}10`, border: `1px solid ${post.color}22`, borderRadius: 16, padding: '16px 20px', minWidth: 90, display: ['none', 'block'] as any }}>
               <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 26, fontWeight: 800, color: post.color, letterSpacing: '-1px', lineHeight: 1 }}>{post.stat.value}</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 6, lineHeight: 1.4 }}>{post.stat.label}</div>
+              <div style={{ fontSize: 10, color: '#888', marginTop: 6, lineHeight: 1.4 }}>{post.stat.label}</div>
             </div>
           )}
         </div>
@@ -182,10 +182,10 @@ const Blog: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }} className="hero-grid-cols">
             <div>
               <div className="eyebrow reveal"><Rss size={12} />Intelligence Feed · Weekly</div>
-              <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: 'rgba(255,255,255,0.96)' }}>
+              <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: '#141414' }}>
                 Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#5ba4f5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
-              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.72, maxWidth: 400, marginBottom: 24 }}>
+              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: '#717171', lineHeight: 1.72, maxWidth: 400, marginBottom: 24 }}>
                 Real numbers, real case studies, and the exact frameworks we use to scale brands from ₹5L to ₹50L monthly revenue.
               </p>
               
@@ -198,7 +198,7 @@ const Blog: React.FC = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   style={{
                     width: '100%',
-                    background: 'rgba(255,255,255,0.03)',
+                    background: '#f5f5f5',
                     border: '1px solid rgba(255,255,255,0.08)',
                     borderRadius: 50,
                     padding: '12px 20px 12px 44px',
@@ -210,17 +210,17 @@ const Blog: React.FC = () => {
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.border = '1px solid #5ba4f560';
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                    e.currentTarget.style.background = '#f5f5f5';
                     e.currentTarget.style.boxShadow = '0 0 20px rgba(91, 164, 245, 0.1)';
                   }}
                   onBlur={(e) => {
                     e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                    e.currentTarget.style.background = '#f5f5f5';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
                 <svg
-                  style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)', width: 16, height: 16 }}
+                  style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#adadad', width: 16, height: 16 }}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -236,9 +236,9 @@ const Blog: React.FC = () => {
                   <button key={cat} onClick={() => { setActiveFilter(cat); }} style={{
                     fontFamily: "'DM Sans',system-ui", fontSize: 12.5, fontWeight: activeFilter === cat ? 600 : 400,
                     padding: '7px 16px', borderRadius: 50, cursor: 'pointer', transition: 'all .2s',
-                    background: activeFilter === cat ? 'rgba(91,164,245,0.15)' : 'rgba(255,255,255,0.05)',
+                    background: activeFilter === cat ? 'rgba(91,164,245,0.15)' : '#f5f5f5',
                     border: activeFilter === cat ? '1px solid rgba(91,164,245,0.35)' : '1px solid rgba(255,255,255,0.09)',
-                    color: activeFilter === cat ? '#5ba4f5' : 'rgba(255,255,255,0.5)',
+                    color: activeFilter === cat ? '#0065ff' : '#717171',
                   }}>{cat}</button>
                 ))}
               </div>
@@ -247,7 +247,7 @@ const Blog: React.FC = () => {
             <div className="reveal-r d2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {[['3', 'Posts per week'], ['150+', 'Brands scaled'], ['₹40M+', 'Ad spend managed'], ['4.9★', 'Client rating']].map(([n, l]) => (
                 <div key={l} className="glass-card" style={{ padding: '22px 18px', textAlign: 'center', borderRadius: 18 }}>
-                  <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#5ba4f5', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
+                  <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#0065ff', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 5 }}>{l}</div>
                 </div>
               ))}
@@ -264,7 +264,7 @@ const Blog: React.FC = () => {
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
             Latest dispatches — {filteredPosts.length} posts
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>Click any post to read</div>
+          <div style={{ fontSize: 12, color: '#adadad', fontStyle: 'italic' }}>Click any post to read</div>
         </div>
 
         {filteredPosts.length > 0 ? (
@@ -300,7 +300,7 @@ const Blog: React.FC = () => {
                 <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 10, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
                   Get growth breakdowns in your inbox
                 </h3>
-                <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: 20 }}>
+                <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.6, marginBottom: 20 }}>
                   Weekly strategies on AI automation, performance marketing, and client scaling. Straight to the point, zero fluff.
                 </p>
                 <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed! Welcome to the ninja circle.'); }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -309,7 +309,7 @@ const Blog: React.FC = () => {
                     required
                     placeholder="Enter your work email"
                     style={{
-                      background: 'rgba(255,255,255,0.04)',
+                      background: '#f5f5f5',
                       border: '1px solid rgba(255,255,255,0.08)',
                       borderRadius: 14,
                       padding: '12px 16px',
@@ -343,7 +343,7 @@ const Blog: React.FC = () => {
           <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 24, background: 'rgba(255,255,255,0.01)' }}>
             <div style={{ fontSize: 44, marginBottom: 14 }}>🔍</div>
             <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 8 }}>No articles found</h3>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5 }}>Try adjusting your search terms or category filters.</p>
+            <p style={{ color: '#888', fontSize: 13.5 }}>Try adjusting your search terms or category filters.</p>
           </div>
         )}
 
@@ -351,7 +351,7 @@ const Blog: React.FC = () => {
         {/* Admin-created posts from API */}
         {apiPosts.length > 0 && (
           <div style={{ marginTop: 56 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 24 }}>More from the feed</div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad', marginBottom: 24 }}>More from the feed</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="api-grid">
               {apiPosts.map((post: any, i: number) => {
                 const col = Object.values(categoryColors)[i % 3] as string;
@@ -361,7 +361,7 @@ const Blog: React.FC = () => {
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: `${col}14`, border: `1px solid ${col}28`, borderRadius: 50, padding: '3px 10px', fontSize: 10.5, fontWeight: 600, color: col, marginBottom: 14, width: 'fit-content' }}>
                         <Tag size={9} />{post.category || 'Insights'}
                       </div>
-                      <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,0.9)', lineHeight: 1.28, marginBottom: 10, letterSpacing: '-0.4px', flex: 1 }}>{post.title}</h3>
+                      <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 16, fontWeight: 700, color: '#141414', lineHeight: 1.28, marginBottom: 10, letterSpacing: '-0.4px', flex: 1 }}>{post.title}</h3>
                       <p style={{ fontSize: 12.5, fontWeight: 300, color: 'rgba(255,255,255,0.45)', lineHeight: 1.62 }}>{post.excerpt}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 16, fontSize: 12.5, fontWeight: 500, color: col }}>
                         Read <ArrowRight size={12} />
@@ -377,9 +377,9 @@ const Blog: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.75)', backdropFilter: 'blur(60px)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 24, padding: '56px 40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: 'rgba(8,14,26,0.75)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 24, padding: '56px 40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.38),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,42px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 12, color: 'rgba(255,255,255,0.96)', lineHeight: 1.1 }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,42px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 12, color: '#141414', lineHeight: 1.1 }}>
             Want these strategies working for your brand?
           </h2>
           <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 28, maxWidth: 480, margin: '0 auto 28px' }}>

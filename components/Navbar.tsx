@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
       height: 60,
       background: scrolled || isOpen
         ? 'rgba(255,255,255,0.97)'
-        : 'rgba(255,255,255,0.88)',
+        : '#1a1a1a',
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)',
       borderBottom: '1px solid #ededed',
