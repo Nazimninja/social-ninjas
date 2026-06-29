@@ -37,9 +37,21 @@ const toolCategories = [
         tagline: 'Your whole week of content written in 60s.',
         desc: 'Researches live trends in your exact niche, then writes your captions, scripts, carousels, and hashtags for all 7 major platforms. Native writing, infinite memory.',
         color: '#5ba4f5',
-        link: '/standalone-landing/',
-        external: false,
+        link: 'https://contentstudio.socialninjas.in',
+        external: true,
         btnText: '⚡ Try Content Studio Free'
+      },
+      {
+        id: 'fit-ninja',
+        badge: '🟢 Live Now',
+        icon: Sparkles,
+        name: 'Fit Ninja',
+        tagline: 'Your personalized AI fitness coach & diet planner.',
+        desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching tailored to your exact body type, goals, and lifestyle.',
+        color: '#ef4444',
+        link: 'https://fit.socialninjas.in',
+        external: true,
+        btnText: '⚡ Start Your Fitness Journey'
       },
       {
         id: 'ai-sales-agent',
@@ -103,7 +115,7 @@ const toolCategories = [
         tagline: 'Detailed gross-to-net tax breakdown.',
         desc: 'Calculate exact W-2 take-home pay after federal brackets, state progressive taxes (all 50 states), Medicare, Social Security, 401k, health insurance, and HSA deductions.',
         color: '#3b82f6',
-        link: 'https://salarytools.us/salary-calculator',
+        link: 'https://salary.socialninjas.in/salary-calculator',
         external: true,
         btnText: 'Open Calculator'
       },
@@ -115,7 +127,7 @@ const toolCategories = [
         tagline: 'Convert wages to annual pay instantly.',
         desc: 'Convert hourly rates to annual, monthly, or paycheck periods. Adjust for PTO, holidays, overtime rates, and customize hours worked per week.',
         color: '#10b981',
-        link: 'https://salarytools.us',
+        link: 'https://salary.socialninjas.in',
         external: true,
         btnText: 'Open Converter'
       }

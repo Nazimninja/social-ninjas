@@ -1,6 +1,19 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "contentstudio.socialninjas.in"
+        }
+      ],
+      "destination": "/app/content-studio",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/content-studio", "destination": "/standalone-landing/index.html" },
     { "source": "/standalone-crm", "destination": "/standalone-crm/index.html" },
