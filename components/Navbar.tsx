@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -10,124 +9,119 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => { setIsOpen(false); }, [location]);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'unset';
-    return () => { document.body.style.overflow = 'unset'; };
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   const navLinks = [
-    { label: 'Services', path: '/services' },
-    { label: 'Tools', path: '/tools' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'About', path: '/about' },
+    { label: 'Services',    path: '/services' },
+    { label: 'Tools',       path: '/tools' },
+    { label: 'Blog',        path: '/blog' },
+    { label: 'About',       path: '/about' },
   ];
-
 
   return (
     <nav style={{
       position: 'fixed', top: 0, width: '100%', zIndex: 50,
-      height: 62,
-      background: scrolled || isOpen ? 'rgba(8,16,31,0.92)' : 'rgba(8,16,31,0.7)',
-      backdropFilter: 'blur(48px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(48px) saturate(180%)',
-      borderBottom: '1px solid rgba(255,255,255,0.07)',
-      transition: 'background 0.3s',
+      height: 60,
+      background: scrolled || isOpen
+        ? 'rgba(255,255,255,0.97)'
+        : 'rgba(255,255,255,0.88)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      borderBottom: '1px solid #ededed',
+      transition: 'background 0.25s',
       display: 'flex', alignItems: 'center',
     }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', position: 'relative', zIndex: 70 }}>
-          <img src="/logo.png" alt="Social Ninja's" width={56} height={56} style={{ width: 56, height: 56, objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(91,164,245,0.5))', flexShrink: 0 }} />
-          <div>
-            <div style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 17, fontWeight: 600, letterSpacing: '-0.3px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
-              Social<span style={{ color: '#5ba4f5' }}>Ninja's</span>.
-            </div>
-            <div style={{ fontSize: '8.5px', fontWeight: 400, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)', lineHeight: 1 }}>
-              AI Agency
-            </div>
+      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 28px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+        {/* Logo */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', position: 'relative', zIndex: 70 }}>
+          <img src="/logo.png" alt="Social Ninja's" width={36} height={36} style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
+          <div style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px', color: '#141414', lineHeight: 1 }}>
+            Social<span style={{ color: '#0065ff' }}>Ninja's</span>
           </div>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="hidden-mobile">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               style={{
-                fontFamily: "'DM Sans', system-ui, sans-serif",
-                fontSize: 13.5, fontWeight: 400,
-                color: location.pathname === link.path ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.5)',
-                textDecoration: 'none', transition: 'color 0.2s', letterSpacing: '-0.1px',
+                fontFamily: "'Inter', system-ui, sans-serif",
+                fontSize: 14, fontWeight: 400,
+                color: location.pathname === link.path ? '#141414' : '#717171',
+                textDecoration: 'none',
+                transition: 'color 0.15s',
               }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = '#141414'; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = location.pathname === link.path ? '#141414' : '#717171'; }}
             >
               {link.label}
             </Link>
           ))}
-
           <Link to="/contact" style={{ textDecoration: 'none' }}>
             <button style={{
-              fontFamily: "'DM Sans', system-ui, sans-serif",
+              fontFamily: "'Inter', system-ui, sans-serif",
               fontSize: 13.5, fontWeight: 600, color: '#fff',
-              background: 'linear-gradient(135deg, #2563eb, #5ba4f5)',
-              border: 'none', borderRadius: 50, padding: '9px 22px',
-              cursor: 'pointer', letterSpacing: '-0.1px',
-              boxShadow: '0 4px 20px rgba(91,164,245,0.32), inset 0 1px 0 rgba(255,255,255,0.2)',
-              transition: 'all 0.22s',
+              background: '#0065ff',
+              border: 'none', borderRadius: 8, padding: '8px 18px',
+              cursor: 'pointer',
+              transition: 'background 0.15s',
             }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.transform = 'translateY(-1px)'; (e.target as HTMLElement).style.boxShadow = '0 8px 28px rgba(91,164,245,0.42)'; }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.transform = ''; (e.target as HTMLElement).style.boxShadow = '0 4px 20px rgba(91,164,245,0.32)'; }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.background = '#0047f0'; }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0065ff'; }}
             >
-              Book Strategy Call
+              Book a Call
             </button>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          style={{ color: 'rgba(255,255,255,0.85)', background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'none', position: 'relative', zIndex: 70 }}
+          style={{ color: '#141414', background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'none', position: 'relative', zIndex: 70 }}
           className="show-mobile"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
-          {isOpen ? <X strokeWidth={1.5} size={26} /> : <Menu strokeWidth={1.5} size={26} />}
+          {isOpen ? <X strokeWidth={1.5} size={24} /> : <Menu strokeWidth={1.5} size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Full-screen Menu */}
       <div style={{
         position: 'fixed', inset: 0,
-        background: '#08101f',
-        backdropFilter: 'blur(48px)',
-        zIndex: 60, display: 'flex', flexDirection: 'column', padding: '88px 28px 40px',
-        transition: 'all 0.45s cubic-bezier(0.32,0.72,0,1)',
+        background: '#fff',
+        zIndex: 60, display: 'flex', flexDirection: 'column', padding: '80px 28px 48px',
+        transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s',
         transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
         opacity: isOpen ? 1 : 0,
         pointerEvents: isOpen ? 'auto' : 'none',
       }}>
-        {/* Ambient */}
-        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle,rgba(29,78,216,0.2),transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }}></div>
-        <div style={{ position: 'absolute', bottom: '10%', left: '-10%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle,rgba(91,164,245,0.15),transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }}></div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {navLinks.map((link, idx) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setIsOpen(false)}
               style={{
-                fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
-                fontSize: 38, fontWeight: 700, letterSpacing: '-1px',
-                textDecoration: 'none', lineHeight: 1.15,
-                color: location.pathname === link.path ? '#5ba4f5' : 'rgba(255,255,255,0.9)',
-                transition: `all 0.5s ease ${100 + idx * 60}ms`,
-                transform: isOpen ? 'translateX(0)' : 'translateX(40px)',
+                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+                fontSize: 36, fontWeight: 900, letterSpacing: '-1.5px',
+                textDecoration: 'none', lineHeight: 1.15, padding: '8px 0',
+                color: location.pathname === link.path ? '#0065ff' : '#141414',
+                borderBottom: '1px solid #ededed',
+                transition: `all 0.35s ease ${idx * 50}ms`,
+                transform: isOpen ? 'translateX(0)' : 'translateX(24px)',
                 opacity: isOpen ? 1 : 0,
               }}
             >
@@ -136,29 +130,23 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        <div style={{ marginTop: 'auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', margin: '28px 0' }}></div>
+        <div style={{ marginTop: 'auto' }}>
           <Link to="/contact" onClick={() => setIsOpen(false)} style={{ textDecoration: 'none' }}>
             <button style={{
-              width: '100%', padding: '16px', borderRadius: 50,
-              background: 'linear-gradient(135deg, #2563eb, #5ba4f5)',
-              color: '#fff', border: 'none', fontSize: 16, fontWeight: 500, cursor: 'pointer',
-              fontFamily: "'DM Sans', system-ui, sans-serif",
-              boxShadow: '0 12px 36px rgba(91,164,245,0.35), inset 0 1px 0 rgba(255,255,255,0.18)',
+              width: '100%', padding: '15px',
+              borderRadius: 10,
+              background: '#0065ff',
+              color: '#fff', border: 'none', fontSize: 16, fontWeight: 600, cursor: 'pointer',
+              fontFamily: "'Inter', system-ui, sans-serif",
             }}>
-              Book Strategy Call
+              Book a Call →
             </button>
           </Link>
-          <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 11, textAlign: 'center', marginTop: 20, fontFamily: "'DM Sans', system-ui", letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            © {new Date().getFullYear()} Social Ninja's.
+          <p style={{ color: '#adadad', fontSize: 11, textAlign: 'center', marginTop: 20, fontFamily: "'Inter', system-ui", letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            © {new Date().getFullYear()} Social Ninja's
           </p>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) { .hidden-mobile { display: none !important; } .show-mobile { display: block !important; } }
-        @media (min-width: 769px) { .show-mobile { display: none !important; } }
-      `}</style>
     </nav>
   );
 };
