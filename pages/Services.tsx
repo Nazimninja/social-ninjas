@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -70,7 +70,7 @@ const Services: React.FC = () => {
               <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.68, marginBottom: 22 }}>{s.desc}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
                 {s.features.map((f, j) => (
-                  <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, color: 'rgba(255,255,255,0.62)', fontWeight: 400 }}>
+                  <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, color: '#525252', fontWeight: 400 }}>
                     <CheckCircle2 size={14} color={s.color} strokeWidth={2} />{f}
                   </div>
                 ))}
@@ -90,7 +90,7 @@ const Services: React.FC = () => {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Work</div>
-            <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.1 }}>
+            <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', color: '#141414', lineHeight: 1.1 }}>
               From your first call to<br /><span style={{ color: '#0065ff' }}>real results in 30 days.</span>
             </h2>
           </div>
@@ -104,7 +104,7 @@ const Services: React.FC = () => {
               <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 28, borderRadius: 20 }}>
                 <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 30, fontWeight: 500, color: 'rgba(91,164,245,0.22)', lineHeight: 1, marginBottom: 16, letterSpacing: '-1px' }}>{p.n}</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>{p.t}</div>
-                <div style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{p.d}</div>
+                <div style={{ fontSize: 13, fontWeight: 300, color: '#888', lineHeight: 1.65 }}>{p.d}</div>
               </div>
             ))}
           </div>
@@ -113,12 +113,12 @@ const Services: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: '#fff', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4.5vw,52px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.06, marginBottom: 14, color: '#141414' }}>
             Ready to build something<br /><span style={{ color: '#0065ff' }}>that actually works?</span>
           </h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
+          <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
             Book a free 30-minute strategy call. No pressure, no pitch deck. Just an honest look at your marketing and what we'd do differently.
           </p>
           <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book My Free Call →</button></Link>

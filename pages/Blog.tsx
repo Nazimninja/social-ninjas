@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, Tag, Rss, TrendingUp, Bot, BarChart3, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -38,12 +38,12 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'translateY(-4px)';
           e.currentTarget.style.border = `1px solid ${post.color}40`;
-          e.currentTarget.style.background = `linear-gradient(135deg, ${post.color}15, rgba(255,255,255,0.02))`;
+          e.currentTarget.style.background = `linear-gradient(135deg, ${post.color}15, #fafafa)`;
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'none';
-          e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
-          e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+          e.currentTarget.style.border = '1px solid #ededed';
+          e.currentTarget.style.background = '#fafafa';
         }}
       >
         {/* Visual Thumbnail Header */}
@@ -64,7 +64,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
             position: 'absolute',
             inset: 0,
             opacity: 0.08,
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(#e5e5e5 1px, transparent 1px), linear-gradient(90deg, #e5e5e5 1px, transparent 1px)`,
             backgroundSize: '16px 16px'
           }} />
           
@@ -90,7 +90,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
             alignItems: 'center',
             justifyContent: 'center',
             color: post.color,
-            boxShadow: `0 8px 24px ${post.color}15, inset 0 1px 0 rgba(255,255,255,0.1)`,
+            boxShadow: `0 8px 24px ${post.color}15, inset 0 1px 0 #e5e5e5`,
             zIndex: 2
           }}>
             {React.cloneElement(post.icon, { size: 24 })}
@@ -104,7 +104,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: `${post.color}14`, border: `1px solid ${post.color}28`, borderRadius: 50, padding: '4px 12px', fontSize: 11, fontWeight: 600, color: post.color }}>
                 {post.icon}{post.category}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: 'rgba(255,255,255,0.35)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: '#adadad' }}>
                 <Clock size={11} />{post.readTime} read
               </div>
               <div style={{ fontSize: 11.5, color: '#adadad' }}>{post.date}</div>
@@ -115,11 +115,11 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
               fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
               fontSize: featured ? 'clamp(22px,3vw,30px)' : 'clamp(17px,2vw,22px)',
               fontWeight: 800, letterSpacing: '-0.5px', lineHeight: 1.25,
-              color: 'rgba(255,255,255,0.95)', marginBottom: 10,
+              color: '#141414', marginBottom: 10,
             }}>{post.title}</h2>
             
             {/* Excerpt */}
-            <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1.6, margin: 0 }}>{post.excerpt}</p>
+            <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.6, margin: 0 }}>{post.excerpt}</p>
           </div>
           
           {/* Stat badge */}
@@ -132,7 +132,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
         </div>
 
         {/* Read more link */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: post.color, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: post.color, borderTop: '1px solid #f0f0f0', paddingTop: 16 }}>
           Read full article <ArrowRight size={14} />
         </div>
       </div>
@@ -214,7 +214,7 @@ const Blog: React.FC = () => {
                     e.currentTarget.style.boxShadow = '0 0 20px rgba(91, 164, 245, 0.1)';
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
+                    e.currentTarget.style.border = '1px solid #ededed';
                     e.currentTarget.style.background = '#f5f5f5';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
@@ -237,7 +237,7 @@ const Blog: React.FC = () => {
                     fontFamily: "'DM Sans',system-ui", fontSize: 12.5, fontWeight: activeFilter === cat ? 600 : 400,
                     padding: '7px 16px', borderRadius: 50, cursor: 'pointer', transition: 'all .2s',
                     background: activeFilter === cat ? 'rgba(91,164,245,0.15)' : '#f5f5f5',
-                    border: activeFilter === cat ? '1px solid rgba(91,164,245,0.35)' : '1px solid rgba(255,255,255,0.09)',
+                    border: activeFilter === cat ? '1px solid rgba(91,164,245,0.35)' : '1px solid #e8e8e8',
                     color: activeFilter === cat ? '#0065ff' : '#717171',
                   }}>{cat}</button>
                 ))}
@@ -248,7 +248,7 @@ const Blog: React.FC = () => {
               {[['3', 'Posts per week'], ['150+', 'Brands scaled'], ['₹40M+', 'Ad spend managed'], ['4.9★', 'Client rating']].map(([n, l]) => (
                 <div key={l} className="glass-card" style={{ padding: '22px 18px', textAlign: 'center', borderRadius: 18 }}>
                   <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#0065ff', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 5 }}>{l}</div>
+                  <div style={{ fontSize: 11, color: '#adadad', marginTop: 5 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -261,7 +261,7 @@ const Blog: React.FC = () => {
 
         {/* Section label */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad' }}>
             Latest dispatches — {filteredPosts.length} posts
           </div>
           <div style={{ fontSize: 12, color: '#adadad', fontStyle: 'italic' }}>Click any post to read</div>
@@ -340,7 +340,7 @@ const Blog: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 24, background: '#fafafa' }}>
+          <div style={{ textAlign: 'center', padding: '72px 24px', border: '1px solid #f0f0f0', borderRadius: 24, background: '#fafafa' }}>
             <div style={{ fontSize: 44, marginBottom: 14 }}>🔍</div>
             <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui", fontSize: 20, fontWeight: 700, color: '#141414', marginBottom: 8 }}>No articles found</h3>
             <p style={{ color: '#888', fontSize: 13.5 }}>Try adjusting your search terms or category filters.</p>
@@ -362,7 +362,7 @@ const Blog: React.FC = () => {
                         <Tag size={9} />{post.category || 'Insights'}
                       </div>
                       <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 16, fontWeight: 700, color: '#141414', lineHeight: 1.28, marginBottom: 10, letterSpacing: '-0.4px', flex: 1 }}>{post.title}</h3>
-                      <p style={{ fontSize: 12.5, fontWeight: 300, color: 'rgba(255,255,255,0.45)', lineHeight: 1.62 }}>{post.excerpt}</p>
+                      <p style={{ fontSize: 12.5, fontWeight: 300, color: '#888', lineHeight: 1.62 }}>{post.excerpt}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 16, fontSize: 12.5, fontWeight: 500, color: col }}>
                         Read <ArrowRight size={12} />
                       </div>
@@ -382,7 +382,7 @@ const Blog: React.FC = () => {
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,42px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 12, color: '#141414', lineHeight: 1.1 }}>
             Want these strategies working for your brand?
           </h2>
-          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 28, maxWidth: 480, margin: '0 auto 28px' }}>
+          <p style={{ fontSize: 15, fontWeight: 300, color: '#717171', marginBottom: 28, maxWidth: 480, margin: '0 auto 28px' }}>
             Book a free 30-minute audit and we'll show you exactly where your biggest growth leaks are.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>

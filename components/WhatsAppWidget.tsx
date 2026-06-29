@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Mail, Instagram, X, MessageCircle } from 'lucide-react';
 
 const ContactWidget: React.FC = () => {
@@ -14,7 +14,7 @@ const ContactWidget: React.FC = () => {
             href="https://wa.me/918147757479"
             target="_blank"
             rel="noopener noreferrer"
-            style={{display:"flex",alignItems:"center",gap:8,background:"rgba(11,20,34,0.92)",backdropFilter:"blur(24px)",border:"1px solid rgba(34,197,94,0.2)",color:"rgba(255,255,255,0.85)",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
+            style={{display:"flex",alignItems:"center",gap:8,background:"#f5f5f5",backdropFilter:"blur(24px)",border:"1px solid rgba(34,197,94,0.2)",color:"#2a2a2a",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(34,197,94,0.5)"; e.currentTarget.style.background = "rgba(34,197,94,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(34,197,94,0.2)"; e.currentTarget.style.background = "rgba(11,20,34,0.92)"; }}
           >
@@ -24,7 +24,7 @@ const ContactWidget: React.FC = () => {
           {/* Email */}
           <a
             href="mailto:info@socialninjas.in"
-            style={{display:"flex",alignItems:"center",gap:8,background:"rgba(11,20,34,0.92)",backdropFilter:"blur(24px)",border:"1px solid rgba(91,164,245,0.2)",color:"rgba(255,255,255,0.85)",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
+            style={{display:"flex",alignItems:"center",gap:8,background:"#f5f5f5",backdropFilter:"blur(24px)",border:"1px solid rgba(91,164,245,0.2)",color:"#2a2a2a",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(91,164,245,0.5)"; e.currentTarget.style.background = "rgba(91,164,245,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(91,164,245,0.2)"; e.currentTarget.style.background = "rgba(11,20,34,0.92)"; }}
           >
@@ -36,7 +36,7 @@ const ContactWidget: React.FC = () => {
             href="https://www.instagram.com/socialninja.s/"
             target="_blank"
             rel="noopener noreferrer"
-            style={{display:"flex",alignItems:"center",gap:8,background:"rgba(11,20,34,0.92)",backdropFilter:"blur(24px)",border:"1px solid rgba(236,72,153,0.2)",color:"rgba(255,255,255,0.85)",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
+            style={{display:"flex",alignItems:"center",gap:8,background:"#f5f5f5",backdropFilter:"blur(24px)",border:"1px solid rgba(236,72,153,0.2)",color:"#2a2a2a",fontSize:12,fontWeight:500,padding:"8px 16px",borderRadius:50,boxShadow:"0 4px 20px rgba(0,0,0,0.3)",whiteSpace:"nowrap",textDecoration:"none",transition:"all .2s",fontFamily:"'DM Sans',sans-serif"}}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(236,72,153,0.5)"; e.currentTarget.style.background = "rgba(236,72,153,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(236,72,153,0.2)"; e.currentTarget.style.background = "rgba(11,20,34,0.92)"; }}
           >

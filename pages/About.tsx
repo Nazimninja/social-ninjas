@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart3, Clock, ShieldCheck, Plus, Minus } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -68,14 +68,14 @@ const About: React.FC = () => {
       {/* OUR STORY */}
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
         <div className="pill reveal" style={{ justifyContent: 'center' }}>Our Story</div>
-        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: '#141414' }}>
           We built what we wished we could hire.
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="hero-grid-cols">
-          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.82 }}>
+          <p style={{ fontSize: 15, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.82 }}>
             Social Ninja's started because we kept seeing the same problem: brands spending money on marketing but not knowing if it was working. Agencies would send fancy reports — but the numbers never seemed to connect to actual sales.<br /><br />We decided to do things differently. We kept the team small and focused, put AI at the centre of everything, and tied every decision to one question: is this making our client more money?
           </p>
-          <p style={{ fontSize: 15, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.82 }}>
+          <p style={{ fontSize: 15, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.82 }}>
             Today we help brands across India, Dubai, and beyond — from D2C startups to established businesses — grow faster using AI automation, paid advertising, and content that converts.<br /><br />We're small on purpose. Every client works with experienced people who genuinely care about their results. When you grow, we grow. That's not a slogan — that's literally how our business model works.
           </p>
         </div>
@@ -85,7 +85,7 @@ const About: React.FC = () => {
       <div style={{ borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed', padding: '80px 28px', background: 'rgba(4,8,18,0.5)', position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Think</div>
-          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: 'rgba(255,255,255,0.95)' }}>Three rules we never break.</h2>
+          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: '#141414' }}>Three rules we never break.</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
             {[
               { Icon: BarChart3, title: 'Revenue over likes', desc: 'We don\'t care how many followers you have. We care how much money your marketing is making. Every strategy starts and ends with that.' },
@@ -97,7 +97,7 @@ const About: React.FC = () => {
                   <item.Icon size={24} color="#5ba4f5" strokeWidth={1.5} />
                 </div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, color: '#141414', marginBottom: 10, fontFamily: "'DM Sans',sans-serif" }}>{item.title}</h3>
-                <p style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,0.48)', lineHeight: 1.68 }}>{item.desc}</p>
+                <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.68 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -107,17 +107,17 @@ const About: React.FC = () => {
       {/* FAQ */}
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
         <div className="pill reveal" style={{ justifyContent: 'center' }}>Common Questions</div>
-        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: 'rgba(255,255,255,0.95)' }}>Things people usually ask us.</h2>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: '#141414' }}>Things people usually ask us.</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {faqs.map((faq, i) => (
             <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(91,164,245,0.06)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.28)' : '#ededed'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s' }}>
-              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#0065ff' : 'rgba(255,255,255,0.85)', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
+              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#0065ff' : '#2a2a2a', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
                 {faq.q}
                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: openFaq === i ? 'rgba(91,164,245,0.15)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.3)' : '#e0e0e0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
-                  {openFaq === i ? <Minus size={14} color="#5ba4f5" /> : <Plus size={14} color="rgba(255,255,255,0.5)" />}
+                  {openFaq === i ? <Minus size={14} color="#5ba4f5" /> : <Plus size={14} color="#717171" />}
                 </div>
               </button>
-              {openFaq === i && <div style={{ padding: '0 22px 20px', fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>{faq.a}</div>}
+              {openFaq === i && <div style={{ padding: '0 22px 20px', fontSize: 14, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.7 }}>{faq.a}</div>}
             </div>
           ))}
         </div>
@@ -125,10 +125,10 @@ const About: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: '#fff', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>Let's grow your business together.</h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>Book a free 30-minute call. We\'ll find what\'s holding your marketing back and show you exactly what we\'d do to fix it.</p>
+          <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>Book a free 30-minute call. We\'ll find what\'s holding your marketing back and show you exactly what we\'d do to fix it.</p>
           <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book a Free Call →</button></Link>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';
 import SEO from '../components/SEO';
 import { submitToGoogleSheets } from '../services/googleSheets';
@@ -18,7 +18,7 @@ function useReveal() {
 
 const Field=({label,name,type='text',placeholder,icon:Icon,form,errors,set}:{label:string,name:string,type?:string,placeholder?:string,icon?:any,form:any,errors:any,set:any})=>(
   <div style={{marginBottom:18}}>
-    <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
+    <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
       {Icon&&<Icon size={12}/>}{label}
       {errors[name]&&<span style={{color:'var(--gold)',fontSize:10,marginLeft:'auto',fontWeight:500}}>{errors[name]}</span>}
     </label>
@@ -104,8 +104,8 @@ const Contact: React.FC = () => {
                     <Ico size={18} color="#5ba4f5" strokeWidth={1.5}/>
                   </div>
                   <div>
-                    <div style={{fontSize:11,color:'rgba(255,255,255,0.35)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
-                    <div style={{fontSize:14,fontWeight:400,color:'rgba(255,255,255,0.75)'}}>{val}</div>
+                    <div style={{fontSize:11,color:'#adadad',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
+                    <div style={{fontSize:14,fontWeight:400,color:'#404040'}}>{val}</div>
                   </div>
                 </a>
               ))}
@@ -114,8 +114,8 @@ const Contact: React.FC = () => {
             <div className="reveal d4" style={{marginTop:48,display:'flex',gap:20}}>
               {[['150+','Brands'],['4.9★','Rating'],['24h','Response']].map(([n,l])=>(
                 <div key={l} className="glass-card" style={{padding:'16px 20px',borderRadius:14,textAlign:'center',flex:1}}>
-                  <div style={{fontFamily:"'DM Sans'",fontSize:22,fontWeight:600,color:'rgba(255,255,255,0.95)',letterSpacing:'-0.5px',lineHeight:1}}>{n}</div>
-                  <div style={{fontSize:10.5,color:'rgba(255,255,255,0.35)',marginTop:3,letterSpacing:'0.04em'}}>{l}</div>
+                  <div style={{fontFamily:"'DM Sans'",fontSize:22,fontWeight:600,color:'#141414',letterSpacing:'-0.5px',lineHeight:1}}>{n}</div>
+                  <div style={{fontSize:10.5,color:'#adadad',marginTop:3,letterSpacing:'0.04em'}}>{l}</div>
                 </div>
               ))}
             </div>
@@ -125,10 +125,10 @@ const Contact: React.FC = () => {
           <div className="reveal-r d1">
             <div className="glass-card" style={{borderRadius:24,padding:0,overflow:'hidden'}}>
               {/* Step indicator */}
-              <div style={{padding:'20px 28px',borderBottom:'1px solid rgba(255,255,255,0.07)',display:'flex',alignItems:'center',gap:8}}>
+              <div style={{padding:'20px 28px',borderBottom:'1px solid #ededed',display:'flex',alignItems:'center',gap:8}}>
                 {[1,2,3].map(s=>(
                   <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#0065ff':'rgba(255,255,255,0.35)',fontFamily:"'JetBrains Mono',monospace"}}>
+                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#0065ff':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
                       {s<step?'✓':s}
                     </div>
                     {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'#f0f0f0',transition:'background .4s'}}/>}
@@ -140,8 +140,8 @@ const Contact: React.FC = () => {
               <form onSubmit={submit} style={{padding:28}}>
                 {step===1&&(
                   <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Tell us about yourself.</p>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
+                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Tell us about yourself.</p>
                     <Field label="Full Name" name="name" placeholder="Jane Smith" icon={User} form={form} errors={errors} set={set}/>
                     <Field label="Work Email" name="email" type="email" placeholder="jane@company.com" icon={Mail} form={form} errors={errors} set={set}/>
                     <Field label="Company" name="company" placeholder="Acme Inc" icon={Building} form={form} errors={errors} set={set}/>
@@ -149,11 +149,11 @@ const Contact: React.FC = () => {
                 )}
                 {step===2&&(
                   <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Help us understand your current setup.</p>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
+                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Help us understand your current setup.</p>
                     <Field label="Website / Social Handle" name="website" placeholder="acme.com or @acme" icon={Globe} form={form} errors={errors} set={set}/>
                     <div style={{marginBottom:18}}>
-                      <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
+                      <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
                       <select value={form.company} onChange={e=>set('company',e.target.value)} className="field" style={{appearance:'none',cursor:'pointer'}}>
                         <option value="">Select range...</option>
                         {['Under $1,000','$1,000–$5,000','$5,000–$20,000','$20,000–$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
@@ -163,10 +163,10 @@ const Contact: React.FC = () => {
                 )}
                 {step===3&&(
                   <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'rgba(255,255,255,0.95)',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'rgba(255,255,255,0.38)',marginBottom:24}}>Be specific — this shapes our strategy.</p>
+                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
+                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific — this shapes our strategy.</p>
                     <div style={{marginBottom:18}}>
-                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
+                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         <Phone size={12}/>Phone
                         {errors.phone&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.phone}</span>}
                       </label>
@@ -178,7 +178,7 @@ const Contact: React.FC = () => {
                       </div>
                     </div>
                     <div style={{marginBottom:18}}>
-                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'rgba(255,255,255,0.38)',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
+                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         Your Bottleneck
                         {errors.message&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
                       </label>

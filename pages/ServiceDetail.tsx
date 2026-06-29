@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -101,7 +101,7 @@ const ServiceDetail: React.FC = () => {
       <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
         
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
-          <Link to="/services" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
+          <Link to="/services" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#888', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
             <ArrowLeft size={14} /> Back to Services
           </Link>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
@@ -113,7 +113,7 @@ const ServiceDetail: React.FC = () => {
                 {s.title}
               </h1>
               <div className="reveal d1" style={{ fontSize: 18, fontWeight: 400, color: s.color, marginBottom: 20, letterSpacing: '-0.2px' }}>{s.tagline}</div>
-              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, marginBottom: 36, borderLeft: `2px solid ${s.color}50`, paddingLeft: 20 }}>{s.hero}</p>
+              <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.75, marginBottom: 36, borderLeft: `2px solid ${s.color}50`, paddingLeft: 20 }}>{s.hero}</p>
               <div className="reveal d3" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>{s.cta} <ArrowRight size={15} /></button></Link>
               </div>
@@ -137,23 +137,23 @@ const ServiceDetail: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginBottom: 60 }} className="hero-grid-cols">
           <div className="glass-card reveal" style={{ padding: 32, borderRadius: 22 }}>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,100,100,0.7)', marginBottom: 14 }}>The Problem</div>
-            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.75 }}>{s.problem}</p>
+            <p style={{ fontSize: 14, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.75 }}>{s.problem}</p>
           </div>
           <div className="glass-card reveal d1" style={{ padding: 32, borderRadius: 22, borderTop: `2px solid ${s.color}40` }}>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, marginBottom: 14 }}>Our Solution</div>
-            <p style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.58)', lineHeight: 1.75 }}>{s.solution}</p>
+            <p style={{ fontSize: 14, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.75 }}>{s.solution}</p>
           </div>
         </div>
 
         <div className="pill reveal" style={{ justifyContent: 'center' }}>What's Included</div>
-        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 40, color: 'rgba(255,255,255,0.95)' }}>
+        <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 40, color: '#141414' }}>
           Here's exactly what you get.
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {s.benefits.map((b: string, i: number) => (
             <div key={i} className={`glass-card reveal d${(i%3)+1}`} style={{ padding: '18px 22px', borderRadius: 16, display: 'flex', alignItems: 'flex-start', gap: 14 }}>
               <CheckCircle2 size={18} color={s.color} strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />
-              <span style={{ fontSize: 14.5, fontWeight: 400, color: 'rgba(255,255,255,0.75)', lineHeight: 1.55 }}>{b}</span>
+              <span style={{ fontSize: 14.5, fontWeight: 400, color: '#404040', lineHeight: 1.55 }}>{b}</span>
             </div>
           ))}
         </div>
@@ -161,12 +161,12 @@ const ServiceDetail: React.FC = () => {
 
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: 'rgba(8,14,26,0.7)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div className="reveal" style={{ background: '#fff', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${s.color}50,transparent)` }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', lineHeight: 1.08, marginBottom: 14, color: '#141414' }}>
             Ready to get started?
           </h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.48)', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
+          <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
             Book a free 30-minute call. We'll look at your specific situation and show you exactly what we'd do and what results you can realistically expect.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>

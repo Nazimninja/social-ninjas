@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
@@ -237,7 +237,7 @@ const Tools: React.FC = () => {
                           <button style={{
                             width: '100%', padding: '12px 18px', borderRadius: 12,
                             background: t.badge.includes('Live') ? `linear-gradient(135deg, ${t.color}cc, ${t.color})` : '#f5f5f5',
-                            border: t.badge.includes('Live') ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                            border: t.badge.includes('Live') ? 'none' : '1px solid #ededed',
                             color: '#141414',
                             fontSize: 13.5, fontWeight: 600,
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
