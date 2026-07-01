@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Linkedin, Facebook, Mail, Phone } from 'lucide-react';
+import Logo from './Logo';
 
 const Footer: React.FC = () => {
   return (
@@ -21,13 +22,7 @@ const Footer: React.FC = () => {
           {/* Brand column */}
           <div>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', marginBottom: 20 }}>
-              <img
-                src="/logo.png"
-                alt="Social Ninja's"
-                width={56}
-                height={56}
-                style={{ width: 56, height: 56, objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(91,164,245,0.5))' }}
-              />
+              <Logo size={42} />
               <div>
                 <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#141414', lineHeight: 1.1 }}>
                   Social<span style={{ color: '#0065ff' }}>Ninja's</span>.

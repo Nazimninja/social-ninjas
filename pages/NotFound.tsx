@@ -16,9 +16,9 @@ const NotFound: React.FC = () => {
                 <AlertTriangle size={44} strokeWidth={1.5} />
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-display font-bold text-white mb-4">404</h1>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Page Not Found</h2>
-            <p className="text-neutral-400 text-lg max-w-md mb-10 leading-relaxed">
+            <h1 className="text-6xl md:text-8xl font-display font-bold text-neutral-900 mb-4">404</h1>
+            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 mb-6">Page Not Found</h2>
+            <p className="text-neutral-600 text-lg max-w-md mb-10 leading-relaxed">
                 The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
             </p>
 

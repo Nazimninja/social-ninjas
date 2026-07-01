@@ -21,10 +21,10 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-300 rounded-full px-8 py-4 text-sm tracking-wide transform hover:-translate-y-1 active:translate-y-0 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer relative overflow-hidden";
 
   const variants = {
-    primary: "bg-white text-black font-bold hover:bg-brand-primary hover:text-brand-realBlack shadow-none hover:shadow-[0_0_35px_rgba(56,189,248,0.5)] border border-transparent animate-button-glow group",
-    secondary: "bg-brand-surface border border-white/10 text-white hover:bg-white/5 hover:border-white/20 backdrop-blur-md",
-    outline: "border border-white/10 text-white hover:border-brand-primary hover:text-brand-primary bg-transparent",
-    ghost: "text-neutral-400 hover:text-white bg-transparent px-4"
+    primary: "bg-[#0065ff] text-white font-bold hover:bg-[#0047f0] hover:shadow-[0_4px_20px_rgba(0,101,255,0.2)] border border-transparent group",
+    secondary: "bg-[#fafafa] border border-[#ededed] text-[#141414] hover:bg-[#f5f5f5] hover:border-[#adadad]",
+    outline: "border border-[#d0d0d0] text-[#141414] hover:border-[#0065ff] hover:text-[#0065ff] bg-transparent",
+    ghost: "text-[#717171] hover:text-[#141414] bg-transparent px-4"
   };
 
   const widthStyle = fullWidth ? "w-full" : "w-auto";

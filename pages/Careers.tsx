@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useRef } from 'react';
 import { Briefcase, Globe, Zap, Layers, ArrowRight, CheckCircle2, User, Mail, Phone, Link as LinkIcon, FileText, Loader2, Send } from 'lucide-react';
 import Button from '../components/Button';
@@ -221,7 +221,7 @@ const Careers: React.FC = () => {
                                 <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
                                     <Button
                                         variant="outline"
-                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-neutral-300 hover:border-brand-primary hover:bg-brand-primary hover:text-neutral-900"
+                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-neutral-300 hover:border-[#0065ff] hover:bg-[#0065ff] hover:text-white"
                                         onClick={() => handleApplyClick(role.title)}
                                     >
                                         Apply Now

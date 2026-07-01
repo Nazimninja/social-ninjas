@@ -1,8 +1,9 @@
-﻿
+
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Bot, MessageSquare, Zap, Clock, Calendar, Users, Briefcase, ArrowRight, CheckCircle2, AlertCircle, TrendingUp, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import Button from '../../components/Button';
+import Logo from '../../components/Logo';
 import { submitToGoogleSheets } from '../../services/googleSheets';
 
 // Reusing ScrollReveal for animations
@@ -83,7 +84,7 @@ const LeadAutomation: React.FC = () => {
             <nav className="fixed top-0 w-full z-50 py-3 bg-white/90 backdrop-blur-xl border-b border-neutral-200">
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                     <a href="/" className="flex items-center gap-2">
-                        <img src="/logo.png" alt="Social Ninja's" className="h-16 md:h-20 w-auto object-contain" />
+                        <Logo size={36} />
                         <div className="flex flex-col">
                             <span className="font-display text-xl md:text-2xl font-bold text-neutral-900 tracking-tight leading-none">
                                 Social<span className="text-brand-primary">Ninja's</span>.
@@ -122,7 +123,7 @@ const LeadAutomation: React.FC = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
                         <button onClick={scrollToDemo} className="w-full sm:w-auto">
-                            <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_0_40px_rgba(56,189,248,0.3)] hover:shadow-[0_0_60px_rgba(56,189,248,0.5)]">
+                            <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.15)] hover:shadow-[0_8px_32px_rgba(0,101,255,0.25)]">
                                 👉 Book a Free Demo
                             </Button>
                         </button>
@@ -134,7 +135,7 @@ const LeadAutomation: React.FC = () => {
                     {/* Hero Visual */}
                     <div className="mt-20 relative mx-auto max-w-5xl animate-fade-in-up" style={{ animationDelay: '400ms' }}>
                         <div className="absolute inset-0 bg-brand-primary/5 rounded-3xl transform rotate-1 blur-2xl"></div>
-                        <div className="relative bg-[#0A0F2C] border border-neutral-200 rounded-2xl shadow-2xl p-4 md:p-8 flex flex-col md:flex-row gap-8 items-center">
+                        <div className="relative bg-neutral-50 border border-neutral-200 rounded-2xl shadow-2xl p-4 md:p-8 flex flex-col md:flex-row gap-8 items-center">
                             {/* Fake Chat UI */}
                             <div className="w-full md:w-1/2 bg-white rounded-xl p-4 border border-neutral-200 space-y-4">
                                 <div className="flex items-center gap-3 border-b border-neutral-200 pb-3">
@@ -187,35 +188,35 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 2. PROBLEM SECTION --- */}
-            <section className="py-16 md:py-24 bg-[#050A1F]">
+            <section className="py-16 md:py-24 bg-[#fafafa] border-t border-b border-neutral-200">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12">Be Honest — <span className="text-amber-400">How Many Leads</span> Do You Miss Every Week?</h2>
-
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-12 text-neutral-900">Be Honest — <span className="text-red-500">How Many Leads</span> Do You Miss Every Week?</h2>
+ 
                     <div className="grid md:grid-cols-2 gap-8 text-left">
-                        <div className="bg-neutral-50 p-8 rounded-2xl border border-neutral-200 hover:border-amber-500/30 transition-colors group">
-                            <Clock className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">You're Busy or Offline</h3>
+                        <div className="bg-white p-8 rounded-2xl border border-neutral-200 hover:border-red-500/30 transition-colors group">
+                            <Clock className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                            <h3 className="text-xl font-bold mb-2 text-neutral-900">You're Busy or Offline</h3>
                             <p className="text-neutral-600">Customers message when you're sleeping or working. They expected an instant reply.</p>
                         </div>
-                        <div className="bg-neutral-50 p-8 rounded-2xl border border-neutral-200 hover:border-amber-500/30 transition-colors group">
-                            <Bot className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">Delayed Replies</h3>
+                        <div className="bg-white p-8 rounded-2xl border border-neutral-200 hover:border-red-500/30 transition-colors group">
+                            <Bot className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                            <h3 className="text-xl font-bold mb-2 text-neutral-900">Delayed Replies</h3>
                             <p className="text-neutral-600">WhatsApp and Instagram DMs sit unread for hours. Hot leads turn cold.</p>
                         </div>
-                        <div className="bg-neutral-50 p-8 rounded-2xl border border-neutral-200 hover:border-amber-500/30 transition-colors group">
-                            <AlertCircle className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">No Follow-Up</h3>
+                        <div className="bg-white p-8 rounded-2xl border border-neutral-200 hover:border-red-500/30 transition-colors group">
+                            <AlertCircle className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                            <h3 className="text-xl font-bold mb-2 text-neutral-900">No Follow-Up</h3>
                             <p className="text-neutral-600">You reply once, but if they don't answer, does anyone follow up 3 more times? Probably not.</p>
                         </div>
-                        <div className="bg-neutral-50 p-8 rounded-2xl border border-neutral-200 hover:border-amber-500/30 transition-colors group">
-                            <MessageSquare className="text-amber-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                            <h3 className="text-xl font-bold mb-2">Scattered Messages</h3>
+                        <div className="bg-white p-8 rounded-2xl border border-neutral-200 hover:border-red-500/30 transition-colors group">
+                            <MessageSquare className="text-red-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                            <h3 className="text-xl font-bold mb-2 text-neutral-900">Scattered Messages</h3>
                             <p className="text-neutral-600">Leads are everywhere — Email, Insta, WhatsApp. It's impossible to track manually.</p>
                         </div>
                     </div>
-
+ 
                     <p className="mt-12 text-xl font-bold text-neutral-900 bg-amber-500/10 inline-block px-6 py-3 rounded-lg border border-amber-500/20">
-                        ⚠️ You're paying for ads. <span className="text-amber-400">Missing leads = Wasting money.</span>
+                        ⚠️ You're paying for ads. <span className="text-red-600">Missing leads = Wasting money.</span>
                     </p>
                 </div>
             </section>
@@ -303,7 +304,7 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 6. BENEFITS --- */}
-            <section className="py-16 md:py-24 bg-[#0A0F2C]">
+            <section className="py-16 md:py-24 bg-[#fafafa] border-t border-b border-neutral-200">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
                     <div className="md:w-1/2">
                         <h2 className="text-4xl font-display font-bold mb-8">What Changes After This Is Set Up</h2>
@@ -426,21 +427,21 @@ const LeadAutomation: React.FC = () => {
             </section>
 
             {/* --- 8. TRUST --- */}
-            <section className="py-16 md:py-24 bg-[#050A1F] border-b border-neutral-200">
+            <section className="py-16 md:py-24 bg-white border-t border-b border-neutral-200">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h3 className="text-brand-primary font-bold uppercase tracking-widest text-sm mb-6">Built by People Who Understand Business — Not Just AI</h3>
-                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-8">We Don't Sell Tools. <br /> We Build <span className="text-neutral-900">Revenue-Protecting Systems.</span></h2>
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-8 text-neutral-900">We Don't Sell Tools. <br /> We Build <span className="text-brand-primary">Revenue-Protecting Systems.</span></h2>
 
                     <p className="text-xl text-neutral-600 max-w-3xl mx-auto mb-12 leading-relaxed">
                         At Social Ninja’s, we combine AI, marketing, and automation to build systems that actually work in real businesses — worldwide.
                     </p>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-80">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 opacity-80 text-neutral-800">
                         <div className="flex items-center gap-3">
                             <ShieldCheck size={32} className="text-green-500" />
                             <span className="text-lg font-bold">Battle-Tested Strategies</span>
                         </div>
-                        <div className="h-8 w-px bg-white/20 hidden md:block"></div>
+                        <div className="h-8 w-px bg-neutral-200 hidden md:block"></div>
                         <div className="flex items-center gap-3">
                             <Briefcase size={32} className="text-blue-500" />
                             <span className="text-lg font-bold">Business-First Approach</span>
@@ -474,13 +475,12 @@ const LeadAutomation: React.FC = () => {
                 </div>
             </section>
 
-            {/* --- 10. FINAL CTA --- */}
-            <section className="py-16 md:py-24 bg-gradient-to-t from-brand-primary/10 to-[#020617] text-center">
+            <section className="py-16 md:py-24 bg-gradient-to-b from-[#fafafa] to-white border-t border-neutral-200 text-center">
                 <div className="max-w-4xl mx-auto px-6">
-                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Every Missed Lead Costs You Money.</h2>
+                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-neutral-900">Every Missed Lead Costs You Money.</h2>
                     <p className="text-xl text-neutral-600 mb-10">Let AI handle enquiries instantly — so you don’t have to.</p>
                     <button onClick={scrollToDemo}>
-                        <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_0_50px_rgba(56,189,248,0.4)] hover:scale-105 transition-transform">
+                        <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.15)] hover:shadow-[0_8px_32px_rgba(0,101,255,0.25)] hover:scale-105 transition-transform">
                             👉 Book a Free Demo
                         </Button>
                     </button>

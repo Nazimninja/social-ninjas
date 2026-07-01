@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MessageSquare, Send, Sparkles, ChevronDown, User, X, Bot } from 'lucide-react';
@@ -199,12 +199,12 @@ const ChatBot: React.FC = () => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-[0_0_25px_rgba(56,189,248,0.4)] transition-all duration-300 group hover:scale-110 ${isOpen ? 'opacity-0 pointer-events-none scale-0' : 'opacity-100 scale-100 bg-brand-primary text-brand-realBlack hover:bg-white hover:text-brand-realBlack'}`}
+        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.25)] transition-all duration-300 group hover:scale-110 ${isOpen ? 'opacity-0 pointer-events-none scale-0' : 'opacity-100 scale-100 bg-[#0065ff] text-white hover:bg-[#0047f0]'}`}
         aria-label="Open Chat"
       >
         <MessageSquare size={24} className="fill-current" />
         {/* Notification Dot */}
-        <span className="absolute top-0 right-0 w-3 h-3 bg-amber-500 rounded-full border-2 border-brand-dark animate-pulse"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
       </button>
 
       {/* Chat Window Container */}

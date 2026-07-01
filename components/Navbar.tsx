@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import Logo from './Logo';
 
 // LIGHT THEME NAVBAR - all hardcoded hex, no rgba to avoid replacement bugs
 const NAV_BG_NORMAL   = '#FFFFFF';
@@ -50,14 +51,8 @@ const Navbar: React.FC = () => {
         width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
 
-        {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', zIndex: 70 }}>
-          <img
-            src="/logo.png"
-            alt="Social Ninja's"
-            width={38} height={38}
-            style={{ width: 38, height: 38, objectFit: 'contain', flexShrink: 0 }}
-          />
+          <Logo size={32} />
           <div style={{
             fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
             fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px',
