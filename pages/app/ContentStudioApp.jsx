@@ -46,9 +46,9 @@ const PLANS = [
     id: "starter",
     name: "Starter",
     tagline: "Video-first growth — 2 platforms",
-    priceINR: 2999,
-    displayINR: "₹2,999",
-    originalINR: "₹9,999",
+    priceINR: 699,
+    displayINR: "₹699",
+    originalINR: "₹1,999",
     postsPerWeek: 4,
     postsPerMonth: 15,
     platformCount: 2,
@@ -66,16 +66,16 @@ const PLANS = [
       { icon: "📲", text: "Choose 2 platforms from our 5" },
     ],
     guarantee: "Try free — 3 posts generated instantly, no card required",
-    perPost: "₹267/post",
+    perPost: "₹46/post",
     highlight: "Video content gets 3× more reach — we lead with Reels",
   },
   {
     id: "growth",
     name: "Growth",
     tagline: "Most popular — 4 platforms",
-    priceINR: 5499,
-    displayINR: "₹5,499",
-    originalINR: "₹18,000",
+    priceINR: 1299,
+    displayINR: "₹1,299",
+    originalINR: "₹3,999",
     postsPerWeek: 6,
     postsPerMonth: 25,
     platformCount: 4,
@@ -94,16 +94,16 @@ const PLANS = [
       { icon: "⚡", text: "Priority support — 24hr response" },
     ],
     guarantee: "Full refund if not satisfied within 7 days — zero questions",
-    perPost: "₹260/post",
+    perPost: "₹52/post",
     highlight: "Save ₹11,501/mo vs hiring a content team",
   },
   {
     id: "pro",
     name: "Pro",
     tagline: "Unlimited — every platform",
-    priceINR: 8999,
-    displayINR: "₹8,999",
-    originalINR: "₹35,000",
+    priceINR: 2499,
+    displayINR: "₹2,499",
+    originalINR: "₹7,999",
     postsPerWeek: 999,
     postsPerMonth: 999,
     platformCount: 999,
@@ -133,7 +133,7 @@ const PLANS = [
 // ─────────────────────────────────────────────────────────────────
 const GEO_PRICING = {
   // country_code: { currency, symbol, rates: [starter, growth, pro], originals: [orig_starter, orig_growth, orig_pro] }
-  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[2999,5499,8999],   originals:[9999,18000,35000],  perPost:["₹200","₹220","Unlimited"] },
+  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[699,1299,2499],   originals:[1999,3999,7999],  perPost:["₹46","₹52","Unlimited"] },
   US:  { currency:"USD", symbol:"$",  flag:"🇺🇸", rates:[49,79,149],         originals:[129,219,419],       perPost:["$3.3","$3.2","Unlimited"] },
   GB:  { currency:"GBP", symbol:"£",  flag:"🇬🇧", rates:[39,65,119],         originals:[99,179,339],        perPost:["£2.6","£2.6","Unlimited"] },
   AE:  { currency:"AED", symbol:"AED",flag:"🇦🇪", rates:[179,299,549],       originals:[479,829,1549],      perPost:["AED 12","AED 12","Unlimited"] },
@@ -1264,9 +1264,9 @@ function Workspace({profile, hKey, onUpgrade}){
           </p>
           <div className="mobile-grid-1" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
             {[
-              {price:"₹2,999/mo",name:"Starter",desc:"15 posts · 2 platforms",id:"starter"},
-              {price:"₹5,499/mo",name:"Growth",desc:"25 posts · 4 platforms",id:"growth"},
-              {price:"₹8,999/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
+              {price:"₹699/mo",name:"Starter",desc:"15 posts · 2 platforms",id:"starter"},
+              {price:"₹1,299/mo",name:"Growth",desc:"25 posts · 4 platforms",id:"growth"},
+              {price:"₹2,499/mo",name:"Pro",desc:"Unlimited · All platforms",id:"pro"},
             ].map(({price,name,desc,id})=>(
               <button key={name}
                 onClick={()=> { 
@@ -2421,9 +2421,18 @@ function EmailLoginForm({ onSuccess, onCancel }) {
 // ─────────────────────────────────────────────────────────────────
 //  ONBOARDING FLOW — plan → details → platform pick → payment → profile
 // ─────────────────────────────────────────────────────────────────
-function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
-  const [screen,setScreen]=useState("plans"); // plans|details|otp|payment|profile|trial|trial_generation
-  const [plan,setPlan]=useState(null);
+function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgradePlanId=null}){
+  const [plan,setPlan]=useState(() => {
+    if (upgradePlanId) {
+      const selectedPlan = PLANS.find(p => p.id === upgradePlanId);
+      if (selectedPlan) return {...selectedPlan, isTrialFlow: false};
+    }
+    return null;
+  });
+  const [screen,setScreen]=useState(() => {
+    if (upgradePlanId && trialData) return "payment";
+    return "plans"; // plans|details|otp|payment|profile|trial|trial_generation
+  });
   // Pre-fill form from trial data if upgrading
   const [form,setForm]=useState(trialData ? {
     brandName: trialData.brandName||"",
@@ -2445,6 +2454,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
   const isUpgradeFlow = !!trialData;
 
   useEffect(() => {
+    if (upgradePlanId && trialData) return;
     const querySource = window.location.search || window.location.hash;
     if (querySource.includes("?")) {
       const urlParams = new URLSearchParams(querySource.split("?")[1]);
@@ -2457,12 +2467,14 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
         const selectedPlan = PLANS.find(p => p.id === planParam);
         if (selectedPlan) {
           setPlan({...selectedPlan, isTrialFlow: false});
-          // If coming from trial upgrade, go straight to details (pre-filled)
-          if (isUpgrade || trialData) setScreen("details");
+          // If coming from trial upgrade, go straight to details or payment screen
+          if (isUpgrade || trialData) {
+            setScreen(trialData ? "payment" : "details");
+          }
         }
       }
     }
-  }, []);
+  }, [upgradePlanId, trialData]);
 
   const setF=(k,v)=>{
     setForm(p=>({...p,[k]:v}));
@@ -3129,8 +3141,10 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null}){
     }} plan={plan}
     onComplete={async enriched=>{
       const clients=await DB.get("snstudio_clients")||{};
-      const id=`client_${Date.now()}`;
+      // Reuse the existing trial client ID if upgrading to maintain history/workspace continuity!
+      const id = isUpgradeFlow && trialData?.id ? trialData.id : `client_${Date.now()}`;
       enriched.id=id;
+      enriched.isTrial=false;
       
       await DB.set("snstudio_clients",{...clients,[id]:enriched});
       await pushToBackend(enriched);
@@ -3415,6 +3429,7 @@ export default function App(){
   const [clientView, setClientView]=useState("dashboard");
   const [geo, setGeo]=useState({country:"_DEFAULT"});
   const [upgradeTrialData, setUpgradeTrialData]=useState(null);
+  const [upgradePlanId, setUpgradePlanId]=useState(null);
 
   // Single source of truth for logging in — always use this
   const loginClient = async (cl) => {
@@ -3439,14 +3454,26 @@ export default function App(){
     setClients(saved);
 
     const lastId = await DB.get("snstudio_active_client_id");
+    const qs = window.location.search || window.location.hash;
+    const urlParams = new URLSearchParams(qs.includes("?") ? qs.split("?")[1] : qs);
+    const planParam = urlParams.get("plan");
+
     if (lastId && saved[lastId]) {
-      setActiveClient(saved[lastId]);
+      const currentClient = saved[lastId];
+      if (planParam && planParam !== "trial" && (currentClient.plan === "trial" || !currentClient.plan || currentClient.isTrial)) {
+        // Upgrade flow detected on session restore!
+        setActiveClient(currentClient);
+        setUpgradeTrialData(currentClient);
+        setUpgradePlanId(planParam);
+        setTab("portal");
+        setPortalView("onboarding");
+        return;
+      }
+      setActiveClient(currentClient);
       setPortalView("workspace");
       return;
     }
 
-    // Check URL for plan= only when not logged in
-    const qs = window.location.search || window.location.hash;
     if (qs.includes("plan=")) {
       setTab("portal");
       setPortalView("onboarding");
@@ -3709,8 +3736,9 @@ export default function App(){
           style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
             color:"rgba(255,255,255,0.5)",borderRadius:9,padding:"7px 13px",
             fontSize:12,cursor:"pointer",fontWeight:600,marginBottom:4}}>← Home</button>
-        <Onboarding geo={geo} trialData={upgradeTrialData} onComplete={async cl=>{
+        <Onboarding geo={geo} trialData={upgradeTrialData} upgradePlanId={upgradePlanId} onComplete={async cl=>{
           setUpgradeTrialData(null);
+          setUpgradePlanId(null);
           await loginClient(cl);
         }}/>
       </div>
@@ -3805,6 +3833,7 @@ export default function App(){
         ? <PortalClientView client={activeClient} onHome={()=>setPortalView("home")}
             onUpgrade={(planId, trialData)=>{
               setUpgradeTrialData(trialData||activeClient);
+              setUpgradePlanId(planId);
               setPortalView("onboarding");
             }}/>
         : <div style={{textAlign:"center",padding:"80px 20px"}}>
