@@ -324,3 +324,17 @@
 @keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 @keyframes bounce  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 @keyframes spin    { to{transform:rotate(360deg)} }
+
+/* ── LOADER ──────────────────────────────────────────── */
+.sn-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #141414;
+  z-index: 9999;
+  gap: 20px;
+}
