@@ -101,6 +101,13 @@ const Home: React.FC = () => {
   const [typing, setTyping] = useState(false);
   const idxRef = useRef(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMsgs, typing]);
 
   useEffect(() => {
     playNext();
@@ -224,7 +231,7 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Messages */}
-                <div style={{ padding: '20px 18px', minHeight: 260, display: 'flex', flexDirection: 'column', gap: 10, background: '#fff' }}>
+                <div ref={chatContainerRef} style={{ padding: '20px 18px', height: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, background: '#fff' }}>
                   {chatMsgs.length === 0 && !typing && (
                     <div style={{ textAlign: 'center', color: '#adadad', fontSize: 12, margin: 'auto', fontFamily: "'Geist Mono',monospace" }}>Initialising simulation...</div>
                   )}
