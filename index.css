@@ -86,13 +86,26 @@
 .section {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 96px 28px;
+  padding: 120px 28px; /* Spacious breathing room */
 }
 
-/* Section background alternates for visual rhythm */
-.section-white  { background: #fff; }
-.section-alt    { background: #fafafa; border-top: 1px solid #ededed; border-bottom: 1px solid #ededed; }
-.section-raised { background: #f5f5f5; border-top: 1px solid #ededed; border-bottom: 1px solid #ededed; }
+/* Full-width section wrappers for clear backgrounds and borders */
+.section-wrap-white {
+  width: 100%;
+  background: #ffffff;
+}
+.section-wrap-alt {
+  width: 100%;
+  background: #fafafa;
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+}
+.section-wrap-raised {
+  width: 100%;
+  background: #f5f5f5;
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+}
 
 /* ── NAV ─────────────────────────────────────────────── */
 .nav {
@@ -126,11 +139,13 @@
   background: #fff;
   border: 1px solid #ededed;
   border-radius: 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.01), 0 2px 12px rgba(0,0,0,0.02);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .card:hover {
-  border-color: rgba(0,0,0,0.16);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+  transform: translateY(-2px);
 }
 
 .card-alt {

@@ -267,48 +267,73 @@ const Home: React.FC = () => {
       </section>
 
       {/* ── LOGO TICKER ──────────────────────────────────── */}
-      <div className="ticker-wrap">
-        <div className="ticker-track">
-          {[...Array(2)].map((_, ri) =>
-            ['Meta Ads','Google Ads','WhatsApp API','AI Automation','Content Creation','Paid Media','Lead Qualification','Instagram Growth','B2B Outbound','CRM Integration'].map(t => (
-              <span key={`${ri}-${t}`} style={{ fontSize: 13, fontWeight: 500, color: '#adadad', whiteSpace: 'nowrap' }}>{t}</span>
-            ))
-          )}
+      <div className="section-wrap-alt" style={{ padding: '24px 0', margin: '40px 0 0 0' }}>
+        <div className="ticker-wrap" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+          <div className="ticker-track">
+            {[...Array(2)].map((_, ri) =>
+              ['Meta Ads','Google Ads','WhatsApp API','AI Automation','Content Creation','Paid Media','Lead Qualification','Instagram Growth','B2B Outbound','CRM Integration'].map(t => (
+                <span key={`${ri}-${t}`} style={{ fontSize: 13, fontWeight: 500, color: '#adadad', whiteSpace: 'nowrap' }}>{t}</span>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
       {/* ── SERVICES ─────────────────────────────────────── */}
-      <section className="section">
-        <div style={{ marginBottom: 56 }} className="reveal">
-          <div className="pill" style={{ marginBottom: 16 }}>Core Systems</div>
-          <h2 style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414', maxWidth: 560 }}>
-            Everything you need to grow. Nothing you don't.
-          </h2>
-        </div>
+      <div className="section-wrap-white">
+        <section className="section">
+          <div style={{ marginBottom: 56 }} className="reveal">
+            <div className="pill" style={{ marginBottom: 16 }}>Core Systems</div>
+            <h2 className="reveal d1" style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414', maxWidth: 560, fontFamily: "'Plus Jakarta Sans',system-ui" }}>
+              Everything you need to grow. Nothing you don't.
+            </h2>
+          </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-          {SERVICES.map((svc, i) => (
-            <div key={svc.num} className="reveal" style={{ transitionDelay: `${i * 0.08}s`, borderTop: '1px solid #ededed', padding: '32px 0', display: 'grid', gridTemplateColumns: '80px 1fr auto', gap: 32, alignItems: 'start' }} onMouseEnter={e => (e.currentTarget.style.background='#fafafa')} onMouseLeave={e => (e.currentTarget.style.background='transparent')}>
-              <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, color: '#adadad', paddingTop: 4 }}>{svc.num}</div>
-              <div>
-                <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.4px', color: '#141414', marginBottom: 10 }}>{svc.title}</h3>
-                <p style={{ fontSize: 14.5, color: '#717171', lineHeight: 1.65, maxWidth: 580, marginBottom: 16 }}>{svc.desc}</p>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {svc.tags.map(t => <span key={t} className="pill" style={{ fontSize: 11 }}>{t}</span>)}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {SERVICES.map((svc, i) => (
+              <div
+                key={svc.num}
+                className="reveal"
+                style={{
+                  transitionDelay: `${i * 0.08}s`,
+                  borderTop: '1px solid #ededed',
+                  padding: '36px 12px',
+                  display: 'grid',
+                  gridTemplateColumns: '80px 1fr auto',
+                  gap: 32,
+                  alignItems: 'start',
+                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = '#0065ff';
+                  e.currentTarget.style.paddingLeft = '24px';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = '#ededed';
+                  e.currentTarget.style.paddingLeft = '12px';
+                }}
+              >
+                <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, color: '#adadad', paddingTop: 4 }}>{svc.num}</div>
+                <div>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.4px', color: '#141414', marginBottom: 10 }}>{svc.title}</h3>
+                  <p style={{ fontSize: 14.5, color: '#717171', lineHeight: 1.65, maxWidth: 580, marginBottom: 16 }}>{svc.desc}</p>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {svc.tags.map(t => <span key={t} className="pill" style={{ fontSize: 11 }}>{t}</span>)}
+                  </div>
                 </div>
+                <Link to="/services">
+                  <button className="btn-ghost" style={{ marginTop: 4, fontSize: 13 }}>Details <ArrowRight size={12} /></button>
+                </Link>
               </div>
-              <Link to="/services">
-                <button className="btn-ghost" style={{ marginTop: 4, fontSize: 13 }}>Details <ArrowRight size={12} /></button>
-              </Link>
-            </div>
-          ))}
-          <div style={{ borderTop: '1px solid #ededed' }} />
-        </div>
-      </section>
+            ))}
+            <div style={{ borderTop: '1px solid #ededed' }} />
+          </div>
+        </section>
+      </div>
 
       {/* ── ROAS CALCULATOR + COPY SPLIT ─────────────────── */}
-      <section style={{ background: '#fafafa', borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed' }}>
-        <div className="section">
+      <div className="section-wrap-alt">
+        <section className="section">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }} className="hero-grid-cols">
 
             <div className="reveal-l">
@@ -330,7 +355,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="reveal-r d2">
-              <div className="card" style={{ padding: 28, borderRadius: 20 }}>
+              <div className="card" style={{ padding: 28, borderRadius: 20, background: '#ffffff' }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: '#adadad', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 20 }}>ROAS Calculator</div>
                 <div style={{ marginBottom: 24 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -363,44 +388,46 @@ const Home: React.FC = () => {
             </div>
 
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── TESTIMONIALS ─────────────────────────────────── */}
-      <section className="section">
-        <div style={{ marginBottom: 48 }} className="reveal">
-          <div className="pill" style={{ marginBottom: 16 }}>Client Results</div>
-          <h2 style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414' }}>
-            Real brands. Real numbers.
-          </h2>
-        </div>
+      <div className="section-wrap-white">
+        <section className="section">
+          <div style={{ marginBottom: 48 }} className="reveal">
+            <div className="pill" style={{ marginBottom: 16 }}>Client Results</div>
+            <h2 className="reveal d1" style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414', fontFamily: "'Plus Jakarta Sans',system-ui" }}>
+              Real brands. Real numbers.
+            </h2>
+          </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }} className="services-grid reveal">
-          {TESTIMONIALS.map((t, i) => (
-            <div key={t.name} className="card" style={{ padding: 28, borderRadius: 18 }}>
-              <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
-                {[...Array(5)].map((_, j) => <Star key={j} size={12} fill="#0065ff" color="#0065ff" />)}
-              </div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#141414', marginBottom: 8 }}>{t.impact}</div>
-              <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.6, marginBottom: 18 }}>"{t.text}"</p>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid #ededed' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#0065ff' }}>{t.initials}</div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: '#141414' }}>{t.name}</div>
-                    <div style={{ fontSize: 11, color: '#adadad' }}>{t.role}</div>
-                  </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }} className="services-grid reveal">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={t.name} className="card" style={{ padding: 32, borderRadius: 18 }}>
+                <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
+                  {[...Array(5)].map((_, j) => <Star key={j} size={12} fill="#0065ff" color="#0065ff" />)}
                 </div>
-                <span className="pill" style={{ fontSize: 11 }}>{t.platform}</span>
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#141414', marginBottom: 8 }}>{t.impact}</div>
+                <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.6, marginBottom: 18 }}>"{t.text}"</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid #ededed' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#0065ff' }}>{t.initials}</div>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: '#141414' }}>{t.name}</div>
+                      <div style={{ fontSize: 11, color: '#adadad' }}>{t.role}</div>
+                    </div>
+                  </div>
+                  <span className="pill" style={{ fontSize: 11 }}>{t.platform}</span>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* ── TOOLS ECOSYSTEM ──────────────────────────────── */}
-      <section style={{ background: '#fafafa', borderTop: '1px solid #ededed', borderBottom: '1px solid #ededed' }}>
-        <div className="section">
+      <div className="section-wrap-alt">
+        <section className="section">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }} className="hero-grid-cols">
             <div className="reveal-l" style={{ position: 'sticky', top: 80 }}>
               <div className="pill" style={{ marginBottom: 16 }}>Free Tools</div>
@@ -415,9 +442,25 @@ const Home: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }} className="reveal-r d1">
               {TOOLS.map((tool, i) => (
                 <a key={tool.name} href={tool.url} target="_blank" rel="noopener" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <div style={{ borderTop: '1px solid #ededed', padding: '22px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'start', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onMouseEnter={e => (e.currentTarget.style.paddingLeft = '8px')}
-                    onMouseLeave={e => (e.currentTarget.style.paddingLeft = '0px')}>
+                  <div
+                    style={{
+                      borderTop: '1px solid #ededed',
+                      padding: '24px 12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'start',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.borderColor = '#0065ff';
+                      e.currentTarget.style.paddingLeft = '24px';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.borderColor = '#ededed';
+                      e.currentTarget.style.paddingLeft = '12px';
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                         <span style={{ fontSize: 14, fontWeight: 700, color: '#141414' }}>{tool.name}</span>
@@ -433,29 +476,31 @@ const Home: React.FC = () => {
               <div style={{ borderTop: '1px solid #ededed' }} />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── CTA BANNER ───────────────────────────────────── */}
-      <section className="section">
-        <div className="reveal" style={{ border: '1px solid #ededed', borderRadius: 20, padding: '56px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: '#fff' }}>
-          {/* Subtle top gradient line */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #fff, #0065ff, #fff)' }} />
-          <div className="pill" style={{ marginBottom: 20, margin: '0 auto 20px' }}>Free Audit</div>
-          <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, letterSpacing: '-2px', color: '#141414', marginBottom: 14, maxWidth: 540, margin: '0 auto 14px' }}>
-            Ready to stop guessing and start scaling?
-          </h2>
-          <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 440, margin: '0 auto 32px' }}>
-            Book a free 30-minute growth blueprint call. We'll find leaks in your current setup and map out a system to fix them.
-          </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
-            <a href="https://contentstudio.socialninjas.in" target="_blank" rel="noopener">
-              <button className="btn-ghost" style={{ padding: '12px 24px', fontSize: 15 }}>Try Content Studio Free</button>
-            </a>
+      <div className="section-wrap-white">
+        <section className="section">
+          <div className="reveal" style={{ border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: '#fff' }}>
+            {/* Subtle top gradient line */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #fff, #0065ff, #fff)' }} />
+            <div className="pill" style={{ marginBottom: 20, margin: '0 auto 20px' }}>Free Audit</div>
+            <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, letterSpacing: '-2px', color: '#141414', marginBottom: 14, maxWidth: 540, margin: '0 auto 14px' }}>
+              Ready to stop guessing and start scaling?
+            </h2>
+            <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 440, margin: '0 auto 32px' }}>
+              Book a free 30-minute growth blueprint call. We'll find leaks in your current setup and map out a system to fix them.
+            </p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
+              <a href="https://contentstudio.socialninjas.in" target="_blank" rel="noopener">
+                <button className="btn-ghost" style={{ padding: '12px 24px', fontSize: 15 }}>Try Content Studio Free</button>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <style>{`
         @keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }

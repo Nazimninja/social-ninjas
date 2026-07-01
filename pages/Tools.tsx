@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
@@ -162,7 +162,9 @@ const Tools: React.FC = () => {
       </div>
 
       {/* TOOL LISTINGS */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '60px 28px 80px', display: 'flex', flexDirection: 'column', gap: 80, position: 'relative', zIndex: 1 }}>
+      <div className="section-wrap-white">
+        <div className="section" style={{ paddingTop: 60, paddingBottom: 80 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 80, position: 'relative', zIndex: 1 }}>
         {toolCategories.map((category, catIdx) => (
           <div key={catIdx} className="reveal">
             <div style={{ marginBottom: 36 }}>
@@ -178,7 +180,7 @@ const Tools: React.FC = () => {
               {category.tools.map((t) => {
                 const IconComponent = t.icon;
                 return (
-                  <div key={t.id} className="glass-card" style={{ padding: 28, borderRadius: 22, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.3s' }}>
+                  <div key={t.id} className="card" style={{ padding: 28, borderRadius: 22, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
                       {/* Top Header Row */}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
@@ -191,7 +193,7 @@ const Tools: React.FC = () => {
                       </div>
 
                       {/* Tool Title */}
-                      <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 19, fontWeight: 700, color: '#141414', letterSpacing: '-0.3px', marginBottom: 4 }}>
+                      <h3 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 19, fontWeight: 800, color: '#141414', letterSpacing: '-0.3px', marginBottom: 4 }}>
                         {t.name}
                       </h3>
                       <div style={{ fontSize: 13, fontWeight: 500, color: t.color, marginBottom: 12 }}>
@@ -273,10 +275,13 @@ const Tools: React.FC = () => {
             </div>
           </div>
         ))}
+          </div>
+        </div>
       </div>
 
       {/* FOOTER CTA */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
+      <div className="section-wrap-alt">
+        <section className="section">
         <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#0065ff,transparent)' }} />
           <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>
@@ -291,8 +296,9 @@ const Tools: React.FC = () => {
             </button>
           </Link>
         </div>
-      </div>
+      </section>
     </div>
+  </div>
   );
 };
 

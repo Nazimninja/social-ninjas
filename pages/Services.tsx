@@ -53,40 +53,43 @@ const Services: React.FC = () => {
       </div>
 
       {/* SERVICES GRID */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }} className="two-cols">
-          {services.map((s, i) => (
-            <div key={i} className={`glass-card reveal d${(i%3)+1}`} style={{ padding: 36, borderRadius: 24, borderTop: `2px solid ${s.color}30` }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, gap: 12 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 52, height: 52, borderRadius: 15, background: `${s.color}12`, border: `1px solid ${s.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>{s.icon}</div>
-                  <div>
-                    <div style={{ fontSize: 9.5, fontWeight: 700, color: s.color, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 3 }}>{s.sub}</div>
-                    <h3 style={{ fontSize: 20, fontWeight: 700, color: '#141414', letterSpacing: '-0.3px', fontFamily: "'DM Sans',sans-serif", lineHeight: 1.2 }}>{s.title}</h3>
+      <div className="section-wrap-white">
+        <div className="section">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 24 }} className="two-cols">
+            {services.map((s, i) => (
+              <div key={i} className={`card reveal d${(i%3)+1}`} style={{ padding: 36, borderRadius: 24, borderTop: `2px solid ${s.color}30` }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, gap: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                    <div style={{ width: 52, height: 52, borderRadius: 15, background: `${s.color}12`, border: `1px solid ${s.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>{s.icon}</div>
+                    <div>
+                      <div style={{ fontSize: 9.5, fontWeight: 700, color: s.color, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 3 }}>{s.sub}</div>
+                      <h3 style={{ fontSize: 20, fontWeight: 700, color: '#141414', letterSpacing: '-0.3px', fontFamily: "'DM Sans',sans-serif", lineHeight: 1.2 }}>{s.title}</h3>
+                    </div>
                   </div>
+                  <div style={{ fontSize: 10, padding: '4px 11px', borderRadius: 50, background: `${s.color}10`, border: `1px solid ${s.color}20`, color: s.color, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, letterSpacing: '0.02em' }}>{s.outcome}</div>
                 </div>
-                <div style={{ fontSize: 10, padding: '4px 11px', borderRadius: 50, background: `${s.color}10`, border: `1px solid ${s.color}20`, color: s.color, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, letterSpacing: '0.02em' }}>{s.outcome}</div>
-              </div>
-              <p style={{ fontSize: 13.5, fontWeight: 300, color: '#717171', lineHeight: 1.68, marginBottom: 22 }}>{s.desc}</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
-                {s.features.map((f, j) => (
-                  <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, color: '#525252', fontWeight: 400 }}>
-                    <CheckCircle2 size={14} color={s.color} strokeWidth={2} />{f}
+                <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.68, marginBottom: 22 }}>{s.desc}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+                  {s.features.map((f, j) => (
+                    <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 13, color: '#525252', fontWeight: 400 }}>
+                      <CheckCircle2 size={14} color={s.color} strokeWidth={2} />{f}
+                    </div>
+                  ))}
+                </div>
+                <Link to={`/services/${s.id}`} style={{ textDecoration: 'none' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: s.color }}>
+                    Learn More <ArrowRight size={14} />
                   </div>
-                ))}
+                </Link>
               </div>
-              <Link to={`/services/${s.id}`} style={{ textDecoration: 'none' }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: s.color }}>
-                  Learn More <ArrowRight size={14} />
-                </div>
-              </Link>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid #ededed', padding: '80px 28px', background: '#fafafa', position: 'relative', zIndex: 1 }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      {/* HOW IT WORKS */}
+      <div className="section-wrap-alt">
+        <section className="section">
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Work</div>
             <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', color: '#141414', lineHeight: 1.1 }}>
@@ -100,28 +103,30 @@ const Services: React.FC = () => {
               { n: '03', t: 'Build Your Plan', d: 'You get a clear 90-day growth plan with specific targets, timelines, and who\'s responsible for what.' },
               { n: '04', t: 'Launch & Improve', d: 'We go live fast, track everything, and make it better every single week based on real data.' },
             ].map((p, i) => (
-              <div key={i} className={`glass-card reveal d${i+1}`} style={{ padding: 28, borderRadius: 20 }}>
+              <div key={i} className="card reveal d${i+1}" style={{ padding: 28, borderRadius: 20, background: '#ffffff' }}>
                 <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 30, fontWeight: 500, color: 'rgba(91,164,245,0.22)', lineHeight: 1, marginBottom: 16, letterSpacing: '-1px' }}>{p.n}</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', marginBottom: 8, fontFamily: "'DM Sans',sans-serif" }}>{p.t}</div>
-                <div style={{ fontSize: 13, fontWeight: 300, color: '#888', lineHeight: 1.65 }}>{p.d}</div>
+                <div style={{ fontSize: 13, color: '#717171', lineHeight: 1.65 }}>{p.d}</div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
       </div>
 
       {/* CTA */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: '#fff', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(91,164,245,0.32),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4.5vw,52px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.06, marginBottom: 14, color: '#141414' }}>
-            Ready to build something<br /><span style={{ color: '#0065ff' }}>that actually works?</span>
-          </h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
-            Book a free 30-minute strategy call. No pressure, no pitch deck. Just an honest look at your marketing and what we'd do differently.
-          </p>
-          <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book My Free Call →</button></Link>
-        </div>
+      <div className="section-wrap-white">
+        <section className="section">
+          <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#0065ff,transparent)' }} />
+            <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(28px,4.5vw,52px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.06, marginBottom: 14, color: '#141414' }}>
+              Ready to build something<br /><span style={{ color: '#0065ff' }}>that actually works?</span>
+            </h2>
+            <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
+              Book a free 30-minute strategy call. No pressure, no pitch deck. Just an honest look at your marketing and what we'd do differently.
+            </p>
+            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book My Free Call →</button></Link>
+          </div>
+        </section>
       </div>
 
       <style>{`@media(max-width:900px){.two-cols,.four-cols{grid-template-columns:1fr!important;}} @media(max-width:640px){.two-cols,.four-cols{grid-template-columns:1fr!important;}}`}</style>
