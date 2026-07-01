@@ -268,7 +268,7 @@ const ChatBot: React.FC = () => {
               {/* Message Bubble */}
               <div className={`max-w-[75%] p-3.5 md:p-4 text-sm leading-relaxed shadow-xl backdrop-blur-sm ${msg.role === 'user'
                 ? 'bg-white text-black font-semibold rounded-2xl rounded-tr-none'
-                : 'bg-neutral-50 text-neutral-100 border border-neutral-200 rounded-2xl rounded-tl-none'
+                : 'bg-neutral-50 text-neutral-800 border border-neutral-200 rounded-2xl rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
@@ -330,7 +330,7 @@ const ChatBot: React.FC = () => {
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 md:p-2 bg-brand-primary text-brand-realBlack rounded-full hover:bg-white transition-all duration-300 disabled:opacity-0 disabled:scale-75 shadow-lg hover:shadow-brand-primary/20 hover:scale-105 active:scale-95 touch-manipulation"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 md:p-2 bg-[#0065ff] text-white rounded-full hover:bg-[#0047f0] transition-all duration-300 disabled:opacity-0 disabled:scale-75 shadow-lg hover:scale-105 active:scale-95 touch-manipulation"
             >
               <Send size={18} className={inputValue.trim() ? "translate-x-0.5" : ""} />
             </button>
