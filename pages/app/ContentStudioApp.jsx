@@ -2141,7 +2141,8 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       setPosts(parsed.posts);
       setStage(1);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error("Trial generation failed:", err);
       clearInterval(msgTimer);
       // Fallback to sample posts so trial isn't broken
       setPosts([
