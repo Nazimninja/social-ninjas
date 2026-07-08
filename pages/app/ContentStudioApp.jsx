@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 /* ═══════════════════════════════════════════════════════════════════
    SOCIAL NINJA'S — AI CONTENT STUDIO  v7
    ✦ Razorpay only · ✦ No graphics — pure content depth
-   ✦ Platform-specific research · ✦ Plans from ₹3,999
+   ✦ Platform-specific research · ✦ Plans from ₹699
    ✦ ClickUp CRM · ✦ Google Sheets auto-log
    © Social Ninja's — AI Automations Division
 ═══════════════════════════════════════════════════════════════════ */
@@ -3592,13 +3592,21 @@ export default function App(){
   const NAV=(
     <nav className="sn-nav">
       <div className="sn-nav-inner">
+        {/* Left — brand */}
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <img src="/logo.png" alt="SN" style={{width:32,height:32,objectFit:"contain",borderRadius:8,flexShrink:0}}/>
-          <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.3px"}}>
-            SocialNinja's.<span style={{fontWeight:300,color:"rgba(255,255,255,.3)",fontSize:11,marginLeft:6,letterSpacing:"1px",textTransform:"uppercase"}}>Studio</span>
+          <img src="/logo.png" alt="SN" style={{width:30,height:30,objectFit:"contain",borderRadius:7,flexShrink:0}}/>
+          <div style={{display:"flex",flexDirection:"column",lineHeight:1.1}}>
+            <span style={{fontSize:13,fontWeight:700,letterSpacing:"-.3px",color:"rgba(255,255,255,.9)"}}>Social Ninja's<span style={{fontWeight:300,color:"rgba(255,255,255,.35)",fontSize:10,marginLeft:5,letterSpacing:"1.5px",textTransform:"uppercase"}}>Studio</span></span>
           </div>
         </div>
+        {/* Right — user info + links */}
         <div style={{display:"flex",alignItems:"center",gap:8}}>
+          {/* Back to main site */}
+          <a href="/" style={{display:"flex",alignItems:"center",gap:4,fontSize:12,color:"rgba(255,255,255,.28)",textDecoration:"none",borderRight:"1px solid rgba(255,255,255,.07)",paddingRight:10,marginRight:2,transition:"color .15s",fontFamily:"'Sora',system-ui,sans-serif"}}
+            onMouseOver={e=>e.currentTarget.style.color="rgba(255,255,255,.6)"}
+            onMouseOut={e=>e.currentTarget.style.color="rgba(255,255,255,.28)"}>
+            ← socialninjas.in
+          </a>
           {activeClient&&(
             <div style={{display:"flex",alignItems:"center",gap:7,background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.09)",borderRadius:20,padding:"4px 12px 4px 6px"}}>
               <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:"rgba(255,255,255,.8)",flexShrink:0}}>
@@ -3607,6 +3615,9 @@ export default function App(){
               <span style={{fontSize:12,color:"rgba(255,255,255,.55)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
                 {activeClient.brandName||activeClient.email||"My Studio"}
               </span>
+              {activeClient.planName&&(
+                <span style={{fontSize:10,fontWeight:700,background:"rgba(52,211,153,.1)",border:"1px solid rgba(52,211,153,.2)",color:"#34d399",borderRadius:10,padding:"2px 7px",marginLeft:2,whiteSpace:"nowrap"}}>{activeClient.planName}</span>
+              )}
             </div>
           )}
           {activeClient&&(

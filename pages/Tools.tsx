@@ -9,7 +9,8 @@ import {
   Users, 
   Target, 
   BarChart3, 
-  ArrowUpRight 
+  ArrowUpRight,
+  Home
 } from 'lucide-react';
 import SEO from '../components/SEO';
 
@@ -130,6 +131,18 @@ const toolCategories = [
         link: 'https://salary.socialninjas.in',
         external: true,
         btnText: 'Open Converter'
+      },
+      {
+        id: 'mortgage-calculator',
+        badge: '🟢 Live Now',
+        icon: Home,
+        name: 'US Mortgage Calculator',
+        tagline: 'Estimate monthly payment & affordability.',
+        desc: 'Calculate monthly home payments, taxes, insurance, HOA, and amortization schedules. Check your maximum home affordability limits under standard DTI rules.',
+        color: '#1d4ed8',
+        link: 'https://mortgagecalc.us',
+        external: true,
+        btnText: 'Open Calculator'
       }
     ]
   }

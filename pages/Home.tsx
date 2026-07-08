@@ -500,10 +500,10 @@ const Home: React.FC = () => {
               Book a free 30-minute growth blueprint call. We'll find leaks in your current setup and map out a system to fix them.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
-              <a href="https://contentstudio.socialninjas.in" target="_blank" rel="noopener">
+            <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
+              <Link to="/ai-products/content-studio">
                 <button className="btn-ghost" style={{ padding: '12px 24px', fontSize: 15 }}>Try Content Studio Free</button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>

@@ -24,9 +24,9 @@ const productsData: Record<string, any> = {
       { name: 'Meera Pillai', role: 'Social Media Manager (6 clients) · Kochi · Pro Plan', result: 'Manages 6 brands in 45 mins/week', text: 'I run social media for 6 different brands. Each brand has its own saved profile, I generate fresh content for all 6 in about 45 minutes total. The Pro plan pays for itself many times over in time saved alone.', stars: 5 },
     ],
     plans: [
-      { name: 'Starter', price: '₹2,999', period: '/mo', features: ['15 posts per month','2 platforms of your choice','Captions + Scripts + Slides','Hashtag strategy','Posting checklist'] },
-      { name: 'Growth', price: '₹5,499', period: '/mo', popular: true, features: ['25 posts per month','4 platforms included','Everything in Starter','Thread writer for X/Threads','Monthly strategy call'] },
-      { name: 'Pro', price: '₹8,999', period: '/mo', features: ['Unlimited posts','All 7 platforms','Everything in Growth','Priority email support','Multi-brand workspace'] },
+      { name: 'Starter', price: '₹699', period: '/mo', features: ['15 posts per month','2 platforms of your choice','Captions + Scripts + Slides','Hashtag strategy','Posting checklist'] },
+      { name: 'Growth', price: '₹1,299', period: '/mo', popular: true, features: ['25 posts per month','4 platforms included','Everything in Starter','Thread writer for X/Threads','Monthly strategy call'] },
+      { name: 'Pro', price: '₹2,499', period: '/mo', features: ['Unlimited posts','All 7 platforms','Everything in Growth','Priority email support','Multi-brand workspace'] },
     ],
     stats: [['150+','Brands Using It'],['2.4M+','Posts Generated'],['7','Platforms Supported'],['60s','To Generate Everything']],
   },

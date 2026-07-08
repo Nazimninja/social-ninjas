@@ -20,14 +20,14 @@ const products = [
     tagline: 'Your whole week of content — written in 60 seconds.',
     desc: 'Tell the AI about your brand once. Every week it looks up what\'s trending in your niche, then writes your captions, Reel scripts, carousel slides, and hashtags. All platform-specific. All ready to copy and post.',
     color: '#0065ff',
-    tryLink: '/standalone-landing/',
-    learnLink: '/standalone-landing/',
+    tryLink: '/app/content-studio?plan=trial',
+    learnLink: '/ai-products/content-studio',
     stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
     features: ['Researches live trends before writing — every time','Word-for-word scripts for Reels and YouTube Shorts','Captions written specifically for each platform','Carousel slide copy — paste straight into Canva','Real hashtag research — never generic or repeated','Thread writer for Twitter/X and Threads','Posting checklist with the best time to post'],
     plans: [
-      { name: 'Starter', price: '₹2,999', note: '15 posts/mo · 2 platforms' },
-      { name: 'Growth',  price: '₹5,499', note: '25 posts/mo · 4 platforms', popular: true },
-      { name: 'Pro',     price: '₹8,999', note: 'Unlimited posts · All 7 platforms' },
+      { name: 'Starter', price: '₹699', note: '15 posts/mo · 2 platforms' },
+      { name: 'Growth',  price: '₹1,299', note: '25 posts/mo · 4 platforms', popular: true },
+      { name: 'Pro',     price: '₹2,499', note: 'Unlimited posts · All 7 platforms' },
     ],
   },
   {
@@ -85,7 +85,7 @@ const AIProducts: React.FC = () => {
             We're building a suite of AI tools that handle the repetitive parts of marketing — so you can spend your time on the things that actually need you.
           </p>
           <div className="reveal d3" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/standalone-landing/"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></a>
+            <Link to="/app/content-studio?plan=trial"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></Link>
             <Link to="/contact"><button className="btn-ghost" style={{ fontSize: 15 }}>Join Waitlist for New Tools →</button></Link>
           </div>
         </div>
@@ -112,12 +112,8 @@ const AIProducts: React.FC = () => {
                 ))}
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <a href={p.tryLink}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}</button></a>
-                {p.learnLink.startsWith('/standalone-landing/') ? (
-                  <a href={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></a>
-                ) : (
-                  <Link to={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></Link>
-                )}
+                <Link to={p.tryLink}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}</button></Link>
+                <Link to={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></Link>
               </div>
             </div>
             <div style={{ order: i % 2 === 0 ? 1 : 0 }}>
@@ -169,7 +165,7 @@ const AIProducts: React.FC = () => {
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 30px' }}>Join the Waitlist →</button></Link>
-            <a href="/standalone-landing/"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try Content Studio Free</button></a>
+            <Link to="/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try Content Studio Free</button></Link>
           </div>
         </div>
       </div>
