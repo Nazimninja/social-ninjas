@@ -140,7 +140,7 @@ const toolCategories = [
         tagline: 'Estimate monthly payment & affordability.',
         desc: 'Calculate monthly home payments, taxes, insurance, HOA, and amortization schedules. Check your maximum home affordability limits under standard DTI rules.',
         color: '#1d4ed8',
-        link: 'https://mortgagecalc.us',
+        link: 'https://mortgage.socialninjas.in',
         external: true,
         btnText: 'Open Calculator'
       }
