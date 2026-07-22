@@ -85,8 +85,8 @@ const Footer: React.FC = () => {
               {[
                 { label: 'AI Content Studio', path: '/standalone-landing/', external: true },
                 { label: 'WhatsApp Link Gen', path: 'https://linkwa.in', external: true },
-                { label: 'US Take-Home Pay Calc', path: 'https://salarytools.us/salary-calculator', external: true },
-                { label: 'Hourly ↔ Salary Conv', path: 'https://salarytools.us', external: true },
+                { label: 'US Take-Home Pay Calc', path: 'https://salary.socialninjas.in/salary-calculator/', external: true },
+                { label: 'Hourly ↔ Salary Conv', path: 'https://salary.socialninjas.in/', external: true },
               ].map(({ label, path, external }) => (
                 <li key={label}>
                   {external ? (
