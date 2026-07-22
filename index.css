@@ -50,6 +50,7 @@
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
   }
 
   h1, h2, h3, h4, h5 {
@@ -90,7 +91,7 @@
 .section {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 120px 28px; /* Spacious breathing room */
+  padding: 100px 28px;
 }
 
 /* Full-width section wrappers for clear backgrounds and borders */
@@ -126,8 +127,8 @@
 
 /* ── PAGE HEADER (replaces old hero-grid + amb) ──────── */
 .page-header {
-  padding-top: 120px;
-  padding-bottom: 72px;
+  padding-top: 100px;
+  padding-bottom: 64px;
   border-bottom: 1px solid #ededed;
   background: #fff;
 }
@@ -183,6 +184,7 @@
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
   white-space: nowrap;
+  min-height: 44px; /* iOS tap target */
 }
 .btn-primary:hover  { background: #153880; }
 .btn-primary:active { transform: scale(0.98); }
@@ -199,6 +201,7 @@
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  min-height: 44px; /* iOS tap target */
 }
 .btn-ghost:hover { background: #f5f5f5; border-color: rgba(0,0,0,0.2); }
 
@@ -302,7 +305,8 @@
 /* ── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .section { padding: 64px 20px; }
-  .hero-grid-cols { grid-template-columns: 1fr !important; gap: 48px !important; }
+  .page-header { padding-top: 80px; padding-bottom: 48px; }
+  .hero-grid-cols { grid-template-columns: 1fr !important; gap: 40px !important; }
   .services-grid  { grid-template-columns: 1fr !important; }
   .three-cols     { grid-template-columns: repeat(2,1fr) !important; }
   .four-cols      { grid-template-columns: repeat(2,1fr) !important; }
@@ -310,10 +314,12 @@
 }
 @media (max-width: 640px) {
   .section { padding: 48px 16px; }
+  .page-header { padding-top: 74px; padding-bottom: 36px; }
   .three-cols { grid-template-columns: 1fr !important; }
   .four-cols  { grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
-  .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; min-height: 48px; font-size: 15px; }
+  .section-title { font-size: clamp(24px, 7vw, 36px) !important; letter-spacing: -0.8px !important; }
 }
 @media (max-width: 768px) {
   .hidden-mobile { display: none !important; }
@@ -342,3 +348,70 @@
   z-index: 9999;
   gap: 20px;
 }
+
+/* ── HERO SECTION RESPONSIVE ─────────────────────────── */
+/* Used across About, Blog, Tools, AIProducts, Services, GrowthSystems */
+.hero-section {
+  position: relative;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  border-bottom: 1px solid #ededed;
+}
+
+@media (max-width: 900px) {
+  .hero-section { padding-top: 96px; padding-bottom: 56px; }
+}
+@media (max-width: 640px) {
+  .hero-section { padding-top: 80px; padding-bottom: 40px; }
+}
+
+/* ── MOBILE GLOBAL POLISH ────────────────────────────── */
+@media (max-width: 768px) {
+  /* Images never overflow */
+  img, video { max-width: 100%; height: auto; }
+
+  /* Cards stack cleanly */
+  .card, .glass-card, .card-alt {
+    border-radius: 12px;
+  }
+
+  /* Fix hero sections built with inline paddingTop: 140 */
+  [style*="paddingTop: 140"],
+  [style*="paddingTop:140"] {
+    padding-top: 96px !important;
+    padding-bottom: 56px !important;
+  }
+  [style*="paddingTop: 160"],
+  [style*="paddingTop:160"] {
+    padding-top: 96px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* Ticker stops being cramped */
+  .ticker-wrap { padding: 10px 0; }
+
+  /* Stat numbers scale down */
+  .stat-num { font-size: 28px; }
+
+  /* Footer text tighter */
+  .footer-grid { gap: 24px !important; }
+
+  /* Pill badges wrap */
+  .pill { font-size: 11px; padding: 4px 10px; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small phones */
+  [style*="paddingTop: 140"],
+  [style*="paddingTop:140"] {
+    padding-top: 76px !important;
+    padding-bottom: 40px !important;
+  }
+  [style*="paddingTop: 160"],
+  [style*="paddingTop:160"] {
+    padding-top: 76px !important;
+  }
+  .container, .section { padding-left: 16px !important; padding-right: 16px !important; }
+}
+
