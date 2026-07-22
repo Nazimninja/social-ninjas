@@ -365,7 +365,7 @@ Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each
 *Quality + timing beats volume every single time. The data is not ambiguous.*
     `,
     cta: 'Try 3 AI Posts Free →',
-    ctaHref: 'https://contentstudio.socialninjas.in/',
+    ctaHref: '/content-studio',
   },
   {
     id: 'roas-myth',
@@ -621,7 +621,7 @@ Unlike temporary social media posts that disappear from user feeds in 24 hours, 
 To start generating keyword-targeted posts in seconds, try our [AI Content Studio](/standalone-landing/) or sign up for a [Free Organic Strategy Call](/contact) with our team.
     `,
     cta: 'Start Scaling Organic Content →',
-    ctaHref: 'https://contentstudio.socialninjas.in/',
+    ctaHref: '/content-studio',
   },
   {
     id: 'outbound-email-deliverability-2026',
