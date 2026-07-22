@@ -79,7 +79,7 @@ const TESTIMONIALS = [
 const TOOLS = [
   { name: 'WhatsApp Generator', desc: 'Build wa.me links with pre-filled messages and QR codes for campaigns.', url: 'https://linkwa.in', label: 'linkwa.in', tag: 'Free Tool' },
   { name: 'Salary Calculators', desc: 'Gross-to-net tax calculators, hourly converters, FICA deductions.', url: 'https://salary.socialninjas.in', label: 'salary.socialninjas.in', tag: 'Free Tool' },
-  { name: 'AI Content Studio', desc: 'Aggregates trending topics and scripts a full week of content in 60s.', url: 'https://contentstudio.socialninjas.in', label: 'contentstudio.socialninjas.in', tag: 'SaaS' },
+  { name: 'AI Content Studio', desc: 'Aggregates trending topics and scripts a full week of content in 60s.', url: '/content-studio', label: 'content-studio', tag: 'AI Product' },
   { name: 'Fit Ninja Coach', desc: 'Personalized AI fitness coaching with diet plans and workout programs.', url: 'https://fit.socialninjas.in', label: 'fit.socialninjas.in', tag: 'App' },
 ];
 

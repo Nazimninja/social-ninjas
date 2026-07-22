@@ -38,8 +38,8 @@ const toolCategories = [
         tagline: 'Your whole week of content written in 60s.',
         desc: 'Researches live trends in your exact niche, then writes your captions, scripts, carousels, and hashtags for all 7 major platforms. Native writing, infinite memory.',
         color: '#0065ff',
-        link: 'https://contentstudio.socialninjas.in',
-        external: true,
+        link: '/content-studio',
+        external: false,
         btnText: '⚡ Try Content Studio Free'
       },
       {
