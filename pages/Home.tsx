@@ -501,9 +501,9 @@ const Home: React.FC = () => {
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
-              <Link to="/ai-products/content-studio">
+              <a href="/content-studio">
                 <button className="btn-ghost" style={{ padding: '12px 24px', fontSize: 15 }}>Try Content Studio Free</button>
-              </Link>
+              </a>
             </div>
           </div>
         </section>

@@ -82,22 +82,22 @@ const Navbar: React.FC = () => {
           ))}
 
           {/* Content Studio CTA pill */}
-          <Link to="/ai-products/content-studio" style={{ textDecoration: 'none' }}>
+          <a href="/content-studio" style={{ textDecoration: 'none' }}>
             <div style={{
               display: 'flex', alignItems: 'center', gap: 5,
-              background: location.pathname === '/ai-products/content-studio' ? BLUE : 'rgba(0,101,255,0.07)',
-              border: `1px solid ${location.pathname === '/ai-products/content-studio' ? BLUE : 'rgba(0,101,255,0.2)'}`,
+              background: location.pathname === '/content-studio' ? BLUE : 'rgba(0,101,255,0.07)',
+              border: `1px solid ${location.pathname === '/content-studio' ? BLUE : 'rgba(0,101,255,0.2)'}`,
               borderRadius: 20, padding: '5px 13px',
-              color: location.pathname === '/ai-products/content-studio' ? '#fff' : BLUE,
+              color: location.pathname === '/content-studio' ? '#fff' : BLUE,
               fontSize: 13, fontWeight: 600,
               transition: 'all 0.15s', cursor: 'pointer',
             }}
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = BLUE; el.style.color = '#fff'; el.style.borderColor = BLUE; }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; if(location.pathname !== '/ai-products/content-studio'){el.style.background = 'rgba(0,101,255,0.07)'; el.style.color = BLUE; el.style.borderColor = 'rgba(0,101,255,0.2)';} }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; if(location.pathname !== '/content-studio'){el.style.background = 'rgba(0,101,255,0.07)'; el.style.color = BLUE; el.style.borderColor = 'rgba(0,101,255,0.2)';} }}
             >
               <span style={{ fontSize: 10 }}>⚡</span> Content Studio
             </div>
-          </Link>
+          </a>
 
           <Link to="/contact" style={{ textDecoration: 'none' }}>
             <button style={{
@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
           ))}
         </div>
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <Link to="/ai-products/content-studio" onClick={() => setIsOpen(false)} style={{ textDecoration: 'none' }}>
+          <a href="/content-studio" style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '14px',
               borderRadius: 10, background: 'rgba(0,101,255,0.08)',
@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
             }}>
               ⚡ Try Content Studio Free
             </button>
-          </Link>
+          </a>
           <Link to="/contact" onClick={() => setIsOpen(false)} style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '15px',
