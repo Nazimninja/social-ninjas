@@ -58,9 +58,6 @@ const servicesData: Record<string, any> = {
     stats: [['40%','Average revenue lift in Q1'],['90 days','From audit to measurable results'],['Weekly','Check-ins to stay on track'],['You own','Every strategy, every doc']],
     cta: 'Book a Strategy Session',
   },
-};],
-    cta: 'Book a Strategy Session',
-  },
 };
 
 function useReveal() {
