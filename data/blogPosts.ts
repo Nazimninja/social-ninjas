@@ -618,7 +618,7 @@ This **Instagram SEO guide** outlines the exact steps to optimize your profile, 
 
 Unlike temporary social media posts that disappear from user feeds in 24 hours, search-optimized Reels can rank and drive traffic for months. Combining an active organic search strategy with automated creation tools is the most cost-effective way to generate inbound inquiries.
 
-To start generating keyword-targeted posts in seconds, try our [AI Content Studio](/standalone-landing/) or sign up for a [Free Organic Strategy Call](/contact) with our team.
+To start generating keyword-targeted posts in seconds, try our [AI Content Studio](/content-studio) or sign up for a [Free Organic Strategy Call](/contact) with our team.
     `,
     cta: 'Start Scaling Organic Content →',
     ctaHref: '/content-studio',
