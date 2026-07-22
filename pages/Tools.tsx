@@ -39,7 +39,7 @@ const toolCategories = [
         desc: 'Researches live trends in your exact niche, then writes your captions, scripts, carousels, and hashtags for all 7 major platforms. Native writing, infinite memory.',
         color: '#0065ff',
         link: '/content-studio',
-        external: false,
+        external: true,
         btnText: '⚡ Try Content Studio Free'
       },
       {
