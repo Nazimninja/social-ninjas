@@ -14,7 +14,7 @@ import { useState, useEffect, useRef } from "react";
 const CONFIG = {
   brandName:    "Social Ninja's",
   brandTagline: "AI Content Studio",
-  accentColor:  "#5ba4f5",
+  accentColor:  "#1F4B99",
 
   // ✅ YOUR SINGLE RAZORPAY LINK — all plans pay here
   // For subscriptions: create 3 subscription plans in Razorpay dashboard
@@ -52,7 +52,7 @@ const PLANS = [
     postsPerWeek: 4,
     postsPerMonth: 15,
     platformCount: 2,
-    color: "#5ba4f5",
+    color: "#1F4B99",
     badge: null,
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
@@ -265,7 +265,7 @@ const ACTIVE_PLATFORMS = ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twi
 const MY_PROFILES = {
   sn_ig:  {
     id:"sn_ig", name:"Social Ninja's", sub:"Instagram", emoji:"🥷",
-    color:"#5ba4f5", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
     platforms:["Instagram"],
     audience:"Global founders, D2C CMOs, startup heads — US/UK/UAE/SG/AU",
     tone:"Confident, data-led, direct. Results-obsessed agency voice. No fluff.",
@@ -275,7 +275,7 @@ const MY_PROFILES = {
   },
   sn_li:  {
     id:"sn_li", name:"Social Ninja's", sub:"LinkedIn", emoji:"🥷",
-    color:"#5ba4f5", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
     platforms:["LinkedIn"],
     audience:"Global B2B — CMOs, growth leads, D2C founders, startup heads",
     tone:"Thought leader. Data-heavy. McKinsey insight, direct founder delivery.",
@@ -677,7 +677,7 @@ function HowToUseBanner({color, postCount}){
 //  POST CARD — redesigned for clarity and usability
 // ─────────────────────────────────────────────────────────────────
 function PostCard({post, profile, index}){
-  const color = profile.color||"#5ba4f5";
+  const color = profile.color||"#1F4B99";
   const [tab,setTab]=useState("caption");
   const [copied,setCopied]=useState(false);
 
@@ -1162,7 +1162,7 @@ const GEN_STEPS = [
 ];
 
 function Workspace({profile, hKey, onUpgrade}){
-  const color=profile.color||"#5ba4f5";
+  const color=profile.color||"#1F4B99";
   const [hist,setHist]=useState([]);
   const [gen,setGen]=useState(false);
   const [result,setResult]=useState(null);
@@ -1236,7 +1236,7 @@ function Workspace({profile, hKey, onUpgrade}){
           marginBottom:16,display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
           <div style={{flex:1}}>
             <div style={{fontSize:13,fontWeight:700,letterSpacing:"-.2px",marginBottom:3}}>
-              ⚡ Free Trial — <span style={{color:"#5ba4f5"}}>{trialRemaining} post{trialRemaining!==1?"s":""} remaining</span>
+              ⚡ Free Trial — <span style={{color:"#1F4B99"}}>{trialRemaining} post{trialRemaining!==1?"s":""} remaining</span>
             </div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>
               No card needed. Upgrade after to unlock more posts, platforms and weekly tips.
@@ -1277,7 +1277,7 @@ function Workspace({profile, hKey, onUpgrade}){
                   borderRadius:13,padding:"14px 8px",cursor:"pointer",display:"block",width:"100%",textAlign:"center",transition:"all .2s"}}
                   onMouseOver={(e)=>e.currentTarget.style.background="rgba(56,189,248,0.2)"}
                   onMouseOut={(e)=>e.currentTarget.style.background="rgba(56,189,248,0.1)"}>
-                <div style={{fontSize:15,fontWeight:800,color:"#5ba4f5",marginBottom:3,pointerEvents:"none"}}>{price}</div>
+                <div style={{fontSize:15,fontWeight:800,color:"#1F4B99",marginBottom:3,pointerEvents:"none"}}>{price}</div>
                 <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3,pointerEvents:"none"}}>{name}</div>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4,pointerEvents:"none"}}>{desc}</div>
               </button>
@@ -1438,10 +1438,10 @@ function Workspace({profile, hKey, onUpgrade}){
             {trialExhausted ? (
               <div style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.3)",borderRadius:12,padding:"20px",maxWidth:400,margin:"0 auto"}}>
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
-                <div style={{fontSize:14,fontWeight:700,color:"#5ba4f5",marginBottom:12}}>Ready for more content?</div>
+                <div style={{fontSize:14,fontWeight:700,color:"#1F4B99",marginBottom:12}}>Ready for more content?</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
                 <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}/app/content-studio?plan=starter`)}
-                  style={{background:"#5ba4f5",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
+                  style={{background:"#1F4B99",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
               </div>
             ) : (
@@ -1538,7 +1538,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
     onComplete(enriched);
   };
 
-  const COLORS=["#5ba4f5","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
+  const COLORS=["#1F4B99","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
 
   return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
@@ -1588,7 +1588,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
         {/* ── SOCIAL ACCOUNTS ── */}
         <div style={{background:"rgba(56,189,248,0.06)",border:"1px solid rgba(56,189,248,0.18)",
           borderRadius:14,padding:"18px 16px"}}>
-          <div style={{fontSize:12,fontWeight:700,color:"#5ba4f5",textTransform:"uppercase",
+          <div style={{fontSize:12,fontWeight:700,color:"#1F4B99",textTransform:"uppercase",
             letterSpacing:"1.5px",marginBottom:4}}>🔗 Connect Your Social Accounts</div>
           <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:14,lineHeight:1.6}}>
             The AI will analyse your actual accounts — what's working, what's missing, gaps vs competitors — and tailor every piece of content to improve your specific presence.
@@ -1949,7 +1949,7 @@ function SmartSelect({label, value, onChange, options, placeholder, hint, error,
                   transition:"background .1s"}}
                 onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
                 onMouseOut={e=>e.currentTarget.style.background=value===o?"rgba(56,189,248,0.15)":"transparent"}>
-                {value===o&&<span style={{color:"#5ba4f5",marginRight:8}}>✓</span>}{o}
+                {value===o&&<span style={{color:"#1F4B99",marginRight:8}}>✓</span>}{o}
               </div>
             ))}
             {allowCustom&&q&&!options.includes(q)&&(
@@ -2019,7 +2019,7 @@ function CompetitorInput({value, onChange}){
             borderRadius:10,padding:"10px 14px",fontSize:13,color:"#fff",outline:"none"}}/>
         <button onClick={add}
           style={{background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.3)",
-            color:"#5ba4f5",borderRadius:10,padding:"10px 16px",fontSize:13,
+            color:"#1F4B99",borderRadius:10,padding:"10px 16px",fontSize:13,
             fontWeight:700,cursor:"pointer",flexShrink:0}}>+ Add</button>
       </div>
       <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:4}}>
@@ -2088,7 +2088,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
   const [stage, setStage] = useState(0); // 0=loading, 1=results, 2=error
   const [posts, setPosts] = useState([]);
   const [stepMsg, setStepMsg] = useState("Researching trends in your niche...");
-  const color = plan?.color || "#5ba4f5";
+  const color = plan?.color || "#1F4B99";
 
   const GEN_MSGS = [
     "🔍 Researching live trends in your niche...",
@@ -2337,7 +2337,7 @@ function GoogleLoginButton({ onSuccess, onError, label = "Continue with Google" 
           Google login is being configured. Please use email sign-in below, or try again shortly.
         </div>
         <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
-          (If you are the developer: add <code style={{ color: "#5ba4f5" }}>https://www.socialninjas.in</code> to Authorized JavaScript Origins in Google Cloud Console → APIs → Credentials)
+          (If you are the developer: add <code style={{ color: "#1F4B99" }}>https://www.socialninjas.in</code> to Authorized JavaScript Origins in Google Cloud Console → APIs → Credentials)
         </div>
       </div>
     );
@@ -2409,7 +2409,7 @@ function EmailLoginForm({ onSuccess, onCancel }) {
       />
       {err && <div style={{ fontSize: 12, color: "#e8b86d" }}>⚠ {err}</div>}
       <button onClick={handleSubmit} disabled={checking}
-        style={{ width: "100%", background: checking ? "rgba(255,255,255,0.05)" : "linear-gradient(135deg,#1d4ed8,#5ba4f5)", color: checking ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: 50, padding: "12px", fontSize: 14, fontWeight: 700, cursor: checking ? "not-allowed" : "pointer" }}>
+        style={{ width: "100%", background: checking ? "rgba(255,255,255,0.05)" : "linear-gradient(135deg,#1d4ed8,#1F4B99)", color: checking ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: 50, padding: "12px", fontSize: 14, fontWeight: 700, cursor: checking ? "not-allowed" : "pointer" }}>
         {checking ? "Looking up account..." : "Sign In with Email →"}
       </button>
       <button onClick={onCancel} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: 12, cursor: "pointer", textDecoration: "underline" }}>
@@ -2462,7 +2462,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
       const planParam = urlParams.get("plan");
       const isUpgrade = urlParams.get("upgrade") === "1";
       if (planParam === "trial") {
-        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
+        setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#1F4B99", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
         setScreen("details");
       } else if (planParam) {
         const selectedPlan = PLANS.find(p => p.id === planParam);
@@ -2626,7 +2626,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
           ))}
         </div>
         <button onClick={()=>{
-          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#5ba4f5", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
+          setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#1F4B99", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
           setScreen("details");
         }} className="sn-btn sn-btn-primary sn-btn-lg" style={{marginTop:24,width:"100%"}}>
           ⚡ Try 3 Posts Free — No Card Needed
@@ -2873,7 +2873,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
 
             {/* Extra fields only asked on upgrade */}
             <div style={{background:"rgba(56,189,248,0.05)",border:"1px solid rgba(56,189,248,0.15)",borderRadius:14,padding:"16px"}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"#5ba4f5",marginBottom:14}}>Additional details to maximise your content</div>
+              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",color:"#1F4B99",marginBottom:14}}>Additional details to maximise your content</div>
               <div style={{display:"grid",gap:12}}>
                 <Field label="Website" name="website" value={form.website||""}
                   onChange={setF} placeholder="https://yourbrand.com"
@@ -3090,7 +3090,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
       {otpError && <div style={{color:"#e8b86d",fontSize:13,marginBottom:16}}>⚠ {otpError}</div>}
       
       <button onClick={verifyOtpAndProceed} disabled={verifyingOtp}
-        style={{width:"100%",background:"linear-gradient(135deg,#1d4ed8,#5ba4f5)",
+        style={{width:"100%",background:"linear-gradient(135deg,#1d4ed8,#1F4B99)",
           color:"#fff",border:"none",borderRadius:12,padding:"16px",marginTop:16,
           fontSize:16,fontWeight:700,cursor:verifyingOtp?"not-allowed":"pointer",boxShadow:"0 8px 24px rgba(91,164,245,0.28)",transition:"all .2s"}}>
         {verifyingOtp ? "Verifying code..." : "Verify & Continue →"}
@@ -3108,7 +3108,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
       const enriched = {
         ...form, id, plan: "trial", planName: "Free Trial",
         isTrial: true,
-        color: "#5ba4f5", brand: "client", darkBg: "#020617",
+        color: "#1F4B99", brand: "client", darkBg: "#020617",
         joinDate: new Date().toLocaleDateString("en-IN"), active: true, emoji: "🎁",
         platforms: form.platforms?.length ? form.platforms : ["Instagram"],
         sub: form.platforms?.[0] || "Instagram",
@@ -3693,7 +3693,7 @@ export default function App(){
   if(tab==="portal") return wrap(
     portalView==="loading"?(
       <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:16}}>
-        <div style={{width:48,height:48,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.25)",borderTopColor:"#5ba4f5",animation:"spin 1s linear infinite"}}/>
+        <div style={{width:48,height:48,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.25)",borderTopColor:"#1F4B99",animation:"spin 1s linear infinite"}}/>
         <p style={{color:"rgba(255,255,255,0.35)",fontSize:14,fontWeight:500}}>Loading your studio...</p>
       </div>
     ):portalView==="home"?(
@@ -3821,7 +3821,7 @@ export default function App(){
                 }} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:12,padding:"12px 16px",cursor:"pointer",display:"flex",alignItems:"center",gap:12,transition:"all .15s",width:"100%",textAlign:"left"}}
                 onMouseOver={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}
                 onMouseOut={e=>e.currentTarget.style.background="rgba(255,255,255,0.04)"}>
-                  <div style={{width:36,height:36,borderRadius:"50%",background:`${cl.color||"#5ba4f5"}22`,display:"flex",alignItems:"center",justifyContent:"center",color:cl.color||"#5ba4f5",fontWeight:700,fontSize:15,flexShrink:0}}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:`${cl.color||"#1F4B99"}22`,display:"flex",alignItems:"center",justifyContent:"center",color:cl.color||"#1F4B99",fontWeight:700,fontSize:15,flexShrink:0}}>
                     {(cl.brandName||cl.email||"U")[0].toUpperCase()}
                   </div>
                   <div style={{flex:1,overflow:"hidden"}}>
@@ -3836,7 +3836,7 @@ export default function App(){
         )}
 
         <div style={{textAlign:"center",marginTop:20}}>
-          <button onClick={()=>setPortalView("onboarding")} style={{background:"none",border:"none",color:"#5ba4f5",cursor:"pointer",fontSize:14,fontWeight:600}}>+ Create New Workspace</button>
+          <button onClick={()=>setPortalView("onboarding")} style={{background:"none",border:"none",color:"#1F4B99",cursor:"pointer",fontSize:14,fontWeight:600}}>+ Create New Workspace</button>
         </div>
         <button onClick={()=>setPortalView("home")} style={{display:"block",background:"none",border:"none",color:"rgba(255,255,255,0.3)",cursor:"pointer",fontSize:13,marginTop:16,width:"100%",textAlign:"center"}}>← Back to Home</button>
       </div>
@@ -3849,7 +3849,7 @@ export default function App(){
               setPortalView("onboarding");
             }}/>
         : <div style={{textAlign:"center",padding:"80px 20px"}}>
-            <div style={{width:44,height:44,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.3)",borderTopColor:"#5ba4f5",animation:"spin 1s linear infinite",margin:"0 auto 16px"}}/>
+            <div style={{width:44,height:44,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.3)",borderTopColor:"#1F4B99",animation:"spin 1s linear infinite",margin:"0 auto 16px"}}/>
             <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Loading your studio...</p>
           </div>
     ):null
