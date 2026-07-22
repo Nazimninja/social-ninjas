@@ -300,24 +300,9 @@ const Home: React.FC = () => {
             {SERVICES.map((svc, i) => (
               <div
                 key={svc.num}
-                className="reveal"
+                className="reveal core-system-row"
                 style={{
                   transitionDelay: `${i * 0.08}s`,
-                  borderTop: '1px solid #ededed',
-                  padding: '36px 12px',
-                  display: 'grid',
-                  gridTemplateColumns: '80px 1fr auto',
-                  gap: 32,
-                  alignItems: 'start',
-                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = '#1F4B99';
-                  e.currentTarget.style.paddingLeft = '24px';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = '#ededed';
-                  e.currentTarget.style.paddingLeft = '12px';
                 }}
               >
                 <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, color: '#adadad', paddingTop: 4 }}>{svc.num}</div>
@@ -436,7 +421,7 @@ const Home: React.FC = () => {
       <div className="section-wrap-alt">
         <section className="section">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }} className="hero-grid-cols">
-            <div className="reveal-l" style={{ position: 'sticky', top: 80 }}>
+            <div className="reveal-l" style={{ position: 'sticky', top: 80 }} data-no-sticky-mobile="true">
               <div className="pill" style={{ marginBottom: 16 }}>Free Tools</div>
               <h2 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 16, color: '#141414' }}>
                 The Social Ninja's<br />product ecosystem.

@@ -1,61 +1,64 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ArrowRight, Bot, BarChart2, Palette, Share2, Globe, TrendingUp } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const servicesData: Record<string, any> = {
   'ai-automation': {
-    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '??', color: '#1F4B99',
+    title: 'AI & Automation', tagline: 'Your 24/7 sales team - powered by AI.', Icon: Bot, color: '#1F4B99',
     hero: 'Most businesses lose customers simply because they were too slow to reply. The average company takes 47 hours to respond to a new lead. By then, they\'ve already bought from a competitor. We fix that.',
     problem: 'Your team can\'t be online 24/7. Leads come in on weekends, at midnight, during meetings. Every hour without a reply is a sale you might be losing.',
-    solution: 'We deploy an AI agent that handles every incoming lead instantly — answering questions, qualifying them, and booking calls into your calendar. Your team only gets involved when someone is ready to buy.',
-    benefits: ['Replies to every lead in under 1 second, day or night','Asks the right questions to qualify each lead automatically','Books meetings straight into your calendar without you lifting a finger','Sends follow-up messages by email and SMS if they don\'t reply','Logs every conversation to your CRM — nothing falls through the cracks','Works on your website, WhatsApp, Instagram, or wherever your leads come from'],
-    stats: [['0.8s','Average reply time'],['14×','Faster than human teams'],['24/7','Always available'],['3×','More conversions from same leads']],
+    solution: 'We deploy an AI agent that handles every incoming lead instantly - answering questions, qualifying them, and booking calls into your calendar. Your team only gets involved when someone is ready to buy.',
+    benefits: ['Replies to every lead in under 1 second, day or night','Asks the right questions to qualify each lead automatically','Books meetings straight into your calendar without you lifting a finger','Sends follow-up messages by email and SMS if they don\'t reply','Logs every conversation to your CRM - nothing falls through the cracks','Works on your website, WhatsApp, Instagram, or wherever your leads come from'],
+    stats: [['0.8s','Average reply time'],['14x','Faster than human teams'],['24/7','Always available'],['3x','More conversions from same leads']],
     cta: 'Set Up My AI Agent',
   },
   'performance-marketing': {
-    title: 'Performance Marketing', tagline: 'Ads that bring real customers, not just clicks.', icon: '??', color: '#818cf8',
+    title: 'Performance Marketing', tagline: 'Ads that bring real customers, not just clicks.', Icon: BarChart2, color: '#818cf8',
     hero: 'Running ads is easy. Running ads that actually make money is hard. Most businesses waste half their ad budget on people who were never going to buy. We fix that using data, not guesswork.',
-    problem: 'You\'ve probably tried running ads yourself or hired someone who sent you fancy reports but couldn\'t explain why sales didn\'t go up. Low ROAS, wrong audiences, creatives that don\'t convert — these are fixable problems.',
+    problem: 'You\'ve probably tried running ads yourself or hired someone who sent you fancy reports but couldn\'t explain why sales didn\'t go up. Low ROAS, wrong audiences, creatives that don\'t convert - these are fixable problems.',
     solution: 'We start with an audit of everything you\'re running now. Then we rebuild your campaigns around what your best customers actually look like, create ads that stop the scroll, and test everything until we find what works best.',
-    benefits: ['Full audit of your existing ads before we touch a thing','Audience research based on your actual customers — not guesses','Multiple creative formats tested to find what converts','Weekly reporting in plain English — not jargon','We scale what works and cut what doesn\'t, every single week','Retargeting campaigns to capture people who almost bought'],
-    stats: [['4.5×','Average ROAS across our clients'],['?40Cr+','Total ad spend managed'],['60 days','Average time to see results'],['97%','Client renewal rate']],
+    benefits: ['Full audit of your existing ads before we touch a thing','Audience research based on your actual customers - not guesses','Multiple creative formats tested to find what converts','Weekly reporting in plain English - not jargon','We scale what works and cut what doesn\'t, every single week','Retargeting campaigns to capture people who almost bought'],
+    stats: [['4.5x','Average ROAS across our clients'],['40Cr+','Total ad spend managed'],['60 days','Average time to see results'],['97%','Client renewal rate']],
     cta: 'Audit My Ad Campaigns',
   },
   'creative-studio': {
-    title: 'Creative Studio', tagline: 'Content that actually makes people stop and buy.', icon: '??', color: '#34d399',
-    hero: 'The truth is most ads fail because of bad creative — not bad targeting. People scroll past content that looks like every other ad. We make content that looks different, sounds real, and converts.',
+    title: 'Creative Studio', tagline: 'Content that actually makes people stop and buy.', Icon: Palette, color: '#34d399',
+    hero: 'The truth is most ads fail because of bad creative - not bad targeting. People scroll past content that looks like every other ad. We make content that looks different, sounds real, and converts.',
     problem: 'Generic stock images and corporate videos don\'t work anymore. People can spot an ad in a split second. You need content that feels native to the platform and speaks directly to your customer\'s problem.',
-    solution: 'We produce video content, ad creatives, and designs that are built around what your specific audience responds to. Every piece is made with performance in mind — not just aesthetics.',
-    benefits: ['Short-form video and Reels that get watched all the way through','Ad creatives designed to convert — not just look good','UGC-style content that builds trust instantly','Carousel designs ready to use on Instagram and LinkedIn','Landing page design that turns visitors into leads','Every creative tracked and improved based on real performance data'],
-    stats: [['3×','Average engagement vs generic content'],['48hrs','Typical creative turnaround'],['100%','Owned by you — always'],['Data-led','Every decision backed by numbers']],
+    solution: 'We produce video content, ad creatives, and designs that are built around what your specific audience responds to. Every piece is made with performance in mind - not just aesthetics.',
+    benefits: ['Short-form video and Reels that get watched all the way through','Ad creatives designed to convert - not just look good','UGC-style content that builds trust instantly','Carousel designs ready to use on Instagram and LinkedIn','Landing page design that turns visitors into leads','Every creative tracked and improved based on real performance data'],
+    stats: [['3x','Average engagement vs generic content'],['48hrs','Typical creative turnaround'],['100%','Owned by you - always'],['Data-led','Every decision backed by numbers']],
     cta: 'Build My Creative Strategy',
   },
   'social-media': {
-    title: 'Social Media Management', tagline: 'Your brand showing up every day — without you doing the work.', icon: '??', color: '#f59e0b',
-    hero: 'Social media only works if you\'re consistent. But finding time to write captions, research trends, post every day, and reply to comments is nearly impossible when you\'re running a business. So most brands post whenever they remember — and their growth suffers for it.',
+    title: 'Social Media Management', tagline: 'Your brand showing up every day - without you doing the work.', Icon: Share2, color: '#0891b2',
+    hero: 'Social media only works if you\'re consistent. But finding time to write captions, research trends, post every day, and reply to comments is nearly impossible when you\'re running a business. So most brands post whenever they remember - and their growth suffers for it.',
     problem: 'Posting once in a while doesn\'t grow an audience. Algorithms reward consistency. And one generic post a week won\'t cut through the noise when your competitors are posting daily with content built specifically for their audience.',
     solution: 'We take over your social media completely. We plan the content, research what\'s trending in your niche, write every caption, post at the best time, and reply to your audience. You just approve and move on.',
-    benefits: ['A monthly content plan built around what your audience actually cares about','Captions and hashtags written specifically for each platform','We post at the times when your audience is most active','Community management — we reply to comments and DMs','Monthly performance reports with clear takeaways','Live trend research so your content always feels relevant'],
-    stats: [['2×','Organic reach within 90 days'],['Daily','Consistent posting schedule'],['All platforms','Instagram, LinkedIn, X, Facebook, more'],['Monthly','Reports in plain English']],
+    benefits: ['A monthly content plan built around what your audience actually cares about','Captions and hashtags written specifically for each platform','We post at the times when your audience is most active','Community management - we reply to comments and DMs','Monthly performance reports with clear takeaways','Live trend research so your content always feels relevant'],
+    stats: [['2x','Organic reach within 90 days'],['Daily','Consistent posting schedule'],['All platforms','Instagram, LinkedIn, X, Facebook, more'],['Monthly','Reports in plain English']],
     cta: 'Manage My Social Media',
   },
   'web-seo': {
-    title: 'Web & SEO', tagline: 'Get found on Google. Turn visitors into customers.', icon: '??', color: '#ec4899',
-    hero: 'Your website should be working for you 24/7 — bringing in visitors from Google and turning them into leads. If it\'s not doing that, something\'s wrong. We find it and fix it.',
-    problem: 'Most websites look fine but convert terribly. They load slowly, don\'t show up on Google for the right keywords, and confuse visitors into leaving. It\'s not a design problem — it\'s a strategy problem.',
-    solution: 'We start with a full audit of your site — speed, SEO, conversion rate, everything. Then we fix what\'s broken, write content that Google actually ranks, and rebuild your pages to turn more visitors into leads.',
-    benefits: ['Complete technical SEO audit and fixes','Content strategy targeting keywords your actual customers search for','Website redesign focused on converting visitors — not just looking nice','Page speed optimisation so you don\'t lose visitors who get impatient','Lead generation landing pages with clear calls to action','Monthly ranking reports to track progress'],
+    title: 'Web & SEO', tagline: 'Get found on Google. Turn visitors into customers.', Icon: Globe, color: '#ec4899',
+    hero: 'Your website should be working for you 24/7 - bringing in visitors from Google and turning them into leads. If it\'s not doing that, something\'s wrong. We find it and fix it.',
+    problem: 'Most websites look fine but convert terribly. They load slowly, don\'t show up on Google for the right keywords, and confuse visitors into leaving. It\'s not a design problem - it\'s a strategy problem.',
+    solution: 'We start with a full audit of your site - speed, SEO, conversion rate, everything. Then we fix what\'s broken, write content that Google actually ranks, and rebuild your pages to turn more visitors into leads.',
+    benefits: ['Complete technical SEO audit and fixes','Content strategy targeting keywords your actual customers search for','Website redesign focused on converting visitors - not just looking nice','Page speed optimisation so you don\'t lose visitors who get impatient','Lead generation landing pages with clear calls to action','Monthly ranking reports to track progress'],
     stats: [['Top 3','Average Google ranking within 6 months'],['Fast','Sub-2-second page load times'],['Tracked','Every keyword, every month'],['Owned','Your site, your content, always']],
     cta: 'Audit My Website & SEO',
   },
   'growth-consulting': {
-    title: 'Growth Consulting', tagline: 'A clear plan to grow — and someone to hold you to it.', icon: '??', color: '#a78bfa',
+    title: 'Growth Consulting', tagline: 'A clear plan to grow - and someone to hold you to it.', Icon: TrendingUp, color: '#a78bfa',
     hero: 'Sometimes you don\'t need more marketing activity. You need someone to look at what you\'re already doing, tell you what\'s working and what\'s wasting money, and give you a clear plan to follow.',
-    problem: 'Most founders and marketing teams are too close to their own business to see the problems clearly. They know something isn\'t working but they don\'t know what to fix first — so they try everything and make no progress.',
+    problem: 'Most founders and marketing teams are too close to their own business to see the problems clearly. They know something isn\'t working but they don\'t know what to fix first - so they try everything and make no progress.',
     solution: 'We do a deep dive into your marketing, your funnel, and your numbers. Then we give you a clear 90-day plan with specific priorities, realistic targets, and weekly check-ins to make sure you\'re on track.',
-    benefits: ['Full marketing audit — find exactly what\'s leaking revenue','Clear 90-day growth plan with specific priorities and targets','Revenue funnel review — from first click to paid customer','Team training on tools, strategy, and measurement','Monthly strategy sessions to review progress and adjust the plan','Honest, direct feedback — not what you want to hear, but what you need to'],
+    benefits: ['Full marketing audit - find exactly what\'s leaking revenue','Clear 90-day growth plan with specific priorities and targets','Revenue funnel review - from first click to paid customer','Team training on tools, strategy, and measurement','Monthly strategy sessions to review progress and adjust the plan','Honest, direct feedback - not what you want to hear, but what you need to'],
     stats: [['40%','Average revenue lift in Q1'],['90 days','From audit to measurable results'],['Weekly','Check-ins to stay on track'],['You own','Every strategy, every doc']],
+    cta: 'Book a Strategy Session',
+  },
+};],
     cta: 'Book a Strategy Session',
   },
 };
@@ -107,7 +110,9 @@ const ServiceDetail: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
-                <div style={{ width: 56, height: 56, borderRadius: 16, background: `${s.color}14`, border: `1px solid ${s.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>{s.icon}</div>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: `${s.color}14`, border: `1px solid ${s.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {s.Icon && <s.Icon size={26} color={s.color} strokeWidth={1.5} />}
+                </div>
               </div>
               <h1 className="reveal" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,70px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.02, marginBottom: 16, color: '#141414' }}>
                 {s.title}
@@ -170,8 +175,8 @@ const ServiceDetail: React.FC = () => {
             Book a free 30-minute call. We'll look at your specific situation and show you exactly what we'd do and what results you can realistically expect.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>{s.cta} ?</button></Link>
-            <Link to="/services"><button className="btn-ghost" style={{ fontSize: 15 }}>? See All Services</button></Link>
+            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>{s.cta} â†’</button></Link>
+            <Link to="/services"><button className="btn-ghost" style={{ fontSize: 15 }}>See All Services</button></Link>
           </div>
         </div>
       </div>

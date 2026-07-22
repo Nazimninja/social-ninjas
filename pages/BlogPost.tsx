@@ -119,12 +119,12 @@ const BlogPost: React.FC = () => {
       />
 
       {/* Back nav */}
-      <div style={{ position: 'sticky', top: 62, zIndex: 50, background: 'rgba(7,16,30,0.85)', backdropFilter: 'blur(24px)', borderBottom: '1px solid #ededed', padding: '12px 28px' }}>
+      <div style={{ position: 'sticky', top: 60, zIndex: 50, background: 'rgba(255, 255, 255, 0.92)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid #ededed', padding: '12px 20px' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link to="/blog" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 500, color: '#5a5a5a', transition: 'color .2s' }}>
+          <Link to="/blog" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 500, color: '#141414', transition: 'color .2s' }}>
             <ArrowLeft size={14} /> All Posts
           </Link>
-          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: '#888', background: '#f5f5f5', border: '1px solid #e0e0e0', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
+          <button onClick={share} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 500, color: '#141414', background: '#f5f5f5', border: '1px solid #ededed', borderRadius: 50, padding: '6px 14px', cursor: 'pointer' }}>
             <Share2 size={12} /> Share
           </button>
         </div>

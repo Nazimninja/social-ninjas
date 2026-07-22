@@ -124,7 +124,7 @@ const BlogCard: React.FC<{ post: typeof POSTS[0]; index: number; featured?: bool
           
           {/* Stat badge */}
           {featured && post.stat && (
-            <div style={{ flexShrink: 0, textAlign: 'center', background: `${post.color}10`, border: `1px solid ${post.color}22`, borderRadius: 16, padding: '16px 20px', minWidth: 90, display: ['none', 'block'] as any }}>
+            <div className="blog-stat-badge" style={{ flexShrink: 0, textAlign: 'center', background: `${post.color}10`, border: `1px solid ${post.color}22`, borderRadius: 16, padding: '16px 20px', minWidth: 90 }}>
               <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 26, fontWeight: 800, color: post.color, letterSpacing: '-1px', lineHeight: 1 }}>{post.stat.value}</div>
               <div style={{ fontSize: 10, color: '#888', marginTop: 6, lineHeight: 1.4 }}>{post.stat.label}</div>
             </div>

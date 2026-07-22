@@ -302,6 +302,41 @@
   letter-spacing: -1.5px; color: #141414; line-height: 1;
 }
 
+/* ── CORE SYSTEM ROW ────────────────────────────────── */
+.core-system-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 32px;
+  align-items: start;
+  border-top: 1px solid #ededed;
+  padding: 36px 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.core-system-row:hover {
+  border-color: #1F4B99 !important;
+  padding-left: 24px !important;
+}
+
+.blog-stat-badge {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .core-system-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 24px 8px !important;
+  }
+  .core-system-row:hover {
+    padding-left: 16px !important;
+  }
+}
+@media (max-width: 640px) {
+  .blog-stat-badge {
+    display: none !important;
+  }
+}
+
 /* ── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .section { padding: 64px 20px; }
@@ -324,6 +359,8 @@
 @media (max-width: 768px) {
   .hidden-mobile { display: none !important; }
   .show-mobile   { display: block !important; }
+  /* Disable sticky on mobile — it overlaps content when grid collapses to 1 col */
+  [data-no-sticky-mobile] { position: static !important; top: auto !important; }
 }
 @media (min-width: 769px) {
   .show-mobile   { display: none !important; }
