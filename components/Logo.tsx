@@ -11,7 +11,8 @@ const Logo: React.FC<LogoProps> = ({ size = 32 }) => {
       alt="Social Ninja's" 
       style={{ 
         width: size, 
-        height: size, 
+        height: 'auto',
+        maxHeight: size,
         objectFit: 'contain', 
         flexShrink: 0, 
         display: 'block' 
