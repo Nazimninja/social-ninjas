@@ -37,7 +37,7 @@ const toolCategories = [
         name: 'AI Content Studio',
         tagline: 'Your whole week of content written in 60s.',
         desc: 'Researches live trends in your exact niche, then writes your captions, scripts, carousels, and hashtags for all 7 major platforms. Native writing, infinite memory.',
-        color: '#3D6DB5',
+        color: '#1F4B99',
         link: '/content-studio',
         external: true,
         btnText: '⚡ Try Content Studio Free'
@@ -139,7 +139,7 @@ const toolCategories = [
         name: 'US Mortgage Calculator',
         tagline: 'Estimate monthly payment & affordability.',
         desc: 'Calculate monthly home payments, taxes, insurance, HOA, and amortization schedules. Check your maximum home affordability limits under standard DTI rules.',
-        color: '#2A5299',
+        color: '#153880',
         link: 'https://mortgage.socialninjas.in',
         external: true,
         btnText: 'Open Calculator'
@@ -166,7 +166,7 @@ const Tools: React.FC = () => {
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <div className="pill reveal" style={{ justifyContent: 'center' }}>Agency Tools</div>
           <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
-            Growth systems & calculators<br /><span style={{ background: 'linear-gradient(135deg,#3D6DB5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>built for high-performing brands.</span>
+            Growth systems & calculators<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>built for high-performing brands.</span>
           </h1>
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,17px)', fontWeight: 400, color: '#717171', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>
             We build tools that save you time, optimize your digital marketing campaigns, and give you accurate mathematical breakdowns of your finances.
@@ -296,7 +296,7 @@ const Tools: React.FC = () => {
       <div className="section-wrap-alt">
         <section className="section">
         <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#3D6DB5,transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#1F4B99,transparent)' }} />
           <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>
             Have an idea for a custom system?
           </h2>

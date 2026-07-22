@@ -221,7 +221,7 @@ const Careers: React.FC = () => {
                                 <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
                                     <Button
                                         variant="outline"
-                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-neutral-300 hover:border-[#3D6DB5] hover:bg-[#3D6DB5] hover:text-white"
+                                        className="w-full md:w-auto text-xs py-3 rounded-lg border-neutral-300 hover:border-[#1F4B99] hover:bg-[#1F4B99] hover:text-white"
                                         onClick={() => handleApplyClick(role.title)}
                                     >
                                         Apply Now

@@ -88,7 +88,7 @@ const Contact: React.FC = () => {
           <div>
             <div className="pill reveal">Get In Touch</div>
             <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'#141414'}}>
-              Let's build your<br/><em style={{background:'linear-gradient(135deg,#3D6DB5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
+              Let's build your<br/><em style={{background:'linear-gradient(135deg,#1F4B99,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
             </h1>
             <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'#717171',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
 
@@ -100,8 +100,8 @@ const Contact: React.FC = () => {
                 {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
               ].map(({icon:Ico,label,val,href})=>(
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:14}}>
-                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(61,109,181,0.07)',border:'1px solid rgba(61,109,181,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <Ico size={18} color="#3D6DB5" strokeWidth={1.5}/>
+                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(31,75,153,0.07)',border:'1px solid rgba(31,75,153,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    <Ico size={18} color="#1F4B99" strokeWidth={1.5}/>
                   </div>
                   <div>
                     <div style={{fontSize:11,color:'#adadad',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
@@ -128,7 +128,7 @@ const Contact: React.FC = () => {
               <div style={{padding:'20px 28px',borderBottom:'1px solid #ededed',display:'flex',alignItems:'center',gap:8}}>
                 {[1,2,3].map(s=>(
                   <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(61,109,181,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(61,109,181,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#3D6DB5':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
+                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(31,75,153,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(31,75,153,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#1F4B99':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
                       {s<step?'?':s}
                     </div>
                     {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'#f0f0f0',transition:'background .4s'}}/>}

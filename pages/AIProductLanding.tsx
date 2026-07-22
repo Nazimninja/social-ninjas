@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 
 const productsData: Record<string, any> = {
   'content-studio': {
-    name: 'AI Content Studio', icon: '⚡', color: '#3D6DB5', badge: '🟢 Live',
+    name: 'AI Content Studio', icon: '⚡', color: '#1F4B99', badge: '🟢 Live',
     tagline: 'Your whole week of content — written in 60 seconds.',
     hero: 'You know you should be posting more content. But coming up with ideas, researching what\'s trending, writing captions for different platforms, making scripts for Reels, finding hashtags — it takes hours every week. We built AI Content Studio to do all of that for you.',
     tryLink: '/app/content-studio?plan=trial',

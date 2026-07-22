@@ -65,15 +65,15 @@ const ContactWidget: React.FC = () => {
               fontFamily: "'Inter', sans-serif"
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.borderColor = "rgba(61,109,181,0.4)";
-              e.currentTarget.style.background = "rgba(61,109,181,0.08)";
+              e.currentTarget.style.borderColor = "rgba(31,75,153,0.4)";
+              e.currentTarget.style.background = "rgba(31,75,153,0.08)";
             }}
             onMouseLeave={e => {
               e.currentTarget.style.borderColor = "#EDEDED";
               e.currentTarget.style.background = "#FFFFFF";
             }}
           >
-            <Mail size={14} style={{ color: "#3D6DB5" }} />
+            <Mail size={14} style={{ color: "#1F4B99" }} />
             info@socialninjas.in
           </a>
 
@@ -119,8 +119,8 @@ const ContactWidget: React.FC = () => {
         onClick={() => setOpen(o => !o)}
         className="flex items-center justify-center w-14 h-14 rounded-full shadow-lg border transition-all"
         style={{
-          background: open ? '#141414' : 'linear-gradient(135deg, #3D6DB5, #2A5299)',
-          borderColor: open ? '#141414' : 'rgba(61,109,181,0.1)'
+          background: open ? '#141414' : 'linear-gradient(135deg, #1F4B99, #153880)',
+          borderColor: open ? '#141414' : 'rgba(31,75,153,0.1)'
         }}
         aria-label="Contact us"
       >

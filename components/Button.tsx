@@ -21,9 +21,9 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-300 rounded-full px-8 py-4 text-sm tracking-wide transform hover:-translate-y-1 active:translate-y-0 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer relative overflow-hidden";
 
   const variants = {
-    primary: "bg-[#3D6DB5] text-white font-bold hover:bg-[#2A5299] hover:shadow-[0_4px_20px_rgba(61,109,181,0.2)] border border-transparent group",
+    primary: "bg-[#1F4B99] text-white font-bold hover:bg-[#153880] hover:shadow-[0_4px_20px_rgba(31,75,153,0.2)] border border-transparent group",
     secondary: "bg-[#fafafa] border border-[#ededed] text-[#141414] hover:bg-[#f5f5f5] hover:border-[#adadad]",
-    outline: "border border-[#d0d0d0] text-[#141414] hover:border-[#3D6DB5] hover:text-[#3D6DB5] bg-transparent",
+    outline: "border border-[#d0d0d0] text-[#141414] hover:border-[#1F4B99] hover:text-[#1F4B99] bg-transparent",
     ghost: "text-[#717171] hover:text-[#141414] bg-transparent px-4"
   };
 

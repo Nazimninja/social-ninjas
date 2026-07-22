@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 
 const servicesData: Record<string, any> = {
   'ai-automation': {
-    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '??', color: '#3D6DB5',
+    title: 'AI & Automation', tagline: 'Your 24/7 sales team — powered by AI.', icon: '??', color: '#1F4B99',
     hero: 'Most businesses lose customers simply because they were too slow to reply. The average company takes 47 hours to respond to a new lead. By then, they\'ve already bought from a competitor. We fix that.',
     problem: 'Your team can\'t be online 24/7. Leads come in on weekends, at midnight, during meetings. Every hour without a reply is a sale you might be losing.',
     solution: 'We deploy an AI agent that handles every incoming lead instantly — answering questions, qualifying them, and booking calls into your calendar. Your team only gets involved when someone is ready to buy.',

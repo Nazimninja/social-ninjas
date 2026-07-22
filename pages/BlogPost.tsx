@@ -66,7 +66,7 @@ const BlogPost: React.FC = () => {
 
   if (loading) return (
     <div style={{ minHeight: '100vh', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2px solid rgba(61,109,181,0.3)', borderTopColor: '#3D6DB5', animation: 'spin 0.8s linear infinite' }} />
+      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '2px solid rgba(31,75,153,0.3)', borderTopColor: '#1F4B99', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
@@ -100,7 +100,7 @@ const BlogPost: React.FC = () => {
         left: 0,
         width: `${scrollProgress}%`,
         height: '4px',
-        background: 'linear-gradient(90deg, #3D6DB5, #2fcf8e)',
+        background: 'linear-gradient(90deg, #1F4B99, #2fcf8e)',
         zIndex: 9999,
         transition: 'width 0.08s ease-out'
       }} />
@@ -224,9 +224,9 @@ const BlogPost: React.FC = () => {
             <button
               onClick={share}
               style={{
-                background: 'rgba(61,109,181,0.1)',
-                border: '1px solid rgba(61,109,181,0.25)',
-                color: '#3D6DB5',
+                background: 'rgba(31,75,153,0.1)',
+                border: '1px solid rgba(31,75,153,0.25)',
+                color: '#1F4B99',
                 padding: '8px 16px',
                 borderRadius: 12,
                 fontSize: 12.5,
@@ -245,10 +245,10 @@ const BlogPost: React.FC = () => {
 
         {/* Author card */}
         <div style={{ marginTop: 56, padding: '24px', background: '#f5f5f5', backdropFilter: 'blur(20px)', border: '1px solid #ededed', borderRadius: 18, display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#2A5299,#3D6DB5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🥷</div>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#153880,#1F4B99)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🥷</div>
           <div>
             <div style={{ fontSize: 14, fontWeight: 600, color: '#141414', marginBottom: 3 }}>{post.author || "Social Ninja's Team"}</div>
-            <div style={{ fontSize: 12.5, fontWeight: 300, color: '#888', lineHeight: 1.6 }}>Performance marketing, AI automation, and content strategy for ambitious brands. <Link to="/about" style={{ color: '#3D6DB5', textDecoration: 'none' }}>About us →</Link></div>
+            <div style={{ fontSize: 12.5, fontWeight: 300, color: '#888', lineHeight: 1.6 }}>Performance marketing, AI automation, and content strategy for ambitious brands. <Link to="/about" style={{ color: '#1F4B99', textDecoration: 'none' }}>About us →</Link></div>
           </div>
         </div>
       </article>
@@ -256,14 +256,14 @@ const BlogPost: React.FC = () => {
       {/* Related posts */}
       {related.length > 0 && (
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#3D6DB5', marginBottom: 24 }}>More in {post.category}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1F4B99', marginBottom: 24 }}>More in {post.category}</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="related-grid">
             {related.map((r:any) => (
               <Link key={r.id} to={`/blog/${r.id}`} style={{ textDecoration: 'none' }}>
                 <div className="glass-card" style={{ padding: 24, borderRadius: 18, height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
                   <h3 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 15, fontWeight: 700, color: '#1a1a1a', lineHeight: 1.3, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
                   <p style={{ fontSize: 12.5, color: '#888', lineHeight: 1.62, flex: 1 }}>{r.excerpt}</p>
-                  <div style={{ fontSize: 11, color: '#3D6DB5', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>Read <ArrowRight size={11} /></div>
+                  <div style={{ fontSize: 11, color: '#1F4B99', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 500 }}>Read <ArrowRight size={11} /></div>
                 </div>
               </Link>
             ))}
@@ -274,7 +274,7 @@ const BlogPost: React.FC = () => {
       {/* CTA */}
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
         <div style={{ background: '#fff', backdropFilter: 'blur(40px)', border: '1px solid #ededed', borderRadius: 22, padding: '44px 36px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(61,109,181,0.35),transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(31,75,153,0.35),transparent)' }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,36px)', fontWeight: 800, letterSpacing: '-1px', marginBottom: 10, color: '#141414', lineHeight: 1.1 }}>
             Ready to implement this?
           </h2>
@@ -294,11 +294,11 @@ const BlogPost: React.FC = () => {
         .blog-content p{margin-bottom:22px;}
         .blog-content strong{color:#1a1a1a;font-weight:600;}
         .blog-content em{font-style:italic;color:#525252;}
-        .blog-content a{color:#3D6DB5;text-decoration:none;border-bottom:1px solid rgba(61,109,181,0.3);}
-        .blog-content a:hover{border-bottom-color:#3D6DB5;}
+        .blog-content a{color:#1F4B99;text-decoration:none;border-bottom:1px solid rgba(31,75,153,0.3);}
+        .blog-content a:hover{border-bottom-color:#1F4B99;}
         .blog-content ul,ol{padding-left:22px;margin-bottom:22px;display:flex;flex-direction:column;gap:8px;}
         .blog-content li{color:#525252;font-weight:300;}
-        .blog-content blockquote{border-left:3px solid #3D6DB5;padding:14px 22px;background:rgba(61,109,181,0.06);border-radius:0 12px 12px 0;margin:28px 0;font-style:italic;color:#525252;}
+        .blog-content blockquote{border-left:3px solid #1F4B99;padding:14px 22px;background:rgba(31,75,153,0.06);border-radius:0 12px 12px 0;margin:28px 0;font-style:italic;color:#525252;}
         .blog-content code{font-family:'JetBrains Mono',monospace;font-size:13px;background:#ededed;padding:2px 7px;border-radius:5px;color:#333;}
         .blog-content hr{border:none;height:1px;background:#ededed;margin:36px 0;}
         @media(max-width:640px){.related-grid{grid-template-columns:1fr!important;} article{padding:48px 18px 60px!important;}}

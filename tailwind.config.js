@@ -20,9 +20,9 @@ export default {
                     dark:       '#ffffff',
                     surface:    '#fafafa',
                     mid:        '#f5f5f5',
-                    primary:    '#3D6DB5',   /* Ninja Blue — robe/hood */
-                    blue2:      '#2A5299',   /* Deep Blue — hover */
-                    blueLight:  '#EBF0FA',   /* Blue tint — bg badges */
+                    primary:    '#1F4B99',   /* Ninja Blue — robe/hood */
+                    blue2:      '#153880',   /* Deep Blue — hover */
+                    blueLight:  '#E8EEF8',   /* Blue tint — bg badges */
                     brown:      '#8B5E3C',   /* Sword handle — warm accent */
                     brownLight: '#F5EDE6',   /* Handle tint — warm bg */
                     steel:      '#9BA8B4',   /* Blade silver — borders */

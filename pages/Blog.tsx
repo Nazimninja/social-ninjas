@@ -183,7 +183,7 @@ const Blog: React.FC = () => {
             <div>
               <div className="pill reveal"><Rss size={12} />Intelligence Feed · Weekly</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: '#141414' }}>
-                Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#3D6DB5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
+                Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
               <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: '#717171', lineHeight: 1.72, maxWidth: 400, marginBottom: 24 }}>
                 Real numbers, real case studies, and the exact frameworks we use to scale brands from ?5L to ?50L monthly revenue.
@@ -209,7 +209,7 @@ const Blog: React.FC = () => {
                     fontFamily: "'DM Sans', sans-serif"
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.border = '1px solid #3D6DB560';
+                    e.currentTarget.style.border = '1px solid #1F4B9960';
                     e.currentTarget.style.background = '#f5f5f5';
                     e.currentTarget.style.boxShadow = '0 0 20px rgba(91, 164, 245, 0.1)';
                   }}
@@ -236,9 +236,9 @@ const Blog: React.FC = () => {
                   <button key={cat} onClick={() => { setActiveFilter(cat); }} style={{
                     fontFamily: "'DM Sans',system-ui", fontSize: 12.5, fontWeight: activeFilter === cat ? 600 : 400,
                     padding: '7px 16px', borderRadius: 50, cursor: 'pointer', transition: 'all .2s',
-                    background: activeFilter === cat ? 'rgba(61,109,181,0.15)' : '#f5f5f5',
-                    border: activeFilter === cat ? '1px solid rgba(61,109,181,0.35)' : '1px solid #e8e8e8',
-                    color: activeFilter === cat ? '#3D6DB5' : '#717171',
+                    background: activeFilter === cat ? 'rgba(31,75,153,0.15)' : '#f5f5f5',
+                    border: activeFilter === cat ? '1px solid rgba(31,75,153,0.35)' : '1px solid #e8e8e8',
+                    color: activeFilter === cat ? '#1F4B99' : '#717171',
                   }}>{cat}</button>
                 ))}
               </div>
@@ -247,7 +247,7 @@ const Blog: React.FC = () => {
             <div className="reveal-r d2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {[['3', 'Posts per week'], ['150+', 'Brands scaled'], ['?40M+', 'Ad spend managed'], ['4.9?', 'Client rating']].map(([n, l]) => (
                 <div key={l} className="glass-card" style={{ padding: '22px 18px', textAlign: 'center', borderRadius: 18 }}>
-                  <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#3D6DB5', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
+                  <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#1F4B99', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontSize: 11, color: '#adadad', marginTop: 5 }}>{l}</div>
                 </div>
               ))}
@@ -287,7 +287,7 @@ const Blog: React.FC = () => {
                   borderRadius: 24,
                   padding: '32px 34px',
                   border: '1px solid #ededed',
-                  background: 'linear-gradient(135deg, rgba(61,109,181,0.05), rgba(255,255,255,0.01))',
+                  background: 'linear-gradient(135deg, rgba(31,75,153,0.05), rgba(255,255,255,0.01))',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -296,7 +296,7 @@ const Blog: React.FC = () => {
                   overflow: 'hidden'
                 }}
               >
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(61,109,181,0.38), transparent)' }} />
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(31,75,153,0.38), transparent)' }} />
                 <h3 style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 22, fontWeight: 800, color: '#141414', marginBottom: 10, letterSpacing: '-0.5px', lineHeight: 1.2 }}>
                   Get growth breakdowns in your inbox
                 </h3>
@@ -329,7 +329,7 @@ const Blog: React.FC = () => {
                       fontWeight: 600,
                       cursor: 'pointer',
                       border: 'none',
-                      background: 'linear-gradient(135deg, #2A5299, #3D6DB5)',
+                      background: 'linear-gradient(135deg, #153880, #1F4B99)',
                       color: '#141414'
                     }}
                   >
@@ -378,7 +378,7 @@ const Blog: React.FC = () => {
       {/* CTA */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 88px', position: 'relative', zIndex: 1 }}>
         <div className="reveal" style={{ background: 'rgba(8,14,26,0.75)', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 24, padding: '56px 40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(61,109,181,0.38),transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(31,75,153,0.38),transparent)' }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(22px,4vw,42px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 12, color: '#141414', lineHeight: 1.1 }}>
             Want these strategies working for your brand?
           </h2>

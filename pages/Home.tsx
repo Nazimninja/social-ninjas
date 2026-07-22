@@ -31,21 +31,21 @@ const SERVICES = [
     title: 'AI Lead Automation',
     desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar without any manual work.',
     tags: ['24/7 Response', 'CRM Sync', 'WhatsApp & DM'],
-    color: '#3D6DB5',
+    color: '#1F4B99',
   },
   {
     num: '02',
     title: 'Performance Paid Ads',
     desc: 'Creative-first Meta and Google campaigns built on margin math, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our data-driven creative testing system.',
     tags: ['Meta & Google', '4.5× Avg ROAS', 'Creative Testing'],
-    color: '#3D6DB5',
+    color: '#1F4B99',
   },
   {
     num: '03',
     title: 'AI Content Engine',
     desc: 'We aggregate trending topics in your niche, script a full week of hooks, captions, and video scripts using AI, then deliver a content calendar ready to post — all in 60 seconds.',
     tags: ['Video Scripts', 'Auto-Scheduling', 'Trend Research'],
-    color: '#3D6DB5',
+    color: '#1F4B99',
   },
 ];
 
@@ -191,7 +191,7 @@ const Home: React.FC = () => {
 
               <h1 style={{ fontSize: 'clamp(40px,4.5vw,64px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 20, color: '#141414', fontFamily: "'Plus Jakarta Sans',system-ui" }}>
                 AI-powered<br />growth systems<br />
-                <span style={{ color: '#3D6DB5' }}>that scale.</span>
+                <span style={{ color: '#1F4B99' }}>that scale.</span>
               </h1>
 
               <p style={{ fontSize: 17, fontWeight: 400, color: '#717171', lineHeight: 1.65, maxWidth: 480, marginBottom: 36 }}>
@@ -221,7 +221,7 @@ const Home: React.FC = () => {
                 {/* Card header */}
                 <div style={{ background: '#fafafa', padding: '14px 18px', borderBottom: '1px solid #ededed', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Bot size={14} color="#3D6DB5" />
+                    <Bot size={14} color="#1F4B99" />
                     <span style={{ fontSize: 12, fontWeight: 600, color: '#141414' }}>AI Lead Qualifier</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -243,7 +243,7 @@ const Home: React.FC = () => {
                         borderRadius: m.from === 'ai' ? '14px 14px 14px 3px' : '14px 14px 3px 14px',
                         fontSize: 13,
                         lineHeight: 1.45,
-                        background: m.from === 'ai' ? '#f5f5f5' : '#3D6DB5',
+                        background: m.from === 'ai' ? '#f5f5f5' : '#1F4B99',
                         color: m.from === 'ai' ? '#141414' : '#fff',
                         animation: 'fadeUp 0.25s ease',
                       }}>
@@ -312,7 +312,7 @@ const Home: React.FC = () => {
                   transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = '#3D6DB5';
+                  e.currentTarget.style.borderColor = '#1F4B99';
                   e.currentTarget.style.paddingLeft = '24px';
                 }}
                 onMouseLeave={e => {
@@ -354,7 +354,7 @@ const Home: React.FC = () => {
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
                 {['Margin-first media buying','Creative fatigue monitoring','Weekly ROAS reporting','Full attribution across channels'].map(item => (
                   <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#141414' }}>
-                    <Check size={14} color="#3D6DB5" strokeWidth={2.5} />{item}
+                    <Check size={14} color="#1F4B99" strokeWidth={2.5} />{item}
                   </li>
                 ))}
               </ul>
@@ -370,7 +370,7 @@ const Home: React.FC = () => {
                     <span style={{ fontSize: 14, fontWeight: 700, color: '#141414' }}>₹{(budget / 100000).toFixed(0)}L</span>
                   </div>
                   <input type="range" min={200000} max={5000000} step={100000} value={budget} onChange={e => setBudget(+e.target.value)}
-                    style={{ width: '100%', accentColor: '#3D6DB5', height: 4, cursor: 'pointer' }} />
+                    style={{ width: '100%', accentColor: '#1F4B99', height: 4, cursor: 'pointer' }} />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
                     <span style={{ fontSize: 11, color: '#adadad' }}>₹2L</span>
                     <span style={{ fontSize: 11, color: '#adadad' }}>₹50L</span>
@@ -412,13 +412,13 @@ const Home: React.FC = () => {
             {TESTIMONIALS.map((t, i) => (
               <div key={t.name} className="card" style={{ padding: 32, borderRadius: 18 }}>
                 <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
-                  {[...Array(5)].map((_, j) => <Star key={j} size={12} fill="#3D6DB5" color="#3D6DB5" />)}
+                  {[...Array(5)].map((_, j) => <Star key={j} size={12} fill="#1F4B99" color="#1F4B99" />)}
                 </div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: '#141414', marginBottom: 8 }}>{t.impact}</div>
                 <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.6, marginBottom: 18 }}>"{t.text}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid #ededed' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#3D6DB5' }}>{t.initials}</div>
+                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#1F4B99' }}>{t.initials}</div>
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 600, color: '#141414' }}>{t.name}</div>
                       <div style={{ fontSize: 11, color: '#adadad' }}>{t.role}</div>
@@ -460,7 +460,7 @@ const Home: React.FC = () => {
                       transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = '#3D6DB5';
+                      e.currentTarget.style.borderColor = '#1F4B99';
                       e.currentTarget.style.paddingLeft = '24px';
                     }}
                     onMouseLeave={e => {
@@ -491,7 +491,7 @@ const Home: React.FC = () => {
         <section className="section">
           <div className="reveal" style={{ border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: '#fff' }}>
             {/* Subtle top gradient line */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #fff, #3D6DB5, #fff)' }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #fff, #1F4B99, #fff)' }} />
             <div className="pill" style={{ marginBottom: 20, margin: '0 auto 20px' }}>Free Audit</div>
             <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, letterSpacing: '-2px', color: '#141414', marginBottom: 14, maxWidth: 540, margin: '0 auto 14px' }}>
               Ready to stop guessing and start scaling?
