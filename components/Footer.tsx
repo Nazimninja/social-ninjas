@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
           {/* Brand column */}
           <div>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', marginBottom: 20 }}>
-              <Logo size={42} />
+              <Logo size={60} />
               <div>
                 <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#141414', lineHeight: 1.1 }}>
                   Social<span style={{ color: '#0065ff' }}>Ninja's</span>.

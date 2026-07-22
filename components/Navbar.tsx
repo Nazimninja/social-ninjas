@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
       }}>
 
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', zIndex: 70 }}>
-          <Logo size={32} />
+          <Logo size={44} />
           <div style={{
             fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
             fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px',
