@@ -265,7 +265,7 @@ const ACTIVE_PLATFORMS = ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twi
 const MY_PROFILES = {
   sn_ig:  {
     id:"sn_ig", name:"Social Ninja's", sub:"Instagram", emoji:"🥷",
-    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#FAFAFA", brand:"sn",
     platforms:["Instagram"],
     audience:"Global founders, D2C CMOs, startup heads — US/UK/UAE/SG/AU",
     tone:"Confident, data-led, direct. Results-obsessed agency voice. No fluff.",
@@ -275,7 +275,7 @@ const MY_PROFILES = {
   },
   sn_li:  {
     id:"sn_li", name:"Social Ninja's", sub:"LinkedIn", emoji:"🥷",
-    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#FAFAFA", brand:"sn",
     platforms:["LinkedIn"],
     audience:"Global B2B — CMOs, growth leads, D2C founders, startup heads",
     tone:"Thought leader. Data-heavy. McKinsey insight, direct founder delivery.",
@@ -722,7 +722,7 @@ function PostCard({post, profile, index}){
   };
 
   return(
-    <div style={{background:"rgba(8,14,26,0.85)",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
+    <div style={{background:"#FFFFFF",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
 
       {/* ── HEADER STRIP ── */}
       <div style={{background:"linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))",
@@ -807,7 +807,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── BODY ── */}
-      <div style={{padding:"20px 22px",background:"rgba(8,12,22,0.7)"}}>
+      <div style={{padding:"20px 22px",background:"#FFFFFF"}}>
 
         {/* ════ CAPTION TAB ════ */}
         {tab==="caption"&&(
@@ -904,7 +904,7 @@ function PostCard({post, profile, index}){
                   <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontWeight:500}}>Spoken lines only · [DIRECTION] = your action, not spoken</span>
                   <CopyBtn text={fixText(post.script)} label="Copy Script" sm/>
                 </div>
-                <div style={{background:"#0a0c14",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
+                <div style={{background:"#FAFAFA",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
                   {fixText(post.script).split("\n").map((line,i)=>{
                     const isDir = line.trim().startsWith("[");
                     if(!line.trim()) return <div key={i} style={{height:12}}/>;
@@ -935,7 +935,7 @@ function PostCard({post, profile, index}){
         {tab==="slides"&&(
           <div style={{display:"grid",gap:10}}>
             {/* Instruction */}
-            <div style={{background:"#0a0f1a",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
+            <div style={{background:"#F0F4FF",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
               <span style={{fontSize:20,flexShrink:0}}>🎠</span>
               <div>
