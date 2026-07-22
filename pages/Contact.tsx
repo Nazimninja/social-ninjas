@@ -1,11 +1,11 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';
 import SEO from '../components/SEO';
 import { submitToGoogleSheets } from '../services/googleSheets';
 
 const CC = [
-  {code:'+1',f:'🇺🇸'},{code:'+44',f:'🇬🇧'},{code:'+971',f:'🇦🇪'},{code:'+91',f:'🇮🇳'},
-  {code:'+61',f:'🇦🇺'},{code:'+49',f:'🇩🇪'},{code:'+33',f:'🇫🇷'},
+  {code:'+1',f:'????'},{code:'+44',f:'????'},{code:'+971',f:'????'},{code:'+91',f:'????'},
+  {code:'+61',f:'????'},{code:'+49',f:'????'},{code:'+33',f:'????'},
 ];
 
 function useReveal() {
@@ -88,7 +88,7 @@ const Contact: React.FC = () => {
           <div>
             <div className="pill reveal">Get In Touch</div>
             <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'#141414'}}>
-              Let's build your<br/><em style={{background:'linear-gradient(135deg,#5ba4f5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
+              Let's build your<br/><em style={{background:'linear-gradient(135deg,#3D6DB5,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
             </h1>
             <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'#717171',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
 
@@ -100,8 +100,8 @@ const Contact: React.FC = () => {
                 {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
               ].map(({icon:Ico,label,val,href})=>(
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:14}}>
-                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(91,164,245,0.07)',border:'1px solid rgba(91,164,245,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <Ico size={18} color="#5ba4f5" strokeWidth={1.5}/>
+                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(61,109,181,0.07)',border:'1px solid rgba(61,109,181,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    <Ico size={18} color="#3D6DB5" strokeWidth={1.5}/>
                   </div>
                   <div>
                     <div style={{fontSize:11,color:'#adadad',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
@@ -112,7 +112,7 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="reveal d4" style={{marginTop:48,display:'flex',gap:20}}>
-              {[['150+','Brands'],['4.9★','Rating'],['24h','Response']].map(([n,l])=>(
+              {[['150+','Brands'],['4.9?','Rating'],['24h','Response']].map(([n,l])=>(
                 <div key={l} className="glass-card" style={{padding:'16px 20px',borderRadius:14,textAlign:'center',flex:1}}>
                   <div style={{fontFamily:"'DM Sans'",fontSize:22,fontWeight:600,color:'#141414',letterSpacing:'-0.5px',lineHeight:1}}>{n}</div>
                   <div style={{fontSize:10.5,color:'#adadad',marginTop:3,letterSpacing:'0.04em'}}>{l}</div>
@@ -121,15 +121,15 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* RIGHT — multi-step form */}
+          {/* RIGHT � multi-step form */}
           <div className="reveal-r d1">
             <div className="glass-card" style={{borderRadius:24,padding:0,overflow:'hidden'}}>
               {/* Step indicator */}
               <div style={{padding:'20px 28px',borderBottom:'1px solid #ededed',display:'flex',alignItems:'center',gap:8}}>
                 {[1,2,3].map(s=>(
                   <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(91,164,245,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(91,164,245,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#0065ff':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
-                      {s<step?'✓':s}
+                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(61,109,181,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(61,109,181,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#3D6DB5':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
+                      {s<step?'?':s}
                     </div>
                     {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'#f0f0f0',transition:'background .4s'}}/>}
                   </React.Fragment>
@@ -156,7 +156,7 @@ const Contact: React.FC = () => {
                       <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
                       <select value={form.company} onChange={e=>set('company',e.target.value)} className="field" style={{appearance:'none',cursor:'pointer'}}>
                         <option value="">Select range...</option>
-                        {['Under $1,000','$1,000–$5,000','$5,000–$20,000','$20,000–$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
+                        {['Under $1,000','$1,000�$5,000','$5,000�$20,000','$20,000�$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
                       </select>
                     </div>
                   </div>
@@ -164,7 +164,7 @@ const Contact: React.FC = () => {
                 {step===3&&(
                   <div>
                     <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific — this shapes our strategy.</p>
+                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific � this shapes our strategy.</p>
                     <div style={{marginBottom:18}}>
                       <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         <Phone size={12}/>Phone
@@ -182,17 +182,17 @@ const Contact: React.FC = () => {
                         Your Bottleneck
                         {errors.message&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
                       </label>
-                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific — our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
+                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific � our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
                     </div>
                   </div>
                 )}
 
                 <div style={{display:'flex',gap:10,marginTop:8}}>
-                  {step>1&&<button type="button" onClick={back} className="btn-ghost" style={{fontSize:13.5,padding:'12px 20px'}}>← Back</button>}
+                  {step>1&&<button type="button" onClick={back} className="btn-ghost" style={{fontSize:13.5,padding:'12px 20px'}}>? Back</button>}
                   {step<3
-                    ?<button type="button" onClick={next} className="btn-primary" style={{flex:1,fontSize:14,padding:'13px'}}>Continue →</button>
+                    ?<button type="button" onClick={next} className="btn-primary" style={{flex:1,fontSize:14,padding:'13px'}}>Continue ?</button>
                     :<button type="submit" disabled={loading} className="btn-primary" style={{flex:1,fontSize:14,padding:'13px'}}>
-                      {loading?<><Loader2 size={16} style={{animation:'spin 1s linear infinite'}}/>Sending...</>:'Send Message →'}
+                      {loading?<><Loader2 size={16} style={{animation:'spin 1s linear infinite'}}/>Sending...</>:'Send Message ?'}
                     </button>
                   }
                 </div>

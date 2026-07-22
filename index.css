@@ -20,10 +20,14 @@
     --t3: #717171;
     --t4: #adadad;
 
-    --blue:        #0065ff;
-    --blue-hover:  #0047f0;
-    --blue-light:  #e8f0ff;
-    --blue-mid:    rgba(0,101,255,0.08);
+    --blue:        #3D6DB5;   /* Ninja Blue — robe/hood */
+    --blue-hover:  #2A5299;   /* Deep Blue — hover */
+    --blue-light:  #EBF0FA;   /* Blue tint — badge/bg */
+    --blue-mid:    rgba(61,109,181,0.08);
+
+    --brown:       #8B5E3C;   /* Sword handle — warm accent */
+    --brown-light: #F5EDE6;
+    --steel:       #9BA8B4;   /* Blade silver */
 
     --green: #3ba213;
     --red:   #ce2b04;
@@ -58,10 +62,10 @@
 
   a { color: inherit; text-decoration: none; }
   img { max-width: 100%; }
-  ::selection { background: rgba(0,101,255,0.12); }
+  ::selection { background: rgba(61,109,181,0.15); }
 
   ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 5px; }
+  ::-webkit-scrollbar-thumb { background: rgba(61,109,181,0.25); border-radius: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
 
   input, textarea, select, button {
@@ -169,7 +173,7 @@
 /* ── BUTTONS ─────────────────────────────────────────── */
 .btn-primary {
   display: inline-flex; align-items: center; gap: 6px;
-  background: #0065ff;
+  background: #3D6DB5;
   color: #fff !important;
   border: none;
   border-radius: 8px;
@@ -180,7 +184,7 @@
   transition: background 0.15s, transform 0.1s;
   white-space: nowrap;
 }
-.btn-primary:hover  { background: #0047f0; }
+.btn-primary:hover  { background: #2A5299; }
 .btn-primary:active { transform: scale(0.98); }
 
 .btn-ghost {
@@ -238,8 +242,8 @@
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .field:focus {
-  border-color: rgba(0,101,255,0.4);
-  box-shadow: 0 0 0 3px rgba(0,101,255,0.08);
+  border-color: rgba(61,109,181,0.45);
+  box-shadow: 0 0 0 3px rgba(61,109,181,0.10);
 }
 .field::placeholder { color: #adadad; }
 

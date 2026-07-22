@@ -123,7 +123,7 @@ const LeadAutomation: React.FC = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
                         <button onClick={scrollToDemo} className="w-full sm:w-auto">
-                            <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.15)] hover:shadow-[0_8px_32px_rgba(0,101,255,0.25)]">
+                            <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_4px_24px_rgba(61,109,181,0.15)] hover:shadow-[0_8px_32px_rgba(61,109,181,0.25)]">
                                 👉 Book a Free Demo
                             </Button>
                         </button>
@@ -480,7 +480,7 @@ const LeadAutomation: React.FC = () => {
                     <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-neutral-900">Every Missed Lead Costs You Money.</h2>
                     <p className="text-xl text-neutral-600 mb-10">Let AI handle enquiries instantly — so you don’t have to.</p>
                     <button onClick={scrollToDemo}>
-                        <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.15)] hover:shadow-[0_8px_32px_rgba(0,101,255,0.25)] hover:scale-105 transition-transform">
+                        <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_4px_24px_rgba(61,109,181,0.15)] hover:shadow-[0_8px_32px_rgba(61,109,181,0.25)] hover:scale-105 transition-transform">
                             👉 Book a Free Demo
                         </Button>
                     </button>

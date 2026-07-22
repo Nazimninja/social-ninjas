@@ -17,15 +17,19 @@ export default {
             },
             colors: {
                 brand: {
-                    dark:    '#ffffff',
-                    surface: '#fafafa',
-                    mid:     '#f5f5f5',
-                    primary: '#0065ff',
-                    blue2:   '#0047f0',
-                    mint:    '#3ba213',
-                    gold:    '#e8b86d',
-                    violet:  '#9b8ef0',
-                    slate:   '#717171',
+                    dark:       '#ffffff',
+                    surface:    '#fafafa',
+                    mid:        '#f5f5f5',
+                    primary:    '#3D6DB5',   /* Ninja Blue — robe/hood */
+                    blue2:      '#2A5299',   /* Deep Blue — hover */
+                    blueLight:  '#EBF0FA',   /* Blue tint — bg badges */
+                    brown:      '#8B5E3C',   /* Sword handle — warm accent */
+                    brownLight: '#F5EDE6',   /* Handle tint — warm bg */
+                    steel:      '#9BA8B4',   /* Blade silver — borders */
+                    mint:       '#3ba213',
+                    gold:       '#e8b86d',
+                    violet:     '#9b8ef0',
+                    slate:      '#717171',
                 },
                 neutral: {
                     400: '#717171',

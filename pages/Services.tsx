@@ -15,7 +15,7 @@ function useReveal() {
 }
 
 const services = [
-  { id: 'ai-automation', icon: '🤖', title: 'AI & Automation', color: '#0065ff', sub: 'Save Time. Never Miss a Lead.', desc: 'We set up AI that talks to your leads the moment they reach out — 24 hours a day, 7 days a week. It answers questions, qualifies them, and books meetings into your calendar while you sleep.', features: ['AI chatbot live on your website or WhatsApp', 'Replies to leads in under 1 second', 'Qualifies leads and books calls automatically', 'Follows up by email and SMS — no manual work', 'Connects to your CRM so nothing gets lost'], outcome: '14× faster lead response' },
+  { id: 'ai-automation', icon: '🤖', title: 'AI & Automation', color: '#3D6DB5', sub: 'Save Time. Never Miss a Lead.', desc: 'We set up AI that talks to your leads the moment they reach out — 24 hours a day, 7 days a week. It answers questions, qualifies them, and books meetings into your calendar while you sleep.', features: ['AI chatbot live on your website or WhatsApp', 'Replies to leads in under 1 second', 'Qualifies leads and books calls automatically', 'Follows up by email and SMS — no manual work', 'Connects to your CRM so nothing gets lost'], outcome: '14× faster lead response' },
   { id: 'performance-marketing', icon: '🚀', title: 'Performance Marketing', color: '#818cf8', sub: 'More Sales. Better ROI.', desc: 'We run paid ads on Meta and Google that bring in real customers, not just clicks. Every decision is based on data — we test, learn, and double down on what works until your returns keep growing.', features: ['Meta (Facebook & Instagram) ad campaigns', 'Google Search and Shopping ads', 'Creative testing to find what converts', 'Audience targeting based on real purchase intent', 'Weekly reports in plain English'], outcome: 'Average 4.5× ROAS across clients' },
   { id: 'creative-studio', icon: '🎬', title: 'Creative Studio', color: '#34d399', sub: 'Content That Stops the Scroll.', desc: 'We make videos, graphics and ad creatives that actually get people to stop scrolling and take action. Every piece of content is built around performance data — not just what looks nice.', features: ['Short-form video and Reels production', 'Ad creatives for Meta and Google', 'Carousel and story designs', 'Landing page design and copy', 'UGC-style content for authentic reach'], outcome: '3× engagement vs generic content' },
   { id: 'social-media', icon: '📱', title: 'Social Media Management', color: '#f59e0b', sub: 'Grow Your Following. Build Trust.', desc: 'We handle your social media completely — from planning and writing every post to replying to comments and tracking what\'s working. You stay focused on your business. We keep your audience growing.', features: ['Content planning and posting across all platforms', 'Captions and hashtags written for each platform', 'Community management and comment replies', 'Monthly performance reports with real insights', 'Trend research to keep content fresh every week'], outcome: '2× organic reach in 90 days' },
@@ -39,7 +39,7 @@ const Services: React.FC = () => {
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <div className="pill reveal" style={{ justifyContent: 'center', margin: '0 auto 20px' }}>What We Do</div>
           <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(44px,6.5vw,84px)', fontWeight: 700, letterSpacing: '-2.5px', lineHeight: 1.02, marginBottom: 24, color: '#141414' }}>
-            Everything your brand needs<br /><span style={{ background: 'linear-gradient(135deg,#0065ff,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to get more customers.</span>
+            Everything your brand needs<br /><span style={{ background: 'linear-gradient(135deg,#3D6DB5,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to get more customers.</span>
           </h1>
           <p className="reveal d2" style={{ fontSize: 'clamp(16px,1.8vw,19px)', fontWeight: 300, color: '#666', lineHeight: 1.75, maxWidth: 620, margin: '0 auto 44px' }}>
             We don't just run ads or post content. We build marketing systems that keep working — bringing in leads, converting sales, and growing your revenue month after month.
@@ -99,7 +99,7 @@ const Services: React.FC = () => {
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
             <div className="pill reveal" style={{ justifyContent: 'center', margin: '0 auto 20px' }}>How We Work</div>
             <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(32px,4.5vw,52px)', fontWeight: 700, letterSpacing: '-1.5px', color: '#141414', lineHeight: 1.1 }}>
-              From your first call to<br /><span style={{ color: '#0065ff' }}>real results in 30 days.</span>
+              From your first call to<br /><span style={{ color: '#3D6DB5' }}>real results in 30 days.</span>
             </h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 18 }} className="four-cols">
@@ -110,7 +110,7 @@ const Services: React.FC = () => {
               { n: '04', t: 'Launch & Improve', d: 'We go live fast, track everything, and make it better every single week based on real data.' },
             ].map((p, i) => (
               <div key={i} className="step-card reveal d${i+1}">
-                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 32, fontWeight: 700, color: 'rgba(91,164,245,0.25)', lineHeight: 1, marginBottom: 20, letterSpacing: '-1px' }}>{p.n}</div>
+                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 32, fontWeight: 700, color: 'rgba(61,109,181,0.25)', lineHeight: 1, marginBottom: 20, letterSpacing: '-1px' }}>{p.n}</div>
                 <div style={{ fontSize: 15.5, fontWeight: 700, color: '#141414', marginBottom: 10, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{p.t}</div>
                 <div style={{ fontSize: 13.5, color: '#666', lineHeight: 1.7 }}>{p.d}</div>
               </div>
@@ -123,9 +123,9 @@ const Services: React.FC = () => {
       <div className="section-wrap-white" style={{ background: '#ffffff' }}>
         <section className="section" style={{ padding: '100px 0' }}>
           <div className="reveal" style={{ background: 'linear-gradient(135deg, #ffffff, #fafafa)', border: '1px solid #ededed', borderRadius: 32, padding: '90px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 10px 40px rgba(0,0,0,0.02)' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,transparent,#0065ff,#2fcf8e,transparent)' }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,transparent,#3D6DB5,#2fcf8e,transparent)' }} />
             <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(32px,4.5vw,56px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.06, marginBottom: 16, color: '#141414' }}>
-              Ready to build something<br /><span style={{ color: '#0065ff' }}>that actually works?</span>
+              Ready to build something<br /><span style={{ color: '#3D6DB5' }}>that actually works?</span>
             </h2>
             <p style={{ fontSize: 16.5, color: '#666', marginBottom: 36, maxWidth: 520, margin: '0 auto 36px', lineHeight: 1.7 }}>
               Book a free 30-minute strategy call. No pressure, no pitch deck. Just an honest look at your marketing and what we'd do differently.
@@ -137,7 +137,7 @@ const Services: React.FC = () => {
 
       <style>{`
         .hero-glow {
-          background: radial-gradient(circle at 75% 25%, rgba(91,164,245,0.07), transparent 600px), 
+          background: radial-gradient(circle at 75% 25%, rgba(61,109,181,0.07), transparent 600px), 
                       radial-gradient(circle at 25% 75%, rgba(47,207,142,0.05), transparent 600px);
         }
         .grid-pattern {

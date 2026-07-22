@@ -44,9 +44,9 @@ const About: React.FC = () => {
             <div>
               <div className="pill reveal">Who We Are</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,68px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.04, marginBottom: 20, color: '#141414' }}>
-                We're not a big agency.<br /><span style={{ color: '#0065ff' }}>We're your growth team.</span>
+                We're not a big agency.<br /><span style={{ color: '#3D6DB5' }}>We're your growth team.</span>
               </h1>
-              <p className="reveal d2" style={{ fontSize: 17, fontWeight: 300, color: '#717171', lineHeight: 1.7, maxWidth: 480, marginBottom: 36, borderLeft: '2px solid rgba(91,164,245,0.3)', paddingLeft: 20 }}>
+              <p className="reveal d2" style={{ fontSize: 17, fontWeight: 300, color: '#717171', lineHeight: 1.7, maxWidth: 480, marginBottom: 36, borderLeft: '2px solid rgba(61,109,181,0.3)', paddingLeft: 20 }}>
                 We started Social Ninja's because we kept seeing brands spend money on marketing and never really know if it was working. We decided to do things differently — with more honesty, more speed, and AI at the centre of everything.
               </p>
               <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Let's Talk →</button></Link>
@@ -55,7 +55,7 @@ const About: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                 {[['150+', 'Brands we\'ve helped grow'], ['₹40Cr+', 'In ad spend managed'], ['97%', 'Clients who renew every year'], ['4.9★', 'Average client rating']].map(([n, l], i) => (
                   <div key={i} className="glass-card" style={{ padding: '24px 20px', borderRadius: 18, textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 30, fontWeight: 700, color: '#0065ff', letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
+                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 30, fontWeight: 700, color: '#3D6DB5', letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
                     <div style={{ fontSize: 12, color: '#888', lineHeight: 1.5 }}>{l}</div>
                   </div>
                 ))}
@@ -95,8 +95,8 @@ const About: React.FC = () => {
               { Icon: ShieldCheck, title: 'You own everything', desc: 'Every account, every creative, every piece of content we make belongs to you. If you leave, you walk away with everything. No exceptions, ever.' },
             ].map((item, i) => (
               <div key={i} className={`card reveal d${i+1}`} style={{ padding: 32, borderRadius: 22, background: '#ffffff' }}>
-                <div style={{ width: 52, height: 52, borderRadius: 15, background: 'rgba(91,164,245,0.07)', border: '1px solid rgba(91,164,245,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                  <item.Icon size={24} color="#5ba4f5" strokeWidth={1.5} />
+                <div style={{ width: 52, height: 52, borderRadius: 15, background: 'rgba(61,109,181,0.07)', border: '1px solid rgba(61,109,181,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                  <item.Icon size={24} color="#3D6DB5" strokeWidth={1.5} />
                 </div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, color: '#141414', marginBottom: 10, fontFamily: "'DM Sans',sans-serif" }}>{item.title}</h3>
                 <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.68 }}>{item.desc}</p>
@@ -113,11 +113,11 @@ const About: React.FC = () => {
           <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: '#141414' }}>Things people usually ask us.</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {faqs.map((faq, i) => (
-              <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(91,164,245,0.06)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.28)' : '#ededed'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s' }}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#0065ff' : '#2a2a2a', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
+              <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(61,109,181,0.06)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(61,109,181,0.28)' : '#ededed'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s' }}>
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#3D6DB5' : '#2a2a2a', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
                   {faq.q}
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: openFaq === i ? 'rgba(91,164,245,0.15)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(91,164,245,0.3)' : '#e0e0e0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
-                    {openFaq === i ? <Minus size={14} color="#5ba4f5" /> : <Plus size={14} color="#717171" />}
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: openFaq === i ? 'rgba(61,109,181,0.15)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(61,109,181,0.3)' : '#e0e0e0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
+                    {openFaq === i ? <Minus size={14} color="#3D6DB5" /> : <Plus size={14} color="#717171" />}
                   </div>
                 </button>
                 {openFaq === i && <div style={{ padding: '0 22px 20px', fontSize: 14, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.7 }}>{faq.a}</div>}
@@ -131,7 +131,7 @@ const About: React.FC = () => {
       <div className="section-wrap-alt">
         <section className="section">
           <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#0065ff,transparent)' }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#3D6DB5,transparent)' }} />
             <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>Let's grow your business together.</h2>
             <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>Book a free 30-minute call. We'll find what's holding your marketing back and show you exactly what we'd do to fix it.</p>
             <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book a Free Call →</button></Link>

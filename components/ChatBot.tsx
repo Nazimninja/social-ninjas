@@ -203,7 +203,7 @@ const ChatBot: React.FC = () => {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-[0_4px_24px_rgba(0,101,255,0.25)] transition-all duration-300 group hover:scale-110 ${isOpen ? 'opacity-0 pointer-events-none scale-0' : 'opacity-100 scale-100 bg-[#0065ff] text-white hover:bg-[#0047f0]'}`}
+        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-[0_4px_24px_rgba(61,109,181,0.25)] transition-all duration-300 group hover:scale-110 ${isOpen ? 'opacity-0 pointer-events-none scale-0' : 'opacity-100 scale-100 bg-[#3D6DB5] text-white hover:bg-[#2A5299]'}`}
         aria-label="Open Chat"
       >
         <MessageSquare size={24} className="fill-current" />
@@ -334,7 +334,7 @@ const ChatBot: React.FC = () => {
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 md:p-2 bg-[#0065ff] text-white rounded-full hover:bg-[#0047f0] transition-all duration-300 disabled:opacity-0 disabled:scale-75 shadow-lg hover:scale-105 active:scale-95 touch-manipulation"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 md:p-2 bg-[#3D6DB5] text-white rounded-full hover:bg-[#2A5299] transition-all duration-300 disabled:opacity-0 disabled:scale-75 shadow-lg hover:scale-105 active:scale-95 touch-manipulation"
             >
               <Send size={18} className={inputValue.trim() ? "translate-x-0.5" : ""} />
             </button>

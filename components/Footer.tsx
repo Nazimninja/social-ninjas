@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 600, height: 200, background: 'radial-gradient(ellipse,rgba(91,164,245,0.06),transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 600, height: 200, background: 'radial-gradient(ellipse,rgba(61,109,181,0.07),transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '60px 28px 32px', position: 'relative', zIndex: 1 }}>
 
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
               <Logo size={60} />
               <div>
                 <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#141414', lineHeight: 1.1 }}>
-                  Social<span style={{ color: '#0065ff' }}>Ninja's</span>.
+                  Social<span style={{ color: '#3D6DB5' }}>Ninja's</span>.
                 </div>
                 <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad', marginTop: 2 }}>
                   AI Agency
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   title={label}
                   style={{ width: 38, height: 38, borderRadius: '50%', background: '#f5f5f5', border: '1px solid #ededed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', textDecoration: 'none', transition: 'all .2s', flexShrink: 0 }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(91,164,245,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(91,164,245,0.3)'; (e.currentTarget as HTMLElement).style.color = '#0065ff'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(61,109,181,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(61,109,181,0.3)'; (e.currentTarget as HTMLElement).style.color = '#3D6DB5'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#f5f5f5'; (e.currentTarget as HTMLElement).style.borderColor = '#e5e5e5'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
                 >
                   <Icon size={16} />
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
               ].map(({ label, path }) => (
                 <li key={label}>
                   <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#3D6DB5')}
                     onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                   >{label}</Link>
                 </li>
@@ -91,12 +91,12 @@ const Footer: React.FC = () => {
                 <li key={label}>
                   {external ? (
                     <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#3D6DB5')}
                       onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                     >{label}</a>
                   ) : (
                     <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#3D6DB5')}
                       onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                     >{label}</Link>
                   )}
@@ -120,7 +120,7 @@ const Footer: React.FC = () => {
               ].map(({ label, path }) => (
                 <li key={label}>
                   <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#3D6DB5')}
                     onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
                   >{label}</Link>
                 </li>
@@ -160,7 +160,7 @@ const Footer: React.FC = () => {
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
             <a href="mailto:info@socialninjas.in" style={{ color: '#adadad', fontSize: 12, textDecoration: 'none', transition: 'color .2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#0065ff')}
+              onMouseEnter={e => (e.currentTarget.style.color = '#3D6DB5')}
               onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
             >info@socialninjas.in</a>
           </div>

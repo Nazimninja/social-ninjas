@@ -5,7 +5,7 @@ export const POSTS = [
   {
     id: 'hubspot-ai-agent-sales-pipeline',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '7 min',
     date: 'Jun 15, 2026',
@@ -19,7 +19,7 @@ export const POSTS = [
         heading: 'Why B2B Sales Teams are Wasting Hours on CRM Data',
         body: 'In B2B sales, momentum is everything. Yet, high-performing sales executives spend up to 4 hours per day manually logging calls, updating lead stages, and writing personalized follow-up emails in CRM tools like HubSpot. This operational overhead slows down response times, leads to incomplete client profiles, and ultimately drives up customer acquisition costs (CAC). By connecting HubSpot with custom AI agents, you can completely eliminate manual data entry.',
         highlight: 'The average sales representative spends only 34% of their day actually selling. The rest is eaten by CRM administration.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'The Architecture: Connecting HubSpot Webhooks to LLM Agents',
@@ -162,7 +162,7 @@ At Social Ninja's, we help international brands scale profitably in the GCC mark
         heading: 'Your Actionable GEO Playbook for 2026',
         body: 'Transitioning to GEO requires a content restructure. Stop writing thin 500-word SEO blogs. Instead, create comprehensive master resources that address technical nuances, provide downloadable templates, and speak directly to user intent. At Social Ninja\'s, we build GEO-optimized growth systems that ensure AI models surface your brand when high-intent prospects search.',
         highlight: 'The brands that win the AI search era are those that focus on authority, semantic depth, and third-party mentions.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
     ],
     content: `
@@ -195,7 +195,7 @@ At Social Ninja's, we build GEO-optimized growth systems that ensure AI models s
   {
     id: 'rise-of-autonomous-ai-agents',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Jun 12, 2026',
@@ -209,7 +209,7 @@ At Social Ninja's, we build GEO-optimized growth systems that ensure AI models s
         heading: 'The Evolution from Automated Flows to Autonomous Agents',
         body: 'For years, automation meant setting up rigid, rule-based triggers in tools like Zapier. If X happens, do Y. But modern business operations are rarely linear. Enter autonomous AI agents. Unlike traditional software, agents are goal-oriented. You give them an objective, a set of tools (email, CRM access, APIs), and the autonomy to figure out the steps to achieve it.',
         highlight: 'Rule-based automation breaks when something unexpected occurs. AI agents reason, adapt, and solve problems dynamically.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'What an AI Worker Can Do for Your Brand Today',
@@ -258,7 +258,7 @@ Social Ninja's specializes in deploying custom AI automation agents that integra
   {
     id: 'ai-lead-response',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Mar 8, 2026',
@@ -272,7 +272,7 @@ Social Ninja's specializes in deploying custom AI automation agents that integra
         heading: 'The $1M Problem Nobody Talks About',
         body: 'Every day, leads fill out your form, click your ad, or DM your page. Then they wait. And while they wait, they Google your competitors. Research from Harvard Business Review is brutal: companies who respond within 1 hour are 7× more likely to qualify a lead than those who respond after 2 hours — and 60× more likely than those who wait 24+ hours.',
         highlight: '60× more likely to qualify — within 1 hour vs 24 hours.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'The Human Bandwidth Problem',
@@ -339,7 +339,7 @@ An AI sales agent sits on every entry point — your website, WhatsApp, Instagra
         heading: 'What Actually Works: The 3×/week System',
         body: 'Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each piece should use a platform-native hook (Instagram hooks are different from LinkedIn hooks), reference something that\'s happening this week in your niche, and never repeat an angle you\'ve used before. Our AI Content Studio does the live research before every generation — so every post is timed to trend momentum.',
         highlight: 'Quality + timing beats volume every single time. The data is not ambiguous.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
     ],
     content: `
@@ -503,7 +503,7 @@ If you are ready to audit your current campaigns, explore our [Performance Marke
   {
     id: 'ai-powered-marketing-automation',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Jun 5, 2026',
@@ -517,7 +517,7 @@ If you are ready to audit your current campaigns, explore our [Performance Marke
         heading: 'The Invisible Revenue Leak: Why You Need AI Marketing Automation Tools',
         body: 'Many brands drive high traffic to their websites but suffer from low conversion rates. The culprit is almost always slow follow-up times. If a hot prospect submits an inquiry form or sends a DM, and your sales team takes hours to reply, the lead goes cold. In fact, responding within 5 minutes versus 30 minutes increases your chance of qualifying a lead by 400%. Deploying modern AI marketing automation tools is the ultimate solution to capture high-intent buyers instantly, 24 hours a day.',
         highlight: 'A 5-minute delay in responding to an inquiry reduces qualification rates by 4x.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'How a Conversational AI Sales Agent Transforms Your Funnel',
@@ -593,7 +593,7 @@ Automating your lead qualification isn't just about saving time—it's about max
         heading: 'Scaling Organic Traffic without Ad Spend',
         body: 'By treating your Instagram account like a mini-website, you build a sustainable source of inbound leads. Timely trend monitoring combined with keyword-optimized metadata allows you to rank for search queries weeks or months after posting, creating a passive funnel for your business.',
         highlight: 'Keyword-optimized Reels can rank in search results months after posting, generating passive traffic.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       }
     ],
     content: `
@@ -689,7 +689,7 @@ Social Ninja's builds scalable B2B outbound engines that handle the technical se
   {
     id: 'whatsapp-conversational-commerce',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '6 min',
     date: 'Jun 27, 2026',
@@ -703,7 +703,7 @@ Social Ninja's builds scalable B2B outbound engines that handle the technical se
         heading: 'The Rise of Chat-Based Shopping',
         body: 'Modern consumers demand immediate gratification and frictionless shopping experiences. Directing customers from social media ads to a slow-loading website with a complex multi-step checkout process results in massive cart abandonment rates. Conversational commerce changes this completely by bringing the entire shopping journey directly into the user\'s favorite messaging application: WhatsApp. By automating checkout flows in chat, brands can capture intent at its peak.',
         highlight: 'WhatsApp has a 98% open rate, making it the most powerful channel for direct-to-consumer sales interactions.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'Automating the WhatsApp Sales Funnel',
@@ -815,7 +815,7 @@ Social Ninja's implements high-velocity creative testing systems for D2C brands,
   {
     id: 'saas-inbound-lead-qualification',
     category: 'AI & Automation',
-    color: '#5ba4f5',
+    color: '#3D6DB5',
     icon: React.createElement(Bot, { size: 18 }),
     readTime: '5 min',
     date: 'Jun 25, 2026',
@@ -829,7 +829,7 @@ Social Ninja's implements high-velocity creative testing systems for D2C brands,
         heading: 'The Inbound Handoff Bottleneck',
         body: 'In modern SaaS sales, speed is the ultimate differentiator. When a potential customer fills out a demo request form, they are at peak intent. However, the standard B2B sales workflow introduces massive delays: the lead is passed to a marketing database, manually reviewed by a Sales Development Representative (SDR), qualified, and then contacted via email to schedule a call. During this 24-48 hour delay, the lead\'s intent decays, or they book a demo with a competitor.',
         highlight: 'A prospect is 21x more likely to qualify when contacted within 5 minutes of form submission compared to 30 minutes.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       },
       {
         heading: 'Integrating AI Qualifiers into Your Funnel',
@@ -908,7 +908,7 @@ Social Ninja's builds custom B2B sales automation stacks that optimize lead hand
         heading: 'Preparing for the GEO-First Era',
         body: 'Winning the GEO era requires restructuring your content creation process. Moving away from short, keyword-stuffed articles, you must build comprehensive guides that answer multi-intent queries, provide downloadable checklists, and provide clear value. Social Ninja\'s designs GEO growth frameworks that guarantee your brand is indexed and cited by major LLM engines.',
         highlight: 'The future of search belongs to brands that focus on unique data, structured markup, and verified authority.',
-        highlightColor: '#5ba4f5',
+        highlightColor: '#3D6DB5',
       }
     ],
     content: `
@@ -942,7 +942,7 @@ Social Ninja's designs GEO growth frameworks that guarantee your brand is indexe
 
 
 export const categoryColors: Record<string, string> = {
-  'AI & Automation': '#5ba4f5',
+  'AI & Automation': '#3D6DB5',
   'Content Strategy': '#2fcf8e',
   'Performance Marketing': '#9b8ef0',
   'SEO & Growth': '#e8b86d',

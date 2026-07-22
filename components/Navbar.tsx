@@ -8,7 +8,8 @@ const NAV_BG_NORMAL   = '#FFFFFF';
 const NAV_BG_SCROLLED = '#FFFFFF';
 const TEXT_PRIMARY    = '#141414';
 const TEXT_MUTED      = '#717171';
-const BLUE            = '#0065ff';
+const BLUE            = '#3D6DB5';  /* Ninja Blue */
+const BLUE_DEEP       = '#2A5299';  /* Hover / active */
 const BORDER          = '#EDEDED';
 
 const Navbar: React.FC = () => {
@@ -85,15 +86,15 @@ const Navbar: React.FC = () => {
           <a href="/content-studio" style={{ textDecoration: 'none' }}>
             <div style={{
               display: 'flex', alignItems: 'center', gap: 5,
-              background: location.pathname === '/content-studio' ? BLUE : 'rgba(0,101,255,0.07)',
-              border: `1px solid ${location.pathname === '/content-studio' ? BLUE : 'rgba(0,101,255,0.2)'}`,
+              background: location.pathname === '/content-studio' ? BLUE : 'rgba(61,109,181,0.07)',
+              border: `1px solid ${location.pathname === '/content-studio' ? BLUE : 'rgba(61,109,181,0.22)'}`,
               borderRadius: 20, padding: '5px 13px',
               color: location.pathname === '/content-studio' ? '#fff' : BLUE,
               fontSize: 13, fontWeight: 600,
               transition: 'all 0.15s', cursor: 'pointer',
             }}
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = BLUE; el.style.color = '#fff'; el.style.borderColor = BLUE; }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; if(location.pathname !== '/content-studio'){el.style.background = 'rgba(0,101,255,0.07)'; el.style.color = BLUE; el.style.borderColor = 'rgba(0,101,255,0.2)';} }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; if(location.pathname !== '/content-studio'){el.style.background = 'rgba(61,109,181,0.07)'; el.style.color = BLUE; el.style.borderColor = 'rgba(61,109,181,0.22)';} }}
             >
               <span style={{ fontSize: 10 }}>⚡</span> Content Studio
             </div>
@@ -108,7 +109,7 @@ const Navbar: React.FC = () => {
               border: 'none', borderRadius: 8, padding: '9px 20px',
               cursor: 'pointer', transition: 'background 0.15s',
             }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0047f0'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = BLUE_DEEP; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = BLUE; }}
             >
               Book a Call
@@ -165,8 +166,8 @@ const Navbar: React.FC = () => {
           <a href="/content-studio" style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '14px',
-              borderRadius: 10, background: 'rgba(0,101,255,0.08)',
-              color: BLUE, border: `1px solid rgba(0,101,255,0.2)`, fontSize: 15, fontWeight: 600,
+              borderRadius: 10, background: 'rgba(61,109,181,0.08)',
+              color: BLUE, border: `1px solid rgba(61,109,181,0.22)`, fontSize: 15, fontWeight: 600,
               cursor: 'pointer', fontFamily: "'Inter', system-ui, sans-serif",
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
             }}>

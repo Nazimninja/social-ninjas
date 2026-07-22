@@ -12,7 +12,7 @@ const NotFound: React.FC = () => {
                 description="The page you are looking for does not exist."
             />
 
-            <div style={{width:96,height:96,background:"rgba(91,164,245,0.1)",border:"1px solid rgba(91,164,245,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#5ba4f5",marginBottom:32,animation:"pulse 3s infinite"}}>
+            <div style={{width:96,height:96,background:"rgba(61,109,181,0.1)",border:"1px solid rgba(61,109,181,0.2)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"#3D6DB5",marginBottom:32,animation:"pulse 3s infinite"}}>
                 <AlertTriangle size={44} strokeWidth={1.5} />
             </div>
 
