@@ -731,7 +731,7 @@ function PostCard({post, profile, index}){
   };
 
   return(
-    <div style={{background:"#FFFFFF",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
+    <div style={{background:"#0d1117",border:"1px solid rgba(255,255,255,.1)",borderRadius:16,overflow:"hidden"}}>
 
       {/* ── HEADER STRIP ── */}
       <div style={{background:"linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))",
@@ -745,7 +745,7 @@ function PostCard({post, profile, index}){
           <span style={{background:pColor.bg,color:pColor.text,boxShadow:`0 0 10px ${pColor.bg}40`,
             borderRadius:6,padding:"4px 10px",fontSize:11,fontWeight:800,textTransform:"uppercase",letterSpacing:"1px"}}>
             {post.platform||"—"}</span>
-          <span style={{background:"rgba(255,255,255,0.07)",color:"#475569",
+          <span style={{background:"rgba(255,255,255,0.07)",color:"rgba(255,255,255,0.6)",
             borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:600}}>
             {post.format}</span>
           <span style={{background:ps.bg,border:`1px solid ${ps.border}`,color:ps.col,
@@ -754,7 +754,7 @@ function PostCard({post, profile, index}){
         </div>
 
         {/* Title */}
-        <div style={{fontSize:17,fontWeight:700,color:"#0F172A",letterSpacing:"-.5px",lineHeight:1.25,marginBottom:10,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
+        <div style={{fontSize:17,fontWeight:700,color:"rgba(255,255,255,0.92)",letterSpacing:"-.5px",lineHeight:1.25,marginBottom:10,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
           {post.title}</div>
 
         {/* Hook */}
@@ -816,7 +816,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── BODY ── */}
-      <div style={{padding:"20px 22px",background:"#FFFFFF"}}>
+      <div style={{padding:"20px 22px",background:"#0d1117"}}>
 
         {/* ════ CAPTION TAB ════ */}
         {tab==="caption"&&(
@@ -913,7 +913,7 @@ function PostCard({post, profile, index}){
                   <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontWeight:500}}>Spoken lines only · [DIRECTION] = your action, not spoken</span>
                   <CopyBtn text={fixText(post.script)} label="Copy Script" sm/>
                 </div>
-                <div style={{background:"#FFFFFF",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
+                <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
                   {fixText(post.script).split("\n").map((line,i)=>{
                     const isDir = line.trim().startsWith("[");
                     if(!line.trim()) return <div key={i} style={{height:12}}/>;
@@ -944,7 +944,7 @@ function PostCard({post, profile, index}){
         {tab==="slides"&&(
           <div style={{display:"grid",gap:10}}>
             {/* Instruction */}
-            <div style={{background:"#F8FAFC",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
+            <div style={{background:"rgba(168,85,247,0.06)",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
               <span style={{fontSize:20,flexShrink:0}}>🎠</span>
               <div>
