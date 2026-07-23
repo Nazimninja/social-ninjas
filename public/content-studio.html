@@ -12,8 +12,8 @@
    Light-on-dark premium. Scroll-reveal. 3D glass.
 ══════════════════════════════════════════════════ */
 :root{
-  --bg:#07101e;
-  --bg2:#0b1426;
+  --bg:#ffffff;
+  --bg2:#fafafa;
   --blue:#1F4B99;
   --blue2:#153880;
   --mint:#34d399;
@@ -21,10 +21,10 @@
   --g1:rgba(255,255,255,.055);
   --g2:rgba(255,255,255,.09);
   --g3:rgba(255,255,255,.04);
-  --gb:rgba(255,255,255,.09);
+  --gb:#e2e8f0;
   --gb2:rgba(255,255,255,.15);
-  --t1:rgba(255,255,255,.95);
-  --t2:rgba(255,255,255,.6);
+  --t1:#0f172a;
+  --t2:#475569;
   --t3:rgba(255,255,255,.35);
   --t4:rgba(255,255,255,.18);
   --fd:'Outfit','DM Sans',system-ui,sans-serif;  --fh:'Bricolage Grotesque',system-ui,sans-serif;
@@ -47,7 +47,7 @@ body{background:var(--bg);overflow-x:hidden}
 @keyframes o3f{0%,100%{transform:translate(0,0)}40%{transform:translate(50px,-40px)}80%{transform:translate(-30px,60px)}}
 
 /* ── NAV ── */
-nav{position:sticky;top:0;z-index:999;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(8,16,31,.78);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);transition:background .3s}
+nav{position:sticky;top:0;z-index:999;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(255,255,255,.92);backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07);transition:background .3s}
 .nl{display:flex;align-items:center;gap:12px;text-decoration:none}
 .nm{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(31,75,153,.4);box-shadow:0 0 16px rgba(31,75,153,.2),inset 0 1px 0 rgba(255,255,255,.12);background:#07101e}
 .nm img{width:100%;height:100%;object-fit:contain}
@@ -502,6 +502,6 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>io.o
 function fq(btn){const a=btn.nextElementSibling,op=a.classList.contains('op');document.querySelectorAll('.faq-a,.faq-q').forEach(e=>e.classList.remove('op'));if(!op){a.classList.add('op');btn.classList.add('op');}}
 
 // NAV scroll effect
-window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=window.scrollY>60?'rgba(8,16,31,.95)':'rgba(8,16,31,.78)';});
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=window.scrollY>60?'rgba(8,16,31,.95)':'rgba(255,255,255,.92)';});
 </script>
 </body></html>

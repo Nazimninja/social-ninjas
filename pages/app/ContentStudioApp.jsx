@@ -265,7 +265,7 @@ const ACTIVE_PLATFORMS = ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twi
 const MY_PROFILES = {
   sn_ig:  {
     id:"sn_ig", name:"Social Ninja's", sub:"Instagram", emoji:"🥷",
-    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#FAFAFA", brand:"sn",
     platforms:["Instagram"],
     audience:"Global founders, D2C CMOs, startup heads — US/UK/UAE/SG/AU",
     tone:"Confident, data-led, direct. Results-obsessed agency voice. No fluff.",
@@ -275,7 +275,7 @@ const MY_PROFILES = {
   },
   sn_li:  {
     id:"sn_li", name:"Social Ninja's", sub:"LinkedIn", emoji:"🥷",
-    color:"#1F4B99", darkBg:"#050B1A", brand:"sn",
+    color:"#1F4B99", darkBg:"#FAFAFA", brand:"sn",
     platforms:["LinkedIn"],
     audience:"Global B2B — CMOs, growth leads, D2C founders, startup heads",
     tone:"Thought leader. Data-heavy. McKinsey insight, direct founder delivery.",
@@ -643,14 +643,14 @@ function HowToUseBanner({color, postCount}){
       border:"1px solid rgba(56,189,248,0.25)",borderRadius:16,padding:"20px 22px",marginBottom:24,position:"relative"}}>
       <button onClick={()=>setDismissed(true)} title="Dismiss"
         style={{position:"absolute",top:12,right:14,background:"rgba(255,255,255,0.06)",border:"none",
-          color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:14,lineHeight:1,borderRadius:6,
+          color:"#64748B",cursor:"pointer",fontSize:14,lineHeight:1,borderRadius:6,
           width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
         <span style={{fontSize:20}}>🗺️</span>
         <div>
           <div style={{fontSize:14,fontWeight:800,color:"#f1f5f9",letterSpacing:"-.3px"}}>
             {postCount} posts generated — here is how to use each one</div>
-          <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginTop:2}}>
+          <div style={{fontSize:11,color:"#64748B",marginTop:2}}>
             Click the tabs inside each post card to switch between sections</div>
         </div>
       </div>
@@ -722,7 +722,7 @@ function PostCard({post, profile, index}){
   };
 
   return(
-    <div style={{background:"rgba(8,14,26,0.85)",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
+    <div style={{background:"#FFFFFF",border:"1px solid rgba(255,255,255,.08)",borderRadius:16,overflow:"hidden"}}>
 
       {/* ── HEADER STRIP ── */}
       <div style={{background:"linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))",
@@ -736,7 +736,7 @@ function PostCard({post, profile, index}){
           <span style={{background:pColor.bg,color:pColor.text,boxShadow:`0 0 10px ${pColor.bg}40`,
             borderRadius:6,padding:"4px 10px",fontSize:11,fontWeight:800,textTransform:"uppercase",letterSpacing:"1px"}}>
             {post.platform||"—"}</span>
-          <span style={{background:"rgba(255,255,255,0.07)",color:"rgba(255,255,255,0.6)",
+          <span style={{background:"rgba(255,255,255,0.07)",color:"#475569",
             borderRadius:20,padding:"4px 13px",fontSize:11,fontWeight:600}}>
             {post.format}</span>
           <span style={{background:ps.bg,border:`1px solid ${ps.border}`,color:ps.col,
@@ -745,7 +745,7 @@ function PostCard({post, profile, index}){
         </div>
 
         {/* Title */}
-        <div style={{fontSize:17,fontWeight:700,color:"rgba(255,255,255,0.97)",letterSpacing:"-.5px",lineHeight:1.25,marginBottom:10,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
+        <div style={{fontSize:17,fontWeight:700,color:"#0F172A",letterSpacing:"-.5px",lineHeight:1.25,marginBottom:10,fontFamily:"'Bricolage Grotesque',system-ui,sans-serif"}}>
           {post.title}</div>
 
         {/* Hook */}
@@ -807,7 +807,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── BODY ── */}
-      <div style={{padding:"20px 22px",background:"rgba(8,14,26,0.85)"}}>
+      <div style={{padding:"20px 22px",background:"#FFFFFF"}}>
 
         {/* ════ CAPTION TAB ════ */}
         {tab==="caption"&&(
@@ -904,7 +904,7 @@ function PostCard({post, profile, index}){
                   <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontWeight:500}}>Spoken lines only · [DIRECTION] = your action, not spoken</span>
                   <CopyBtn text={fixText(post.script)} label="Copy Script" sm/>
                 </div>
-                <div style={{background:"#0a0c14",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
+                <div style={{background:"#FFFFFF",borderRadius:12,padding:"22px 24px",lineHeight:1.8}}>
                   {fixText(post.script).split("\n").map((line,i)=>{
                     const isDir = line.trim().startsWith("[");
                     if(!line.trim()) return <div key={i} style={{height:12}}/>;
@@ -935,7 +935,7 @@ function PostCard({post, profile, index}){
         {tab==="slides"&&(
           <div style={{display:"grid",gap:10}}>
             {/* Instruction */}
-            <div style={{background:"#0a0f1a",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
+            <div style={{background:"#F8FAFC",border:"1px solid rgba(168,85,247,0.2)",borderRadius:12,
               padding:"12px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
               <span style={{fontSize:20,flexShrink:0}}>🎠</span>
               <div>
@@ -1238,7 +1238,7 @@ function Workspace({profile, hKey, onUpgrade}){
             <div style={{fontSize:13,fontWeight:700,letterSpacing:"-.2px",marginBottom:3}}>
               ⚡ Free Trial — <span style={{color:"#1F4B99"}}>{trialRemaining} post{trialRemaining!==1?"s":""} remaining</span>
             </div>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>
+            <div style={{fontSize:12,color:"#64748B"}}>
               No card needed. Upgrade after to unlock more posts, platforms and weekly tips.
             </div>
           </div>
@@ -1279,7 +1279,7 @@ function Workspace({profile, hKey, onUpgrade}){
                   onMouseOut={(e)=>e.currentTarget.style.background="rgba(56,189,248,0.1)"}>
                 <div style={{fontSize:15,fontWeight:800,color:"#1F4B99",marginBottom:3,pointerEvents:"none"}}>{price}</div>
                 <div style={{fontSize:13,fontWeight:700,color:"#fff",marginBottom:3,pointerEvents:"none"}}>{name}</div>
-                <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.4,pointerEvents:"none"}}>{desc}</div>
+                <div style={{fontSize:11,color:"#64748B",lineHeight:1.4,pointerEvents:"none"}}>{desc}</div>
               </button>
             ))}
           </div>
@@ -1439,7 +1439,7 @@ function Workspace({profile, hKey, onUpgrade}){
               <div style={{background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.3)",borderRadius:12,padding:"20px",maxWidth:400,margin:"0 auto"}}>
                 <div style={{fontSize:20,marginBottom:8}}>⚡</div>
                 <div style={{fontSize:14,fontWeight:700,color:"#1F4B99",marginBottom:12}}>Ready for more content?</div>
-                <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
+                <div style={{fontSize:12,color:"#475569",marginBottom:16,lineHeight:1.5}}>Upgrade to generate 15-unlimited posts every month with live trend research.</div>
                 <button onClick={() => onUpgrade ? onUpgrade("starter") : (window.location.href=`${window.location.origin}/app/content-studio?plan=starter`)}
                   style={{background:"#1F4B99",color:"#000",border:"none",borderRadius:8,padding:"10px 20px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>
                   View Plans & Upgrade →</button>
@@ -1473,7 +1473,7 @@ function Workspace({profile, hKey, onUpgrade}){
               "⚡ Tells you exactly what to do after posting",
               "♻️ Never repeats — permanent content memory",
             ].map(s=>(
-              <div key={s} style={{fontSize:13,color:"rgba(255,255,255,0.4)"}}>{s}</div>
+              <div key={s} style={{fontSize:13,color:"#64748B"}}>{s}</div>
             ))}
           </div>
         </div>
@@ -1590,7 +1590,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
           borderRadius:14,padding:"18px 16px"}}>
           <div style={{fontSize:12,fontWeight:700,color:"#1F4B99",textTransform:"uppercase",
             letterSpacing:"1.5px",marginBottom:4}}>🔗 Connect Your Social Accounts</div>
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:14,lineHeight:1.6}}>
+          <div style={{fontSize:12,color:"#64748B",marginBottom:14,lineHeight:1.6}}>
             The AI will analyse your actual accounts — what's working, what's missing, gaps vs competitors — and tailor every piece of content to improve your specific presence.
           </div>
           <div style={{display:"grid",gap:10}}>
@@ -1838,7 +1838,7 @@ function PaymentStep({plan, formData, onVerified}){
           </a>
           <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px",marginBottom:5}}>
             Already paid? Confirm your payment</div>
-          <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.65,marginBottom:14}}>
+          <div style={{fontSize:12,color:"#64748B",lineHeight:1.65,marginBottom:14}}>
             After paying, Razorpay shows you a Payment ID like{" "}
             <code style={{background:"rgba(255,255,255,0.08)",borderRadius:5,padding:"1px 7px",
               fontFamily:"monospace",fontSize:11}}>pay_XXXXXXXXXXXXXXXX</code>
@@ -1991,7 +1991,7 @@ function CompetitorInput({value, onChange}){
   const remove=(t)=>onChange(tags.filter(x=>x!==t).join(", "));
   return(
     <div>
-      <label style={{display:"block",fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",
+      <label style={{display:"block",fontSize:11,fontWeight:700,color:"#64748B",
         textTransform:"uppercase",letterSpacing:"1px",marginBottom:5}}>
         Competitors / Brands to Watch
         <span style={{fontSize:10,fontWeight:500,color:"rgba(255,255,255,0.25)",
@@ -2005,7 +2005,7 @@ function CompetitorInput({value, onChange}){
               borderRadius:20,padding:"3px 10px 3px 12px",fontSize:12,fontWeight:600,color:"#7ab8f5"}}>
               {t}
               <button onClick={()=>remove(t)}
-                style={{background:"none",border:"none",color:"rgba(255,255,255,0.4)",
+                style={{background:"none",border:"none",color:"#64748B",
                   cursor:"pointer",fontSize:14,lineHeight:1,padding:"0 2px"}}>×</button>
             </span>
           ))}
@@ -2242,7 +2242,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
                 {p.platform} · {p.format}
               </div>
               <div style={{fontSize:16, fontWeight:800, marginBottom:10, lineHeight: 1.3}}>{p.hook || p.title}</div>
-              <div style={{fontSize:13, color:"rgba(255,255,255,0.6)", whiteSpace:"pre-wrap", lineHeight: 1.6, marginBottom: p.hashtags?.length ? 8 : 0}}>{p.caption}</div>
+              <div style={{fontSize:13, color:"#475569", whiteSpace:"pre-wrap", lineHeight: 1.6, marginBottom: p.hashtags?.length ? 8 : 0}}>{p.caption}</div>
               {p.hashtags?.length > 0 && (
                 <div style={{display:"flex", flexWrap:"wrap", gap:5, marginTop:6}}>
                   {p.hashtags.slice(0,5).map((h,j) => (
@@ -2686,7 +2686,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
                   padding:"5px 10px",fontSize:11,fontWeight:500,color:"rgba(255,255,255,.55)"}}>
                   {pl.platformCount===999?"All platforms":"Choose "+pl.platformCount+" platform"+(pl.platformCount!==1?"s":"")}</div>
                 <div style={{background:"rgba(255,255,255,0.04)",borderRadius:7,
-                  padding:"5px 10px",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.4)"}}>
+                  padding:"5px 10px",fontSize:11,fontWeight:600,color:"#64748B"}}>
                   {pricing.perPost}/post</div>
               </div>
               {/* Platform icons — compact pill row */}
@@ -2904,7 +2904,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
             {/* Platform change option */}
             {plan.platformCount > (form.platforms?.length||0) && (
               <div>
-                <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#64748B",textTransform:"uppercase",letterSpacing:"1px",marginBottom:8}}>
                   {plan.name} plan — choose up to {plan.platformCount} platforms
                   <span style={{color:"rgba(255,255,255,.8)",fontWeight:600,marginLeft:8}}>
                     {form.platforms.length}/{plan.platformCount===999?"∞":plan.platformCount} selected
@@ -3046,7 +3046,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
 
       {/* ── GOOGLE LOGIN FAST TRACK ── */}
       <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:"16px",marginBottom:20}}>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.4)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>⚡ Faster — Sign in with Google</div>
+        <div style={{fontSize:12,fontWeight:700,color:"#64748B",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:12}}>⚡ Faster — Sign in with Google</div>
         <GoogleLoginButton
           label="Continue with Google"
           onSuccess={async (googleUser) => {
@@ -3096,7 +3096,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
         {verifyingOtp ? "Verifying code..." : "Verify & Continue →"}
       </button>
       <button onClick={()=>setScreen("details")} disabled={verifyingOtp}
-        style={{marginTop:24,background:"none",border:"none",color:"rgba(255,255,255,0.4)",fontSize:13,cursor:"pointer",textDecoration:"underline"}}>
+        style={{marginTop:24,background:"none",border:"none",color:"#64748B",fontSize:13,cursor:"pointer",textDecoration:"underline"}}>
         Change phone number
       </button>
     </div>
@@ -3759,7 +3759,7 @@ export default function App(){
         <div style={{textAlign:"center",marginBottom:28}}>
           <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,margin:"0 auto 14px"}}>🥷</div>
           <h2 style={{fontSize:24,fontWeight:800,letterSpacing:"-.5px",marginBottom:6}}>Welcome back</h2>
-          <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Sign in to access your content studio</p>
+          <p style={{color:"#64748B",fontSize:14}}>Sign in to access your content studio</p>
         </div>
 
         {/* ── GOOGLE LOGIN ── */}
@@ -3850,7 +3850,7 @@ export default function App(){
             }}/>
         : <div style={{textAlign:"center",padding:"80px 20px"}}>
             <div style={{width:44,height:44,borderRadius:"50%",border:"3px solid rgba(91,164,245,0.3)",borderTopColor:"#1F4B99",animation:"spin 1s linear infinite",margin:"0 auto 16px"}}/>
-            <p style={{color:"rgba(255,255,255,0.4)",fontSize:14}}>Loading your studio...</p>
+            <p style={{color:"#64748B",fontSize:14}}>Loading your studio...</p>
           </div>
     ):null
   );
