@@ -133,7 +133,7 @@ const PLANS = [
 // ─────────────────────────────────────────────────────────────────
 const GEO_PRICING = {
   // country_code: { currency, symbol, rates: [starter, growth, pro], originals: [orig_starter, orig_growth, orig_pro] }
-  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[699,1299,2499],   originals:[1999,3999,7999],  perPost:["₹46","₹52","Unlimited"] },
+  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[2999,5499,8999],   originals:[9999,14999,24999],  perPost:["₹200","₹220","Unlimited"] },
   US:  { currency:"USD", symbol:"$",  flag:"🇺🇸", rates:[49,79,149],         originals:[129,219,419],       perPost:["$3.3","$3.2","Unlimited"] },
   GB:  { currency:"GBP", symbol:"£",  flag:"🇬🇧", rates:[39,65,119],         originals:[99,179,339],        perPost:["£2.6","£2.6","Unlimited"] },
   AE:  { currency:"AED", symbol:"AED",flag:"🇦🇪", rates:[179,299,549],       originals:[479,829,1549],      perPost:["AED 12","AED 12","Unlimited"] },
@@ -2496,11 +2496,14 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
   const [savingData, setSavingData] = useState(false);
   const validateDetails=()=>{
     const e={};
-    ["brandName","email","audience","tone","niche"].forEach(k=>{
+    const checkFields = plan?.isTrialFlow 
+      ? ["brandName","email","niche"] 
+      : ["brandName","email","audience","tone","niche"];
+    checkFields.forEach(k=>{
       const err=fieldErr(k,form[k]||"");
       if(err) e[k]=err;
     });
-    if(form.phone){const err=fieldErr("phone",form.phone);if(err) e.phone=err;}
+    if(!plan?.isTrialFlow && form.phone){const err=fieldErr("phone",form.phone);if(err) e.phone=err;}
     if(!form.platforms?.length) e.platforms="Choose at least one platform";
     return e;
   };
@@ -2517,18 +2520,76 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
     const errs=validateDetails();
     if(Object.keys(errs).length){setErrors(errs);return;}
     setSavingData(true);
-    try {
-      if(form.phone) {
-        const r = await fetch("/api/send-otp", {
+
+    if(plan?.isTrialFlow) {
+      try {
+        const tEmail = form.email.toLowerCase().trim();
+        // Check local storage for duplicates first
+        const trials = await DB.get("snstudio_trials") || {};
+        const hasEmail = Object.values(trials).some(t => t.email.toLowerCase().trim() === tEmail);
+        if (hasEmail) {
+          setErrors({ email: "A free trial has already been used for this email. Please upgrade to continue." });
+          setSavingData(false);
+          return;
+        }
+
+        // Check backend via API
+        const checkRes = await fetch("/api/check-trial", {
           method:"POST", headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({phone: form.countryCode + form.phone.replace(/\D/g,"")})
+          body:JSON.stringify({email:tEmail})
         });
-        const d = await r.json().catch(()=>({}));
-        if(d.sessionId) setOtpSessionId(d.sessionId);
+        if(checkRes.ok){
+          const checkData = await checkRes.json();
+          if(checkData.exists){
+            setErrors({ email: "A free trial has already been used for this email. Please upgrade to continue." });
+            setSavingData(false); return;
+          }
+        }
+
+        // Complete trial signup setup directly without OTP
+        trials[Date.now()] = { email: tEmail, date: new Date().toISOString() };
+        await DB.set("snstudio_trials", trials);
+
+        // Save to Redis and clients DB
+        fetch("/api/check-trial", {method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({action:"save", email:tEmail})}).catch(()=>{});
+        
+        fetch("/api/data?resource=clients", {method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({type:"trial",email:tEmail,brandName:form.brandName,
+            date:new Date().toISOString(),paymentStatus:"trial"})}).catch(()=>{});
+
+        // Set defaults for optional trial fields
+        const finalAudience = form.audience || "General public interested in our brand";
+        const finalTone = form.tone || "Professional & engaging";
+        const finalForm = { ...form, audience: finalAudience, tone: finalTone };
+        setForm(finalForm);
+
+        const leadData = {...finalForm, planName:plan.name, displayINR:plan.displayINR,
+          joinDate:new Date().toLocaleDateString("en-IN"), paymentStatus:"lead"};
+        pushToClickUp(leadData, CONFIG.clickup.leadsListId);
+        pushToBackend(leadData);
+
+        setSavingData(false);
+        setScreen("trial_generation");
+      } catch (err) {
+        setErrors({ email: "Network error during validation. Please try again." });
+        setSavingData(false);
       }
-    } catch(e){ /* non-blocking */ }
-    setSavingData(false);
-    setScreen("otp");
+    } else {
+      // Standard paid flow goes to OTP screen
+      try {
+        if(form.phone) {
+          const r = await fetch("/api/send-otp", {
+            method:"POST", headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({phone: form.countryCode + form.phone.replace(/\D/g,"")})
+          });
+          const d = await r.json().catch(()=>({}));
+          if(d.sessionId) setOtpSessionId(d.sessionId);
+        }
+      } catch(e){ /* non-blocking */ }
+      setSavingData(false);
+      setScreen("otp");
+    }
   };
 
   const verifyOtpAndProceed=async()=>{
@@ -2937,7 +2998,8 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
           onChange={setF} error={errors.brandName} placeholder="e.g. FitLife Studio, Priya's Skincare" required/>
         <Field label="Email" name="email" type="email" value={form.email}
           onChange={setF} error={errors.email} placeholder="you@email.com" required/>
-        <div>
+        {!plan.isTrialFlow && (
+          <div>
             <Field label="Phone / WhatsApp" name="phone" error={errors.phone}>
               <div style={{display:"flex",gap:6}}>
                 <select 
@@ -2962,22 +3024,27 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
                     padding:"10px 11px",color:"#fff",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
               </div>
             </Field>
-        </div>
+          </div>
+        )}
 
         {/* Niche — smart dropdown */}
         <SmartSelect label="Content Niche / Industry" value={form.niche} onChange={v=>setF("niche",v)}
           options={NICHE_OPTIONS} placeholder="Select your niche or type your own..."
           hint="This directs all trend research — be specific" error={errors.niche} required/>
 
-        {/* Audience — smart dropdown */}
-        <SmartSelect label="Target Audience" value={form.audience} onChange={v=>setF("audience",v)}
-          options={AUDIENCE_TEMPLATES} placeholder="Who are your ideal customers?"
-          hint="Age, location, interests, pain point" error={errors.audience} required/>
+        {!plan.isTrialFlow && (
+          <>
+            {/* Audience — smart dropdown */}
+            <SmartSelect label="Target Audience" value={form.audience} onChange={v=>setF("audience",v)}
+              options={AUDIENCE_TEMPLATES} placeholder="Who are your ideal customers?"
+              hint="Age, location, interests, pain point" error={errors.audience} required/>
 
-        {/* Brand voice — smart dropdown */}
-        <SmartSelect label="Brand Voice" value={form.tone} onChange={v=>setF("tone",v)}
-          options={TONE_OPTIONS} placeholder="How does your brand sound?"
-          hint="The AI writes every caption in this voice" error={errors.tone} required/>
+            {/* Brand voice — smart dropdown */}
+            <SmartSelect label="Brand Voice" value={form.tone} onChange={v=>setF("tone",v)}
+              options={TONE_OPTIONS} placeholder="How does your brand sound?"
+              hint="The AI writes every caption in this voice" error={errors.tone} required/>
+          </>
+        )}
 
         {/* ── PLATFORM SELECTOR ── */}
         <div>
