@@ -20,9 +20,9 @@ const CONFIG = {
   // For subscriptions: create 3 subscription plans in Razorpay dashboard
   // For one-time: use razorpay.me/@socialninjas directly
   razorpay: {
-    starter:   "https://rzp.io/rzp/90qEc0D",    // ₹2,999/mo
-    growth:    "https://rzp.io/rzp/YkQovO28",   // ₹5,499/mo
-    pro:       "https://rzp.io/rzp/Kk2QqWB",    // ₹8,999/mo
+    starter:   "https://rzp.io/rzp/90qEc0D",    // ₹699/mo
+    growth:    "https://rzp.io/rzp/YkQovO28",   // ₹1,299/mo
+    pro:       "https://rzp.io/rzp/Kk2QqWB",    // ₹2,499/mo
     // Replace above with specific subscription plan links once created
     // e.g. https://rzp.io/l/sn-starter-monthly
   },
@@ -39,7 +39,7 @@ const CONFIG = {
 };
 
 // ─────────────────────────────────────────────────────────────────
-//  PLANS — starting ₹2,999, no-brainer value architecture
+//  PLANS — starting ₹699, no-brainer value architecture
 // ─────────────────────────────────────────────────────────────────
 const PLANS = [
   {
@@ -133,7 +133,7 @@ const PLANS = [
 // ─────────────────────────────────────────────────────────────────
 const GEO_PRICING = {
   // country_code: { currency, symbol, rates: [starter, growth, pro], originals: [orig_starter, orig_growth, orig_pro] }
-  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[2999,5499,8999],   originals:[9999,14999,24999],  perPost:["₹200","₹220","Unlimited"] },
+  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[699,1299,2499],   originals:[1999,3999,7999],  perPost:["₹46","₹52","Unlimited"] },
   US:  { currency:"USD", symbol:"$",  flag:"🇺🇸", rates:[49,79,149],         originals:[129,219,419],       perPost:["$3.3","$3.2","Unlimited"] },
   GB:  { currency:"GBP", symbol:"£",  flag:"🇬🇧", rates:[39,65,119],         originals:[99,179,339],        perPost:["£2.6","£2.6","Unlimited"] },
   AE:  { currency:"AED", symbol:"AED",flag:"🇦🇪", rates:[179,299,549],       originals:[479,829,1549],      perPost:["AED 12","AED 12","Unlimited"] },
