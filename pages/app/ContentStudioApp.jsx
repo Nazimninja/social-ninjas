@@ -2097,6 +2097,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
   const [stage, setStage] = useState(0); // 0=loading, 1=results, 2=error
   const [posts, setPosts] = useState([]);
   const [stepMsg, setStepMsg] = useState("Researching trends in your niche...");
+  const [elapsed, setElapsed] = useState(0);
   const color = plan?.color || "#1F4B99";
 
   const GEN_MSGS = [
@@ -2105,6 +2106,8 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
     "✍️ Writing platform-native captions...",
     "🎬 Scripting your Reels...",
     "✨ Final quality check...",
+    "🧠 Making posts sound human, not AI...",
+    "📝 Adding hooks that stop the scroll...",
   ];
 
   useEffect(() => {
@@ -2112,7 +2115,8 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
     const msgTimer = setInterval(() => {
       msgIdx = (msgIdx + 1) % GEN_MSGS.length;
       setStepMsg(GEN_MSGS[msgIdx]);
-    }, 3000);
+    }, 2500);
+    const elapsedTimer = setInterval(() => setElapsed(s => s + 1), 1000);
 
     const profile = {
       brandName: formData.brandName,
@@ -2140,6 +2144,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
     })
     .then(async res => {
       clearInterval(msgTimer);
+      clearInterval(elapsedTimer);
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
       const raw = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
@@ -2153,6 +2158,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
     .catch((err) => {
       console.error("Trial generation failed:", err);
       clearInterval(msgTimer);
+      clearInterval(elapsedTimer);
       // Fallback to sample posts so trial isn't broken
       setPosts([
         {
@@ -2221,7 +2227,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
       setStage(1);
     });
 
-    return () => clearInterval(msgTimer);
+    return () => { clearInterval(msgTimer); clearInterval(elapsedTimer); };
   }, []);
 
   return (
@@ -2240,7 +2246,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
 
       {stage === 0 ? (
         <div style={{padding:"60px 0", textAlign:"center"}}>
-          <div style={{width:48, height:48, border:"4px solid rgba(255,255,255,.2)", borderTopColor:color, borderRadius:"50%", animation:"spin 1s linear infinite", margin:"0 auto 20px"}}/>
+          <div style={{width:56, height:56, border:"4px solid rgba(255,255,255,.1)", borderTopColor:color, borderRadius:"50%", animation:"spin 1s linear infinite", margin:"0 auto 24px"}}/>
           <div style={{fontSize:13, color:color, fontWeight:700, letterSpacing: "1px", textTransform: "uppercase"}}>AI Agent Working</div>
         </div>
       ) : (
@@ -2251,7 +2257,7 @@ function TrialGeneration({ plan, formData, onSubscribe }) {
                 {p.platform} · {p.format}
               </div>
               <div style={{fontSize:16, fontWeight:800, marginBottom:10, lineHeight: 1.3}}>{p.hook || p.title}</div>
-              <div style={{fontSize:13, color:"#475569", whiteSpace:"pre-wrap", lineHeight: 1.6, marginBottom: p.hashtags?.length ? 8 : 0}}>{p.caption}</div>
+              <div style={{fontSize:13, color:"rgba(255,255,255,0.72)", whiteSpace:"pre-wrap", lineHeight: 1.6, marginBottom: p.hashtags?.length ? 8 : 0}}>{p.caption}</div>
               {p.hashtags?.length > 0 && (
                 <div style={{display:"flex", flexWrap:"wrap", gap:5, marginTop:6}}>
                   {p.hashtags.slice(0,5).map((h,j) => (
