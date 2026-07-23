@@ -79,7 +79,7 @@ const PLANS = [
     postsPerWeek: 6,
     postsPerMonth: 25,
     platformCount: 4,
-    color: "#7C3AED",
+    color: "#1F4B99",
     badge: "BEST VALUE",
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
@@ -1538,7 +1538,7 @@ function ProfileBuilder({clientData, plan, onComplete}){
     onComplete(enriched);
   };
 
-  const COLORS=["#1F4B99","#7C3AED","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
+  const COLORS=["#1F4B99","#1F4B99","#E31313","#10b981","#f59e0b","#ec4899","#0ea5e9","#6366f1","#14b8a6","#C9A84C"];
 
   return(
     <div style={{maxWidth:560,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
@@ -3374,7 +3374,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 }
 
 function PortalClientView({client, onHome, onUpgrade}){
-  const color = client.color||"#7C3AED";
+  const color = client.color||"#1F4B99";
   const hKey = `snstudio_hist_${client.id}`;
   const handleUpgrade = (planId) => {
     if(typeof onUpgrade === 'function') onUpgrade(planId, client);
@@ -3648,7 +3648,7 @@ export default function App(){
   // ── DASHBOARD (Replaces standalone client view) ──────────────────
   if(tab==="dashboard" && clientSelected){
     const cl=clients[clientSelected];
-    const clColor = cl?.color||"#7C3AED";
+    const clColor = cl?.color||"#1F4B99";
     return wrap(
         <div>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20,flexWrap:"wrap"}}>
