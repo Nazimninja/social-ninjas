@@ -1,12 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 
+// Overwrite global fetch for API endpoints to point to the live Vercel backend
+const originalFetch = window.fetch;
+window.fetch = function (url, options) {
+  if (typeof url === "string" && url.startsWith("/api/")) {
+    url = "https://social-ninjas.vercel.app" + url;
+  }
+  return originalFetch(url, options);
+};
+
 /* ═══════════════════════════════════════════════════════════════════
    SOCIAL NINJA'S — AI CONTENT STUDIO  v7
    ✦ Razorpay only · ✦ No graphics — pure content depth
    ✦ Platform-specific research · ✦ Plans from ₹699
    ✦ ClickUp CRM · ✦ Google Sheets auto-log
    © Social Ninja's — AI Automations Division
-═══════════════════════════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════════════════════════ */
 
 // ─────────────────────────────────────────────────────────────────
 //  CONFIG — fill in your links, everything else is ready
