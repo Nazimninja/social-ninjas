@@ -47,9 +47,9 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
   const location = useLocation();
   const canonicalUrl = `https://socialninjas.in${location.pathname}`;
-  const siteTitle = "Social Ninja's | AI-Powered Performance Marketing Agency";
+  const siteTitle = "Social Ninja's | AI-Powered Performance Marketing Agency in Bangalore & Global";
   const defaultDescription = "Social Ninja's combines AI automation, elite content production, and data-driven paid media to scale brands worldwide. From ₹2,999/month — try free.";
-  const defaultKeywords = "performance marketing India, AI automation agency, social media management, AI content generator, digital marketing agency India, growth marketing, paid ads India";
+  const defaultKeywords = "performance marketing agency Bangalore, AI automation agency Bangalore, social media management agency, AI lead automation, digital marketing agency India, growth marketing agency, paid ads Bangalore";
 
   const fullTitle = title ? `${title}` : siteTitle;
 

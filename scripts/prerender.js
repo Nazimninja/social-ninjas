@@ -18,52 +18,52 @@ const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 // Define metadata for all unique routes
 const routes = {
   'services': {
-    title: "Services | Social Ninja's",
-    description: "Explore our premium growth services - AI Lead Automation, Performance Marketing, Creative Studio, Web & SEO, and Growth Consulting."
+    title: "Digital Growth & Marketing Services | Social Ninja's Agency Bangalore",
+    description: "Explore our premium growth services in Bangalore & worldwide - AI Lead Automation, Performance Marketing, Creative Studio, Web & SEO, and Growth Consulting."
   },
   'services/ai-automation': {
-    title: "AI & Automation Services | Social Ninja's",
-    description: "Deploy 24/7 custom AI agents to handle, qualify, and book meetings from your leads instantly."
+    title: "AI & Lead Automation Agency in Bangalore | Social Ninja's",
+    description: "Deploy 24/7 custom AI agents to handle, qualify, and book meetings from your leads instantly. Leading AI automation agency in Bangalore & global."
   },
   'services/performance-marketing': {
-    title: "Performance Marketing Services | Social Ninja's",
-    description: "Profitable paid advertising campaigns on Meta and Google optimized for ROI and revenue growth."
+    title: "Performance Marketing & Paid Ads Agency in Bangalore | Social Ninja's",
+    description: "Profitable paid advertising campaigns on Meta and Google optimized for ROI and revenue growth by Bangalore's top growth team."
   },
   'services/creative-studio': {
-    title: "Creative Studio Services | Social Ninja's",
-    description: "High-converting ad creatives, Reels, short-form videos, and native platform designs built for conversion."
+    title: "Ad Creative Studio & Short-Form Video Agency in Bangalore | Social Ninja's",
+    description: "High-converting ad creatives, Reels, TikToks, short-form videos, and native platform designs built for scaling D2C & B2B brands."
   },
   'services/social-media': {
-    title: "Social Media Management Services | Social Ninja's",
-    description: "Consistent content planning, trend research, copywriting, community management, and growth strategies."
+    title: "Social Media Management Agency in Bangalore | Social Ninja's",
+    description: "Consistent content planning, trend research, copywriting, community management, and brand growth strategies in Bangalore & worldwide."
   },
   'services/web-seo': {
-    title: "Web & SEO Services | Social Ninja's",
-    description: "Redesign your website for conversion and rank on Google with technical audit, speed optimization, and content SEO."
+    title: "Web Design & Technical SEO Agency in Bangalore | Social Ninja's",
+    description: "Redesign your website for conversion and rank #1 on Google with technical audits, speed optimization, and high-converting content SEO."
   },
   'services/growth-consulting': {
-    title: "Growth Consulting Services | Social Ninja's",
-    description: "A clear 90-day growth roadmap, revenue funnel audit, and marketing strategy blueprint for modern brands."
+    title: "B2B Growth Consulting & Marketing Audit in Bangalore | Social Ninja's",
+    description: "A clear 90-day growth roadmap, revenue funnel audit, and performance marketing strategy blueprint for modern brands."
   },
   'growth-systems': {
-    title: "Growth Systems | Social Ninja's",
+    title: "Automated Lead Generation & Growth Systems | Social Ninja's Bangalore",
     description: "Four automated marketing and lead generation systems designed to capture and nurture prospects while you sleep."
   },
   'tools': {
-    title: "Growth & SaaS Tools | Social Ninja's",
-    description: "Free marketing tools, salary calculators, WhatsApp link builders, and our unified AI content studio."
+    title: "Free Marketing & SaaS Growth Tools | Social Ninja's",
+    description: "Free digital marketing tools, salary calculators, WhatsApp link builders, and our unified AI content studio."
   },
   'blog': {
-    title: "Blog & Industry Insights | Social Ninja's",
-    description: "Expert marketing advice, AI agency guides, and B2B growth systems from the Social Ninja's team."
+    title: "Digital Marketing & AI Agency Blog | Insights by Social Ninja's",
+    description: "Expert performance marketing advice, AI agency guides, and B2B growth systems from the Social Ninja's team."
   },
   'about': {
-    title: "About Our AI Agency | Social Ninja's",
-    description: "Meet the team building premium AI products and revenue growth systems for modern brands."
+    title: "About Social Ninja's | Top AI Automation & Marketing Agency in Bangalore",
+    description: "Meet the team building premium AI products and revenue growth systems for modern brands worldwide."
   },
   'contact': {
-    title: "Book a Growth Call | Social Ninja's",
-    description: "Schedule a free 30-minute growth blueprint session with our team."
+    title: "Book a Strategy Session | Social Ninja's Bangalore Marketing Agency",
+    description: "Schedule a free 30-minute growth blueprint session with our Bangalore & global marketing team."
   },
   'careers': {
     title: "Careers | Join Social Ninja's",
