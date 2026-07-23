@@ -13,6 +13,12 @@ export default async function handler(req, res) {
 
   if (!paymentId) return res.status(400).json({ error: 'Payment ID required.' });
 
+  // ✅ OWNER TEST BYPASS — must be checked BEFORE format validation
+  if (paymentId === 'SN_TEST_2026') {
+    console.log('[OWNER BYPASS] Test payment accepted.');
+    return res.json({ verified: true, mode: 'test', paymentId, message: 'Owner test bypass accepted' });
+  }
+
   // Basic format check
   if (!paymentId.startsWith('pay_') || paymentId.length < 14) {
     return res.status(400).json({ 
@@ -60,11 +66,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Check amount matches plan (optional but recommended)
+    // Check amount matches plan
     const PLAN_AMOUNTS = {
-      starter: 299900,  // ₹2,999 in paise
-      growth:  549900,  // ₹5,499 in paise
-      pro:     899900,  // ₹8,999 in paise
+      starter: 69900,   // ₹699 in paise
+      growth:  129900,  // ₹1,299 in paise
+      pro:     249900,  // ₹2,499 in paise
     };
 
     if (planId && PLAN_AMOUNTS[planId] && payment.amount !== PLAN_AMOUNTS[planId]) {
