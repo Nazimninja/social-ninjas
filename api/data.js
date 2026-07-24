@@ -1,8 +1,48 @@
-// data.js — Unified API for blogs, history, clients
-// Blogs stored in Upstash Redis (same KV already used for trial protection)
+// data.js — Unified API for blogs, history, clients, leads
+// Blogs & history: Upstash KV (fast, tiny data)
+// Leads & Content Studio clients: Supabase CRM (structured, queryable)
 
 const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
+
+// ── Supabase CRM helpers (separate project from Fit Ninja) ────────────
+const CRM_URL = process.env.SUPABASE_CRM_URL;
+const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY;
+
+async function crmGet(table, options = {}) {
+  if (!CRM_URL || !CRM_KEY) return null;
+  try {
+    let url = `${CRM_URL}/rest/v1/${table}?`;
+    if (options.filter)   url += `${options.filter}&`;
+    if (options.order)    url += `order=${options.order}&`;
+    if (options.limit)    url += `limit=${options.limit}&`;
+    url += 'select=*';
+    const r = await fetch(url, {
+      headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+    });
+    if (!r.ok) { console.error('crmGet error:', await r.text()); return null; }
+    return await r.json();
+  } catch(e) { console.error('crmGet exception:', e); return null; }
+}
+
+async function crmUpsert(table, body, conflictCol = 'id') {
+  if (!CRM_URL || !CRM_KEY) return false;
+  try {
+    const r = await fetch(`${CRM_URL}/rest/v1/${table}?on_conflict=${conflictCol}`, {
+      method: 'POST',
+      headers: {
+        'apikey': CRM_KEY,
+        'Authorization': `Bearer ${CRM_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) { console.error('crmUpsert error:', await r.text()); return false; }
+    return true;
+  } catch(e) { console.error('crmUpsert exception:', e); return false; }
+}
+// ──────────────────────────────────────────────────────────────────────
 
 async function kvGet(key) {
   if (!KV_URL || !KV_TOKEN) return null;
@@ -130,34 +170,90 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── CLIENTS ───────────────────────────────────────────────────
+  // ── CLIENTS (Supabase CRM) ───────────────────────────────────
   if (resource === 'clients') {
     if (req.method === 'GET') {
+      // Try Supabase CRM first, fall back to KV for backwards compat
+      const supaClients = await crmGet('content_studio_clients', { order: 'created_at.desc' });
+      if (supaClients !== null) {
+        return res.json(supaClients.map(c => ({
+          id: c.id,
+          brandName: c.brand_name,
+          niche: c.niche,
+          email: c.email,
+          phone: c.phone,
+          toneOfVoice: c.tone_of_voice,
+          targetAudience: c.target_audience,
+          callToAction: c.call_to_action,
+          plan: c.plan,
+          planName: c.plan_name,
+          paymentStatus: c.payment_status,
+          active: c.active,
+          paymentId: c.payment_id,
+          subscriptionId: c.subscription_id,
+          joinDate: c.join_date,
+          source: c.source,
+          created_at: c.created_at
+        })));
+      }
+      // Fallback: KV (legacy data)
       const stored = await kvGet('sn_clients') || [];
       return res.json(stored.map(sanitizeClient));
     }
     if (req.method === 'POST') {
       const body = req.body;
-      const stored = await kvGet('sn_clients') || [];
-      const idx = stored.findIndex(c => c.id === body.id || c.email === body.email);
-      if (idx >= 0) stored[idx] = { ...stored[idx], ...body, id: stored[idx].id || body.id };
-      else stored.push(body);
-      await kvSet('sn_clients', stored);
+      const clientRow = {
+        id: body.id,
+        brand_name: body.brandName,
+        niche: body.niche,
+        email: body.email,
+        phone: body.phone,
+        tone_of_voice: body.toneOfVoice,
+        target_audience: body.targetAudience,
+        call_to_action: body.callToAction,
+        plan: body.plan,
+        plan_name: body.planName,
+        payment_status: body.paymentStatus,
+        active: body.active !== undefined ? body.active : true,
+        payment_id: body.paymentId,
+        subscription_id: body.subscriptionId,
+        join_date: body.joinDate,
+        source: body.source || 'content-studio'
+      };
+      // Upsert to Supabase CRM
+      const ok = await crmUpsert('content_studio_clients', clientRow, 'email');
+      if (!ok) {
+        // Fallback: also write to KV for safety
+        const stored = await kvGet('sn_clients') || [];
+        const idx = stored.findIndex(c => c.id === body.id || c.email === body.email);
+        if (idx >= 0) stored[idx] = { ...stored[idx], ...body };
+        else stored.push(body);
+        await kvSet('sn_clients', stored);
+      }
       return res.status(201).json({ success: true });
     }
   }
 
-  // ⚡ LEADS ⚡
+  // ── LEADS (Supabase CRM) ─────────────────────────────────────
   if (resource === 'leads') {
     if (req.method === 'GET') {
-      const stored = await kvGet('sn_crm_leads') || [];
-      return res.json(stored);
+      const rows = await crmGet('leads', { order: 'created_at.desc' });
+      return res.json(rows || []);
     }
     if (req.method === 'POST') {
       const body = req.body;
-      const stored = await kvGet('sn_crm_leads') || [];
-      stored.unshift(body);
-      await kvSet('sn_crm_leads', stored);
+      const leadRow = {
+        id: body.id || `lead_${Date.now()}`,
+        name: body.name,
+        email: body.email,
+        phone: body.phone || null,
+        company: body.company || null,
+        website: body.website || null,
+        message: body.message || null,
+        source: body.source || 'main-contact-page',
+        status: 'new'
+      };
+      await crmUpsert('leads', leadRow, 'id');
       return res.status(201).json({ success: true });
     }
   }

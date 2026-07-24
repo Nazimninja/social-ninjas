@@ -3,6 +3,28 @@ import crypto from 'crypto';
 const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
+// ── Supabase CRM helpers ────────────────────────────────────────────────────────────────────────
+const CRM_URL = process.env.SUPABASE_CRM_URL;
+const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY;
+
+async function crmUpdateClientByEmail(email, updates) {
+  if (!CRM_URL || !CRM_KEY || !email) return false;
+  try {
+    const r = await fetch(`${CRM_URL}/rest/v1/content_studio_clients?email=eq.${encodeURIComponent(email)}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': CRM_KEY,
+        'Authorization': `Bearer ${CRM_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(updates)
+    });
+    return r.ok;
+  } catch(e) { console.error('[Webhook] CRM update error:', e); return false; }
+}
+// ────────────────────────────────────────────────────────────────────────
+
 async function kvGet(key) {
   if (!KV_URL || !KV_TOKEN) return null;
   try {
@@ -89,6 +111,14 @@ export default async function handler(req, res) {
           verifiedAt: new Date().toISOString(),
         };
 
+        // Sync to Supabase CRM
+        await crmUpdateClientByEmail(clientData.email, {
+          payment_id: paymentId,
+          subscription_id: payment.subscription_id || null,
+          payment_status: 'active',
+          active: true
+        });
+
         if (KV_URL && KV_TOKEN) {
           // Direct sync to Redis (Production)
           console.log('[Webhook] Syncing directly to Redis');
@@ -124,11 +154,20 @@ export default async function handler(req, res) {
     if (event.event === 'subscription.activated') {
       const sub = event.payload.subscription.entity;
       console.log(`✅ Subscription activated: ${sub.id} | Plan: ${sub.plan_id}`);
+      const email = sub.notes?.email || sub.notes?.brand_email;
       
+      // Sync to Supabase CRM
+      if (email) {
+        await crmUpdateClientByEmail(email.toLowerCase().trim(), {
+          subscription_id: sub.id,
+          payment_status: 'active',
+          active: true
+        });
+      }
+
       // Update local status in KV if possible
       if (KV_URL && KV_TOKEN) {
         const stored = await kvGet('sn_clients') || [];
-        const email = sub.notes?.email || (sub.notes?.brand_email);
         let updated = false;
         for (let i = 0; i < stored.length; i++) {
           if (
@@ -153,8 +192,16 @@ export default async function handler(req, res) {
       event.event === 'subscription.paused'
     ) {
       const sub = event.payload.subscription.entity;
-      const email = sub.notes?.email || (sub.notes?.brand_email);
+      const email = sub.notes?.email || sub.notes?.brand_email;
       console.log(`[Webhook] Subscription ${event.event}: ${sub.id} | Email: ${email}`);
+
+      // Sync to Supabase CRM
+      if (email) {
+        await crmUpdateClientByEmail(email.toLowerCase().trim(), {
+          payment_status: 'expired',
+          active: false
+        });
+      }
 
       if (KV_URL && KV_TOKEN) {
         const stored = await kvGet('sn_clients') || [];
