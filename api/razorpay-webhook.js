@@ -78,6 +78,7 @@ export default async function handler(req, res) {
       try {
         const clientData = {
           paymentId,
+          subscriptionId: payment.subscription_id || null,
           email: email.toLowerCase().trim(),
           phone,
           amount,
@@ -123,7 +124,58 @@ export default async function handler(req, res) {
     if (event.event === 'subscription.activated') {
       const sub = event.payload.subscription.entity;
       console.log(`✅ Subscription activated: ${sub.id} | Plan: ${sub.plan_id}`);
+      
+      // Update local status in KV if possible
+      if (KV_URL && KV_TOKEN) {
+        const stored = await kvGet('sn_clients') || [];
+        const email = sub.notes?.email || (sub.notes?.brand_email);
+        let updated = false;
+        for (let i = 0; i < stored.length; i++) {
+          if (
+            (email && stored[i].email?.toLowerCase().trim() === email.toLowerCase().trim()) ||
+            (stored[i].subscriptionId === sub.id)
+          ) {
+            stored[i].subscriptionId = sub.id;
+            stored[i].paymentStatus = 'verified';
+            stored[i].active = true;
+            updated = true;
+          }
+        }
+        if (updated) await kvSet('sn_clients', stored);
+      }
       return res.json({ verified: true, subscriptionId: sub.id, event: 'subscription.activated' });
+    }
+
+    if (
+      event.event === 'subscription.cancelled' ||
+      event.event === 'subscription.halted' ||
+      event.event === 'subscription.expired' ||
+      event.event === 'subscription.paused'
+    ) {
+      const sub = event.payload.subscription.entity;
+      const email = sub.notes?.email || (sub.notes?.brand_email);
+      console.log(`[Webhook] Subscription ${event.event}: ${sub.id} | Email: ${email}`);
+
+      if (KV_URL && KV_TOKEN) {
+        const stored = await kvGet('sn_clients') || [];
+        let updated = false;
+        for (let i = 0; i < stored.length; i++) {
+          if (
+            (email && stored[i].email?.toLowerCase().trim() === email.toLowerCase().trim()) ||
+            (stored[i].subscriptionId === sub.id) ||
+            (stored[i].paymentId === sub.id)
+          ) {
+            stored[i].paymentStatus = 'expired';
+            stored[i].active = false;
+            updated = true;
+          }
+        }
+        if (updated) {
+          await kvSet('sn_clients', stored);
+          console.log(`[Webhook] Client membership set to expired for sub ${sub.id}`);
+        }
+      }
+      return res.json({ verified: true, subscriptionId: sub.id, event: event.event });
     }
 
     return res.json({ verified: true, event: event.event, message: 'Event received' });

@@ -87,6 +87,7 @@ export default async function handler(req, res) {
       currency: payment.currency,
       email: payment.email,
       status: payment.status,
+      subscriptionId: payment.subscription_id || null,
     });
 
   } catch (error) {

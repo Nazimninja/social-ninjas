@@ -1749,7 +1749,7 @@ function PaymentStep({plan, formData, onVerified}){
           paymentId:"SN_TEST_2026",joinDate:new Date().toLocaleDateString("en-IN"),paymentStatus:"test-verified"});
         await new Promise(r=>setTimeout(r,800));
         setMode("done");
-        setTimeout(()=>onVerified(),1200);
+        setTimeout(()=>onVerified({ paymentId: "SN_TEST_2026", subscriptionId: null }),1200);
         setChecking(false);
         return;
       }
@@ -1769,7 +1769,7 @@ function PaymentStep({plan, formData, onVerified}){
       await pushToSheets({...formData,planName:plan.name,displayINR:plan.displayINR,
         paymentId:cleanPid,joinDate:new Date().toLocaleDateString("en-IN"),paymentStatus:"verified"});
       setMode("done");
-      setTimeout(()=>onVerified(),1200);
+      setTimeout(()=>onVerified({ paymentId: cleanPid, subscriptionId: data.subscriptionId }),1200);
     } catch(e){
       setPidErr("Network error. Please check your connection and try again.");
     }
@@ -3212,13 +3212,23 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
 
   if(screen==="payment"&&plan) return(
     <PaymentStep plan={plan} formData={form}
-      onVerified={()=>setScreen("profile")}/>
+      onVerified={(payInfo)=> {
+        if (payInfo) {
+          form.paymentId = payInfo.paymentId;
+          form.subscriptionId = payInfo.subscriptionId;
+          form.paymentStatus = 'verified';
+        }
+        setScreen("profile");
+      }}/>
   );
 
   if(screen==="profile"&&plan) return(
     <ProfileBuilder clientData={{
       ...form, plan:plan.id, planName:plan.name, displayINR:plan.displayINR,
       color:plan.color, brand:"client", darkBg:"#020617",
+      paymentId: form.paymentId || null,
+      subscriptionId: form.subscriptionId || null,
+      paymentStatus: form.paymentStatus || null,
       joinDate:new Date().toLocaleDateString("en-IN"), active:true, emoji:"🏢",
       sub:form.platforms?.[0]||"Instagram",
     }} plan={plan}
@@ -3457,6 +3467,30 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
 
 function PortalClientView({client, onHome, onUpgrade}){
   const color = client.color||"#1F4B99";
+  const isExpired = client.paymentStatus === 'expired' || client.active === false;
+
+  if (isExpired) {
+    return (
+      <div style={{padding:"40px 24px",textAlign:"center",background:"#0a0b10",borderRadius:20,border:"1px solid rgba(239,68,68,0.2)",maxWidth:500,margin:"40px auto"}}>
+        <div style={{width:64,height:64,borderRadius:"50%",background:"rgba(239,68,68,0.1)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}}>
+          <span style={{fontSize:30}}>⚠️</span>
+        </div>
+        <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:22,fontWeight:600,color:"#fff",marginBottom:10}}>Subscription Expired</h3>
+        <p style={{fontSize:14,color:"rgba(255,255,255,0.6)",lineHeight:1.6,marginBottom:24}}>
+          Your subscription for <strong>{client.brandName}</strong> has ended. Access to premium content generation is currently locked.
+        </p>
+        <button onClick={() => handleUpgrade("starter")}
+          style={{background:"linear-gradient(135deg,#38bdf8,#1F4B99)",color:"#fff",border:"none",borderRadius:10,padding:"12px 28px",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:"0 8px 20px rgba(56,189,248,0.2)"}}>
+          Renew Subscription
+        </button>
+        <button onClick={onHome}
+          style={{display:"block",background:"none",border:"none",color:"rgba(255,255,255,0.4)",cursor:"pointer",fontSize:13,marginTop:16,width:"100%"}}>
+          Back to Workspaces
+        </button>
+      </div>
+    );
+  }
+
   const hKey = `snstudio_hist_${client.id}`;
   const handleUpgrade = (planId) => {
     if(typeof onUpgrade === 'function') onUpgrade(planId, client);
