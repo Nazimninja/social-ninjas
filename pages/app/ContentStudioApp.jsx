@@ -735,7 +735,7 @@ function PostCard({post, profile, index}){
 
       {/* ── HEADER STRIP ── */}
       <div style={{background:"linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02))",
-        borderBottom:"1px solid rgba(255,255,255,.07)",padding:"18px 22px"}}>
+        borderBottom:"1px solid rgba(255,255,255,.07)",padding:"clamp(14px,4vw,18px) clamp(14px,4vw,22px)"}}>
 
         {/* Post number + platform + priority */}
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
@@ -779,7 +779,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── TAB BAR ── */}
-      <div style={{background:"rgba(0,0,0,0.2)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"0 16px",display:"flex",gap:2,overflowX:"auto",scrollbarWidth:"none"}}>
+      <div style={{background:"rgba(0,0,0,0.2)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"0 12px",display:"flex",gap:2,overflowX:"auto",scrollbarWidth:"none",WebkitOverflowScrolling:"touch"}}>
         {tabs.map(t=>(
           <button key={t.id} onClick={()=>setTab(t.id)}
             title={t.hint}
@@ -816,7 +816,7 @@ function PostCard({post, profile, index}){
       </div>
 
       {/* ── BODY ── */}
-      <div style={{padding:"20px 22px",background:"#0d1117"}}>
+      <div style={{padding:"clamp(14px,4vw,20px) clamp(14px,4vw,22px)",background:"#0d1117"}}>
 
         {/* ════ CAPTION TAB ════ */}
         {tab==="caption"&&(
@@ -1271,7 +1271,7 @@ function Workspace({profile, hKey, onUpgrade}){
             You've seen what AI-researched, platform-native content looks like for your brand.
             Upgrade now to generate 15–unlimited posts every month — new trends, new topics, every week.
           </p>
-          <div className="mobile-grid-1" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
+          <div className="mobile-grid-1" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:16,maxWidth:460,margin:"0 auto 16px"}}>
             {[
               {price:"₹699/mo",name:"Starter",desc:"15 posts · 2 platforms",id:"starter"},
               {price:"₹1,299/mo",name:"Growth",desc:"25 posts · 4 platforms",id:"growth"},
@@ -1779,7 +1779,7 @@ function PaymentStep({plan, formData, onVerified}){
   const disc=Math.round((1-plan.priceINR/parseInt(plan.originalINR.replace(/[₹,]/g,"")))*100);
 
   return(
-    <div style={{maxWidth:460,margin:"0 auto",padding:"28px 20px"}}>
+    <div style={{maxWidth:460,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
       <h2 style={{fontSize:20,fontWeight:800,letterSpacing:"-.5px",marginBottom:4}}>Complete Payment</h2>
       <p style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:20}}>{plan.guarantee}</p>
 
@@ -2754,7 +2754,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
               </div>
 
               {/* Per-post count */}
-              <div className="mobile-col" style={{display:"flex",gap:16,marginBottom:20,flexWrap:"wrap"}}>
+              <div className="mobile-col" style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
                 <div style={{background:"rgba(255,255,255,0.05)",borderRadius:7,
                   padding:"5px 10px",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.55)"}}>
                   {pl.postsPerMonth===999?"Unlimited":"~"+pl.postsPerMonth} posts/month</div>
@@ -3341,7 +3341,7 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
   ];
 
   return (
-    <div style={{maxWidth:860,margin:"0 auto",padding:"0 0 60px"}}>
+    <div style={{maxWidth:860,margin:"0 auto",padding:"0 clamp(0px,4vw,0px) 60px"}}>
 
       {/* ── BRAND HEADER ── */}
       <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:20,padding:"24px",marginBottom:12}}>
@@ -3350,9 +3350,9 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
             ?<img src={profile.logoPreview} alt="logo" style={{width:52,height:52,borderRadius:12,objectFit:"contain",background:"#fff",padding:4}}/>
             :<div style={{width:52,height:52,borderRadius:12,background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{profile.emoji||"🏢"}</div>
           }
-          <div style={{flex:1,minWidth:180}}>
+          <div style={{flex:1,minWidth:0}}>
             <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:4}}>
-              <span style={{fontSize:17,fontWeight:700,letterSpacing:"-.4px"}}>{profile.brandName||profile.name}</span>
+              <span style={{fontSize:"clamp(14px,4vw,17px)",fontWeight:700,letterSpacing:"-.4px",wordBreak:"break-word"}}>{profile.brandName||profile.name}</span>
               <span style={{background:"rgba(52,211,153,.08)",color:"#34d399",border:"1px solid rgba(52,211,153,.2)",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:600}}>● Active</span>
               {profile.planName&&<span style={{background:"rgba(255,255,255,.06)",color:"rgba(255,255,255,.55)",border:"1px solid rgba(255,255,255,.09)",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:500}}>{profile.planName}</span>}
             </div>
@@ -3389,10 +3389,10 @@ function ClientDashboard({profile, hKey, onGenerateContent, onUpgrade}) {
       <div style={{display:"flex",gap:0,background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:4,marginBottom:16}}>
         {TABS.map(t=>(
           <button key={t.id} onClick={()=>setActiveTab(t.id)}
-            style={{flex:1,padding:"10px 16px",borderRadius:9,fontSize:13,fontWeight:activeTab===t.id?600:400,
+            style={{flex:1,padding:"clamp(8px,2vw,10px) clamp(8px,3vw,16px)",borderRadius:9,fontSize:"clamp(11px,3vw,13px)",fontWeight:activeTab===t.id?600:400,
               cursor:"pointer",border:"none",transition:"all .15s",fontFamily:"'Sora',system-ui,sans-serif",
               background:activeTab===t.id?"rgba(255,255,255,.09)":"transparent",
-              color:activeTab===t.id?"rgba(255,255,255,.95)":"rgba(255,255,255,.35)"}}>
+              color:activeTab===t.id?"rgba(255,255,255,.95)":"rgba(255,255,255,.35)",whiteSpace:"nowrap"}}>
             {t.label}
           </button>
         ))}
@@ -3465,7 +3465,7 @@ function PortalClientView({client, onHome, onUpgrade}){
   return (
     <div>
       {/* ── TOP NAV ── */}
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20,flexWrap:"wrap"}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16,flexWrap:"wrap",minWidth:0}}>
         <button onClick={onHome}
           style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
             color:"rgba(255,255,255,0.55)",borderRadius:9,padding:"7px 13px",fontSize:13,
@@ -3643,27 +3643,64 @@ export default function App(){
     .sn-h2{font-size:19px;font-weight:600;letter-spacing:-.02em;color:rgba(255,255,255,.9);}
     .sn-body{font-size:14px;font-weight:400;color:rgba(255,255,255,.5);line-height:1.7;}
     /* ── MOBILE ── */
-    @media(max-width:640px){
-      .sn-nav-inner{padding:0 16px;}
-      .sn-card{padding:16px;}
-      h1{font-size:clamp(26px,8vw,36px)!important;}
-      h2{font-size:clamp(18px,5vw,24px)!important;}
-      input,textarea,select{font-size:16px!important;}
+    @media(max-width:768px){
+      .sn-nav-inner{padding:0 16px;height:52px;}
+      .sn-card{padding:16px;border-radius:14px;}
+      .mobile-grid-1{grid-template-columns:1fr!important;}
+      .mobile-grid-2{grid-template-columns:repeat(2,1fr)!important;}
       .plans-grid{grid-template-columns:1fr!important;}
-      .plan-card-glass{padding:20px!important;}
-      .sn-tabbar{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+      .plan-card-glass{padding:20px!important;margin-bottom:12px;}
+      .sn-tabbar{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap;}
       .sn-tabbar::-webkit-scrollbar{display:none;}
-      .sn-btn-lg{padding:15px 22px;font-size:15px;}
+      .sn-btn-lg{padding:15px 20px;font-size:15px;}
       .mobile-stack{flex-direction:column!important;gap:10px!important;}
+      .mobile-col{flex-direction:column!important;gap:8px!important;}
       .mobile-full{width:100%!important;}
-      [style*='grid-template-columns:repeat(4']{grid-template-columns:repeat(2,1fr)!important;}
-      [style*='grid-template-columns:repeat(3']{grid-template-columns:1fr!important;}
-      [style*='grid-template-columns:repeat(2']{grid-template-columns:1fr!important;}
       .ws-sidebar{display:none!important;}
       .ws-main{padding:14px!important;}
     }
+    @media(max-width:640px){
+      .sn-nav-inner{padding:0 14px;height:50px;}
+      .sn-card{padding:14px;border-radius:12px;}
+      h1{font-size:clamp(24px,7vw,34px)!important;letter-spacing:-0.03em!important;}
+      h2{font-size:clamp(17px,5vw,22px)!important;}
+      h3{font-size:clamp(15px,4vw,18px)!important;}
+      p{font-size:14px!important;}
+      input,textarea,select{font-size:16px!important;}
+      .sn-btn{padding:12px 18px;font-size:14px;}
+      .sn-btn-lg{padding:14px 20px;font-size:15px;border-radius:10px;}
+      .plans-grid{grid-template-columns:1fr!important;gap:12px!important;}
+      .plan-card-glass{padding:18px!important;border-radius:14px!important;}
+      .sn-tabbar{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap;gap:0;}
+      .sn-tabbar::-webkit-scrollbar{display:none;}
+      .sn-tab{padding:8px 12px;font-size:12px;white-space:nowrap;}
+      .mobile-stack{flex-direction:column!important;gap:10px!important;}
+      .mobile-col{flex-direction:column!important;gap:8px!important;}
+      .mobile-full{width:100%!important;}
+      .mobile-grid-1{grid-template-columns:1fr!important;}
+      .mobile-padding{padding:14px!important;}
+      [style*='grid-template-columns:repeat(4']{grid-template-columns:repeat(2,1fr)!important;}
+      [style*='grid-template-columns:repeat(3']{grid-template-columns:1fr!important;}
+      [style*='grid-template-columns:repeat(2']{grid-template-columns:1fr!important;}
+      [style*='gap:28px']{gap:14px!important;}
+      [style*='gap:24px']{gap:12px!important;}
+      .ws-sidebar{display:none!important;}
+      .ws-main{padding:12px!important;}
+      .post-card{border-radius:12px!important;}
+      /* Tab bar horizontal scroll */
+      .sn-tabbar{display:flex;overflow-x:scroll;padding-bottom:2px;}
+    }
+    @media(max-width:480px){
+      .sn-nav-inner{padding:0 12px;}
+      h1{font-size:clamp(22px,6.5vw,30px)!important;}
+      .plan-card-glass{padding:16px!important;}
+      .sn-btn{padding:11px 16px;font-size:13px;}
+      .sn-btn-lg{padding:13px 18px;font-size:14px;}
+    }
     @media(max-width:380px){
-      .sn-btn{padding:12px 16px;font-size:14px;}
+      .sn-btn{padding:10px 14px;font-size:13px;}
+      h1{font-size:22px!important;}
+      h2{font-size:17px!important;}
     }
     @supports(padding:env(safe-area-inset-bottom)){
       body{padding-bottom:env(safe-area-inset-bottom);}
@@ -3718,7 +3755,7 @@ export default function App(){
     <div className="sn-page">
       <div dangerouslySetInnerHTML={{__html:CSS}}/>
       {NAV}
-      <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"clamp(16px,3vw,28px) clamp(14px,2vw,20px)",animation:"fadeUp .35s ease",position:"relative",zIndex:1}}>
+      <div className="mobile-padding" style={{maxWidth:1060,margin:"0 auto",padding:"clamp(14px,4vw,28px) clamp(12px,4vw,20px)",animation:"fadeUp .35s ease",position:"relative",zIndex:1,overflowX:"hidden"}}>
         {children}
       </div>
     </div>
