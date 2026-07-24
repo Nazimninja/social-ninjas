@@ -54,6 +54,25 @@ const Contact: React.FC = () => {
     setLoading(true);
     try{
       await submitToGoogleSheets({...form, type: 'Leads', source:'contact-form'});
+      try {
+        await fetch('/api/data?resource=leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: 'lead_' + Date.now(),
+            name: form.name,
+            email: form.email,
+            phone: form.cc + form.phone,
+            company: form.company,
+            website: form.website,
+            message: form.message,
+            source: 'main-contact-page',
+            date: new Date().toLocaleDateString('en-IN')
+          })
+        });
+      } catch (kvErr) {
+        console.error('Failed to save lead to KV:', kvErr);
+      }
       setDone(true);
     }catch(err){ setErrors({message:'Something went wrong. Please try again.'}); }
     setLoading(false);
@@ -121,7 +140,7 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* RIGHT — multi-step form */}
+          {/* RIGHT ï¿½ multi-step form */}
           <div className="reveal-r d1">
             <div className="glass-card" style={{borderRadius:24,padding:0,overflow:'hidden'}}>
               {/* Step indicator */}
@@ -156,7 +175,7 @@ const Contact: React.FC = () => {
                       <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
                       <select value={form.company} onChange={e=>set('company',e.target.value)} className="field" style={{appearance:'none',cursor:'pointer'}}>
                         <option value="">Select range...</option>
-                        {['Under $1,000','$1,000–$5,000','$5,000–$20,000','$20,000–$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
+                        {['Under $1,000','$1,000ï¿½$5,000','$5,000ï¿½$20,000','$20,000ï¿½$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
                       </select>
                     </div>
                   </div>
@@ -164,7 +183,7 @@ const Contact: React.FC = () => {
                 {step===3&&(
                   <div>
                     <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific — this shapes our strategy.</p>
+                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific ï¿½ this shapes our strategy.</p>
                     <div style={{marginBottom:18}}>
                       <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
                         <Phone size={12}/>Phone
@@ -182,7 +201,7 @@ const Contact: React.FC = () => {
                         Your Bottleneck
                         {errors.message&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
                       </label>
-                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific — our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
+                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific ï¿½ our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
                     </div>
                   </div>
                 )}

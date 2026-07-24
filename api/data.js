@@ -147,6 +147,21 @@ export default async function handler(req, res) {
     }
   }
 
+  // ⚡ LEADS ⚡
+  if (resource === 'leads') {
+    if (req.method === 'GET') {
+      const stored = await kvGet('sn_crm_leads') || [];
+      return res.json(stored);
+    }
+    if (req.method === 'POST') {
+      const body = req.body;
+      const stored = await kvGet('sn_crm_leads') || [];
+      stored.unshift(body);
+      await kvSet('sn_crm_leads', stored);
+      return res.status(201).json({ success: true });
+    }
+  }
+
   // ── HISTORY ───────────────────────────────────────────────────
   if (resource === 'history') {
     if (req.method === 'GET') {
