@@ -5,8 +5,8 @@ import SEO from '../components/SEO';
 import { submitToGoogleSheets } from '../services/googleSheets';
 
 const CC = [
-  {code:'+1',f:'????'},{code:'+44',f:'????'},{code:'+971',f:'????'},{code:'+91',f:'????'},
-  {code:'+61',f:'????'},{code:'+49',f:'????'},{code:'+33',f:'????'},
+  {code:'+1',f:'🇺🇸'},{code:'+44',f:'🇬🇧'},{code:'+971',f:'🇦🇪'},{code:'+91',f:'🇮🇳'},
+  {code:'+61',f:'🇦🇺'},{code:'+49',f:'🇩🇪'},{code:'+33',f:'🇫🇷'},
 ];
 
 function useReveal() {
