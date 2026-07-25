@@ -1,6 +1,6 @@
 import { getApiUrl } from '../services/api';
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, Check, Shield, Activity, Dumbbell, Sparkles } from 'lucide-react';
+import { Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, Check, Shield, Activity, Dumbbell, Sparkles, User } from 'lucide-react';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
 
