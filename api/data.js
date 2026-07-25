@@ -1,4 +1,4 @@
-// data.js — Unified API for blogs, history, clients, leads
+// data.js — Unified API for blogs, history, clients, leads (v2)
 // Blogs & history: Upstash KV (fast, tiny data)
 // Leads & Content Studio clients: Supabase CRM (structured, queryable)
 
