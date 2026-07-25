@@ -1,3 +1,4 @@
+import { getApiUrl } from '../services/api';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
@@ -52,8 +53,8 @@ const BlogPost: React.FC = () => {
     const localPost = POSTS.find(p => p.id === id);
     
     Promise.all([
-      fetch(`/api/blogs/${id}`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch('/api/blogs').then(r => r.json()).catch(() => []),
+      fetch(getApiUrl(`/api/data?resource=blogs&id=${id}`)).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.json()).catch(() => []),
     ]).then(([apiPost, all]) => {
       const finalPost = localPost || apiPost;
       setPost(finalPost);

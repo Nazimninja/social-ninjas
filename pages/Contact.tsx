@@ -1,3 +1,4 @@
+import { getApiUrl } from '../services/api';
 import React, { useEffect, useState } from 'react';
 import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -55,7 +56,7 @@ const Contact: React.FC = () => {
     try{
       await submitToGoogleSheets({...form, type: 'Leads', source:'contact-form'});
       try {
-        await fetch('/api/data?resource=leads', {
+        await fetch(getApiUrl('/api/data?resource=leads'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

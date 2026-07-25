@@ -1,3 +1,4 @@
+import { getApiUrl } from '../services/api';
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, Check, Shield, Activity, Dumbbell, Sparkles } from 'lucide-react';
 import Button from '../components/Button';
@@ -94,7 +95,7 @@ const Admin: React.FC = () => {
 
     const fetchBlogs = async () => {
         try {
-            const res = await fetch('/api/data?resource=blogs');
+            const res = await fetch(getApiUrl('/api/data?resource=blogs'));
             const data = await res.json();
             setBlogs(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -104,7 +105,7 @@ const Admin: React.FC = () => {
 
     const fetchLeads = async () => {
         try {
-            const res = await fetch('/api/data?resource=leads');
+            const res = await fetch(getApiUrl('/api/data?resource=leads'));
             const data = await res.json();
             setLeads(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -114,7 +115,7 @@ const Admin: React.FC = () => {
 
     const fetchClients = async () => {
         try {
-            const res = await fetch('/api/data?resource=clients');
+            const res = await fetch(getApiUrl('/api/data?resource=clients'));
             const data = await res.json();
             setClients(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -124,7 +125,7 @@ const Admin: React.FC = () => {
 
     const fetchFitClients = async () => {
         try {
-            const res = await fetch('/api/fit-clients');
+            const res = await fetch(getApiUrl('/api/fit-clients'));
             if (res.ok) {
                 const data = await res.json();
                 setFitClients(Array.isArray(data) ? data : []);
@@ -136,7 +137,7 @@ const Admin: React.FC = () => {
 
     const handleSave = async () => {
         try {
-            await fetch('/api/data?resource=blogs', {
+            await fetch(getApiUrl('/api/data?resource=blogs'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(currentBlog)
@@ -152,7 +153,7 @@ const Admin: React.FC = () => {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Are you sure you want to delete this post?')) return;
         try {
-            await fetch(`/api/data?resource=blogs&id=${id}`, { method: 'DELETE' });
+            await fetch(getApiUrl(`/api/data?resource=blogs&id=${id}`), { method: 'DELETE' });
             fetchBlogs();
         } catch (error) {
             console.error('Failed to delete blog', error);
@@ -171,7 +172,7 @@ const Admin: React.FC = () => {
                 return;
             }
             // Fetch from backend History
-            const res = await fetch('/api/data?resource=history&clientId=' + client.id);
+            const res = await fetch(getApiUrl('/api/data?resource=history&clientId=') + client.id);
             if (res.ok) {
                 const data = await res.json();
                 setClientHistData(data);

@@ -1,3 +1,4 @@
+import { getApiUrl } from '../services/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, Tag, Rss, TrendingUp, Bot, BarChart3, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
@@ -149,7 +150,7 @@ const Blog: React.FC = () => {
 
   useEffect(() => {
     // Check if we already have static posts (avoid fetching if possible or merge)
-    fetch('/api/data?resource=blogs')
+    fetch(getApiUrl('/api/data?resource=blogs'))
       .then(r => r.json())
       .then(d => { if (Array.isArray(d) && d.length > 0) setApiPosts(d); })
       .catch(() => {});
@@ -170,7 +171,7 @@ const Blog: React.FC = () => {
     <div className="page-wrap" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       
       <SEO
-        title="Blog | Social Ninja's — AI, Marketing & Growth Intelligence"
+        title="Blog | Social Ninja's ï¿½ AI, Marketing & Growth Intelligence"
         description="Weekly breakdowns on AI automation, performance marketing, content strategy and social media growth. Real tactics, real numbers."
         keywords="marketing blog India, AI automation guide, social media strategy 2026, performance marketing tips, content creation AI, ROAS optimization, lead generation"
       />
@@ -181,7 +182,7 @@ const Blog: React.FC = () => {
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }} className="hero-grid-cols">
             <div>
-              <div className="pill reveal"><Rss size={12} />Intelligence Feed · Weekly</div>
+              <div className="pill reveal"><Rss size={12} />Intelligence Feed ï¿½ Weekly</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: '#141414' }}>
                 Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
@@ -262,7 +263,7 @@ const Blog: React.FC = () => {
         {/* Section label */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad' }}>
-            Latest dispatches — {filteredPosts.length} posts
+            Latest dispatches ï¿½ {filteredPosts.length} posts
           </div>
           <div style={{ fontSize: 12, color: '#adadad', fontStyle: 'italic' }}>Click any post to read</div>
         </div>
