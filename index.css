@@ -452,3 +452,67 @@
   .container, .section { padding-left: 16px !important; padding-right: 16px !important; }
 }
 
+/* ── LENIS SMOOTH SCROLL ───────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ── INSPIRA UI ANIMATION KEYFRAMES ────────────────── */
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-800px);
+    opacity: 0;
+  }
+}
+.animate-meteor {
+  animation: meteor 5s linear infinite;
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-text-shimmer {
+  background: linear-gradient(135deg, #ffffff 0%, #ff8c00 45%, #ff4500 70%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 6s ease infinite;
+}
+
+/* ── INSPIRA UI GLOW BUTTON ────────────────────────── */
+.inspira-glow-button {
+  position: relative;
+  box-shadow: 0 0 25px -5px rgba(255, 107, 0, 0.45);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.inspira-glow-button:hover {
+  box-shadow: 0 0 45px 8px rgba(255, 107, 0, 0.65);
+  transform: translateY(-2px) scale(1.02);
+}

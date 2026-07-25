@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Star, Check, Bot, Send, Sliders, ChevronRight } from 'lucide-react';
 import SEO from '../components/SEO';
+import SpotlightCard from '../components/SpotlightCard';
+import MeteorsBackground from '../components/MeteorsBackground';
 
 /* ─── SCROLL-REVEAL HOOK ─────────────────────────────────── */
 function useReveal() {
@@ -169,6 +171,7 @@ const Home: React.FC = () => {
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section ref={heroRef} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 100, paddingBottom: 80, position: 'relative', overflow: 'hidden' }}>
+        <MeteorsBackground number={22} />
 
         {/* Subtle grid bg */}
         <div aria-hidden style={{
@@ -189,7 +192,7 @@ const Home: React.FC = () => {
                 150+ brands scaled globally since 2022
               </div>
 
-              <h1 style={{ fontSize: 'clamp(40px,4.5vw,64px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 20, color: '#141414', fontFamily: "'Plus Jakarta Sans',system-ui" }}>
+              <h1 className="animate-text-shimmer" style={{ fontSize: 'clamp(40px,4.5vw,64px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 20, fontFamily: "'Plus Jakarta Sans',system-ui" }}>
                 AI-powered<br />growth systems<br />
                 <span style={{ color: '#1F4B99' }}>that scale.</span>
               </h1>
@@ -199,7 +202,7 @@ const Home: React.FC = () => {
               </p>
 
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 52 }}>
-                <Link to="/contact"><button className="btn-primary" style={{ fontSize: 14, padding: '12px 22px' }}>Book Free Audit <ArrowRight size={14} /></button></Link>
+                <Link to="/contact"><button className="btn-primary inspira-glow-button" style={{ fontSize: 14, padding: '12px 22px' }}>Book Free Audit <ArrowRight size={14} /></button></Link>
                 <Link to="/services"><button className="btn-ghost" style={{ fontSize: 14 }}>Explore Systems</button></Link>
               </div>
 

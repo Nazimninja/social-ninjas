@@ -1,0 +1,4 @@
+/content-studio /standalone-landing/index.html 200
+/standalone-crm /standalone-crm/index.html 200
+/api/* https://social-ninjas-main.vercel.app/api/:splat 200
+/* /index.html 200

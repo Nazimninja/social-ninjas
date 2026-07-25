@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/PageTransition';
 import SchemaMarkup from './components/SchemaMarkup';
+import SmoothScroll from './components/SmoothScroll';
 
 // Lazy Load Pages for Performance Optimization
 const Home = lazy(() => import('./pages/Home'));
@@ -140,8 +141,10 @@ const App: React.FC = () => {
   return (
     <HelmetProvider>
       <Router>
-        <ScrollToTop />
-        <MainLayout />
+        <SmoothScroll>
+          <ScrollToTop />
+          <MainLayout />
+        </SmoothScroll>
       </Router>
     </HelmetProvider>
   );
