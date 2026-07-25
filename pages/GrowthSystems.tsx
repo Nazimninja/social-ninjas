@@ -29,11 +29,11 @@ const GrowthSystems: React.FC = () => {
                 Your competitor just booked a call<br/><em style={{background:'linear-gradient(135deg,#1F4B99,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>while you were sleeping.</em>
               </h1>
               <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'#717171',lineHeight:1.72,marginBottom:36,maxWidth:460}}>
-                The average company takes 47 hours to respond to a new lead. Your AI agent responds in under 1 second — 24/7, 365 days a year — qualifying, nurturing, and booking calls while you focus on delivering.
+                The average company takes 47 hours to respond to a new lead. Your AI agent responds in under 1 second â€” 24/7, 365 days a year â€” qualifying, nurturing, and booking calls while you focus on delivering.
               </p>
               <div className="reveal d3" style={{display:'flex',gap:12,flexWrap:'wrap'}}>
                 <Link to="/contact"><button className="btn-primary" style={{fontSize:15,padding:'15px 30px'}}>Deploy AI Workforce <ArrowRight size={16}/></button></Link>
-                <a href="/content-studio"><button className="btn-ghost" style={{fontSize:15}}>Try Content Studio Free ?</button></a>
+                <a href="/content-studio"><button className="btn-ghost" style={{fontSize:15}}>Try Content Studio Free â†’</button></a>
               </div>
             </div>
             <div className="reveal-r d2">
@@ -60,10 +60,10 @@ const GrowthSystems: React.FC = () => {
         <h2 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(28px,4vw,48px)',fontWeight:400,letterSpacing:'-1px',textAlign:'center',marginBottom:56,color:'#141414',lineHeight:1.1}}>Four systems that <em>generate revenue</em> while you sleep.</h2>
         <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:14}} className="two-cols">
           {[
-            {icon:'??',color:'#1F4B99',title:'AI Lead Qualification',desc:'Intelligent chatbots pre-qualify every inbound lead using custom scoring logic — filtering out noise so your sales team only speaks to buyers.',feats:['24/7 automated qualification','Custom scoring criteria','CRM sync in real-time','Multi-channel deployment']},
-            {icon:'??',color:'#818cf8',title:'Automated Follow-Up Sequences',desc:'Hyper-personalised email and SMS sequences that nurture leads through the funnel with zero manual effort.',feats:['AI-personalised messaging','Behaviour-triggered sends','A/B optimisation built-in','Revenue attribution tracking']},
-            {icon:'??',color:'#34d399',title:'Auto-Booking Infrastructure',desc:'Remove the friction from your sales process. Qualified leads go directly from conversation to booked calendar — no back-and-forth.',feats:['Calendar API integration','Smart timezone detection','Reminder sequences','No-show prevention system']},
-            {icon:'??',color:'#f59e0b',title:'Revenue Intelligence Dashboard',desc:'Real-time visibility into your entire pipeline — from first touch to closed deal — with AI-generated weekly recommendations.',feats:['Full-funnel analytics','Attribution modelling','Weekly AI insights','Board-ready reports']},
+            {icon:'ðŸ¤–',color:'#1F4B99',title:'AI Lead Qualification',desc:'Intelligent chatbots pre-qualify every inbound lead using custom scoring logic â€” filtering out noise so your sales team only speaks to buyers.',feats:['24/7 automated qualification','Custom scoring criteria','CRM sync in real-time','Multi-channel deployment']},
+            {icon:'ðŸ“§',color:'#818cf8',title:'Automated Follow-Up Sequences',desc:'Hyper-personalised email and SMS sequences that nurture leads through the funnel with zero manual effort.',feats:['AI-personalised messaging','Behaviour-triggered sends','A/B optimisation built-in','Revenue attribution tracking']},
+            {icon:'ðŸ“…',color:'#34d399',title:'Auto-Booking Infrastructure',desc:'Remove the friction from your sales process. Qualified leads go directly from conversation to booked calendar â€” no back-and-forth.',feats:['Calendar API integration','Smart timezone detection','Reminder sequences','No-show prevention system']},
+            {icon:'ðŸ“Š',color:'#f59e0b',title:'Revenue Intelligence Dashboard',desc:'Real-time visibility into your entire pipeline â€” from first touch to closed deal â€” with AI-generated weekly recommendations.',feats:['Full-funnel analytics','Attribution modelling','Weekly AI insights','Board-ready reports']},
           ].map((s,i)=>(
             <div key={i} className={`glass-card reveal d${(i%2)+1}`} style={{padding:34,borderRadius:22}}>
               <div style={{display:'flex',alignItems:'center',gap:13,marginBottom:18}}>

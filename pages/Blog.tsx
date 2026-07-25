@@ -171,7 +171,7 @@ const Blog: React.FC = () => {
     <div className="page-wrap" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       
       <SEO
-        title="Blog | Social Ninja's � AI, Marketing & Growth Intelligence"
+        title="Blog | Social Ninja's — AI, Marketing & Growth Intelligence"
         description="Weekly breakdowns on AI automation, performance marketing, content strategy and social media growth. Real tactics, real numbers."
         keywords="marketing blog India, AI automation guide, social media strategy 2026, performance marketing tips, content creation AI, ROAS optimization, lead generation"
       />
@@ -182,12 +182,12 @@ const Blog: React.FC = () => {
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }} className="hero-grid-cols">
             <div>
-              <div className="pill reveal"><Rss size={12} />Intelligence Feed � Weekly</div>
+              <div className="pill reveal"><Rss size={12} />Intelligence Feed — Weekly</div>
               <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui,sans-serif", fontSize: 'clamp(36px,5.5vw,72px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 18, color: '#141414' }}>
                 Marketing<br />intelligence,<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>no fluff.</span>
               </h1>
               <p className="reveal d2" style={{ fontSize: 16, fontWeight: 300, color: '#717171', lineHeight: 1.72, maxWidth: 400, marginBottom: 24 }}>
-                Real numbers, real case studies, and the exact frameworks we use to scale brands from ?5L to ?50L monthly revenue.
+                Real numbers, real case studies, and the exact frameworks we use to scale brands from ₹5L to ₹50L monthly revenue.
               </p>
               
               {/* Search Bar */}
@@ -246,7 +246,7 @@ const Blog: React.FC = () => {
             </div>
             {/* Stats */}
             <div className="reveal-r d2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              {[['3', 'Posts per week'], ['150+', 'Brands scaled'], ['?40M+', 'Ad spend managed'], ['4.9?', 'Client rating']].map(([n, l]) => (
+              {[['3', 'Posts per week'], ['150+', 'Brands scaled'], ['₹40M+', 'Ad spend managed'], ['4.9★', 'Client rating']].map(([n, l]) => (
                 <div key={l} className="glass-card" style={{ padding: '22px 18px', textAlign: 'center', borderRadius: 18 }}>
                   <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 28, fontWeight: 800, color: '#1F4B99', letterSpacing: '-1px', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontSize: 11, color: '#adadad', marginTop: 5 }}>{l}</div>
@@ -263,7 +263,7 @@ const Blog: React.FC = () => {
         {/* Section label */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad' }}>
-            Latest dispatches � {filteredPosts.length} posts
+            Latest dispatches — {filteredPosts.length} posts
           </div>
           <div style={{ fontSize: 12, color: '#adadad', fontStyle: 'italic' }}>Click any post to read</div>
         </div>
