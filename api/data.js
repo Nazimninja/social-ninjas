@@ -44,6 +44,21 @@ async function crmUpsert(table, body, conflictCol = 'id') {
     return true;
   } catch(e) { console.error('crmUpsert exception:', e); return false; }
 }
+
+async function crmDelete(table, colName = 'id', val) {
+  if (!CRM_URL || !CRM_KEY) return false;
+  try {
+    const r = await fetch(`${CRM_URL}/rest/v1/${table}?${colName}=eq.${val}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': CRM_KEY,
+        'Authorization': `Bearer ${CRM_KEY}`
+      }
+    });
+    if (!r.ok) { console.error('crmDelete error:', await r.text()); return false; }
+    return true;
+  } catch(e) { console.error('crmDelete exception:', e); return false; }
+}
 // ──────────────────────────────────────────────────────────────────────
 
 async function kvGet(key) {

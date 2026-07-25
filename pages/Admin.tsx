@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, 
   Check, Shield, Activity, Dumbbell, Sparkles, User, Search, Filter, 
-  Edit3, Clock, ChevronLeft, ChevronRight, UserPlus, FileText, CheckCircle2, AlertCircle
+  Edit3, Clock, ChevronLeft, ChevronRight, UserPlus, FileText, CheckCircle2, AlertCircle, PlusCircle
 } from 'lucide-react';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
@@ -16,7 +16,7 @@ const STATUS_PILLS: Record<string, { label: string, color: string }> = {
   contacted: { label: 'Contacted', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
   demo_scheduled: { label: 'Demo Scheduled', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
   proposal_sent: { label: 'Proposal Sent', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
-  closed_won: { label: 'Client Won', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  closed_won: { label: 'Client Won 🎉', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
   closed_lost: { label: 'Lost / Closed', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20' }
 };
 
@@ -42,6 +42,11 @@ const Admin: React.FC = () => {
   // Calendar State
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [calendarMonth, setCalendarMonth] = useState<Date>(new Date());
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [scheduleTargetType, setScheduleTargetType] = useState<'lead' | 'client'>('lead');
+  const [scheduleTargetId, setScheduleTargetId] = useState<string>('');
+  const [scheduleDate, setScheduleDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [scheduleNotes, setScheduleNotes] = useState<string>('');
 
   // Editor & View Modals
   const [editLead, setEditLead] = useState<any>(null);
@@ -152,12 +157,12 @@ const Admin: React.FC = () => {
 
   const handleDeleteLead = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this lead?')) return;
-    setLoadingData(true);
+    // Optimistic UI Removal
+    setLeads(prev => prev.filter(l => l.id !== id));
     try {
-      await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { method: 'DELETE' });
-      await fetchLeads();
-    } catch (e) { console.error(e); }
-    setLoadingData(false);
+      const res = await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { method: 'DELETE' });
+      if (!res.ok) await fetchLeads(); // rollback on failure
+    } catch (e) { console.error(e); await fetchLeads(); }
   };
 
   // Client Actions
@@ -180,10 +185,41 @@ const Admin: React.FC = () => {
 
   const handleDeleteClient = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this client workspace?')) return;
+    // Optimistic UI Removal
+    setClients(prev => prev.filter(c => c.id !== id));
+    try {
+      const res = await fetch(getApiUrl(`/api/data?resource=clients&id=${id}`), { method: 'DELETE' });
+      if (!res.ok) await fetchClients();
+    } catch (e) { console.error(e); await fetchClients(); }
+  };
+
+  // Direct Calendar Follow-Up Scheduling Handler
+  const handleScheduleSubmit = async () => {
+    if (!scheduleTargetId) return alert('Please select a target lead or client');
     setLoadingData(true);
     try {
-      await fetch(getApiUrl(`/api/data?resource=clients&id=${id}`), { method: 'DELETE' });
-      await fetchClients();
+      if (scheduleTargetType === 'lead') {
+        const target = leads.find(l => l.id === scheduleTargetId);
+        if (target) {
+          await handleSaveLead({
+            ...target,
+            nextFollowUp: scheduleDate,
+            followUpNotes: scheduleNotes || 'Scheduled from Work Calendar'
+          });
+        }
+      } else {
+        const target = clients.find(c => c.id === scheduleTargetId);
+        if (target) {
+          await handleSaveClient({
+            ...target,
+            nextFollowUp: scheduleDate,
+            notes: scheduleNotes || 'Scheduled call from Work Calendar'
+          });
+        }
+      }
+      setShowScheduleModal(false);
+      setScheduleNotes('');
+      setSelectedDate(scheduleDate);
     } catch (e) { console.error(e); }
     setLoadingData(false);
   };
@@ -335,6 +371,12 @@ const Admin: React.FC = () => {
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
             <button 
+              onClick={() => { setScheduleDate(selectedDate); setShowScheduleModal(true); }}
+              className="bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+            >
+              <Calendar size={14} /> <span className="hidden sm:inline">+ Schedule Call</span>
+            </button>
+            <button 
               onClick={() => setShowAddLead(true)} 
               className="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
             >
@@ -359,7 +401,7 @@ const Admin: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-        {/* METRICS & OVERVIEW CARDS */}
+        {/* METRICS CARDS */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-[#0e121d] border border-neutral-800/80 p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
             <div className="flex items-center justify-between text-neutral-400 text-xs font-semibold">
@@ -426,7 +468,7 @@ const Admin: React.FC = () => {
           </div>
         </div>
 
-        {/* TAB BUTTONS & CONSOLE HEADER */}
+        {/* TAB NAVIGATION */}
         <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-2 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto p-1">
             <button
@@ -478,10 +520,9 @@ const Admin: React.FC = () => {
                 <h2 className="text-base font-bold text-white flex items-center gap-2">
                   <Mail size={16} className="text-blue-400" /> Inbound Lead Management
                 </h2>
-                <p className="text-xs text-neutral-400">Track, update, and convert incoming client inquiries</p>
+                <p className="text-xs text-neutral-400">Track, update, schedule follow-ups, and convert incoming client inquiries</p>
               </div>
 
-              {/* Lead Status Filter */}
               <div className="flex items-center gap-2">
                 <Filter size={14} className="text-neutral-500" />
                 <select
@@ -554,10 +595,17 @@ const Admin: React.FC = () => {
                           </td>
                           <td className="py-3.5 text-right">
                             <div className="flex gap-1.5 justify-end">
-                              <button onClick={() => setEditLead(lead)} className="bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
-                                <Edit3 size={12} /> Edit Lead
+                              <button 
+                                onClick={() => { setScheduleTargetType('lead'); setScheduleTargetId(lead.id); setShowScheduleModal(true); }} 
+                                className="bg-purple-500/10 hover:bg-purple-600 text-purple-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1"
+                                title="Schedule Call Date"
+                              >
+                                <Calendar size={12} /> Call
                               </button>
-                              <button onClick={() => handleDeleteLead(lead.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete">
+                              <button onClick={() => setEditLead(lead)} className="bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
+                                <Edit3 size={12} /> Edit
+                              </button>
+                              <button onClick={() => handleDeleteLead(lead.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete Lead">
                                 <Trash2 size={12} />
                               </button>
                             </div>
@@ -655,7 +703,7 @@ const Admin: React.FC = () => {
                             <button onClick={() => setEditClient(client)} className="bg-emerald-500/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
                               <Edit3 size={12} /> Manage
                             </button>
-                            <button onClick={() => handleDeleteClient(client.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete">
+                            <button onClick={() => handleDeleteClient(client.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete Workspace">
                               <Trash2 size={12} />
                             </button>
                           </div>
@@ -738,16 +786,32 @@ const Admin: React.FC = () => {
 
             {/* Selected Date Tasks */}
             <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
-              <div className="border-b border-neutral-800/80 pb-3">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Clock size={14} className="text-purple-400" /> Agenda for {selectedDate}
-                </h3>
-                <p className="text-xs text-neutral-400">{selectedDateFollowups.length} task(s) scheduled for this day</p>
+              <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3">
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    <Clock size={14} className="text-purple-400" /> Agenda for {selectedDate}
+                  </h3>
+                  <p className="text-xs text-neutral-400">{selectedDateFollowups.length} task(s) scheduled</p>
+                </div>
+                <button 
+                  onClick={() => { setScheduleDate(selectedDate); setShowScheduleModal(true); }}
+                  className="bg-purple-600 hover:bg-purple-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors"
+                >
+                  + Add Call
+                </button>
               </div>
 
               <div className="space-y-3">
                 {selectedDateFollowups.length === 0 ? (
-                  <div className="py-12 text-center text-neutral-500 italic text-xs">No follow-ups or calls scheduled for this date.</div>
+                  <div className="py-12 text-center text-neutral-500 italic text-xs space-y-3">
+                    <div>No follow-ups or calls scheduled for this date.</div>
+                    <button 
+                      onClick={() => { setScheduleDate(selectedDate); setShowScheduleModal(true); }}
+                      className="bg-purple-500/20 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-purple-500/30 transition-colors"
+                    >
+                      + Schedule Follow-up for {selectedDate}
+                    </button>
+                  </div>
                 ) : (
                   selectedDateFollowups.map((item, idx) => (
                     <div key={idx} className="bg-[#131926] border border-neutral-800 p-3.5 rounded-xl space-y-2">
@@ -933,6 +997,82 @@ const Admin: React.FC = () => {
 
       {/* ── MODALS ──────────────────────────────────────────────── */}
 
+      {/* SCHEDULE CALL / TASK MODAL */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Calendar size={16} className="text-purple-400" /> Schedule Call / Task
+              </h3>
+              <button onClick={() => setShowScheduleModal(false)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Target Type</label>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => { setScheduleTargetType('lead'); setScheduleTargetId(leads[0]?.id || ''); }}
+                    className={`flex-1 py-2 rounded-xl border text-xs font-bold ${scheduleTargetType === 'lead' ? 'bg-blue-600 text-white border-blue-500' : 'bg-[#141a29] text-neutral-400 border-neutral-800'}`}
+                  >
+                    Lead
+                  </button>
+                  <button 
+                    onClick={() => { setScheduleTargetType('client'); setScheduleTargetId(clients[0]?.id || ''); }}
+                    className={`flex-1 py-2 rounded-xl border text-xs font-bold ${scheduleTargetType === 'client' ? 'bg-emerald-600 text-white border-emerald-500' : 'bg-[#141a29] text-neutral-400 border-neutral-800'}`}
+                  >
+                    Client Workspace
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Select {scheduleTargetType === 'lead' ? 'Lead' : 'Client Workspace'}</label>
+                <select 
+                  value={scheduleTargetId} 
+                  onChange={e => setScheduleTargetId(e.target.value)}
+                  className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-purple-500"
+                >
+                  <option value="">-- Choose Target --</option>
+                  {scheduleTargetType === 'lead' ? (
+                    leads.map(l => <option key={l.id} value={l.id}>{l.name} ({l.company || l.email})</option>)
+                  ) : (
+                    clients.map(c => <option key={c.id} value={c.id}>{c.brandName} ({c.niche})</option>)
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-bold text-purple-400 uppercase tracking-wider mb-1">Follow-Up Date</label>
+                <input 
+                  type="date" 
+                  value={scheduleDate} 
+                  onChange={e => setScheduleDate(e.target.value)}
+                  className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-3 text-purple-300 focus:outline-none focus:border-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Call / Task Notes</label>
+                <textarea 
+                  rows={3} 
+                  value={scheduleNotes} 
+                  onChange={e => setScheduleNotes(e.target.value)}
+                  placeholder="e.g. Discuss Q3 growth retainer, send audit slides..."
+                  className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3 text-xs text-white"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setShowScheduleModal(false)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={handleScheduleSubmit} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold">Save Event</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* EDIT LEAD MODAL */}
       {editLead && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -974,7 +1114,7 @@ const Admin: React.FC = () => {
               </div>
               <div>
                 <label className="block font-bold text-purple-400 uppercase tracking-wider mb-1">Next Follow-Up Date</label>
-                <input type="date" value={(editLead.next_follow_up || editLead.nextFollowUp || '').split('T')[0]} onChange={e => setEditLead({ ...editLead, nextFollowUp: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
+                <input type="date" value={(editLead.next_follow_up || editLead.nextFollowUp || '').split('T')[0]} onChange={e => setEditLead({ ...editLead, nextFollowUp: e.target.value, next_follow_up: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
               </div>
             </div>
 
@@ -1028,7 +1168,7 @@ const Admin: React.FC = () => {
               </div>
               <div>
                 <label className="block font-bold text-purple-400 uppercase tracking-wider mb-1">Next Follow-Up / Call Date</label>
-                <input type="date" value={(editClient.nextFollowUp || editClient.next_follow_up || '').split('T')[0]} onChange={e => setEditClient({ ...editClient, nextFollowUp: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
+                <input type="date" value={(editClient.nextFollowUp || editClient.next_follow_up || '').split('T')[0]} onChange={e => setEditClient({ ...editClient, nextFollowUp: e.target.value, next_follow_up: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
               </div>
             </div>
 
