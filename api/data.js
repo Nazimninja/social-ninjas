@@ -9,6 +9,8 @@ const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 const CRM_URL = process.env.SUPABASE_CRM_URL;
 const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY;
 
+console.log('[CRM Env Check] CRM_URL:', CRM_URL ? 'DEFINED' : 'UNDEFINED', 'CRM_KEY:', CRM_KEY ? 'DEFINED' : 'UNDEFINED');
+
 async function crmGet(table, options = {}) {
   if (!CRM_URL || !CRM_KEY) return null;
   try {
