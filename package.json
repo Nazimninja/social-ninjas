@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run start-backend\"",
     "start-backend": "node backend/server.js",
-    "build": "vite build && node scripts/prerender.js",
+    "build": "vite build && node scripts/prerender.js && node scripts/copy-redirects.js",
     "preview": "vite preview"
   },
   "dependencies": {
