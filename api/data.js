@@ -195,6 +195,8 @@ export default async function handler(req, res) {
           subscriptionId: c.subscription_id,
           joinDate: c.join_date,
           source: c.source,
+          nextFollowUp: c.next_follow_up,
+          notes: c.notes,
           created_at: c.created_at
         })));
       }
@@ -205,7 +207,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const body = req.body;
       const clientRow = {
-        id: body.id,
+        id: body.id || `client_${Date.now()}`,
         brand_name: body.brandName,
         niche: body.niche,
         email: body.email,
@@ -219,11 +221,13 @@ export default async function handler(req, res) {
         active: body.active !== undefined ? body.active : true,
         payment_id: body.paymentId,
         subscription_id: body.subscriptionId,
-        join_date: body.joinDate,
-        source: body.source || 'content-studio'
+        join_date: body.joinDate || new Date().toLocaleDateString('en-IN'),
+        source: body.source || 'content-studio',
+        next_follow_up: body.nextFollowUp || body.next_follow_up || null,
+        notes: body.notes || null
       };
       // Upsert to Supabase CRM
-      const ok = await crmUpsert('content_studio_clients', clientRow, 'email');
+      const ok = await crmUpsert('content_studio_clients', clientRow, 'id');
       if (!ok) {
         // Fallback: also write to KV for safety
         const stored = await kvGet('sn_clients') || [];
@@ -233,6 +237,11 @@ export default async function handler(req, res) {
         await kvSet('sn_clients', stored);
       }
       return res.status(201).json({ success: true });
+    }
+    if (req.method === 'DELETE') {
+      if (!id) return res.status(400).json({ error: 'id required' });
+      await crmDelete('content_studio_clients', 'id', id);
+      return res.json({ success: true });
     }
   }
 
@@ -253,10 +262,18 @@ export default async function handler(req, res) {
         website: body.website || null,
         message: body.message || null,
         source: body.source || 'main-contact-page',
-        status: 'new'
+        status: body.status || 'new',
+        next_follow_up: body.nextFollowUp || body.next_follow_up || null,
+        follow_up_notes: body.followUpNotes || body.follow_up_notes || null,
+        notes: body.notes || null
       };
       await crmUpsert('leads', leadRow, 'id');
       return res.status(201).json({ success: true });
+    }
+    if (req.method === 'DELETE') {
+      if (!id) return res.status(400).json({ error: 'id required' });
+      await crmDelete('leads', 'id', id);
+      return res.json({ success: true });
     }
   }
 

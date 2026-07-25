@@ -1,881 +1,1204 @@
 import { getApiUrl } from '../services/api';
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, Check, Shield, Activity, Dumbbell, Sparkles, User } from 'lucide-react';
+import { 
+  Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar, 
+  Check, Shield, Activity, Dumbbell, Sparkles, User, Search, Filter, 
+  Edit3, Clock, ChevronLeft, ChevronRight, UserPlus, FileText, CheckCircle2, AlertCircle
+} from 'lucide-react';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
 
-// 🔒 Admin Auth Gate 🔒
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'sn@admin2026';
 const AUTH_KEY = 'sn_admin_auth';
 
-const AdminLogin: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
-    const [pw, setPw] = useState('');
-    const [err, setErr] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    const attempt = () => {
-        setLoading(true);
-        setTimeout(() => {
-            if (pw === ADMIN_PASSWORD) {
-                sessionStorage.setItem(AUTH_KEY, '1');
-                onAuth();
-            } else {
-                setErr('Incorrect password. Try again.');
-                setPw('');
-            }
-            setLoading(false);
-        }, 500);
-    };
-
-    return (
-        <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4">
-            <SEO title="Admin Login | Social Ninja's" description="" />
-            <div className="w-full max-w-sm bg-[#0b0f19] border border-neutral-800 rounded-2xl p-8">
-                <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-blue-500/10 border border-blue-500/20 mx-auto mb-6">
-                    <Lock size={24} className="text-blue-500" />
-                </div>
-                <h1 className="text-2xl font-bold text-white text-center mb-1">Admin Access</h1>
-                <p className="text-neutral-500 text-sm text-center mb-6">Social Ninja's Control Panel</p>
-                <input
-                    type="password"
-                    value={pw}
-                    onChange={e => { setPw(e.target.value); setErr(''); }}
-                    onKeyDown={e => e.key === 'Enter' && attempt()}
-                    placeholder="Enter admin password"
-                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500/50 mb-3"
-                    autoFocus
-                />
-                {err && <p className="text-amber-500 text-xs mb-3">⚠️ {err}</p>}
-                <button
-                    onClick={attempt}
-                    disabled={loading || !pw}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl py-3 text-sm disabled:opacity-40 transition-all"
-                >
-                    {loading ? 'Checking...' : 'Enter Console'}
-                </button>
-            </div>
-        </div>
-    );
+const STATUS_PILLS: Record<string, { label: string, color: string }> = {
+  new: { label: 'New Lead', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+  contacted: { label: 'Contacted', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+  demo_scheduled: { label: 'Demo Scheduled', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+  proposal_sent: { label: 'Proposal Sent', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
+  closed_won: { label: 'Client Won', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  closed_lost: { label: 'Lost / Closed', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20' }
 };
 
 const Admin: React.FC = () => {
-    const [authed, setAuthed] = useState(() => sessionStorage.getItem(AUTH_KEY) === '1');
-    const [blogs, setBlogs] = useState<any[]>([]);
-    const [clients, setClients] = useState<any[]>([]);
-    const [leads, setLeads] = useState<any[]>([]);
-    const [fitClients, setFitClients] = useState<any[]>([]);
-    const [activeTab, setActiveTab] = useState<'leads' | 'clients' | 'fit' | 'blogs'>('leads');
-    const [isEditing, setIsEditing] = useState(false);
-    const [currentBlog, setCurrentBlog] = useState({ id: '', title: '', content: '', excerpt: '', author: 'Admin' });
-    
-    // View Modals
-    const [viewClientHist, setViewClientHist] = useState<any>(null);
-    const [clientHistData, setClientHistData] = useState<any[]>([]);
-    const [viewLeadDetails, setViewLeadDetails] = useState<any>(null);
-    const [viewFitClientDetails, setViewFitClientDetails] = useState<any>(null);
-    const [manageClientStatus, setManageClientStatus] = useState<any>(null);
-    const [newActive, setNewActive] = useState<boolean>(true);
-    const [newPaymentStatus, setNewPaymentStatus] = useState<string>('verified');
-    const [manageFitStatus, setManageFitStatus] = useState<any>(null);
-    const [newFitStatus, setNewFitStatus] = useState<string>('free');
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem(AUTH_KEY) === '1');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState(false);
 
-    const openManageClient = (client: any) => {
-        setManageClientStatus(client);
-        setNewActive(client.active !== false);
-        setNewPaymentStatus(client.paymentStatus || 'verified');
-    };
+  // Data States
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+  const [leads, setLeads] = useState<any[]>([]);
+  const [fitClients, setFitClients] = useState<any[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
 
-    const openManageFit = (fit: any) => {
-        setManageFitStatus(fit);
-        setNewFitStatus(fit.plan_status || 'free');
-    };
+  // Navigation & Filters
+  const [activeTab, setActiveTab] = useState<'leads' | 'clients' | 'fit' | 'calendar' | 'blogs'>('leads');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [leadStatusFilter, setLeadStatusFilter] = useState<string>('all');
+  const [clientStatusFilter, setClientStatusFilter] = useState<string>('all');
+  const [fitStatusFilter, setFitStatusFilter] = useState<string>('all');
 
-    const handleUpdateClientStatus = async () => {
-        if (!manageClientStatus) return;
-        setLoadingData(true);
-        try {
-            const res = await fetch(getApiUrl('/api/data?resource=clients'), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: manageClientStatus.id,
-                    email: manageClientStatus.email,
-                    brandName: manageClientStatus.brandName,
-                    niche: manageClientStatus.niche,
-                    active: newActive,
-                    paymentStatus: newPaymentStatus,
-                    phone: manageClientStatus.phone,
-                    toneOfVoice: manageClientStatus.toneOfVoice,
-                    targetAudience: manageClientStatus.targetAudience,
-                    callToAction: manageClientStatus.callToAction,
-                    plan: manageClientStatus.plan,
-                    planName: manageClientStatus.planName,
-                    paymentId: manageClientStatus.paymentId,
-                    subscriptionId: manageClientStatus.subscriptionId,
-                    joinDate: manageClientStatus.joinDate,
-                    source: manageClientStatus.source
-                })
-            });
-            if (res.ok) {
-                setManageClientStatus(null);
-                await fetchClients();
-            } else {
-                alert('Failed to update status');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Failed to update status');
-        }
-        setLoadingData(false);
-    };
+  // Calendar State
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date());
 
-    const handleUpdateFitStatus = async () => {
-        if (!manageFitStatus) return;
-        setLoadingData(true);
-        try {
-            const res = await fetch(getApiUrl('/api/fit-clients'), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: manageFitStatus.id,
-                    plan_status: newFitStatus
-                })
-            });
-            if (res.ok) {
-                setManageFitStatus(null);
-                await fetchFitClients();
-            } else {
-                alert('Failed to update Fit Ninja membership status');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Failed to update status');
-        }
-        setLoadingData(false);
-    };
+  // Editor & View Modals
+  const [editLead, setEditLead] = useState<any>(null);
+  const [editClient, setEditClient] = useState<any>(null);
+  const [showAddLead, setShowAddLead] = useState(false);
+  const [showAddClient, setShowAddClient] = useState(false);
+  const [viewClientHist, setViewClientHist] = useState<any>(null);
+  const [clientHistData, setClientHistData] = useState<any[]>([]);
+  const [viewFitClientDetails, setViewFitClientDetails] = useState<any>(null);
+  const [manageFitStatus, setManageFitStatus] = useState<any>(null);
+  const [newFitStatus, setNewFitStatus] = useState<string>('free');
 
-    const [loadingData, setLoadingData] = useState(false);
+  // Blog Editor State
+  const [isEditingBlog, setIsEditingBlog] = useState(false);
+  const [currentBlog, setCurrentBlog] = useState({ id: '', title: '', content: '', excerpt: '', author: 'Admin' });
 
-    useEffect(() => {
-        if (authed) {
-            loadAllData();
-        }
-    }, [authed]);
+  // Add Lead Form State
+  const [newLeadForm, setNewLeadForm] = useState({
+    name: '', email: '', phone: '', company: '', website: '', message: '', status: 'new', nextFollowUp: '', followUpNotes: '', notes: ''
+  });
 
-    const loadAllData = async () => {
-        setLoadingData(true);
-        await Promise.all([
-            fetchLeads(),
-            fetchClients(),
-            fetchFitClients(),
-            fetchBlogs()
-        ]);
-        setLoadingData(false);
-    };
+  // Add Client Form State
+  const [newClientForm, setNewClientForm] = useState({
+    brandName: '', niche: '', email: '', phone: '', toneOfVoice: '', targetAudience: '', callToAction: '', planName: 'Growth Plan', paymentStatus: 'verified', active: true, nextFollowUp: '', notes: ''
+  });
 
-    const fetchBlogs = async () => {
-        try {
-            const res = await fetch(getApiUrl('/api/data?resource=blogs'));
-            const data = await res.json();
-            setBlogs(Array.isArray(data) ? data : []);
-        } catch (error) {
-            console.error('Failed to fetch blogs', error);
-        }
-    };
+  useEffect(() => {
+    if (authed) loadAllData();
+  }, [authed]);
 
-    const fetchLeads = async () => {
-        try {
-            const res = await fetch(getApiUrl('/api/data?resource=leads'));
-            const data = await res.json();
-            setLeads(Array.isArray(data) ? data : []);
-        } catch (error) {
-            console.error('Failed to fetch leads', error);
-        }
-    };
+  const loadAllData = async () => {
+    setLoadingData(true);
+    await Promise.all([
+      fetchLeads(),
+      fetchClients(),
+      fetchFitClients(),
+      fetchBlogs()
+    ]);
+    setLoadingData(false);
+  };
 
-    const fetchClients = async () => {
-        try {
-            const res = await fetch(getApiUrl('/api/data?resource=clients'));
-            const data = await res.json();
-            setClients(Array.isArray(data) ? data : []);
-        } catch (error) {
-            console.error('Failed to fetch clients from server', error);
-        }
-    };
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === ADMIN_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, '1');
+      setAuthed(true);
+      setAuthError(false);
+    } else {
+      setAuthError(true);
+    }
+  };
 
-    const fetchFitClients = async () => {
-        try {
-            const res = await fetch(getApiUrl('/api/fit-clients'));
-            if (res.ok) {
-                const data = await res.json();
-                setFitClients(Array.isArray(data) ? data : []);
-            }
-        } catch (error) {
-            console.error('Failed to fetch Fit Ninja profiles', error);
-        }
-    };
+  const handleLogout = () => {
+    sessionStorage.removeItem(AUTH_KEY);
+    setAuthed(false);
+  };
 
-    const handleSave = async () => {
-        try {
-            await fetch(getApiUrl('/api/data?resource=blogs'), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(currentBlog)
-            });
-            setIsEditing(false);
-            setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: 'Admin' });
-            fetchBlogs();
-        } catch (error) {
-            console.error('Failed to save blog', error);
-        }
-    };
+  // API Fetchers
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=blogs'));
+      const data = await res.json();
+      setBlogs(Array.isArray(data) ? data : []);
+    } catch (e) { console.error('Blogs error', e); }
+  };
 
-    const handleDelete = async (id: string) => {
-        if (!window.confirm('Are you sure you want to delete this post?')) return;
-        try {
-            await fetch(getApiUrl(`/api/data?resource=blogs&id=${id}`), { method: 'DELETE' });
-            fetchBlogs();
-        } catch (error) {
-            console.error('Failed to delete blog', error);
-        }
-    };
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=leads'));
+      const data = await res.json();
+      setLeads(Array.isArray(data) ? data : []);
+    } catch (e) { console.error('Leads error', e); }
+  };
 
-    const handleViewClient = async (client: any) => {
-        setViewClientHist(client);
-        setClientHistData([]);
-        try {
-            // Local history fallback
-            const histRaw = localStorage.getItem(`snstudio_hist_${client.id}`);
-            if (histRaw) {
-                const data = JSON.parse(histRaw);
-                setClientHistData(Array.isArray(data) ? data : []);
-                return;
-            }
-            // Fetch from backend History
-            const res = await fetch(getApiUrl('/api/data?resource=history&clientId=') + client.id);
-            if (res.ok) {
-                const data = await res.json();
-                setClientHistData(data);
-            }
-        } catch (e) {
-            console.error("History fetch error:", e);
-        }
-    };
+  const fetchClients = async () => {
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=clients'));
+      const data = await res.json();
+      setClients(Array.isArray(data) ? data : []);
+    } catch (e) { console.error('Clients error', e); }
+  };
 
-    if (!authed) return <AdminLogin onAuth={() => setAuthed(true)} />;
+  const fetchFitClients = async () => {
+    try {
+      const res = await fetch(getApiUrl('/api/fit-clients'));
+      const data = await res.json();
+      setFitClients(Array.isArray(data) ? data : []);
+    } catch (e) { console.error('Fit clients error', e); }
+  };
 
+  // Lead Actions
+  const handleSaveLead = async (leadData: any) => {
+    setLoadingData(true);
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=leads'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadData)
+      });
+      if (res.ok) {
+        setEditLead(null);
+        setShowAddLead(false);
+        await fetchLeads();
+      } else alert('Failed to save lead');
+    } catch (e) { console.error(e); alert('Error saving lead'); }
+    setLoadingData(false);
+  };
+
+  const handleDeleteLead = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this lead?')) return;
+    setLoadingData(true);
+    try {
+      await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { method: 'DELETE' });
+      await fetchLeads();
+    } catch (e) { console.error(e); }
+    setLoadingData(false);
+  };
+
+  // Client Actions
+  const handleSaveClient = async (clientData: any) => {
+    setLoadingData(true);
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=clients'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(clientData)
+      });
+      if (res.ok) {
+        setEditClient(null);
+        setShowAddClient(false);
+        await fetchClients();
+      } else alert('Failed to save client workspace');
+    } catch (e) { console.error(e); alert('Error saving client workspace'); }
+    setLoadingData(false);
+  };
+
+  const handleDeleteClient = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this client workspace?')) return;
+    setLoadingData(true);
+    try {
+      await fetch(getApiUrl(`/api/data?resource=clients&id=${id}`), { method: 'DELETE' });
+      await fetchClients();
+    } catch (e) { console.error(e); }
+    setLoadingData(false);
+  };
+
+  // Fit Ninja Actions
+  const handleSaveFitStatus = async () => {
+    if (!manageFitStatus) return;
+    setLoadingData(true);
+    try {
+      const res = await fetch(getApiUrl('/api/fit-clients'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: manageFitStatus.id, plan_status: newFitStatus })
+      });
+      if (res.ok) {
+        setManageFitStatus(null);
+        await fetchFitClients();
+      } else alert('Failed to update plan status');
+    } catch (e) { console.error(e); }
+    setLoadingData(false);
+  };
+
+  // History Fetcher
+  const handleViewClientHist = async (client: any) => {
+    setViewClientHist(client);
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=history&clientId=') + client.id);
+      const data = await res.json();
+      setClientHistData(Array.isArray(data) ? data : []);
+    } catch (e) { setClientHistData([]); }
+  };
+
+  // Filtered Datasets
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = (lead.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (lead.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (lead.company || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = leadStatusFilter === 'all' || (lead.status || 'new') === leadStatusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const filteredClients = clients.filter(client => {
+    const matchesSearch = (client.brandName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (client.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (client.niche || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = clientStatusFilter === 'all' || 
+                          (clientStatusFilter === 'active' && client.active !== false && client.paymentStatus !== 'expired') ||
+                          (clientStatusFilter === 'blocked' && (client.active === false || client.paymentStatus === 'expired'));
+    return matchesSearch && matchesStatus;
+  });
+
+  const filteredFit = fitClients.filter(fit => {
+    const matchesSearch = (fit.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (fit.email || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = fitStatusFilter === 'all' || (fit.plan_status || 'free') === fitStatusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  // Calendar Event Collectors
+  const allFollowUps = [
+    ...leads.filter(l => l.next_follow_up || l.nextFollowUp).map(l => ({
+      type: 'lead',
+      id: l.id,
+      title: `Lead Follow-up: ${l.name}`,
+      date: (l.next_follow_up || l.nextFollowUp).split('T')[0],
+      data: l,
+      status: l.status || 'new',
+      notes: l.follow_up_notes || l.followUpNotes || l.notes || 'No follow-up notes provided'
+    })),
+    ...clients.filter(c => c.nextFollowUp || c.next_follow_up).map(c => ({
+      type: 'client',
+      id: c.id,
+      title: `Client Call/Check: ${c.brandName}`,
+      date: (c.nextFollowUp || c.next_follow_up).split('T')[0],
+      data: c,
+      status: c.active !== false ? 'active' : 'expired',
+      notes: c.notes || 'Routine client check-in'
+    }))
+  ];
+
+  const selectedDateFollowups = allFollowUps.filter(item => item.date === selectedDate);
+
+  if (!authed) {
     return (
-        <div className="pt-24 min-h-screen bg-[#020617] text-white p-6 font-sans">
-            <SEO title="CRM Dashboard | Social Ninja's" description="Agency Admin Control Panel" />
-            
-            {/* Header */}
-            <div className="max-w-6xl mx-auto mb-6 flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                        <Shield size={20} className="text-blue-500" />
-                    </div>
-                    <div>
-                        <h1 className="text-xl font-bold font-display tracking-tight">Social Ninja's CRM</h1>
-                        <p className="text-xs text-neutral-400">Control Panel & Live Leads Center</p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button onClick={loadAllData} className="text-xs bg-[#0b0f19] border border-neutral-800 rounded-lg px-3 py-1.5 hover:bg-neutral-800 transition-colors">
-                        🔄 Refresh Data
-                    </button>
-                    <button onClick={() => { sessionStorage.removeItem('sn_admin_auth'); setAuthed(false); }}
-                        className="text-xs text-red-400 hover:bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-1.5 transition-all">
-                        🔒 Lock Admin
-                    </button>
-                </div>
+      <div className="min-h-screen bg-[#07090e] text-white flex items-center justify-center p-4">
+        <SEO title="CRM Login | Social Ninja's" description="Admin Login Portal" />
+        <div className="bg-[#0e121d] border border-neutral-800 p-8 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
+          <div className="absolute -left-12 -top-12 w-32 h-32 bg-brand-primary/10 rounded-full blur-2xl"></div>
+          <div className="flex flex-col items-center mb-6 text-center relative z-10">
+            <div className="w-14 h-14 bg-brand-primary/10 rounded-2xl border border-brand-primary/20 flex items-center justify-center text-brand-primary mb-3">
+              <Lock size={28} />
             </div>
-
-            {/* Navigation Tabs */}
-            <div className="max-w-6xl mx-auto mb-8 flex gap-3 overflow-x-auto pb-2 scrollbar-none">
-               {[
-                   { id: 'leads', name: '📩 Leads Inbox', count: leads.length },
-                   { id: 'clients', name: '✨ Content Studio', count: clients.length },
-                   { id: 'fit', name: '💪 Fit Ninja Users', count: fitClients.length },
-                   { id: 'blogs', name: '📝 Blog Admin', count: blogs.length }
-               ].map(tab => (
-                   <button 
-                       key={tab.id}
-                       onClick={() => { setActiveTab(tab.id as any); setIsEditing(false); }}
-                       className={`px-5 py-3 rounded-xl font-bold transition-all flex items-center gap-2 text-sm whitespace-nowrap ${activeTab === tab.id ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/15' : 'bg-[#0b0f19] text-neutral-400 border border-neutral-800 hover:bg-neutral-800'}`}
-                   >
-                       {tab.name}
-                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-neutral-800 text-neutral-400'}`}>
-                           {tab.count}
-                       </span>
-                   </button>
-               ))}
+            <h1 className="text-xl font-bold tracking-tight">SOCIAL NINJA'S CRM</h1>
+            <p className="text-xs text-neutral-400 mt-1">Enterprise Agency & User Management Console</p>
+          </div>
+          <form onSubmit={handleLogin} className="space-y-4 relative z-10">
+            <div>
+              <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Admin Password</label>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={e => setPasswordInput(e.target.value)}
+                placeholder="Enter password"
+                className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-brand-primary transition-colors text-sm"
+              />
             </div>
-
-            {/* Main Panel Card */}
-            <div className="max-w-6xl mx-auto border border-neutral-800 rounded-2xl p-8 bg-[#0b0f19]/70 backdrop-blur-md">
-                <div className="flex justify-between items-center mb-8 pb-4 border-b border-neutral-800">
-                    <h2 className="text-2xl font-bold font-display text-white flex items-center gap-2">
-                        {activeTab === 'leads' && "📩 Main Site Contact Leads"}
-                        {activeTab === 'clients' && "✨ Content Studio Workspaces"}
-                        {activeTab === 'fit' && "💪 Fit Ninja Premium & Assessment Profiles"}
-                        {activeTab === 'blogs' && "📝 Blog Post Management"}
-                    </h2>
-                    {activeTab === 'blogs' && !isEditing && (
-                        <button 
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition-colors"
-                            onClick={() => { setIsEditing(true); setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: 'Admin' }); }}
-                        >
-                            <Plus size={16} /> New Post
-                        </button>
-                    )}
-                </div>
-
-                {loadingData && (
-                    <div className="text-center py-20 text-neutral-400 animate-pulse">Loading database contents...</div>
-                )}
-
-                {!loadingData && (
-                    <>
-                        {/* 1. LEADS TAB */}
-                        {activeTab === 'leads' && (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="border-b border-neutral-800 text-neutral-400 text-xs uppercase tracking-wider">
-                                            <th className="pb-4 pr-4">Lead Info</th>
-                                            <th className="pb-4 pr-4">Company Details</th>
-                                            <th className="pb-4 pr-4">Contact Phone</th>
-                                            <th className="pb-4 pr-4">Date</th>
-                                            <th className="pb-4 text-right">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {leads.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={5} className="py-12 text-center text-neutral-500 italic">No contact form leads recorded yet.</td>
-                                            </tr>
-                                        ) : (
-                                            leads.map(lead => (
-                                                <tr key={lead.id} className="border-b border-neutral-800 hover:bg-neutral-800/30 transition-colors">
-                                                    <td className="py-4 pr-4">
-                                                        <div className="font-bold text-white">{lead.name}</div>
-                                                        <div className="text-xs text-neutral-400">{lead.email}</div>
-                                                    </td>
-                                                    <td className="py-4 pr-4">
-                                                        <div className="text-sm font-semibold text-neutral-300">{lead.company || '-'}</div>
-                                                        {lead.website && (
-                                                            <a href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline flex items-center gap-1">
-                                                                <Globe size={10} /> {lead.website}
-                                                            </a>
-                                                        )}
-                                                    </td>
-                                                    <td className="py-4 pr-4 text-sm text-neutral-300">
-                                                        {lead.phone || '-'}
-                                                    </td>
-                                                    <td className="py-4 text-sm text-neutral-400">
-                                                        {lead.date || lead.created_at || '-'}
-                                                    </td>
-                                                    <td className="py-4 text-right">
-                                                        <button onClick={() => setViewLeadDetails(lead)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
-                                                            View Message
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-
-                        {/* 2. CONTENT STUDIO CLIENTS TAB */}
-                        {activeTab === 'clients' && (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="border-b border-neutral-800 text-neutral-400 text-xs uppercase tracking-wider">
-                                            <th className="pb-4 pr-4">Brand / Niche</th>
-                                            <th className="pb-4 pr-4">Contact</th>
-                                            <th className="pb-4 pr-4">Plan & Status</th>
-                                            <th className="pb-4 pr-4">Payment Info</th>
-                                            <th className="pb-4 pr-4">Member Since</th>
-                                            <th className="pb-4 text-right">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {clients.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={6} className="py-12 text-center text-neutral-500 italic">No Content Studio clients found.</td>
-                                            </tr>
-                                        ) : (
-                                            clients.map(client => (
-                                                <tr key={client.id} className="border-b border-neutral-800 hover:bg-neutral-800/30 transition-colors">
-                                                    <td className="py-4 pr-4">
-                                                        <div className="font-bold text-white">{client.brandName}</div>
-                                                        <div className="text-xs text-neutral-400">{client.niche}</div>
-                                                    </td>
-                                                    <td className="py-4 pr-4">
-                                                        <div className="text-sm text-neutral-200">{client.email}</div>
-                                                        <div className="text-xs text-neutral-400">{client.phone || '-'}</div>
-                                                    </td>
-                                                    <td className="py-4 pr-4">
-                                                        <div className="flex flex-col gap-1 items-start">
-                                                            <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase ${client.plan === 'trial' ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`}>
-                                                                {client.planName || 'Free Trial'}
-                                                            </span>
-                                                            <span className={`text-[10px] font-bold ${client.paymentStatus === 'expired' || client.active === false ? 'text-red-400' : 'text-emerald-400'}`}>
-                                                                ● {client.paymentStatus === 'expired' || client.active === false ? 'Expired' : 'Active'}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 pr-4 text-xs">
-                                                        <div className="text-neutral-300">PayID: <code className="bg-neutral-800 px-1 py-0.5 rounded text-[10px]">{client.paymentId || 'None'}</code></div>
-                                                        {client.subscriptionId && <div className="text-neutral-400 mt-1">SubID: <code className="bg-neutral-800 px-1 py-0.5 rounded text-[10px]">{client.subscriptionId}</code></div>}
-                                                    </td>
-                                                    <td className="py-4 text-sm text-neutral-400">
-                                                        {client.joinDate}
-                                                    </td>
-                                                    <td className="py-4 text-right">
-                                                        <div className="flex gap-2 justify-end">
-                                                            <button onClick={() => handleViewClient(client)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-2.5 py-1.5 rounded-lg transition-colors">
-                                                                History
-                                                            </button>
-                                                            <button onClick={() => openManageClient(client)} className="text-xs text-emerald-400 hover:text-white font-bold bg-emerald-500/10 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg transition-colors">
-                                                                Manage
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-
-                        {/* 3. FIT NINJA CLIENTS TAB */}
-                        {activeTab === 'fit' && (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="border-b border-neutral-800 text-neutral-400 text-xs uppercase tracking-wider">
-                                            <th className="pb-4 pr-4">User</th>
-                                            <th className="pb-4 pr-4">Fitness Goals</th>
-                                            <th className="pb-4 pr-4">Plan Status</th>
-                                            <th className="pb-4 pr-4">Daily Targets</th>
-                                            <th className="pb-4 pr-4">Joined</th>
-                                            <th className="pb-4 text-right">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {fitClients.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={6} className="py-12 text-center text-neutral-500 italic">No Fit Ninja profiles found in Supabase database.</td>
-                                            </tr>
-                                        ) : (
-                                            fitClients.map(fit => (
-                                                <tr key={fit.id} className="border-b border-neutral-800 hover:bg-neutral-800/30 transition-colors">
-                                                    <td className="py-4 pr-4">
-                                                        <div className="font-bold text-white">{fit.name || 'Anonymous'}</div>
-                                                        <div className="text-xs text-neutral-400">{fit.email}</div>
-                                                        {fit.phone && <div className="text-[10px] text-neutral-500">{fit.phone}</div>}
-                                                    </td>
-                                                    <td className="py-4 pr-4">
-                                                        <div className="text-sm font-semibold text-neutral-300">
-                                                            {fit.assessment_data?.goal === 'fat_loss' ? '🔥 Fat Loss' : fit.assessment_data?.goal === 'weight_gain' ? '💪 Weight Gain' : '⚡ Performance'}
-                                                        </div>
-                                                        <div className="text-xs text-neutral-400 uppercase">{fit.assessment_data?.diet || 'nonveg'} • {fit.assessment_data?.gender}</div>
-                                                    </td>
-                                                    <td className="py-4 pr-4">
-                                                        <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase ${fit.plan_status === 'premium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-neutral-700 text-neutral-400'}`}>
-                                                            {fit.plan_status || 'free'}
-                                                        </span>
-                                                    </td>
-                                                    <td className="py-4 pr-4 text-xs text-neutral-300">
-                                                        {fit.generated_plan ? (
-                                                            <div>
-                                                                <div>🔥 {fit.generated_plan.kcal} kcal</div>
-                                                                <div className="text-neutral-400 mt-0.5">🥩 {fit.generated_plan.protein}g protein</div>
-                                                            </div>
-                                                        ) : (
-                                                            <span className="text-neutral-500 italic">Plan not generated</span>
-                                                        )}
-                                                    </td>
-                                                    <td className="py-4 text-sm text-neutral-400">
-                                                        {fit.created_at ? new Date(fit.created_at).toLocaleDateString('en-IN') : '-'}
-                                                    </td>
-                                                    <td className="py-4 text-right">
-                                                        <div className="flex gap-2 justify-end">
-                                                            <button onClick={() => setViewFitClientDetails(fit)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-2.5 py-1.5 rounded-lg transition-colors">
-                                                                Details
-                                                            </button>
-                                                            <button onClick={() => openManageFit(fit)} className="text-xs text-emerald-400 hover:text-white font-bold bg-emerald-500/10 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg transition-colors">
-                                                                Manage
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-
-                        {/* 4. BLOGS TAB */}
-                        {activeTab === 'blogs' && (
-                            <>
-                                {isEditing ? (
-                                    <div className="space-y-6">
-                                        <div>
-                                            <label className="block text-sm font-bold text-neutral-400 mb-2 uppercase tracking-wider">Post Title</label>
-                                            <input 
-                                                type="text" 
-                                                value={currentBlog.title}
-                                                onChange={(e) => setCurrentBlog({...currentBlog, title: e.target.value})}
-                                                className="w-full bg-[#131926] border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors"
-                                                placeholder="Enter an engaging title..."
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-neutral-400 mb-2 uppercase tracking-wider">Excerpt (Optional)</label>
-                                            <textarea 
-                                                value={currentBlog.excerpt}
-                                                onChange={(e) => setCurrentBlog({...currentBlog, excerpt: e.target.value})}
-                                                className="w-full bg-[#131926] border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors h-24"
-                                                placeholder="Short summary for the blog list..."
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-neutral-400 mb-2 uppercase tracking-wider">Markdown Content</label>
-                                            <textarea 
-                                                value={currentBlog.content}
-                                                onChange={(e) => setCurrentBlog({...currentBlog, content: e.target.value})}
-                                                className="w-full bg-[#131926] border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors h-96 font-mono text-sm"
-                                                placeholder="Write your post content here using Markdown..."
-                                            />
-                                        </div>
-                                        <div className="flex justify-end gap-4 pt-4 border-t border-neutral-800">
-                                            <button 
-                                                onClick={() => setIsEditing(false)}
-                                                className="px-6 py-2 rounded-xl text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
-                                            >
-                                                <X size={18} /> Cancel
-                                            </button>
-                                            <button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm flex items-center gap-2 transition-colors">
-                                                <Save size={18} /> Publish Post
-                                            </button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {blogs.length === 0 ? (
-                                            <div className="text-center py-12 text-neutral-500 italic">No blog posts found. Create one above.</div>
-                                        ) : (
-                                            blogs.map(blog => (
-                                                <div key={blog.id} className="flex items-center justify-between p-4 rounded-xl bg-[#131926] border border-neutral-800 hover:border-blue-500/30 transition-colors">
-                                                    <div>
-                                                        <h3 className="font-bold text-lg text-white mb-1">{blog.title}</h3>
-                                                        <p className="text-sm text-neutral-400">Published: {new Date(blog.publishedAt || blog.date).toLocaleDateString()}</p>
-                                                    </div>
-                                                    <div className="flex items-center gap-3">
-                                                        <button 
-                                                            onClick={() => handleDelete(blog.id)}
-                                                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
-                                                            title="Delete Post"
-                                                        >
-                                                            <Trash2 size={20} />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))
-                                        )}
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </>
-                )}
-            </div>
-
-            {/* 1. View Lead Details Modal */}
-            {viewLeadDetails && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
-                            <div>
-                                <h2 className="text-xl font-bold text-white">📩 Website Lead Brief</h2>
-                                <p className="text-xs text-neutral-400 mt-1">Submitted on {viewLeadDetails.date || viewLeadDetails.created_at}</p>
-                            </div>
-                            <button onClick={() => setViewLeadDetails(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="p-6 overflow-y-auto flex-1 space-y-6">
-                            <div className="grid grid-cols-2 gap-4 bg-[#131926] p-4 rounded-xl border border-neutral-800 text-sm">
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Full Name</b> {viewLeadDetails.name}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Email Address</b> {viewLeadDetails.email}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Phone Number</b> {viewLeadDetails.phone || '-'}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Company / Brand</b> {viewLeadDetails.company || '-'}</div>
-                                <div className="col-span-2"><b className="text-neutral-500 text-xs uppercase block mb-1">Website URL</b> 
-                                    {viewLeadDetails.website ? (
-                                        <a href={viewLeadDetails.website.startsWith('http') ? viewLeadDetails.website : `https://${viewLeadDetails.website}`} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
-                                            {viewLeadDetails.website}
-                                        </a>
-                                    ) : '-'}
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-wider mb-2">Message Brief</h3>
-                                <div className="bg-[#131926] rounded-xl p-4 border border-neutral-800 text-neutral-200 text-sm whitespace-pre-wrap leading-relaxed">
-                                    {viewLeadDetails.message}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* 2. View Content Studio Client History Modal */}
-            {viewClientHist && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
-                            <div>
-                                <h2 className="text-2xl font-bold text-white">{viewClientHist.brandName} <span className="text-blue-400 text-base font-normal ml-2">({viewClientHist.planName || 'Free Trial'})</span></h2>
-                                <p className="text-sm text-neutral-400">{viewClientHist.email}  •  {viewClientHist.phone || 'No phone'}</p>
-                            </div>
-                            <button onClick={() => setViewClientHist(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
-                                <X size={24} />
-                            </button>
-                        </div>
-                        <div className="p-6 overflow-y-auto flex-1 space-y-6 text-sm">
-                            <div className="grid grid-cols-2 gap-4 bg-[#131926] p-4 rounded-xl border border-neutral-800">
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Niche</b> {viewClientHist.niche || '-'}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Target Audience</b> {viewClientHist.targetAudience || '-'}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Tone of Voice</b> {viewClientHist.toneOfVoice || '-'}</div>
-                                <div><b className="text-neutral-500 text-xs uppercase block mb-1">Core Offer / CTA</b> {viewClientHist.callToAction || '-'}</div>
-                            </div>
-                            
-                            <h3 className="text-lg font-bold text-blue-400 border-b border-neutral-800 pb-2 flex items-center gap-2">
-                                <Sparkles size={18} /> Generated AI Content History
-                            </h3>
-                            {clientHistData.length === 0 ? (
-                                <p className="text-neutral-500 italic py-8 text-center bg-[#131926] border border-neutral-800 rounded-xl">This client has not generated any content yet.</p>
-                            ) : (
-                                clientHistData.map((weekData, i) => (
-                                    <div key={i} className="mb-6 bg-[#131926] rounded-xl border border-neutral-800 p-4">
-                                        <div className="flex justify-between items-center mb-4 border-b border-neutral-800 pb-2">
-                                            <h4 className="font-bold text-white">Week {weekData.week || i+1} Generation</h4>
-                                            <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-1 rounded">Generated: {weekData.date || 'Unknown'}</span>
-                                        </div>
-                                        <div className="space-y-4">
-                                            {weekData.posts?.map((post: any, pIdx: number) => (
-                                                <div key={pIdx} className="bg-[#0b0f19] border border-neutral-800 rounded-lg p-4">
-                                                    <div className="flex justify-between gap-4 mb-3">
-                                                        <h5 className="font-bold text-blue-400">{post.platform}</h5>
-                                                        <span className="text-xs text-neutral-400 bg-neutral-800 px-2 py-1 rounded">Format: {post.format}</span>
-                                                    </div>
-                                                    <p className="text-white font-bold mb-2 text-sm">{post.title}</p>
-                                                    <div className="text-xs text-neutral-300 whitespace-pre-wrap font-mono leading-relaxed bg-black/40 p-3 rounded border border-neutral-850">
-                                                        {post.caption || post.script || post.carousel_slides?.map((s:any)=>`[Slide]: ${s}`).join('\n')}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* 3. View Fit Ninja Client Details Modal */}
-            {viewFitClientDetails && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-3xl max-h-[95vh] overflow-hidden flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                                    <Dumbbell size={18} className="text-amber-500" />
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-bold text-white">{viewFitClientDetails.name || 'Anonymous'}</h2>
-                                    <p className="text-xs text-neutral-400">{viewFitClientDetails.email}  •  Joined: {new Date(viewFitClientDetails.created_at).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => setViewFitClientDetails(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="p-6 overflow-y-auto flex-1 space-y-6 text-sm">
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="bg-[#131926] p-4 rounded-xl border border-neutral-800 text-center">
-                                    <div className="text-neutral-500 text-[10px] uppercase font-bold tracking-wider mb-1">Plan Status</div>
-                                    <div className="text-lg font-bold text-amber-400 capitalize">{viewFitClientDetails.plan_status || 'free'}</div>
-                                </div>
-                                <div className="bg-[#131926] p-4 rounded-xl border border-neutral-800 text-center">
-                                    <div className="text-neutral-500 text-[10px] uppercase font-bold tracking-wider mb-1">Height / Weight</div>
-                                    <div className="text-lg font-bold text-white">{viewFitClientDetails.assessment_data?.height || '-'} cm / {viewFitClientDetails.assessment_data?.weight || '-'} kg</div>
-                                </div>
-                                <div className="bg-[#131926] p-4 rounded-xl border border-neutral-800 text-center">
-                                    <div className="text-neutral-500 text-[10px] uppercase font-bold tracking-wider mb-1">Target Calories</div>
-                                    <div className="text-lg font-bold text-emerald-400">{viewFitClientDetails.generated_plan?.kcal || 'Not set'} kcal</div>
-                                </div>
-                            </div>
-
-                            {/* Assessment Answers */}
-                            <div>
-                                <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2 border-b border-neutral-800 pb-2">Assessment Information</h3>
-                                <div className="grid grid-cols-2 gap-x-6 gap-y-3 bg-[#131926] p-4 rounded-xl border border-neutral-800">
-                                    <div><span className="text-neutral-500">Gender:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.gender || '-'}</b></div>
-                                    <div><span className="text-neutral-500">Age:</span> <b className="text-neutral-200">{viewFitClientDetails.assessment_data?.age || '-'}</b></div>
-                                    <div><span className="text-neutral-500">Goal:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.goal?.replace('_', ' ') || '-'}</b></div>
-                                    <div><span className="text-neutral-500">Diet Type:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.diet || '-'}</b></div>
-                                    <div><span className="text-neutral-500">Workout Location:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.location || '-'}</b></div>
-                                    <div><span className="text-neutral-500">Activity Level:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.activity?.replace('_', ' ') || '-'}</b></div>
-                                    <div className="col-span-2 mt-1"><span className="text-neutral-500">Health Conditions:</span> <b className="text-neutral-200 capitalize">{viewFitClientDetails.assessment_data?.health || 'None'}</b></div>
-                                </div>
-                            </div>
-
-                            {/* Plan targets */}
-                            {viewFitClientDetails.generated_plan && (
-                                <div>
-                                    <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2 border-b border-neutral-800 pb-2">Plan Nutrition Targets</h3>
-                                    <div className="grid grid-cols-4 gap-4 bg-[#131926] p-4 rounded-xl border border-neutral-800 text-center font-mono">
-                                        <div><div className="text-neutral-400 text-xs">Calories</div><div className="text-sm font-bold text-white mt-1">{viewFitClientDetails.generated_plan.kcal} kcal</div></div>
-                                        <div><div className="text-neutral-400 text-xs">Protein</div><div className="text-sm font-bold text-amber-500 mt-1">{viewFitClientDetails.generated_plan.protein}g</div></div>
-                                        <div><div className="text-neutral-400 text-xs">Carbs</div><div className="text-sm font-bold text-blue-400 mt-1">{viewFitClientDetails.generated_plan.carbs}g</div></div>
-                                        <div><div className="text-neutral-400 text-xs">Fats</div><div className="text-sm font-bold text-emerald-400 mt-1">{viewFitClientDetails.generated_plan.fat}g</div></div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* 4. Manage Content Studio Client Membership Modal */}
-            {manageClientStatus && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                                    <User size={18} className="text-emerald-400" />
-                                </div>
-                                <div>
-                                    <h2 className="text-lg font-bold text-white">Manage Membership</h2>
-                                    <p className="text-xs text-neutral-400">{manageClientStatus.brandName}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => setManageClientStatus(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="p-6 space-y-4 text-sm text-neutral-300">
-                            <div>
-                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Access Status</label>
-                                <select 
-                                    value={newActive ? 'active' : 'blocked'} 
-                                    onChange={e => setNewActive(e.target.value === 'active')}
-                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
-                                >
-                                    <option value="active">Active (Access Allowed)</option>
-                                    <option value="blocked">Blocked / Suspended (Access Blocked)</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Payment / Plan Status</label>
-                                <select 
-                                    value={newPaymentStatus} 
-                                    onChange={e => setNewPaymentStatus(e.target.value)}
-                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
-                                >
-                                    <option value="verified">Verified (Paid)</option>
-                                    <option value="active">Active (Trial/Promo)</option>
-                                    <option value="expired">Expired (Suspended)</option>
-                                    <option value="trial-expired">Trial Expired</option>
-                                </select>
-                            </div>
-
-                            <div className="pt-4 flex gap-3">
-                                <button 
-                                    onClick={() => setManageClientStatus(null)} 
-                                    className="flex-1 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold py-3 rounded-xl transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                                <button 
-                                    onClick={handleUpdateClientStatus} 
-                                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-colors"
-                                >
-                                    Save Changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* 5. Manage Fit Ninja Membership Modal */}
-            {manageFitStatus && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                                    <Dumbbell size={18} className="text-amber-500" />
-                                </div>
-                                <div>
-                                    <h2 className="text-lg font-bold text-white">Manage Fit Ninja Plan</h2>
-                                    <p className="text-xs text-neutral-400">{manageFitStatus.name || 'Anonymous'}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => setManageFitStatus(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="p-6 space-y-4 text-sm text-neutral-300">
-                            <div>
-                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Membership Status</label>
-                                <select 
-                                    value={newFitStatus} 
-                                    onChange={e => setNewFitStatus(e.target.value)}
-                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
-                                >
-                                    <option value="premium">Premium (Full Access)</option>
-                                    <option value="free">Free (Locked Onboarding)</option>
-                                    <option value="blocked">Blocked / Suspended (No Access)</option>
-                                    <option value="expired">Expired</option>
-                                </select>
-                            </div>
-
-                            <div className="pt-4 flex gap-3">
-                                <button 
-                                    onClick={() => setManageFitStatus(null)} 
-                                    className="flex-1 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold py-3 rounded-xl transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                                <button 
-                                    onClick={handleUpdateFitStatus} 
-                                    className="flex-1 bg-[#1F4B99] hover:bg-[#153880] text-white font-bold py-3 rounded-xl transition-colors"
-                                >
-                                    Save Changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
+            {authError && <div className="text-red-400 text-xs font-semibold text-center bg-red-500/10 p-2.5 rounded-lg border border-red-500/20">Invalid Security Password</div>}
+            <button type="submit" className="w-full bg-gradient-to-r from-brand-primary to-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition-opacity text-sm">
+              Access Console →
+            </button>
+          </form>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#07090e] text-white font-sans selection:bg-brand-primary/30">
+      <SEO title="Agency CRM Console | Social Ninja's" description="Master Management Dashboard" />
+
+      {/* TOP BAR NAVIGATION */}
+      <header className="border-b border-neutral-800/80 bg-[#0b0e17]/90 backdrop-blur-md sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-gradient-to-br from-brand-primary to-orange-600 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-lg">
+              SN
+            </div>
+            <div>
+              <div className="font-bold text-sm tracking-wide text-white flex items-center gap-2">
+                SOCIAL NINJA'S <span className="text-[10px] bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-2 py-0.5 rounded-full uppercase font-bold">CRM 2.0</span>
+              </div>
+              <p className="text-[10px] text-neutral-400">Live Client & Revenue Engine</p>
+            </div>
+          </div>
+
+          {/* Quick Search */}
+          <div className="hidden md:flex items-center flex-1 max-w-xs relative">
+            <Search size={14} className="absolute left-3 text-neutral-500" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Search leads, brands, emails..."
+              className="w-full bg-[#131926] border border-neutral-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-primary"
+            />
+            {searchTerm && <X size={12} className="absolute right-3 text-neutral-500 cursor-pointer" onClick={() => setSearchTerm('')} />}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setShowAddLead(true)} 
+              className="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+            >
+              <UserPlus size={14} /> <span className="hidden sm:inline">+ Add Lead</span>
+            </button>
+            <button 
+              onClick={() => setShowAddClient(true)} 
+              className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+            >
+              <Plus size={14} /> <span className="hidden sm:inline">+ Add Client</span>
+            </button>
+            <button 
+              onClick={handleLogout} 
+              className="p-2 text-neutral-400 hover:text-white bg-neutral-800/80 hover:bg-neutral-800 rounded-xl transition-colors text-xs"
+              title="Logout"
+            >
+              <Lock size={14} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        {/* METRICS & OVERVIEW CARDS */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-[#0e121d] border border-neutral-800/80 p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+            <div className="flex items-center justify-between text-neutral-400 text-xs font-semibold">
+              <span>Leads Inbox</span>
+              <Mail size={16} className="text-blue-400" />
+            </div>
+            <div className="mt-3 flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{leads.length}</span>
+              <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                {leads.filter(l => l.status === 'closed_won').length} Won
+              </span>
+            </div>
+            <div className="mt-2 text-[10px] text-neutral-500">
+              {leads.filter(l => (l.status || 'new') === 'new').length} New Uncontacted Leads
+            </div>
+          </div>
+
+          <div className="bg-[#0e121d] border border-neutral-800/80 p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+            <div className="flex items-center justify-between text-neutral-400 text-xs font-semibold">
+              <span>Client Workspaces</span>
+              <Building size={16} className="text-emerald-400" />
+            </div>
+            <div className="mt-3 flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{clients.length}</span>
+              <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                {clients.filter(c => c.active !== false).length} Active
+              </span>
+            </div>
+            <div className="mt-2 text-[10px] text-neutral-500">
+              {clients.filter(c => c.active === false || c.paymentStatus === 'expired').length} Suspended / Expired
+            </div>
+          </div>
+
+          <div className="bg-[#0e121d] border border-neutral-800/80 p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+            <div className="flex items-center justify-between text-neutral-400 text-xs font-semibold">
+              <span>Fit Ninja Users</span>
+              <Dumbbell size={16} className="text-amber-400" />
+            </div>
+            <div className="mt-3 flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{fitClients.length}</span>
+              <span className="text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-full">
+                {fitClients.filter(f => f.plan_status === 'premium').length} Premium
+              </span>
+            </div>
+            <div className="mt-2 text-[10px] text-neutral-500">
+              {fitClients.filter(f => !f.plan_status || f.plan_status === 'free').length} Free Members
+            </div>
+          </div>
+
+          <div className="bg-[#0e121d] border border-neutral-800/80 p-4 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+            <div className="flex items-center justify-between text-neutral-400 text-xs font-semibold">
+              <span>Scheduled Follow-ups</span>
+              <Calendar size={16} className="text-purple-400" />
+            </div>
+            <div className="mt-3 flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{allFollowUps.length}</span>
+              <span className="text-[10px] text-purple-400 font-bold bg-purple-500/10 px-2 py-0.5 rounded-full">
+                {allFollowUps.filter(f => f.date === new Date().toISOString().split('T')[0]).length} Today
+              </span>
+            </div>
+            <div className="mt-2 text-[10px] text-neutral-500">
+              Next scheduled call & task items
+            </div>
+          </div>
+        </div>
+
+        {/* TAB BUTTONS & CONSOLE HEADER */}
+        <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-2 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto p-1">
+            <button
+              onClick={() => setActiveTab('leads')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${activeTab === 'leads' ? 'bg-blue-600 text-white shadow-lg' : 'text-neutral-400 hover:bg-neutral-800/60 hover:text-white'}`}
+            >
+              <Mail size={14} /> Leads Inbox ({leads.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab('clients')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${activeTab === 'clients' ? 'bg-emerald-600 text-white shadow-lg' : 'text-neutral-400 hover:bg-neutral-800/60 hover:text-white'}`}
+            >
+              <Building size={14} /> Client Workspaces ({clients.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab('calendar')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${activeTab === 'calendar' ? 'bg-purple-600 text-white shadow-lg' : 'text-neutral-400 hover:bg-neutral-800/60 hover:text-white'}`}
+            >
+              <Calendar size={14} /> Work Calendar ({allFollowUps.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab('fit')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${activeTab === 'fit' ? 'bg-amber-600 text-white shadow-lg' : 'text-neutral-400 hover:bg-neutral-800/60 hover:text-white'}`}
+            >
+              <Dumbbell size={14} /> Fit Ninja Users ({fitClients.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab('blogs')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${activeTab === 'blogs' ? 'bg-brand-primary text-white shadow-lg' : 'text-neutral-400 hover:bg-neutral-800/60 hover:text-white'}`}
+            >
+              <FileText size={14} /> Insights & Blogs ({blogs.length})
+            </button>
+          </div>
+
+          <button onClick={loadAllData} className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors ml-auto">
+            <Activity size={12} className={loadingData ? 'animate-spin text-brand-primary' : ''} /> {loadingData ? 'Syncing...' : 'Refresh CRM'}
+          </button>
+        </div>
+
+        {/* 1. LEADS INBOX TAB */}
+        {activeTab === 'leads' && (
+          <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-b border-neutral-800/80 pb-4">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <Mail size={16} className="text-blue-400" /> Inbound Lead Management
+                </h2>
+                <p className="text-xs text-neutral-400">Track, update, and convert incoming client inquiries</p>
+              </div>
+
+              {/* Lead Status Filter */}
+              <div className="flex items-center gap-2">
+                <Filter size={14} className="text-neutral-500" />
+                <select
+                  value={leadStatusFilter}
+                  onChange={e => setLeadStatusFilter(e.target.value)}
+                  className="bg-[#141a29] border border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-300 focus:outline-none focus:border-blue-500"
+                >
+                  <option value="all">All Pipeline Statuses</option>
+                  <option value="new">New Leads</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="demo_scheduled">Demo Scheduled</option>
+                  <option value="proposal_sent">Proposal Sent</option>
+                  <option value="closed_won">Closed Won 🎉</option>
+                  <option value="closed_lost">Closed Lost</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-neutral-800 text-neutral-400 text-[11px] uppercase tracking-wider font-semibold">
+                    <th className="pb-3 pr-4">Lead Name & Email</th>
+                    <th className="pb-3 pr-4">Company & Website</th>
+                    <th className="pb-3 pr-4">Pipeline Status</th>
+                    <th className="pb-3 pr-4">Next Follow-Up</th>
+                    <th className="pb-3 pr-4">Received</th>
+                    <th className="pb-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800/50 text-xs">
+                  {filteredLeads.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-neutral-500 italic">No matching leads found.</td>
+                    </tr>
+                  ) : (
+                    filteredLeads.map(lead => {
+                      const pill = STATUS_PILLS[lead.status || 'new'] || STATUS_PILLS.new;
+                      return (
+                        <tr key={lead.id} className="hover:bg-[#131826] transition-colors">
+                          <td className="py-3.5 pr-4">
+                            <div className="font-bold text-white text-sm">{lead.name}</div>
+                            <div className="text-neutral-400 text-[11px]">{lead.email}</div>
+                            {lead.phone && <div className="text-neutral-500 text-[10px]">{lead.phone}</div>}
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            <div className="font-semibold text-neutral-300">{lead.company || '-'}</div>
+                            {lead.website && (
+                              <a href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`} target="_blank" rel="noreferrer" className="text-[11px] text-blue-400 hover:underline flex items-center gap-1">
+                                <Globe size={10} /> {lead.website.replace(/^https?:\/\//, '')}
+                              </a>
+                            )}
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            <span className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full border border-neutral-700/50 uppercase ${pill.color}`}>
+                              {pill.label}
+                            </span>
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            {lead.next_follow_up || lead.nextFollowUp ? (
+                              <div className="text-purple-400 font-semibold flex items-center gap-1">
+                                <Clock size={12} /> {(lead.next_follow_up || lead.nextFollowUp).split('T')[0]}
+                              </div>
+                            ) : (
+                              <span className="text-neutral-600 italic">Not set</span>
+                            )}
+                          </td>
+                          <td className="py-3.5 pr-4 text-neutral-400">
+                            {lead.date || (lead.created_at ? new Date(lead.created_at).toLocaleDateString('en-IN') : '-')}
+                          </td>
+                          <td className="py-3.5 text-right">
+                            <div className="flex gap-1.5 justify-end">
+                              <button onClick={() => setEditLead(lead)} className="bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
+                                <Edit3 size={12} /> Edit Lead
+                              </button>
+                              <button onClick={() => handleDeleteLead(lead.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete">
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 2. CLIENT WORKSPACES TAB */}
+        {activeTab === 'clients' && (
+          <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-b border-neutral-800/80 pb-4">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <Building size={16} className="text-emerald-400" /> Content Studio Client Workspaces
+                </h2>
+                <p className="text-xs text-neutral-400">Manage brand accounts, active subscriptions, and generation limits</p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Filter size={14} className="text-neutral-500" />
+                <select
+                  value={clientStatusFilter}
+                  onChange={e => setClientStatusFilter(e.target.value)}
+                  className="bg-[#141a29] border border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-300 focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="all">All Access States</option>
+                  <option value="active">Active Members Only</option>
+                  <option value="blocked">Blocked / Expired Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-neutral-800 text-neutral-400 text-[11px] uppercase tracking-wider font-semibold">
+                    <th className="pb-3 pr-4">Brand & Niche</th>
+                    <th className="pb-3 pr-4">Contact Person</th>
+                    <th className="pb-3 pr-4">Plan & Status</th>
+                    <th className="pb-3 pr-4">Next Follow-Up</th>
+                    <th className="pb-3 pr-4">Joined</th>
+                    <th className="pb-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800/50 text-xs">
+                  {filteredClients.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-neutral-500 italic">No matching client workspaces found.</td>
+                    </tr>
+                  ) : (
+                    filteredClients.map(client => (
+                      <tr key={client.id} className="hover:bg-[#131826] transition-colors">
+                        <td className="py-3.5 pr-4">
+                          <div className="font-bold text-white text-sm">{client.brandName}</div>
+                          <div className="text-neutral-400 text-[11px]">{client.niche}</div>
+                        </td>
+                        <td className="py-3.5 pr-4">
+                          <div className="text-neutral-200">{client.email}</div>
+                          <div className="text-neutral-400 text-[11px]">{client.phone || '-'}</div>
+                        </td>
+                        <td className="py-3.5 pr-4">
+                          <div className="flex flex-col gap-1 items-start">
+                            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                              {client.planName || 'Agency Plan'}
+                            </span>
+                            <span className={`text-[10px] font-bold ${client.paymentStatus === 'expired' || client.active === false ? 'text-rose-400' : 'text-emerald-400'}`}>
+                              ● {client.paymentStatus === 'expired' || client.active === false ? 'Blocked / Expired' : 'Active'}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3.5 pr-4">
+                          {client.nextFollowUp || client.next_follow_up ? (
+                            <div className="text-purple-400 font-semibold flex items-center gap-1">
+                              <Clock size={12} /> {(client.nextFollowUp || client.next_follow_up).split('T')[0]}
+                            </div>
+                          ) : (
+                            <span className="text-neutral-600 italic">Not set</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 pr-4 text-neutral-400">
+                          {client.joinDate || (client.created_at ? new Date(client.created_at).toLocaleDateString('en-IN') : '-')}
+                        </td>
+                        <td className="py-3.5 text-right">
+                          <div className="flex gap-1.5 justify-end">
+                            <button onClick={() => handleViewClientHist(client)} className="bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                              History
+                            </button>
+                            <button onClick={() => setEditClient(client)} className="bg-emerald-500/10 hover:bg-emerald-600 text-emerald-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
+                              <Edit3 size={12} /> Manage
+                            </button>
+                            <button onClick={() => handleDeleteClient(client.id)} className="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white p-1.5 rounded-lg text-xs transition-colors" title="Delete">
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 3. WORK CALENDAR TAB */}
+        {activeTab === 'calendar' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+              <div className="flex items-center justify-between border-b border-neutral-800/80 pb-4">
+                <div>
+                  <h2 className="text-base font-bold text-white flex items-center gap-2">
+                    <Calendar size={16} className="text-purple-400" /> Work & Task Calendar
+                  </h2>
+                  <p className="text-xs text-neutral-400">Scheduled client calls, demos, and follow-up deadlines</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1))}
+                    className="p-1.5 bg-[#141a29] hover:bg-neutral-800 text-neutral-300 rounded-lg transition-colors"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <span className="text-sm font-bold text-white min-w-[120px] text-center">
+                    {calendarMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                  </span>
+                  <button 
+                    onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1))}
+                    className="p-1.5 bg-[#141a29] hover:bg-neutral-800 text-neutral-300 rounded-lg transition-colors"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Monthly Grid */}
+              <div className="grid grid-cols-7 gap-2 text-center text-xs">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                  <div key={day} className="font-bold text-neutral-500 uppercase text-[10px] py-1">{day}</div>
+                ))}
+                {Array.from({ length: 35 }).map((_, idx) => {
+                  const firstDay = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1).getDay();
+                  const dayNum = idx - firstDay + 1;
+                  const totalDays = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate();
+                  const isValid = dayNum > 0 && dayNum <= totalDays;
+                  
+                  const dateStr = isValid ? `${calendarMonth.getFullYear()}-${String(calendarMonth.getMonth() + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}` : '';
+                  const hasEvents = isValid && allFollowUps.some(item => item.date === dateStr);
+                  const isSelected = dateStr === selectedDate;
+
+                  return (
+                    <button
+                      key={idx}
+                      disabled={!isValid}
+                      onClick={() => isValid && setSelectedDate(dateStr)}
+                      className={`h-12 rounded-xl p-1 flex flex-col justify-between items-center transition-all text-xs relative ${
+                        !isValid ? 'opacity-20 cursor-default' : 
+                        isSelected ? 'bg-purple-600 text-white font-bold shadow-lg ring-2 ring-purple-400' :
+                        hasEvents ? 'bg-[#182033] border border-purple-500/40 text-purple-300 hover:bg-[#202a42]' :
+                        'bg-[#131926] hover:bg-[#1b2336] text-neutral-300'
+                      }`}
+                    >
+                      <span>{isValid ? dayNum : ''}</span>
+                      {hasEvents && (
+                        <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white' : 'bg-purple-400 animate-pulse'}`}></span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Selected Date Tasks */}
+            <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+              <div className="border-b border-neutral-800/80 pb-3">
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Clock size={14} className="text-purple-400" /> Agenda for {selectedDate}
+                </h3>
+                <p className="text-xs text-neutral-400">{selectedDateFollowups.length} task(s) scheduled for this day</p>
+              </div>
+
+              <div className="space-y-3">
+                {selectedDateFollowups.length === 0 ? (
+                  <div className="py-12 text-center text-neutral-500 italic text-xs">No follow-ups or calls scheduled for this date.</div>
+                ) : (
+                  selectedDateFollowups.map((item, idx) => (
+                    <div key={idx} className="bg-[#131926] border border-neutral-800 p-3.5 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${item.type === 'lead' ? 'bg-blue-500/10 text-blue-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
+                          {item.type}
+                        </span>
+                        <button 
+                          onClick={() => item.type === 'lead' ? setEditLead(item.data) : setEditClient(item.data)}
+                          className="text-[11px] text-purple-400 hover:underline font-bold"
+                        >
+                          Open Editor →
+                        </button>
+                      </div>
+                      <div className="font-bold text-sm text-white">{item.title}</div>
+                      <p className="text-xs text-neutral-400 italic">"{item.notes}"</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 4. FIT NINJA USERS TAB */}
+        {activeTab === 'fit' && (
+          <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-b border-neutral-800/80 pb-4">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <Dumbbell size={16} className="text-amber-400" /> Fit Ninja App Subscribers
+                </h2>
+                <p className="text-xs text-neutral-400">View user assessments, calorie goals, and manage app access</p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Filter size={14} className="text-neutral-500" />
+                <select
+                  value={fitStatusFilter}
+                  onChange={e => setFitStatusFilter(e.target.value)}
+                  className="bg-[#141a29] border border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-300 focus:outline-none focus:border-amber-500"
+                >
+                  <option value="all">All Plans</option>
+                  <option value="premium">Premium Only</option>
+                  <option value="free">Free Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-neutral-800 text-neutral-400 text-[11px] uppercase tracking-wider font-semibold">
+                    <th className="pb-3 pr-4">User</th>
+                    <th className="pb-3 pr-4">Fitness Goals</th>
+                    <th className="pb-3 pr-4">Plan Status</th>
+                    <th className="pb-3 pr-4">Daily Targets</th>
+                    <th className="pb-3 pr-4">Joined</th>
+                    <th className="pb-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800/50 text-xs">
+                  {filteredFit.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-neutral-500 italic">No Fit Ninja profiles found.</td>
+                    </tr>
+                  ) : (
+                    filteredFit.map(fit => (
+                      <tr key={fit.id} className="hover:bg-[#131826] transition-colors">
+                        <td className="py-3.5 pr-4">
+                          <div className="font-bold text-white text-sm">{fit.name || 'Anonymous'}</div>
+                          <div className="text-neutral-400 text-[11px]">{fit.email}</div>
+                        </td>
+                        <td className="py-3.5 pr-4 font-semibold text-neutral-300 capitalize">
+                          {fit.assessment_data?.goal?.replace('_', ' ') || 'General Fitness'}
+                        </td>
+                        <td className="py-3.5 pr-4">
+                          <span className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase ${fit.plan_status === 'premium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-neutral-800 text-neutral-400'}`}>
+                            {fit.plan_status || 'free'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 pr-4 text-neutral-300">
+                          {fit.generated_plan ? `${fit.generated_plan.kcal} kcal` : <span className="text-neutral-600 italic">Not generated</span>}
+                        </td>
+                        <td className="py-3.5 pr-4 text-neutral-400">
+                          {fit.created_at ? new Date(fit.created_at).toLocaleDateString('en-IN') : '-'}
+                        </td>
+                        <td className="py-3.5 text-right">
+                          <div className="flex gap-1.5 justify-end">
+                            <button onClick={() => setViewFitClientDetails(fit)} className="bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                              Details
+                            </button>
+                            <button onClick={() => { setManageFitStatus(fit); setNewFitStatus(fit.plan_status || 'free'); }} className="bg-amber-500/10 hover:bg-amber-600 text-amber-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                              Manage
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 5. BLOGS & INSIGHTS TAB */}
+        {activeTab === 'blogs' && (
+          <div className="bg-[#0e121d] border border-neutral-800/80 rounded-2xl p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-neutral-800/80 pb-4">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <FileText size={16} className="text-brand-primary" /> Agency Insights & Articles
+                </h2>
+                <p className="text-xs text-neutral-400">Publish performance marketing case studies and guides</p>
+              </div>
+              <button onClick={() => { setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: 'Admin' }); setIsEditingBlog(true); }} className="bg-brand-primary hover:opacity-90 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-opacity flex items-center gap-1.5">
+                <Plus size={14} /> New Post
+              </button>
+            </div>
+
+            {isEditingBlog ? (
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Post Title"
+                  value={currentBlog.title}
+                  onChange={e => setCurrentBlog({ ...currentBlog, title: e.target.value })}
+                  className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-primary"
+                />
+                <textarea
+                  placeholder="Excerpt summary..."
+                  value={currentBlog.excerpt}
+                  onChange={e => setCurrentBlog({ ...currentBlog, excerpt: e.target.value })}
+                  rows={2}
+                  className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-primary"
+                />
+                <textarea
+                  placeholder="Markdown content..."
+                  value={currentBlog.content}
+                  onChange={e => setCurrentBlog({ ...currentBlog, content: e.target.value })}
+                  rows={10}
+                  className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-xs text-white font-mono focus:outline-none focus:border-brand-primary"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => setIsEditingBlog(false)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+                  <button onClick={async () => {
+                    await fetch(getApiUrl('/api/data?resource=blogs'), {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(currentBlog)
+                    });
+                    setIsEditingBlog(false);
+                    fetchBlogs();
+                  }} className="px-4 py-2 bg-brand-primary text-white rounded-xl text-xs font-bold">Save Post</button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {blogs.map(blog => (
+                  <div key={blog.id} className="bg-[#131926] border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
+                    <div>
+                      <div className="font-bold text-white text-sm">{blog.title}</div>
+                      <div className="text-xs text-neutral-400 mt-1">{blog.excerpt}</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button onClick={() => { setCurrentBlog(blog); setIsEditingBlog(true); }} className="p-2 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-bold">Edit</button>
+                      <button onClick={async () => {
+                        if (window.confirm('Delete blog post?')) {
+                          await fetch(getApiUrl(`/api/data?resource=blogs&id=${blog.id}`), { method: 'DELETE' });
+                          fetchBlogs();
+                        }
+                      }} className="p-2 bg-rose-500/10 text-rose-400 rounded-lg text-xs"><Trash2 size={14} /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+      </main>
+
+      {/* ── MODALS ──────────────────────────────────────────────── */}
+
+      {/* EDIT LEAD MODAL */}
+      {editLead && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Edit3 size={16} className="text-blue-400" /> Edit Lead Details
+              </h3>
+              <button onClick={() => setEditLead(null)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Lead Name</label>
+                <input type="text" value={editLead.name || ''} onChange={e => setEditLead({ ...editLead, name: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Email</label>
+                <input type="email" value={editLead.email || ''} onChange={e => setEditLead({ ...editLead, email: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Phone</label>
+                <input type="text" value={editLead.phone || ''} onChange={e => setEditLead({ ...editLead, phone: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Company / Brand</label>
+                <input type="text" value={editLead.company || ''} onChange={e => setEditLead({ ...editLead, company: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Pipeline Status</label>
+                <select value={editLead.status || 'new'} onChange={e => setEditLead({ ...editLead, status: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white">
+                  <option value="new">New Lead</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="demo_scheduled">Demo Scheduled</option>
+                  <option value="proposal_sent">Proposal Sent</option>
+                  <option value="closed_won">Closed Won 🎉</option>
+                  <option value="closed_lost">Closed Lost</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-bold text-purple-400 uppercase tracking-wider mb-1">Next Follow-Up Date</label>
+                <input type="date" value={(editLead.next_follow_up || editLead.nextFollowUp || '').split('T')[0]} onChange={e => setEditLead({ ...editLead, nextFollowUp: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-purple-400 uppercase tracking-wider mb-1">Follow-Up & Call Notes</label>
+              <textarea rows={3} value={editLead.follow_up_notes || editLead.followUpNotes || ''} onChange={e => setEditLead({ ...editLead, followUpNotes: e.target.value })} placeholder="Log call notes or follow-up details..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3 text-xs text-white" />
+            </div>
+
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setEditLead(null)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => handleSaveLead(editLead)} className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold">Save Lead</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT CLIENT MODAL */}
+      {editClient && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Edit3 size={16} className="text-emerald-400" /> Manage Client Workspace
+              </h3>
+              <button onClick={() => setEditClient(null)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Brand Name</label>
+                <input type="text" value={editClient.brandName || ''} onChange={e => setEditClient({ ...editClient, brandName: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Niche</label>
+                <input type="text" value={editClient.niche || ''} onChange={e => setEditClient({ ...editClient, niche: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Email</label>
+                <input type="email" value={editClient.email || ''} onChange={e => setEditClient({ ...editClient, email: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Access Status</label>
+                <select value={editClient.active !== false ? 'active' : 'blocked'} onChange={e => setEditClient({ ...editClient, active: e.target.value === 'active' })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white">
+                  <option value="active">Active (Access Allowed)</option>
+                  <option value="blocked">Blocked / Suspended</option>
+                </select>
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase tracking-wider mb-1">Plan Name</label>
+                <input type="text" value={editClient.planName || ''} onChange={e => setEditClient({ ...editClient, planName: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" />
+              </div>
+              <div>
+                <label className="block font-bold text-purple-400 uppercase tracking-wider mb-1">Next Follow-Up / Call Date</label>
+                <input type="date" value={(editClient.nextFollowUp || editClient.next_follow_up || '').split('T')[0]} onChange={e => setEditClient({ ...editClient, nextFollowUp: e.target.value })} className="w-full bg-[#141a29] border border-purple-500/40 rounded-xl p-2.5 text-purple-300" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">Tone of Voice & AI Profile</label>
+              <input type="text" value={editClient.toneOfVoice || ''} onChange={e => setEditClient({ ...editClient, toneOfVoice: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-xs text-white" />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">Client Notes</label>
+              <textarea rows={3} value={editClient.notes || ''} onChange={e => setEditClient({ ...editClient, notes: e.target.value })} placeholder="Account notes..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3 text-xs text-white" />
+            </div>
+
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setEditClient(null)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => handleSaveClient(editClient)} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold">Save Workspace</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ADD LEAD MODAL */}
+      {showAddLead && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-xl p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <UserPlus size={16} className="text-blue-400" /> Add Manual Lead
+              </h3>
+              <button onClick={() => setShowAddLead(false)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Lead Name *</label>
+                <input type="text" value={newLeadForm.name} onChange={e => setNewLeadForm({ ...newLeadForm, name: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="John Doe" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Email *</label>
+                <input type="email" value={newLeadForm.email} onChange={e => setNewLeadForm({ ...newLeadForm, email: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="john@example.com" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Phone</label>
+                <input type="text" value={newLeadForm.phone} onChange={e => setNewLeadForm({ ...newLeadForm, phone: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="+91..." />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Company</label>
+                <input type="text" value={newLeadForm.company} onChange={e => setNewLeadForm({ ...newLeadForm, company: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="Acme Inc" />
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setShowAddLead(false)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => {
+                if (!newLeadForm.name || !newLeadForm.email) return alert('Name and Email required');
+                handleSaveLead({ ...newLeadForm, id: `lead_${Date.now()}` });
+              }} className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold">Create Lead</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ADD CLIENT MODAL */}
+      {showAddClient && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-xl p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Plus size={16} className="text-emerald-400" /> Create Client Workspace
+              </h3>
+              <button onClick={() => setShowAddClient(false)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Brand Name *</label>
+                <input type="text" value={newClientForm.brandName} onChange={e => setNewClientForm({ ...newClientForm, brandName: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="Gym Brand" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Niche *</label>
+                <input type="text" value={newClientForm.niche} onChange={e => setNewClientForm({ ...newClientForm, niche: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="Fitness" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Email *</label>
+                <input type="email" value={newClientForm.email} onChange={e => setNewClientForm({ ...newClientForm, email: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="info@brand.com" />
+              </div>
+              <div>
+                <label className="block font-bold text-neutral-400 uppercase mb-1">Phone</label>
+                <input type="text" value={newClientForm.phone} onChange={e => setNewClientForm({ ...newClientForm, phone: e.target.value })} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-2.5 text-white" placeholder="+91..." />
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setShowAddClient(false)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={() => {
+                if (!newClientForm.brandName || !newClientForm.email) return alert('Brand name and Email required');
+                handleSaveClient({ ...newClientForm, id: `client_${Date.now()}` });
+              }} className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">Create Workspace</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FIT NINJA MANAGE MODAL */}
+      {manageFitStatus && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Dumbbell size={16} className="text-amber-400" /> Manage Fit Ninja Access
+              </h3>
+              <button onClick={() => setManageFitStatus(null)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Membership Status</label>
+              <select value={newFitStatus} onChange={e => setNewFitStatus(e.target.value)} className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3 text-sm text-white">
+                <option value="premium">Premium (Full Access)</option>
+                <option value="free">Free (Locked Onboarding)</option>
+                <option value="blocked">Blocked / Suspended</option>
+                <option value="expired">Expired</option>
+              </select>
+            </div>
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setManageFitStatus(null)} className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={handleSaveFitStatus} className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold">Save Status</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FIT NINJA DETAILS MODAL */}
+      {viewFitClientDetails && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white">{viewFitClientDetails.name || 'Anonymous'}</h3>
+              <button onClick={() => setViewFitClientDetails(null)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><span className="text-neutral-500">Email:</span> <b className="text-white">{viewFitClientDetails.email}</b></div>
+              <div><span className="text-neutral-500">Goal:</span> <b className="text-white capitalize">{viewFitClientDetails.assessment_data?.goal || '-'}</b></div>
+              <div><span className="text-neutral-500">Calories:</span> <b className="text-emerald-400">{viewFitClientDetails.generated_plan?.kcal || '-'} kcal</b></div>
+              <div><span className="text-neutral-500">Protein:</span> <b className="text-amber-400">{viewFitClientDetails.generated_plan?.protein || '-'}g</b></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CLIENT HISTORY MODAL */}
+      {viewClientHist && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e121d] border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+              <h3 className="text-base font-bold text-white">{viewClientHist.brandName} - Generation History</h3>
+              <button onClick={() => setViewClientHist(null)} className="p-1.5 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg"><X size={16} /></button>
+            </div>
+            <div className="space-y-3">
+              {clientHistData.length === 0 ? (
+                <div className="text-neutral-500 italic text-center py-6">No historical generation logs found for this client.</div>
+              ) : (
+                clientHistData.map((h: any, idx: number) => (
+                  <div key={idx} className="bg-[#131926] p-3 rounded-xl border border-neutral-800 space-y-1">
+                    <div className="font-bold text-white">Week {h.week || idx + 1} - {h.date}</div>
+                    <div className="text-neutral-400 text-[11px] font-mono whitespace-pre-wrap">{JSON.stringify(h.posts || h, null, 2)}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
 };
 
 export default Admin;
