@@ -374,19 +374,19 @@ const Admin: React.FC = () => {
               onClick={() => { setScheduleDate(selectedDate); setShowScheduleModal(true); }}
               className="bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
             >
-              <Calendar size={14} /> <span className="hidden sm:inline">+ Schedule Call</span>
+              <Calendar size={14} /> <span>+ Schedule Call</span>
             </button>
             <button 
               onClick={() => setShowAddLead(true)} 
               className="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
             >
-              <UserPlus size={14} /> <span className="hidden sm:inline">+ Add Lead</span>
+              <UserPlus size={14} /> <span>+ Add Lead</span>
             </button>
             <button 
               onClick={() => setShowAddClient(true)} 
               className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
             >
-              <Plus size={14} /> <span className="hidden sm:inline">+ Add Client</span>
+              <Plus size={14} /> <span>+ Add Client</span>
             </button>
             <button 
               onClick={handleLogout} 
