@@ -110,22 +110,24 @@ const AnimatedRoutes: React.FC = () => {
 // Main Layout Component to handle conditional rendering
 const MainLayout: React.FC = () => {
   const location = useLocation();
-  const isStandaloneApp = location.pathname.startsWith('/promo') || location.pathname.startsWith('/app/') || location.pathname === '/admin';
+  const hidePublicChrome = location.pathname.startsWith('/promo') || 
+                           location.pathname.startsWith('/app/') || 
+                           location.pathname.startsWith('/admin');
 
   return (
     <div className="flex flex-col min-h-screen bg-brand-dark font-sans text-white selection:bg-brand-primary selection:text-brand-dark">
-      {!isStandaloneApp && <Navbar />}
+      {!hidePublicChrome && <Navbar />}
       <SchemaMarkup />
       <Suspense fallback={<LoadingFallback />}>
         <AnimatedRoutes />
       </Suspense>
-      {!isStandaloneApp && <Footer />}
-      {!isStandaloneApp && (
+      {!hidePublicChrome && <Footer />}
+      {!hidePublicChrome && (
         <Suspense fallback={null}>
           <WhatsAppWidget />
         </Suspense>
       )}
-      {!isStandaloneApp && (
+      {!hidePublicChrome && (
         <Suspense fallback={null}>
           <ChatBot />
         </Suspense>
