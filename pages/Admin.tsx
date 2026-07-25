@@ -73,6 +73,86 @@ const Admin: React.FC = () => {
     const [clientHistData, setClientHistData] = useState<any[]>([]);
     const [viewLeadDetails, setViewLeadDetails] = useState<any>(null);
     const [viewFitClientDetails, setViewFitClientDetails] = useState<any>(null);
+    const [manageClientStatus, setManageClientStatus] = useState<any>(null);
+    const [newActive, setNewActive] = useState<boolean>(true);
+    const [newPaymentStatus, setNewPaymentStatus] = useState<string>('verified');
+    const [manageFitStatus, setManageFitStatus] = useState<any>(null);
+    const [newFitStatus, setNewFitStatus] = useState<string>('free');
+
+    const openManageClient = (client: any) => {
+        setManageClientStatus(client);
+        setNewActive(client.active !== false);
+        setNewPaymentStatus(client.paymentStatus || 'verified');
+    };
+
+    const openManageFit = (fit: any) => {
+        setManageFitStatus(fit);
+        setNewFitStatus(fit.plan_status || 'free');
+    };
+
+    const handleUpdateClientStatus = async () => {
+        if (!manageClientStatus) return;
+        setLoadingData(true);
+        try {
+            const res = await fetch(getApiUrl('/api/data?resource=clients'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: manageClientStatus.id,
+                    email: manageClientStatus.email,
+                    brandName: manageClientStatus.brandName,
+                    niche: manageClientStatus.niche,
+                    active: newActive,
+                    paymentStatus: newPaymentStatus,
+                    phone: manageClientStatus.phone,
+                    toneOfVoice: manageClientStatus.toneOfVoice,
+                    targetAudience: manageClientStatus.targetAudience,
+                    callToAction: manageClientStatus.callToAction,
+                    plan: manageClientStatus.plan,
+                    planName: manageClientStatus.planName,
+                    paymentId: manageClientStatus.paymentId,
+                    subscriptionId: manageClientStatus.subscriptionId,
+                    joinDate: manageClientStatus.joinDate,
+                    source: manageClientStatus.source
+                })
+            });
+            if (res.ok) {
+                setManageClientStatus(null);
+                await fetchClients();
+            } else {
+                alert('Failed to update status');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to update status');
+        }
+        setLoadingData(false);
+    };
+
+    const handleUpdateFitStatus = async () => {
+        if (!manageFitStatus) return;
+        setLoadingData(true);
+        try {
+            const res = await fetch(getApiUrl('/api/fit-clients'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: manageFitStatus.id,
+                    plan_status: newFitStatus
+                })
+            });
+            if (res.ok) {
+                setManageFitStatus(null);
+                await fetchFitClients();
+            } else {
+                alert('Failed to update Fit Ninja membership status');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to update status');
+        }
+        setLoadingData(false);
+    };
 
     const [loadingData, setLoadingData] = useState(false);
 
@@ -356,9 +436,14 @@ const Admin: React.FC = () => {
                                                         {client.joinDate}
                                                     </td>
                                                     <td className="py-4 text-right">
-                                                        <button onClick={() => handleViewClient(client)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
-                                                            History
-                                                        </button>
+                                                        <div className="flex gap-2 justify-end">
+                                                            <button onClick={() => handleViewClient(client)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                                                                History
+                                                            </button>
+                                                            <button onClick={() => openManageClient(client)} className="text-xs text-emerald-400 hover:text-white font-bold bg-emerald-500/10 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                                                                Manage
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -420,9 +505,14 @@ const Admin: React.FC = () => {
                                                         {fit.created_at ? new Date(fit.created_at).toLocaleDateString('en-IN') : '-'}
                                                     </td>
                                                     <td className="py-4 text-right">
-                                                        <button onClick={() => setViewFitClientDetails(fit)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors">
-                                                            Details
-                                                        </button>
+                                                        <div className="flex gap-2 justify-end">
+                                                            <button onClick={() => setViewFitClientDetails(fit)} className="text-xs text-blue-400 hover:text-white font-bold bg-blue-500/10 hover:bg-blue-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                                                                Details
+                                                            </button>
+                                                            <button onClick={() => openManageFit(fit)} className="text-xs text-emerald-400 hover:text-white font-bold bg-emerald-500/10 hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                                                                Manage
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -663,6 +753,122 @@ const Admin: React.FC = () => {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 4. Manage Content Studio Client Membership Modal */}
+            {manageClientStatus && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
+                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                                    <User size={18} className="text-emerald-400" />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-bold text-white">Manage Membership</h2>
+                                    <p className="text-xs text-neutral-400">{manageClientStatus.brandName}</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setManageClientStatus(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4 text-sm text-neutral-300">
+                            <div>
+                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Access Status</label>
+                                <select 
+                                    value={newActive ? 'active' : 'blocked'} 
+                                    onChange={e => setNewActive(e.target.value === 'active')}
+                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                                >
+                                    <option value="active">Active (Access Allowed)</option>
+                                    <option value="blocked">Blocked / Suspended (Access Blocked)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Payment / Plan Status</label>
+                                <select 
+                                    value={newPaymentStatus} 
+                                    onChange={e => setNewPaymentStatus(e.target.value)}
+                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                                >
+                                    <option value="verified">Verified (Paid)</option>
+                                    <option value="active">Active (Trial/Promo)</option>
+                                    <option value="expired">Expired (Suspended)</option>
+                                    <option value="trial-expired">Trial Expired</option>
+                                </select>
+                            </div>
+
+                            <div className="pt-4 flex gap-3">
+                                <button 
+                                    onClick={() => setManageClientStatus(null)} 
+                                    className="flex-1 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold py-3 rounded-xl transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={handleUpdateClientStatus} 
+                                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-colors"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 5. Manage Fit Ninja Membership Modal */}
+            {manageFitStatus && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-[#0b0f19] border border-neutral-800 rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl">
+                        <div className="p-6 border-b border-neutral-800 flex justify-between items-center bg-[#131926]">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                                    <Dumbbell size={18} className="text-amber-500" />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-bold text-white">Manage Fit Ninja Plan</h2>
+                                    <p className="text-xs text-neutral-400">{manageFitStatus.name || 'Anonymous'}</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setManageFitStatus(null)} className="p-2 text-neutral-400 hover:text-white bg-neutral-800 rounded-lg transition-colors">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4 text-sm text-neutral-300">
+                            <div>
+                                <label className="block text-xs font-bold text-neutral-400 uppercase tracking-wider mb-2">Membership Status</label>
+                                <select 
+                                    value={newFitStatus} 
+                                    onChange={e => setNewFitStatus(e.target.value)}
+                                    className="w-full bg-[#131926] border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                                >
+                                    <option value="premium">Premium (Full Access)</option>
+                                    <option value="free">Free (Locked Onboarding)</option>
+                                    <option value="blocked">Blocked / Suspended (No Access)</option>
+                                    <option value="expired">Expired</option>
+                                </select>
+                            </div>
+
+                            <div className="pt-4 flex gap-3">
+                                <button 
+                                    onClick={() => setManageFitStatus(null)} 
+                                    className="flex-1 bg-neutral-800 hover:bg-neutral-750 text-neutral-300 font-bold py-3 rounded-xl transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={handleUpdateFitStatus} 
+                                    className="flex-1 bg-[#1F4B99] hover:bg-[#153880] text-white font-bold py-3 rounded-xl transition-colors"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
