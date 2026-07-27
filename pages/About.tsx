@@ -1,148 +1,121 @@
-import SpotlightCard from '../components/SpotlightCard';
-import AuroraBackground from '../components/AuroraBackground';
-import AnimatedNumber from '../components/AnimatedNumber';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart3, Clock, ShieldCheck, Plus, Minus } from 'lucide-react';
+import { Shield, Zap, Target, Award, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
+import SpotlightCard from '../components/SpotlightCard';
+import TiltCard from '../components/TiltCard';
+import AuroraBackground from '../components/AuroraBackground';
+import ShinyButton from '../components/ShinyButton';
+import AnimatedNumber from '../components/AnimatedNumber';
 
-function useReveal() {
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); } }),
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
-    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-}
-
-const faqs = [
-  { q: 'How quickly will I see results?', a: 'Most clients see meaningful improvements within 30–45 days. We don\'t wait for everything to be perfect before launching — we start fast, measure everything, and improve every week.' },
-  { q: 'Do I own everything you create?', a: 'Yes. Every ad, every creative, every strategy document we make is 100% yours. If you leave tomorrow, you take everything with you. No lock-in, ever.' },
-  { q: 'What\'s the minimum commitment?', a: 'We work in 90-day growth sprints. That\'s enough time to actually move the needle — not just set things up and call it done.' },
-  { q: 'Do you work with small businesses?', a: 'Yes, absolutely. We work with everyone from solo founders to established brands. What matters is your commitment to growing — not the size of your current budget.' },
-  { q: 'Will I have a dedicated person looking after my account?', a: 'Yes. You\'ll work directly with experienced people — not get handed off to junior staff after signing. You\'ll always know who\'s responsible for your results.' },
+const VALUES = [
+  { icon: Target, title: 'Margin & Profit First', desc: 'We do not report vanity impressions or empty clicks. Every campaign is measured on direct bottom-line revenue.' },
+  { icon: Zap, title: '< 1-Second AI Execution', desc: 'Speed wins deals. Our automated AI lead agents respond to inbound leads in under 1 second to maximize close rates.' },
+  { icon: Shield, title: 'Total Data Transparency', desc: 'No hidden agency markups or confusing pitch decks. You get live dashboard access to every metric in real-time.' },
+  { icon: Award, title: 'Constant A/B Iteration', desc: 'Growth is engineered through relentless creative testing and data-driven optimization across every funnel stage.' }
 ];
 
 const About: React.FC = () => {
-  useReveal();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
-    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      
+    <div className="page-wrap bg-[#07090e] text-white">
       <SEO
         title="About Us | Social Ninja's"
-        description="We're a small, focused team that helps brands grow using AI and performance marketing. Here's who we are and how we work."
-        keywords="about social ninjas, performance marketing team, AI agency India, digital marketing team, growth marketing experts, AI marketing company, social media agency team"
-        faq={faqs}
+        description="Learn about Social Ninja's — the AI performance marketing agency scaling revenue for brands globally."
       />
 
-      {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
-        
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
-            <div>
-              <div className="pill reveal">Who We Are</div>
-              <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,5.5vw,68px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.04, marginBottom: 20, color: '#141414' }}>
-                We're not a big agency.<br /><span style={{ color: '#1F4B99' }}>We're your growth team.</span>
-              </h1>
-              <p className="reveal d2" style={{ fontSize: 17, fontWeight: 300, color: '#717171', lineHeight: 1.7, maxWidth: 480, marginBottom: 36, borderLeft: '2px solid rgba(31,75,153,0.3)', paddingLeft: 20 }}>
-                We started Social Ninja's because we kept seeing brands spend money on marketing and never really know if it was working. We decided to do things differently — with more honesty, more speed, and AI at the centre of everything.
-              </p>
-              <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Let's Talk →</button></Link>
-            </div>
-            <div className="reveal-r d2">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                {[['150+', 'Brands we\'ve helped grow'], ['₹40Cr+', 'In ad spend managed'], ['97%', 'Clients who renew every year'], ['4.9★', 'Average client rating']].map(([n, l], i) => (
-                  <div key={i} className="glass-card" style={{ padding: '24px 20px', borderRadius: 18, textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 30, fontWeight: 700, color: '#1F4B99', letterSpacing: '-1px', lineHeight: 1, marginBottom: 8 }}>{n}</div>
-                    <div style={{ fontSize: 12, color: '#888', lineHeight: 1.5 }}>{l}</div>
-                  </div>
-                ))}
+      {/* HERO WITH AURORA BACKGROUND */}
+      <AuroraBackground className="pt-36 pb-20 border-b border-neutral-800/80">
+        <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+            WHO WE ARE
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
+            We Build Revenue Systems, <br />
+            <span className="text-[#1F4B99]">Not Vanity Campaigns.</span>
+          </h1>
+          <p className="text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            Social Ninja’s is an AI-powered performance marketing agency operating across India and Dubai. We fuse autonomous AI agents with high-margin media buying to build predictable growth engines.
+          </p>
+        </div>
+      </AuroraBackground>
+
+      {/* PROOF NUMBERS */}
+      <section className="py-16 bg-[#0b0e17] border-b border-neutral-800/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-black text-[#1F4B99]">
+                <AnimatedNumber value="150+" />
               </div>
-            </div>
+              <div className="text-xs font-bold text-neutral-200 mt-2">Active Brand Partners</div>
+            </SpotlightCard>
+
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-black text-[#1F4B99]">
+                <AnimatedNumber value="₹40Cr+" />
+              </div>
+              <div className="text-xs font-bold text-neutral-200 mt-2">Ad Spend Managed</div>
+            </SpotlightCard>
+
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-black text-[#1F4B99]">
+                <AnimatedNumber value="4.8×" />
+              </div>
+              <div className="text-xs font-bold text-neutral-200 mt-2">Average Client ROAS</div>
+            </SpotlightCard>
+
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800">
+              <div className="text-3xl sm:text-4xl font-black text-[#1F4B99]">
+                <AnimatedNumber value="97%" />
+              </div>
+              <div className="text-xs font-bold text-neutral-200 mt-2">Retention Rate</div>
+            </SpotlightCard>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* OUR STORY */}
-      <div className="section-wrap-white">
-        <div className="section" style={{ maxWidth: 900, margin: '0 auto' }}>
-          <div className="pill reveal" style={{ justifyContent: 'center' }}>Our Story</div>
-          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: '#141414' }}>
-            We built what we wished we could hire.
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="hero-grid-cols">
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.82 }}>
-              Social Ninja's started because we kept seeing the same problem: brands spending money on marketing but not knowing if it was working. Agencies would send fancy reports — but the numbers never seemed to connect to actual sales.<br /><br />We decided to do things differently. We kept the team small and focused, put AI at the centre of everything, and tied every decision to one question: is this making our client more money?
-            </p>
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.82 }}>
-              Today we help brands across India, Dubai, and beyond — from D2C startups to established businesses — grow faster using AI automation, paid advertising, and content that converts.<br /><br />We're small on purpose. Every client works with experienced people who genuinely care about their results. When you grow, we grow. That's not a slogan — that's literally how our business model works.
-            </p>
-          </div>
+      {/* CORE VALUES */}
+      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-xl mx-auto mb-12 space-y-3">
+          <span className="px-3.5 py-1 bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase rounded-full tracking-wider">
+            OUR OPERATING PRINCIPLES
+          </span>
+          <h2 className="text-3xl font-black text-white">Engineered for Predictable Profit</h2>
         </div>
-      </div>
 
-      {/* VALUES */}
-      <div className="section-wrap-alt">
-        <div className="section">
-          <div className="pill reveal" style={{ justifyContent: 'center' }}>How We Think</div>
-          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,46px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 52, color: '#141414' }}>Three rules we never break.</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="three-cols">
-            {[
-              { Icon: BarChart3, title: 'Revenue over likes', desc: 'We don\'t care how many followers you have. We care how much money your marketing is making. Every strategy starts and ends with that.' },
-              { Icon: Clock, title: 'Fast beats perfect', desc: 'We launch quickly, learn from real data, and improve. Waiting weeks for a "perfect" campaign means weeks of losing to competitors who already launched.' },
-              { Icon: ShieldCheck, title: 'You own everything', desc: 'Every account, every creative, every piece of content we make belongs to you. If you leave, you walk away with everything. No exceptions, ever.' },
-            ].map((item, i) => (
-              <div key={i} className={`card reveal d${i+1}`} style={{ padding: 32, borderRadius: 22, background: '#ffffff' }}>
-                <div style={{ width: 52, height: 52, borderRadius: 15, background: 'rgba(31,75,153,0.07)', border: '1px solid rgba(31,75,153,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                  <item.Icon size={24} color="#1F4B99" strokeWidth={1.5} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {VALUES.map((v, i) => {
+            const Icon = v.icon;
+            return (
+              <SpotlightCard key={i} className="p-8 bg-[#0e121d] border border-neutral-800 space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-[#1F4B99]/15 border border-[#1F4B99]/30 flex items-center justify-center text-[#4281f5]">
+                  <Icon size={24} />
                 </div>
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: '#141414', marginBottom: 10, fontFamily: "'DM Sans',sans-serif" }}>{item.title}</h3>
-                <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.68 }}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
+                <h3 className="text-xl font-bold text-white">{v.title}</h3>
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{v.desc}</p>
+              </SpotlightCard>
+            );
+          })}
         </div>
-      </div>
-
-      {/* FAQ */}
-      <div className="section-wrap-white">
-        <div className="section" style={{ maxWidth: 720, margin: '0 auto' }}>
-          <div className="pill reveal" style={{ justifyContent: 'center' }}>Common Questions</div>
-          <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(24px,3.5vw,42px)', fontWeight: 700, letterSpacing: '-1.5px', textAlign: 'center', marginBottom: 44, color: '#141414' }}>Things people usually ask us.</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {faqs.map((faq, i) => (
-              <div key={i} className="reveal" style={{ background: openFaq === i ? 'rgba(31,75,153,0.06)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(31,75,153,0.28)' : '#ededed'}`, borderRadius: 16, overflow: 'hidden', transition: 'all 0.3s' }}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 22px', background: 'none', border: 'none', color: openFaq === i ? '#1F4B99' : '#2a2a2a', textAlign: 'left', cursor: 'pointer', fontSize: 14.5, fontWeight: 400, fontFamily: "'DM Sans',sans-serif", gap: 14 }}>
-                  {faq.q}
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: openFaq === i ? 'rgba(31,75,153,0.15)' : '#f5f5f5', border: `1px solid ${openFaq === i ? 'rgba(31,75,153,0.3)' : '#e0e0e0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
-                    {openFaq === i ? <Minus size={14} color="#1F4B99" /> : <Plus size={14} color="#717171" />}
-                  </div>
-                </button>
-                {openFaq === i && <div style={{ padding: '0 22px 20px', fontSize: 14, fontWeight: 300, color: '#5a5a5a', lineHeight: 1.7 }}>{faq.a}</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* CTA */}
-      <div className="section-wrap-alt">
-        <section className="section">
-          <div className="reveal" style={{ background: '#fff', border: '1px solid #ededed', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#1F4B99,transparent)' }} />
-            <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,48px)', fontWeight: 700, letterSpacing: '-1.5px', marginBottom: 14, color: '#141414', lineHeight: 1.08 }}>Let's grow your business together.</h2>
-            <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>Book a free 30-minute call. We'll find what's holding your marketing back and show you exactly what we'd do to fix it.</p>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 36px' }}>Book a Free Call →</button></Link>
+      <section className="py-20 max-w-5xl mx-auto px-4 text-center">
+        <SpotlightCard className="p-12 bg-gradient-to-br from-[#0e121d] via-[#121826] to-[#0e121d] border border-neutral-800 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-black text-white animate-text-shimmer">
+            Partner With an Agency That Focuses on Profit
+          </h2>
+          <div className="flex justify-center pt-2">
+            <Link to="/contact">
+              <ShinyButton variant="primary" className="text-sm font-bold">
+                Book Strategy Call <ArrowRight size={16} />
+              </ShinyButton>
+            </Link>
           </div>
-        </section>
-      </div>
-      <style>{`@media(max-width:900px){.hero-grid-cols,.three-cols{grid-template-columns:1fr!important;gap:32px!important;}}`}</style>
+        </SpotlightCard>
+      </section>
     </div>
   );
 };
+
 export default About;

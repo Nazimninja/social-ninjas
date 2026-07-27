@@ -1,217 +1,111 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Bot, BarChart2, Palette, Share2, Globe, TrendingUp } from 'lucide-react';
 import SEO from '../components/SEO';
-
-function useReveal() {
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); } }),
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
-    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-}
+import SpotlightCard from '../components/SpotlightCard';
+import AuroraBackground from '../components/AuroraBackground';
+import ShinyButton from '../components/ShinyButton';
 
 const services = [
-  { id: 'ai-automation', Icon: Bot, title: 'AI & Automation', color: '#1F4B99', sub: 'Save Time. Never Miss a Lead.', desc: 'We set up AI that talks to your leads the moment they reach out - 24 hours a day, 7 days a week. It answers questions, qualifies them, and books meetings into your calendar while you sleep.', features: ['AI chatbot live on your website or WhatsApp', 'Replies to leads in under 1 second', 'Qualifies leads and books calls automatically', 'Follows up by email and SMS - no manual work', 'Connects to your CRM so nothing gets lost'], outcome: '14x faster lead response' },
-  { id: 'performance-marketing', Icon: BarChart2, title: 'Performance Marketing', color: '#818cf8', sub: 'More Sales. Better ROI.', desc: 'We run paid ads on Meta and Google that bring in real customers, not just clicks. Every decision is based on data - we test, learn, and double down on what works until your returns keep growing.', features: ['Meta (Facebook & Instagram) ad campaigns', 'Google Search and Shopping ads', 'Creative testing to find what converts', 'Audience targeting based on real purchase intent', 'Weekly reports in plain English'], outcome: 'Average 4.5x ROAS' },
-  { id: 'creative-studio', Icon: Palette, title: 'Creative Studio', color: '#34d399', sub: 'Content That Stops the Scroll.', desc: 'We make videos, graphics and ad creatives that actually get people to stop scrolling and take action. Every piece of content is built around performance data - not just what looks nice.', features: ['Short-form video and Reels production', 'Ad creatives for Meta and Google', 'Carousel and story designs', 'Landing page design and copy', 'UGC-style content for authentic reach'], outcome: '3x engagement' },
-  { id: 'social-media', Icon: Share2, title: 'Social Media Management', color: '#0891b2', sub: 'Grow Your Following. Build Trust.', desc: 'We handle your social media completely - from planning and writing every post to replying to comments and tracking what\'s working. You stay focused on your business. We keep your audience growing.', features: ['Content planning and posting across all platforms', 'Captions and hashtags written for each platform', 'Community management and comment replies', 'Monthly performance reports with real insights', 'Trend research to keep content fresh every week'], outcome: '2x organic reach' },
-  { id: 'web-seo', Icon: Globe, title: 'Web & SEO', color: '#ec4899', sub: 'Get Found. Get Customers.', desc: 'We build websites that convert visitors into leads, and use SEO strategies to get you showing up when people search for what you offer. Fast, clean, and built to sell.', features: ['Website design focused on converting visitors', 'Technical SEO so Google can find you', 'Content strategy to rank for the right keywords', 'Page speed optimisation for better rankings', 'Lead generation landing pages that convert'], outcome: 'Top-3 Google ranking' },
-  { id: 'growth-consulting', Icon: TrendingUp, title: 'Growth Consulting', color: '#a78bfa', sub: 'Strategy That Actually Makes Sense.', desc: 'Sometimes you just need someone to look at your business with fresh eyes and tell you what\'s working, what\'s wasting money, and what to do next. That\'s what our consulting is.', features: ['Full marketing audit - find what\'s leaking', 'Build a clear 90-day growth plan', 'Revenue funnel review and fixes', 'Team training on tools and strategy', 'Monthly strategy sessions with your team'], outcome: '40% revenue lift' },
+  { id: 'ai-automation', Icon: Bot, title: 'AI & Lead Automation', sub: 'Save Time. Never Miss a Lead.', desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar 24/7 without manual work.', features: ['AI chatbot live on website or WhatsApp', 'Replies to leads in under 1 second', 'Qualifies leads & books calls automatically', 'Follows up via Email & WhatsApp', 'Syncs directly to CRM 2.0'], outcome: '14x faster lead response' },
+  { id: 'performance-marketing', Icon: BarChart2, title: 'Performance Paid Ads Engine', sub: 'More Sales. Better ROAS.', desc: 'Creative-first Meta and Google campaigns engineered on unit economics, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our data-driven ad testing system.', features: ['Meta & Google Ads campaigns', 'Creative matrix A/B testing', 'Audience intent targeting', 'Weekly performance reports'], outcome: 'Average 4.5x ROAS' },
+  { id: 'creative-studio', Icon: Palette, title: 'Creative Studio & Branding', sub: 'Content That Stops the Scroll.', desc: 'High-converting video scripts, carousel graphics, and short-form Reels designed around real engagement data — not just vanity aesthetics.', features: ['Reels & short-form video scripts', 'High-ROAS Meta & Google ad designs', 'Carousel & story layouts', 'UGC-style brand content'], outcome: '3x engagement lift' },
+  { id: 'social-media', Icon: Share2, title: 'Social Media Management', sub: 'Grow Following. Build Trust.', desc: 'End-to-end social media growth handling post strategy, copywriting, community replies, and trend research to keep your audience expanding.', features: ['Content calendar across platforms', 'High-converting captions & hashtags', 'Community & comment replies', 'Monthly growth metrics'], outcome: '2x organic reach' },
+  { id: 'web-seo', Icon: Globe, title: 'Web & Sub-Second SEO', sub: 'Get Found. Convert Traffic.', desc: 'Sub-second landing pages and technical SEO architectures designed to maximize conversion rates and dominate Google search rankings.', features: ['Conversion-focused web design', 'Technical SEO architecture', 'Keyword content strategy', 'Instant page speed optimization'], outcome: 'Top-3 Google ranking' },
+  { id: 'growth-consulting', Icon: TrendingUp, title: 'Revenue Growth Consulting', sub: 'Strategy That Scale Profit.', desc: 'Deep-dive marketing audits and 90-day growth roadmaps designed to fix revenue funnel leaks and accelerate monthly recurring profit.', features: ['Full marketing & funnel audit', '90-day execution roadmap', 'CRO & offer positioning', 'Monthly strategy reviews'], outcome: '40% revenue lift' },
 ];
 
 const Services: React.FC = () => {
-  useReveal();
   return (
-    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
-      
+    <div className="page-wrap bg-[#07090e] text-white">
       <SEO
         title="Services | Social Ninja's"
-        description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow. Book a free strategy call."
-        keywords="performance marketing India, AI automation, social media management, growth agency, paid ads India, content creation agency, SEO agency India, digital marketing services, email marketing WhatsApp marketing"
+        description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow."
       />
 
-      {/* HERO WITH MESH GLOW & GRID PATTERN */}
-      <div className="hero-glow grid-pattern" style={{ position: 'relative', paddingTop: 160, paddingBottom: 100, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <div className="pill reveal" style={{ justifyContent: 'center', margin: '0 auto 20px' }}>What We Do</div>
-          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(44px,6.5vw,84px)', fontWeight: 700, letterSpacing: '-2.5px', lineHeight: 1.02, marginBottom: 24, color: '#141414' }}>
-            Everything your brand needs<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>to get more customers.</span>
+      {/* HERO WITH AURORA BACKGROUND */}
+      <AuroraBackground className="pt-36 pb-20 border-b border-neutral-800/80">
+        <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+            WHAT WE DO
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
+            Everything Your Brand Needs <br />
+            <span className="text-[#1F4B99]">To Scale Revenue & Leads.</span>
           </h1>
-          <p className="reveal d2" style={{ fontSize: 'clamp(16px,1.8vw,19px)', fontWeight: 300, color: '#666', lineHeight: 1.75, maxWidth: 620, margin: '0 auto 44px' }}>
-            We don't just run ads or post content. We build marketing systems that keep working — bringing in leads, converting sales, and growing your revenue month after month.
+          <p className="text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            We build growth engines that keep working 24/7 — generating qualified leads, scaling ad returns, and driving predictable profit.
           </p>
-          <div className="reveal d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '15px 32px' }}>Book a Free Strategy Call</button></Link>
-            <a href="/content-studio"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try AI Studio Free</button></a>
+          <div className="flex justify-center gap-4 pt-2">
+            <Link to="/contact">
+              <ShinyButton variant="primary" className="text-sm font-bold">
+                Book Strategy Call <ArrowRight size={16} />
+              </ShinyButton>
+            </Link>
           </div>
         </div>
-      </div>
+      </AuroraBackground>
 
-      {/* SERVICES GRID WITH DYNAMIC GLOW CARDS */}
-      <div className="section-wrap-white grid-pattern" style={{ borderBottom: '1px solid #ededed' }}>
-        <div className="section" style={{ padding: '100px 0' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }} className="two-cols">
-            {services.map((s, i) => (
-              <div 
-                key={i} 
-                className={`service-card reveal d${(i%3)+1}`} 
-                style={{ 
-                  '--theme-color': s.color, 
-                  '--shadow-color': `${s.color}15` 
-                } as React.CSSProperties}
-              >
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24, gap: 12, position: 'relative', zIndex: 3 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                    <div className="service-icon-box" style={{ width: 52, height: 52, borderRadius: 14, background: `${s.color}12`, border: `1px solid ${s.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <s.Icon size={22} color={s.color} strokeWidth={1.5} />
+      {/* SERVICES GRID WITH SPOTLIGHT CARDS */}
+      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {services.map((s, i) => (
+            <SpotlightCard key={i} className="p-8 bg-[#0e121d] border border-neutral-800 space-y-5">
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 rounded-xl bg-[#1F4B99]/15 border border-[#1F4B99]/30 flex items-center justify-center text-[#4281f5]">
+                  <s.Icon size={24} />
                 </div>
-                    <div>
-                      <div style={{ fontSize: 9.5, fontWeight: 700, color: s.color, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>{s.sub}</div>
-                      <h3 style={{ fontSize: 21, fontWeight: 700, color: '#141414', letterSpacing: '-0.3px', fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1.2 }}>{s.title}</h3>
-                    </div>
+                <span className="text-xs font-bold px-3 py-1 bg-[#3ba213]/10 text-[#3ba213] border border-[#3ba213]/20 rounded-full">
+                  {s.outcome}
+                </span>
+              </div>
+
+              <div>
+                <div className="text-[10px] font-bold text-[#4281f5] uppercase tracking-wider mb-1">{s.sub}</div>
+                <h3 className="text-xl font-bold text-white">{s.title}</h3>
+              </div>
+
+              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{s.desc}</p>
+
+              <div className="space-y-2 pt-2 border-t border-neutral-800/80">
+                {s.features.map((f, j) => (
+                  <div key={j} className="flex items-center gap-2 text-xs text-neutral-300 font-medium">
+                    <CheckCircle2 size={14} className="text-[#3ba213]" />
+                    <span>{f}</span>
                   </div>
-                  <div style={{ fontSize: 10, padding: '5px 12px', borderRadius: 50, background: `${s.color}10`, border: `1px solid ${s.color}20`, color: s.color, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, letterSpacing: '0.03em' }}>{s.outcome}</div>
-                </div>
-                <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, marginBottom: 24, position: 'relative', zIndex: 3 }}>{s.desc}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28, position: 'relative', zIndex: 3 }}>
-                  {s.features.map((f, j) => (
-                    <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: '#4a4a4a', fontWeight: 400 }}>
-                      <CheckCircle2 size={15} color={s.color} strokeWidth={2} style={{ flexShrink: 0 }} />{f}
-                    </div>
-                  ))}
-                </div>
-                <Link to={`/services/${s.id}`} style={{ textDecoration: 'none', position: 'relative', zIndex: 3 }}>
-                  <div className="service-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 700, color: s.color }}>
-                    Learn More <ArrowRight size={14} style={{ transition: 'transform 0.2s' }} />
-                  </div>
+                ))}
+              </div>
+
+              <div className="pt-2">
+                <Link to={`/services/${s.id}`} className="text-xs font-bold text-[#4281f5] hover:underline flex items-center gap-1">
+                  Learn More <ArrowRight size={14} />
                 </Link>
               </div>
-            ))}
-          </div>
+            </SpotlightCard>
+          ))}
         </div>
-      </div>
-
-      {/* HOW IT WORKS */}
-      <div className="section-wrap-alt grid-pattern" style={{ borderBottom: '1px solid #ededed', background: '#fafafa' }}>
-        <section className="section" style={{ padding: '100px 0' }}>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div className="pill reveal" style={{ justifyContent: 'center', margin: '0 auto 20px' }}>How We Work</div>
-            <h2 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(32px,4.5vw,52px)', fontWeight: 700, letterSpacing: '-1.5px', color: '#141414', lineHeight: 1.1 }}>
-              From your first call to<br /><span style={{ color: '#1F4B99' }}>real results in 30 days.</span>
-            </h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 18 }} className="four-cols">
-            {[
-              { n: '01', t: 'Free Strategy Call', d: 'We spend 30 minutes understanding your business, your goals, and what\'s not working right now.' },
-              { n: '02', t: 'We Audit Everything', d: 'We look at your ads, your website, your content — and find exactly where money is being wasted.' },
-              { n: '03', t: 'Build Your Plan', d: 'You get a clear 90-day growth plan with specific targets, timelines, and who\'s responsible for what.' },
-              { n: '04', t: 'Launch & Improve', d: 'We go live fast, track everything, and make it better every single week based on real data.' },
-            ].map((p, i) => (
-              <div key={i} className="step-card reveal d${i+1}">
-                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 32, fontWeight: 700, color: 'rgba(31,75,153,0.25)', lineHeight: 1, marginBottom: 20, letterSpacing: '-1px' }}>{p.n}</div>
-                <div style={{ fontSize: 15.5, fontWeight: 700, color: '#141414', marginBottom: 10, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{p.t}</div>
-                <div style={{ fontSize: 13.5, color: '#666', lineHeight: 1.7 }}>{p.d}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+      </section>
 
       {/* CTA */}
-      <div className="section-wrap-white" style={{ background: '#ffffff' }}>
-        <section className="section" style={{ padding: '100px 0' }}>
-          <div className="reveal" style={{ background: 'linear-gradient(135deg, #ffffff, #fafafa)', border: '1px solid #ededed', borderRadius: 32, padding: '90px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 10px 40px rgba(0,0,0,0.02)' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,transparent,#1F4B99,#2fcf8e,transparent)' }} />
-            <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(32px,4.5vw,56px)', fontWeight: 700, letterSpacing: '-2px', lineHeight: 1.06, marginBottom: 16, color: '#141414' }}>
-              Ready to build something<br /><span style={{ color: '#1F4B99' }}>that actually works?</span>
-            </h2>
-            <p style={{ fontSize: 16.5, color: '#666', marginBottom: 36, maxWidth: 520, margin: '0 auto 36px', lineHeight: 1.7 }}>
-              Book a free 30-minute strategy call. No pressure, no pitch deck. Just an honest look at your marketing and what we'd do differently.
-            </p>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '16px 40px' }}>Book My Free Call →</button></Link>
+      <section className="py-20 max-w-5xl mx-auto px-4 text-center">
+        <SpotlightCard className="p-12 bg-gradient-to-br from-[#0e121d] via-[#121826] to-[#0e121d] border border-neutral-800 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-black text-white animate-text-shimmer">
+            Ready to Build Your Custom Growth Engine?
+          </h2>
+          <p className="text-xs sm:text-sm text-neutral-300 max-w-xl mx-auto">
+            Book a free 30-minute growth strategy session. We will audit your revenue funnels and outline an action plan.
+          </p>
+          <div className="flex justify-center pt-2">
+            <Link to="/contact">
+              <ShinyButton variant="primary" className="text-sm font-bold">
+                Book My Free Call <ArrowRight size={16} />
+              </ShinyButton>
+            </Link>
           </div>
-        </section>
-      </div>
-
-      <style>{`
-        .hero-glow {
-          background: radial-gradient(circle at 75% 25%, rgba(31,75,153,0.07), transparent 600px), 
-                      radial-gradient(circle at 25% 75%, rgba(47,207,142,0.05), transparent 600px);
-        }
-        .grid-pattern {
-          background-image: radial-gradient(rgba(0, 0, 0, 0.035) 1.2px, transparent 1.2px);
-          background-size: 24px 24px;
-        }
-        .service-card {
-          background: #ffffff;
-          border: 1px solid #ededed;
-          border-top: 4px solid var(--theme-color);
-          border-radius: 24px;
-          padding: 36px;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.01);
-          position: relative;
-          overflow: hidden;
-        }
-        .service-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle at top right, var(--shadow-color), transparent 280px);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          pointer-events: none;
-        }
-        .service-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 24px 48px -12px var(--shadow-color);
-          border-color: var(--theme-color);
-        }
-        .service-card:hover::before {
-          opacity: 1;
-        }
-        .service-icon-box {
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .service-card:hover .service-icon-box {
-          transform: scale(1.12) rotate(4deg);
-        }
-        .service-link {
-          transition: gap 0.3s ease;
-        }
-        .service-card:hover .service-link {
-          gap: 12px !important;
-        }
-        .service-card:hover .service-link svg {
-          transform: translateX(4px);
-        }
-        .step-card {
-          background: #ffffff;
-          border: 1px solid #ededed;
-          border-radius: 20px;
-          padding: 32px 28px;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 2px 12px rgba(0,0,0,0.005);
-        }
-        .step-card:hover {
-          transform: translateY(-5px);
-          border-color: rgba(91, 164, 245, 0.3);
-          box-shadow: 0 16px 36px rgba(91, 164, 245, 0.05);
-        }
-        @media(max-width:900px){
-          .two-cols, .four-cols {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+        </SpotlightCard>
+      </section>
     </div>
   );
 };
+
 export default Services;

@@ -1,230 +1,128 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Send, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
+import SEO from '../components/SEO';
+import SpotlightCard from '../components/SpotlightCard';
 import TiltCard from '../components/TiltCard';
 import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
-import { getApiUrl } from '../services/api';
-import React, { useEffect, useState } from 'react';
-import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';
-import SEO from '../components/SEO';
-import { submitToGoogleSheets } from '../services/googleSheets';
-
-const CC = [
-  {code:'+1',f:'🇺🇸'},{code:'+44',f:'🇬🇧'},{code:'+971',f:'🇦🇪'},{code:'+91',f:'🇮🇳'},
-  {code:'+61',f:'🇦🇺'},{code:'+49',f:'🇩🇪'},{code:'+33',f:'🇫🇷'},
-];
-
-function useReveal() {
-  useEffect(()=>{
-    const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('up');io.unobserve(x.target);}}),{threshold:.1});
-    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
-    return()=>io.disconnect();
-  },[]);
-}
-
-const Field=({label,name,type='text',placeholder,icon:Icon,form,errors,set}:{label:string,name:string,type?:string,placeholder?:string,icon?:any,form:any,errors:any,set:any})=>(
-  <div style={{marginBottom:18}}>
-    <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
-      {Icon&&<Icon size={12}/>}{label}
-      {errors[name]&&<span style={{color:'var(--gold)',fontSize:10,marginLeft:'auto',fontWeight:500}}>{errors[name]}</span>}
-    </label>
-    <input type={type} value={(form as any)[name]} onChange={e=>set(name,e.target.value)} placeholder={placeholder}
-      className="field" style={{borderColor:errors[name]?'rgba(232,184,109,0.5)':'',background:errors[name]?'rgba(232,184,109,0.06)':''}}/>
-  </div>
-);
 
 const Contact: React.FC = () => {
-  useReveal();
-  const [step,setStep]=useState(1);
-  const [form,setForm]=useState({name:'',email:'',cc:'+1',phone:'',company:'',website:'',message:''});
-  const [errors,setErrors]=useState<Record<string,string>>({});
-  const [loading,setLoading]=useState(false);
-  const [done,setDone]=useState(false);
-
-  const set=(k:string,v:string)=>{ setForm(p=>({...p,[k]:v})); setErrors(p=>({...p,[k]:''})); };
-
-  const validate=(s:number)=>{
-    const e:Record<string,string>={};
-    if(s===1){ if(!form.name.trim())e.name='Required'; if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))e.email='Valid email required'; }
-    if(s===2){ if(!form.website.trim())e.website='Required'; }
-    if(s===3){ if(!form.phone.trim())e.phone='Required'; if(!form.message.trim())e.message='Required'; }
-    setErrors(e); return Object.keys(e).length===0;
-  };
-
-  const next=()=>{ if(validate(step)) setStep(p=>Math.min(p+1,3)); };
-  const back=()=>setStep(p=>Math.max(p-1,1));
-
-  const submit=async(e:React.FormEvent)=>{
-    e.preventDefault();
-    if(!validate(3))return;
-    setLoading(true);
-    try{
-      await submitToGoogleSheets({...form, type: 'Leads', source:'contact-form'});
-      try {
-        await fetch(getApiUrl('/api/data?resource=leads'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: 'lead_' + Date.now(),
-            name: form.name,
-            email: form.email,
-            phone: form.cc + form.phone,
-            company: form.company,
-            website: form.website,
-            message: form.message,
-            source: 'main-contact-page',
-            date: new Date().toLocaleDateString('en-IN')
-          })
-        });
-      } catch (kvErr) {
-        console.error('Failed to save lead to KV:', kvErr);
-      }
-      setDone(true);
-    }catch(err){ setErrors({message:'Something went wrong. Please try again.'}); }
-    setLoading(false);
-  };
-
-  if(done) return (
-    <div className="page-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh'}}>
-      
-      <div style={{textAlign:'center',padding:'48px 32px',maxWidth:520}}>
-        <div style={{width:72,height:72,borderRadius:'50%',background:'rgba(52,211,153,0.12)',border:'1px solid rgba(52,211,153,0.3)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px',boxShadow:'0 0 32px rgba(52,211,153,0.2)'}}>
-          <CheckCircle size={32} color="#34d399"/>
-        </div>
-        <h2 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:36,fontWeight:400,letterSpacing:'-1px',color:'#141414',marginBottom:12}}>Message received.</h2>
-        <p style={{fontSize:15,fontWeight:300,color:'#717171',lineHeight:1.7}}>We'll review your brief and get back within 24 hours with a tailored growth plan.</p>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="page-wrap" style={{fontFamily:"'DM Sans',system-ui,sans-serif"}}>
-      
+    <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Contact Social Ninja's | Book Strategy Call"
-        description="Initiate your growth audit. Book a strategy call with our team and see how we'd grow your business with AI-powered marketing."
-        keywords="contact marketing agency, book strategy call, free marketing audit, digital marketing consultation, AI agency contact, growth audit India"
+        title="Contact Us | Social Ninja's"
+        description="Get in touch with Social Ninja's. Schedule a free growth audit or reach out directly."
       />
 
-      <div style={{maxWidth:1100,margin:'0 auto',padding:'120px 28px 88px',position:'relative',zIndex:1}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'start'}} className="hero-grid-cols">
+      {/* HERO WITH AURORA BACKGROUND */}
+      <AuroraBackground className="pt-36 pb-16 border-b border-neutral-800/80">
+        <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+            GET IN TOUCH
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
+            Let’s Build Your <br />
+            <span className="text-[#1F4B99]">AI Revenue Engine.</span>
+          </h1>
+          <p className="text-sm sm:text-base text-neutral-300 max-w-xl mx-auto leading-relaxed">
+            Fill out the form below to book a free 15-minute growth strategy audit with our team.
+          </p>
+        </div>
+      </AuroraBackground>
 
-          {/* LEFT */}
-          <div>
-            <div className="pill reveal">Get In Touch</div>
-            <h1 className="reveal d1" style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:400,letterSpacing:'-1.5px',lineHeight:1.04,marginBottom:18,color:'#141414'}}>
-              Let's build your<br/><em style={{background:'linear-gradient(135deg,#1F4B99,#2fcf8e)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>growth engine.</em>
-            </h1>
-            <p className="reveal d2" style={{fontSize:16,fontWeight:300,color:'#717171',lineHeight:1.72,marginBottom:48,maxWidth:420}}>Fill in the brief below. Within 24 hours, our team will send you a personalised growth audit with exactly where your biggest revenue opportunities are hiding.</p>
+      {/* CONTACT FORM & INFO GRID */}
+      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          
+          {/* Left Column — Contact Info Cards */}
+          <div className="space-y-6">
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/15 border border-[#1F4B99]/30 flex items-center justify-center text-[#4281f5]">
+                <Mail size={20} />
+              </div>
+              <h3 className="font-bold text-white text-base">Direct Email</h3>
+              <p className="text-xs text-neutral-400">Reach our strategy team directly anytime</p>
+              <a href="mailto:info@socialninjas.in" className="text-xs font-bold text-[#4281f5] hover:underline block pt-1">
+                info@socialninjas.in
+              </a>
+            </SpotlightCard>
 
-            <div className="reveal d3" style={{display:'flex',flexDirection:'column',gap:18}}>
-              {[
-                {icon:Mail,label:'Email',val:'info@socialninjas.in',href:'mailto:info@socialninjas.in'},
-                {icon:Phone,label:'WhatsApp Support',val:'+91 81477 57479',href:'https://wa.me/918147757479'},
-                {icon:Instagram,label:'Instagram',val:'@socialninja.s',href:'https://www.instagram.com/socialninja.s/'},
-                {icon:Globe,label:'Website',val:'socialninjas.in',href:'https://socialninjas.in'},
-              ].map(({icon:Ico,label,val,href})=>(
-                <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:14}}>
-                  <div style={{width:44,height:44,borderRadius:13,background:'rgba(31,75,153,0.07)',border:'1px solid rgba(31,75,153,0.16)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <Ico size={18} color="#1F4B99" strokeWidth={1.5}/>
-                  </div>
-                  <div>
-                    <div style={{fontSize:11,color:'#adadad',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:2}}>{label}</div>
-                    <div style={{fontSize:14,fontWeight:400,color:'#404040'}}>{val}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#3ba213]/15 border border-[#3ba213]/30 flex items-center justify-center text-[#3ba213]">
+                <Phone size={20} />
+              </div>
+              <h3 className="font-bold text-white text-base">Phone & WhatsApp</h3>
+              <p className="text-xs text-neutral-400">Instant response during business hours</p>
+              <a href="tel:+919876543210" className="text-xs font-bold text-[#3ba213] hover:underline block pt-1">
+                +91 98765 43210
+              </a>
+            </SpotlightCard>
 
-            <div className="reveal d4" style={{marginTop:48,display:'flex',gap:20}}>
-              {[['150+','Brands'],['4.9★','Rating'],['24h','Response']].map(([n,l])=>(
-                <div key={l} className="glass-card" style={{padding:'16px 20px',borderRadius:14,textAlign:'center',flex:1}}>
-                  <div style={{fontFamily:"'DM Sans'",fontSize:22,fontWeight:600,color:'#141414',letterSpacing:'-0.5px',lineHeight:1}}>{n}</div>
-                  <div style={{fontSize:10.5,color:'#adadad',marginTop:3,letterSpacing:'0.04em'}}>{l}</div>
-                </div>
-              ))}
-            </div>
+            <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/15 border border-[#1F4B99]/30 flex items-center justify-center text-[#4281f5]">
+                <MapPin size={20} />
+              </div>
+              <h3 className="font-bold text-white text-base">Global Hubs</h3>
+              <p className="text-xs text-neutral-400">India & Dubai Operations</p>
+              <div className="text-xs text-neutral-300 font-semibold pt-1">
+                Dubai • Bengaluru • Mumbai
+              </div>
+            </SpotlightCard>
           </div>
 
-          {/* RIGHT - multi-step form */}
-          <div className="reveal-r d1">
-            <div className="glass-card" style={{borderRadius:24,padding:0,overflow:'hidden'}}>
-              {/* Step indicator */}
-              <div style={{padding:'20px 28px',borderBottom:'1px solid #ededed',display:'flex',alignItems:'center',gap:8}}>
-                {[1,2,3].map(s=>(
-                  <React.Fragment key={s}>
-                    <div style={{width:28,height:28,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:500,transition:'all .3s',background:s<step?'rgba(52,211,153,0.15)':s===step?'rgba(31,75,153,0.15)':'#f5f5f5',border:`1px solid ${s<step?'rgba(52,211,153,0.3)':s===step?'rgba(31,75,153,0.3)':'#e0e0e0'}`,color:s<step?'#34d399':s===step?'#1F4B99':'#adadad',fontFamily:"'JetBrains Mono',monospace"}}>
-                      {s<step?'✓':s}
-                    </div>
-                    {s<3&&<div style={{flex:1,height:1,background:s<step?'rgba(52,211,153,0.3)':'#f0f0f0',transition:'background .4s'}}/>}
-                  </React.Fragment>
-                ))}
-                <span style={{marginLeft:'auto',fontSize:11,color:'#adadad',fontFamily:"'JetBrains Mono'"}}>Step {step} of 3</span>
+          {/* Right Column — 3D Tilt Contact Form */}
+          <div className="lg:col-span-2">
+            <TiltCard className="p-8 sm:p-10 bg-[#0e121d] border border-neutral-800 space-y-6">
+              <div className="border-b border-neutral-800 pb-4">
+                <h2 className="text-2xl font-bold text-white">Book Your Free Growth Audit</h2>
+                <p className="text-xs text-neutral-400 mt-1">Select your business goal and we will reach out within 2 hours.</p>
               </div>
 
-              <form onSubmit={submit} style={{padding:28}}>
-                {step===1&&(
+              <form onSubmit={e => { e.preventDefault(); alert('Thank you! Our growth team will reach out to you within 2 hours.'); }} className="space-y-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Who are you?</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Tell us about yourself.</p>
-                    <Field label="Full Name" name="name" placeholder="Jane Smith" icon={User} form={form} errors={errors} set={set}/>
-                    <Field label="Work Email" name="email" type="email" placeholder="jane@company.com" icon={Mail} form={form} errors={errors} set={set}/>
-                    <Field label="Company" name="company" placeholder="Acme Inc" icon={Building} form={form} errors={errors} set={set}/>
+                    <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Your Full Name *</label>
+                    <input type="text" required placeholder="John Doe" className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
                   </div>
-                )}
-                {step===2&&(
                   <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>About your brand</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Help us understand your current setup.</p>
-                    <Field label="Website / Social Handle" name="website" placeholder="acme.com or @acme" icon={Globe} form={form} errors={errors} set={set}/>
-                    <div style={{marginBottom:18}}>
-                      <label style={{display:'block',fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>Monthly Ad Spend</label>
-                      <select value={form.company} onChange={e=>set('company',e.target.value)} className="field" style={{appearance:'none',cursor:'pointer'}}>
-                        <option value="">Select range...</option>
-                        {['Under $1,000','$1,000–$5,000','$5,000–$20,000','$20,000–$50,000','$50,000+'].map(o=><option key={o}>{o}</option>)}
-                      </select>
-                    </div>
+                    <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Work Email *</label>
+                    <input type="email" required placeholder="john@company.com" className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
                   </div>
-                )}
-                {step===3&&(
-                  <div>
-                    <h3 style={{fontFamily:"'Bricolage Grotesque',system-ui,sans-serif",fontSize:24,fontWeight:400,color:'#141414',marginBottom:6,letterSpacing:'-0.5px'}}>Your biggest challenge</h3>
-                    <p style={{fontSize:13,fontWeight:300,color:'#adadad',marginBottom:24}}>Be specific — this shapes our strategy.</p>
-                    <div style={{marginBottom:18}}>
-                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
-                        <Phone size={12}/>Phone
-                        {errors.phone&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.phone}</span>}
-                      </label>
-                      <div style={{display:'flex',gap:8}}>
-                        <select value={form.cc} onChange={e=>set('cc',e.target.value)} className="field" style={{width:90,flexShrink:0,appearance:'none',cursor:'pointer',padding:'13px 10px'}}>
-                          {CC.map(c=><option key={c.code+c.f} value={c.code}>{c.f} {c.code}</option>)}
-                        </select>
-                        <input value={form.phone} onChange={e=>set('phone',e.target.value)} placeholder="Your number" type="tel" className="field" style={{flex:1,borderColor:errors.phone?'rgba(232,184,109,0.5)':''}}/>
-                      </div>
-                    </div>
-                    <div style={{marginBottom:18}}>
-                      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11.5,fontWeight:500,color:'#adadad',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:7}}>
-                        Your Bottleneck
-                        {errors.message&&<span style={{color:'#e8b86d',fontSize:10,marginLeft:'auto'}}>{errors.message}</span>}
-                      </label>
-                      <textarea value={form.message} onChange={e=>set('message',e.target.value)} placeholder="What's holding your brand back? Be specific  our reply is more valuable when we understand your exact challenge." rows={4} className="field" style={{resize:'none',borderColor:errors.message?'rgba(232,184,109,0.5)':''}}/>
-                    </div>
-                  </div>
-                )}
+                </div>
 
-                 <div style={{display:'flex',gap:10,marginTop:8}}>
-                  {step>1&&<button type="button" onClick={back} className="btn-ghost" style={{fontSize:13.5,padding:'12px 20px'}}>← Back</button>}
-                  {step<3
-                    ?<button type="button" onClick={next} className="btn-primary" style={{flex:1,fontSize:14,padding:'13px'}}>Continue →</button>
-                    :<button type="submit" disabled={loading} className="btn-primary" style={{flex:1,fontSize:14,padding:'13px'}}>
-                      {loading?<><Loader2 size={16} style={{animation:'spin 1s linear infinite'}}/>Sending...</>:'Send Message →'}
-                    </button>
-                  }
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Phone Number</label>
+                    <input type="tel" placeholder="+91..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Monthly Ad Budget</label>
+                    <select className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]">
+                      <option>Under ₹50,000 / mo</option>
+                      <option>₹50,000 - ₹2,00,000 / mo</option>
+                      <option>₹2,00,000 - ₹10,00,000 / mo</option>
+                      <option>₹10,00,000+ / mo</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Your Business & Goals</label>
+                  <textarea rows={4} placeholder="Tell us about your brand, current challenges, and revenue goals..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                </div>
+
+                <div className="pt-2">
+                  <ShinyButton variant="primary" type="submit" className="w-full py-4 text-sm font-bold">
+                    Submit Audit Request <Send size={16} />
+                  </ShinyButton>
                 </div>
               </form>
-            </div>
+            </TiltCard>
           </div>
+
         </div>
-      </div>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}} @media(max-width:900px){.hero-grid-cols{grid-template-columns:1fr!important;gap:40px!important;}}`}</style>
+      </section>
     </div>
   );
 };
