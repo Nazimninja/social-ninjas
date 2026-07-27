@@ -83,14 +83,15 @@ const Footer: React.FC = () => {
             <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Growth Tools</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'AI Content Studio', path: '/content-studio', external: true },
+                { label: 'AI Content Studio', path: '/app/content-studio', external: false },
                 { label: 'WhatsApp Link Gen', path: 'https://linkwa.in', external: true },
                 { label: 'US Take-Home Pay Calc', path: 'https://salary.socialninjas.in/salary-calculator/', external: true },
                 { label: 'Hourly ↔ Salary Conv', path: 'https://salary.socialninjas.in/', external: true },
+                { label: 'Mortgage Rate Calc', path: 'https://mortgage.socialninjas.in/', external: true },
               ].map(({ label, path, external }) => (
                 <li key={label}>
                   {external ? (
-                    <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                    <a href={path} target="_blank" rel="noopener noreferrer" style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
                       onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
                       onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
                     >{label}</a>
