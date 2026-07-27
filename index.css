@@ -694,7 +694,7 @@ html.lenis, html.lenis body {
   }
 }
 .animate-text-shimmer {
-  background: linear-gradient(135deg, #ffffff 0%, #ff8c00 45%, #ff4500 70%, #ffffff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #3b77e3 45%, #1F4B99 70%, #ffffff 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

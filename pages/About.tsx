@@ -1,3 +1,6 @@
+import SpotlightCard from '../components/SpotlightCard';
+import AuroraBackground from '../components/AuroraBackground';
+import AnimatedNumber from '../components/AnimatedNumber';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart3, Clock, ShieldCheck, Plus, Minus } from 'lucide-react';

@@ -1,3 +1,6 @@
+import TiltCard from '../components/TiltCard';
+import AuroraBackground from '../components/AuroraBackground';
+import ShinyButton from '../components/ShinyButton';
 import { getApiUrl } from '../services/api';
 import React, { useEffect, useState } from 'react';
 import { Mail, CheckCircle, Loader2, Phone, Globe, Building, User, AlertCircle, Instagram } from 'lucide-react';

@@ -12,7 +12,7 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({
   showRadialGradient = true,
 }) => {
   return (
-    <div className={`relative flex flex-col items-center justify-center bg-[#07090e] text-slate-950 transition-bg ${className}`}>
+    <div className={`relative flex flex-col items-center justify-center bg-[#07090e] text-white transition-bg ${className}`}>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className={`
@@ -25,15 +25,15 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({
           `}
         />
         
-        {/* Aurora Glowing Orbs */}
+        {/* Strictly Logo Royal Blue (#1F4B99) and Logo Green (#3ba213) Orbs */}
         <div
-          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-brand-primary/25 via-orange-500/15 to-purple-600/20 rounded-full blur-[120px] animate-aurora-slow pointer-events-none"
+          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-[#1F4B99]/30 via-[#1F4B99]/20 to-[#3ba213]/15 rounded-full blur-[120px] animate-aurora-slow pointer-events-none"
         />
         <div
-          className="absolute top-1/3 -right-40 w-[650px] h-[650px] bg-gradient-to-tl from-purple-600/20 via-blue-600/15 to-brand-primary/20 rounded-full blur-[130px] animate-aurora-reverse pointer-events-none"
+          className="absolute top-1/3 -right-40 w-[650px] h-[650px] bg-gradient-to-tl from-[#1F4B99]/25 via-[#2b5ebf]/15 to-[#3ba213]/20 rounded-full blur-[130px] animate-aurora-reverse pointer-events-none"
         />
         <div
-          className="absolute -bottom-40 left-1/3 w-[550px] h-[550px] bg-gradient-to-tr from-amber-500/15 via-brand-primary/20 to-indigo-600/15 rounded-full blur-[110px] animate-aurora-slow pointer-events-none"
+          className="absolute -bottom-40 left-1/3 w-[550px] h-[550px] bg-gradient-to-tr from-[#3ba213]/15 via-[#1F4B99]/25 to-[#1F4B99]/15 rounded-full blur-[110px] animate-aurora-slow pointer-events-none"
         />
       </div>
 

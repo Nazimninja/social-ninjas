@@ -13,7 +13,7 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   children,
   className = '',
   maxTilt = 12,
-  glareColor = 'rgba(255, 107, 0, 0.2)',
+  glareColor = 'rgba(31, 75, 153, 0.25)', // Logo Royal Blue glare
   onClick
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -64,9 +64,9 @@ export const TiltCard: React.FC<TiltCardProps> = ({
         rotateY,
         transformStyle: 'preserve-3d',
       }}
-      className={`relative overflow-hidden rounded-2xl border border-neutral-800/80 bg-[#0e121d] transition-shadow duration-300 hover:border-brand-primary/50 hover:shadow-[0_20px_50px_rgba(255,107,0,0.15)] ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-neutral-800/80 bg-[#0e121d] transition-shadow duration-300 hover:border-[#1F4B99]/60 hover:shadow-[0_20px_50px_rgba(31,75,153,0.2)] ${className}`}
     >
-      {/* Dynamic 3D Glare Overlay */}
+      {/* Dynamic 3D Glare Overlay (Logo Blue) */}
       <div
         className="pointer-events-none absolute -inset-px rounded-2xl transition-opacity duration-300 z-10"
         style={{

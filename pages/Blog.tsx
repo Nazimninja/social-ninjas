@@ -1,3 +1,5 @@
+import SpotlightCard from '../components/SpotlightCard';
+import AuroraBackground from '../components/AuroraBackground';
 import { getApiUrl } from '../services/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';

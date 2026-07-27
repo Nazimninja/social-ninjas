@@ -10,7 +10,7 @@ interface SpotlightCardProps {
 export const SpotlightCard: React.FC<SpotlightCardProps> = ({
   children,
   className = '',
-  spotlightColor = 'rgba(255, 107, 0, 0.18)',
+  spotlightColor = 'rgba(31, 75, 153, 0.25)', // Logo Royal Blue spotlight
   onClick
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
@@ -36,9 +36,9 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className={`relative overflow-hidden rounded-2xl border border-neutral-800/80 bg-[#0e121d] transition-all duration-300 hover:border-brand-primary/40 hover:shadow-2xl hover:-translate-y-1 ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-neutral-800/80 bg-[#0e121d] transition-all duration-300 hover:border-[#1F4B99]/60 hover:shadow-2xl hover:-translate-y-1 ${className}`}
     >
-      {/* Dynamic Cursor Spotlight Radial Mask */}
+      {/* Dynamic Cursor Spotlight Radial Mask (Logo Blue) */}
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300"
         style={{
@@ -52,7 +52,7 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 hover:opacity-100"
         style={{
           opacity: opacity * 0.5,
-          background: `radial-gradient(300px circle at ${position.x}px ${position.y}px, rgba(255, 255, 255, 0.15), transparent 80%)`
+          background: `radial-gradient(300px circle at ${position.x}px ${position.y}px, rgba(59, 162, 19, 0.2), transparent 80%)`
         }}
       />
 

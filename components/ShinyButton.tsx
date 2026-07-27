@@ -30,9 +30,9 @@ export const ShinyButton: React.FC<ShinyButtonProps> = ({
   };
 
   const baseStyle = variant === 'primary' 
-    ? 'bg-gradient-to-r from-brand-primary via-orange-500 to-amber-500 text-white font-black shadow-lg shadow-brand-primary/30 border border-orange-400/40' 
+    ? 'bg-gradient-to-r from-[#1F4B99] via-[#255ec4] to-[#1F4B99] text-white font-bold shadow-lg shadow-[#1F4B99]/30 border border-[#306bd6]/50' 
     : variant === 'secondary'
-    ? 'bg-[#121724] hover:bg-[#1a2133] text-white border border-neutral-700/80 font-bold'
+    ? 'bg-[#121724] hover:bg-[#182136] text-white border border-neutral-700/80 font-bold'
     : 'bg-transparent text-neutral-300 hover:text-white border border-neutral-800 font-medium';
 
   return (
