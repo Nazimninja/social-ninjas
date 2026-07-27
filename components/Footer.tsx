@@ -6,13 +6,13 @@ import Logo from './Logo';
 const Footer: React.FC = () => {
   return (
     <footer style={{
-      background: '#fafafa',
-      borderTop: '1px solid #ededed',
+      background: '#07090e',
+      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
       fontFamily: "'Inter',system-ui,sans-serif",
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 600, height: 200, background: 'radial-gradient(ellipse,rgba(31,75,153,0.07),transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 600, height: 200, background: 'radial-gradient(ellipse,rgba(31,75,153,0.1),transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '60px 28px 32px', position: 'relative', zIndex: 1 }}>
 
@@ -24,15 +24,15 @@ const Footer: React.FC = () => {
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', marginBottom: 20 }}>
               <Logo size={60} />
               <div>
-                <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#141414', lineHeight: 1.1 }}>
+                <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#FFFFFF', lineHeight: 1.1 }}>
                   Social<span style={{ color: '#1F4B99' }}>Ninja's</span>.
                 </div>
-                <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#adadad', marginTop: 2 }}>
+                <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#666666', marginTop: 2 }}>
                   AI Agency
                 </div>
               </div>
             </Link>
-            <p style={{ color: '#888', lineHeight: 1.75, fontSize: 13.5, fontWeight: 300, maxWidth: 300, marginBottom: 28 }}>
+            <p style={{ color: '#888888', lineHeight: 1.75, fontSize: 13.5, fontWeight: 300, maxWidth: 300, marginBottom: 28 }}>
               AI-powered performance marketing for brands that want to dominate — not just participate. We build revenue systems, not campaigns.
             </p>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -47,9 +47,9 @@ const Footer: React.FC = () => {
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   title={label}
-                  style={{ width: 38, height: 38, borderRadius: '50%', background: '#f5f5f5', border: '1px solid #ededed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', textDecoration: 'none', transition: 'all .2s', flexShrink: 0 }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(31,75,153,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(31,75,153,0.3)'; (e.currentTarget as HTMLElement).style.color = '#1F4B99'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#f5f5f5'; (e.currentTarget as HTMLElement).style.borderColor = '#e5e5e5'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                  style={{ width: 38, height: 38, borderRadius: '50%', background: '#121724', border: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888888', textDecoration: 'none', transition: 'all .2s', flexShrink: 0 }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(31,75,153,0.15)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(31,75,153,0.4)'; (e.currentTarget as HTMLElement).style.color = '#4281f5'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#121724'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.08)'; (e.currentTarget as HTMLElement).style.color = '#888888'; }}
                 >
                   <Icon size={16} />
                 </a>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
 
           {/* Services */}
           <div>
-            <h4 style={{ color: '#141414', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Services</h4>
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Services</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
                 { label: 'Performance Marketing', path: '/services' },
@@ -69,9 +69,9 @@ const Footer: React.FC = () => {
                 { label: 'Web & SEO', path: '/services' },
               ].map(({ label, path }) => (
                 <li key={label}>
-                  <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#1F4B99')}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
+                  <Link to={path} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
                   >{label}</Link>
                 </li>
               ))}
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
 
           {/* Tools Column */}
           <div>
-            <h4 style={{ color: '#141414', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Growth Tools</h4>
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Growth Tools</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
                 { label: 'AI Content Studio', path: '/content-studio', external: true },
@@ -90,14 +90,14 @@ const Footer: React.FC = () => {
               ].map(({ label, path, external }) => (
                 <li key={label}>
                   {external ? (
-                    <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#1F4B99')}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
+                    <a href={path} target={path.startsWith('http') ? '_blank' : undefined} rel={path.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
                     >{label}</a>
                   ) : (
-                    <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#1F4B99')}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
+                    <Link to={path} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
                     >{label}</Link>
                   )}
                 </li>
@@ -107,7 +107,7 @@ const Footer: React.FC = () => {
 
           {/* Company */}
           <div>
-            <h4 style={{ color: '#141414', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Company</h4>
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Company</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
                 { label: 'About Us', path: '/about' },
@@ -119,9 +119,9 @@ const Footer: React.FC = () => {
                 { label: 'Terms of Service', path: '/terms' },
               ].map(({ label, path }) => (
                 <li key={label}>
-                  <Link to={path} style={{ color: '#717171', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#1F4B99')}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
+                  <Link to={path} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#888888')}
                   >{label}</Link>
                 </li>
               ))}
@@ -130,38 +130,38 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Divider */}
-        <div style={{ height: 1, background: '#ededed', marginBottom: 24 }} />
+        <div style={{ height: 1, background: 'rgba(255, 255, 255, 0.08)', marginBottom: 24 }} />
 
         {/* Bottom bar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <p style={{ color: '#adadad', fontSize: 12, fontWeight: 400 }}>
+          <p style={{ color: '#666666', fontSize: 12, fontWeight: 400 }}>
             © {new Date().getFullYear()} Social Ninja's. All rights reserved.
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link to="/privacy" style={{ fontSize: 11, color: '#adadad', textDecoration: 'none', transition: 'color .2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#525252')}
-              onMouseLeave={e => (e.currentTarget.style.color='#adadad')}>
+            <Link to="/privacy" style={{ fontSize: 11, color: '#666666', textDecoration: 'none', transition: 'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color='#888888')}
+              onMouseLeave={e => (e.currentTarget.style.color='#666666')}>
               Privacy Policy
             </Link>
-            <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#d0d0d0', display:'inline-block' }} />
-            <Link to="/terms" style={{ fontSize: 11, color: '#adadad', textDecoration: 'none', transition: 'color .2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#525252')}
-              onMouseLeave={e => (e.currentTarget.style.color='#adadad')}>
+            <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#444444', display:'inline-block' }} />
+            <Link to="/terms" style={{ fontSize: 11, color: '#666666', textDecoration: 'none', transition: 'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color='#888888')}
+              onMouseLeave={e => (e.currentTarget.style.color='#666666')}>
               Terms of Service
             </Link>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {['Dubai', 'India'].map((city, i) => (
               <span key={city} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#c8c8c8' }} />}
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#adadad' }}>{city}</span>
+                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#333333' }} />}
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#666666' }}>{city}</span>
               </span>
             ))}
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
-            <a href="mailto:info@socialninjas.in" style={{ color: '#adadad', fontSize: 12, textDecoration: 'none', transition: 'color .2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#1F4B99')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#adadad')}
+            <a href="mailto:info@socialninjas.in" style={{ color: '#666666', fontSize: 12, textDecoration: 'none', transition: 'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#4281f5')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#666666')}
             >info@socialninjas.in</a>
           </div>
         </div>

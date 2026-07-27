@@ -3,11 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import Logo from './Logo';
 
-const TEXT_PRIMARY = '#141414';
-const TEXT_MUTED   = '#717171';
+const TEXT_PRIMARY = '#FFFFFF';
+const TEXT_MUTED   = '#888888';
 const BLUE         = '#1F4B99';
 const BLUE_DEEP    = '#153880';
-const BORDER       = '#EDEDED';
+const BORDER       = 'rgba(255, 255, 255, 0.08)';
 
 const navLinks = [
   { label: 'Services', path: '/services' },
@@ -44,11 +44,11 @@ const Navbar: React.FC = () => {
       <nav style={{
         position: 'fixed', top: 0, width: '100%', zIndex: 200,
         height: 60,
-        background: 'rgba(255,255,255,0.96)',
+        background: 'rgba(7, 9, 14, 0.85)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: `1px solid ${BORDER}`,
-        boxShadow: scrolled ? '0 1px 12px rgba(0,0,0,0.06)' : 'none',
+        boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
         transition: 'box-shadow 0.25s',
         display: 'flex', alignItems: 'center',
       }}>
@@ -92,14 +92,14 @@ const Navbar: React.FC = () => {
             <a href="/content-studio" style={{ textDecoration: 'none' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 5,
-                background: 'rgba(31,75,153,0.07)',
-                border: '1px solid rgba(31,75,153,0.22)',
+                background: 'rgba(31,75,153,0.12)',
+                border: '1px solid rgba(31,75,153,0.3)',
                 borderRadius: 20, padding: '5px 13px',
-                color: BLUE, fontSize: 13, fontWeight: 600,
+                color: '#4281f5', fontSize: 13, fontWeight: 600,
                 transition: 'all 0.15s', cursor: 'pointer',
               }}
                 onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = BLUE; el.style.color = '#fff'; el.style.borderColor = BLUE; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(31,75,153,0.07)'; el.style.color = BLUE; el.style.borderColor = 'rgba(31,75,153,0.22)'; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(31,75,153,0.12)'; el.style.color = '#4281f5'; el.style.borderColor = 'rgba(31,75,153,0.3)'; }}
               >
                 <span style={{ fontSize: 10 }}>⚡</span> Content Studio
               </div>
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile hamburger — only shown when menu is closed */}
+          {/* Mobile hamburger */}
           {!isOpen && (
             <button
               style={{
@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
             </button>
           )}
 
-          {/* Spacer when menu is open (so logo stays left) */}
+          {/* Spacer when menu is open */}
           {isOpen && <div className="show-mobile" style={{ width: 36 }} />}
         </div>
       </nav>
@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
       <div
         style={{
           position: 'fixed', inset: 0,
-          background: '#FFFFFF',
+          background: '#07090e',
           zIndex: 300,
           display: 'flex', flexDirection: 'column',
           transition: 'transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s',
@@ -157,7 +157,7 @@ const Navbar: React.FC = () => {
         }}
         aria-hidden={!isOpen}
       >
-        {/* Drawer top bar — logo + X button */}
+        {/* Drawer top bar */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 20px', height: 60, borderBottom: `1px solid ${BORDER}`,
@@ -174,19 +174,19 @@ const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* ← CLOSE BUTTON — always visible inside drawer */}
+          {/* CLOSE BUTTON */}
           <button
             onClick={close}
             aria-label="Close menu"
             style={{
-              background: '#f5f5f5', border: '1px solid #ededed',
+              background: '#121724', border: '1px solid rgba(255,255,255,0.08)',
               borderRadius: 8, width: 40, height: 40,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', color: '#141414', flexShrink: 0,
+              cursor: 'pointer', color: '#FFFFFF', flexShrink: 0,
               transition: 'background 0.15s',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#ebebeb'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#f5f5f5'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1a2133'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#121724'; }}
           >
             <X strokeWidth={2} size={20} />
           </button>
@@ -207,14 +207,14 @@ const Navbar: React.FC = () => {
                 textDecoration: 'none', lineHeight: 1,
                 color: location.pathname === link.path ? BLUE : TEXT_PRIMARY,
                 borderBottom: `1px solid ${BORDER}`,
-                background: location.pathname === link.path ? 'rgba(31,75,153,0.04)' : 'transparent',
+                background: location.pathname === link.path ? 'rgba(31,75,153,0.08)' : 'transparent',
                 transition: `opacity 0.3s ease ${idx * 45}ms, transform 0.3s ease ${idx * 45}ms`,
                 opacity: isOpen ? 1 : 0,
                 transform: isOpen ? 'translateX(0)' : 'translateX(20px)',
               }}
             >
               <span>{link.label}</span>
-              <ChevronRight size={18} strokeWidth={2} style={{ color: location.pathname === link.path ? BLUE : '#d0d0d0' }} />
+              <ChevronRight size={18} strokeWidth={2} style={{ color: location.pathname === link.path ? BLUE : '#666666' }} />
             </Link>
           ))}
         </div>
@@ -224,8 +224,8 @@ const Navbar: React.FC = () => {
           <a href="/content-studio" style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '15px',
-              borderRadius: 12, background: 'rgba(31,75,153,0.07)',
-              color: BLUE, border: '1.5px solid rgba(31,75,153,0.22)',
+              borderRadius: 12, background: 'rgba(31,75,153,0.12)',
+              color: '#4281f5', border: '1.5px solid rgba(31,75,153,0.3)',
               fontSize: 15, fontWeight: 600,
               cursor: 'pointer', fontFamily: "'Inter', system-ui, sans-serif",
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
@@ -263,7 +263,7 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
           </div>
-          <p style={{ color: '#ADADAD', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0 }}>
+          <p style={{ color: '#666666', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', margin: 0 }}>
             © {new Date().getFullYear()} Social Ninja's · AI Agency
           </p>
         </div>

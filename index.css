@@ -41,8 +41,8 @@
 
   /* ── GLOBAL BASE ── */
   body {
-    background: #fff;
-    color: #141414;
+    background: #07090e;
+    color: #adadad;
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 15px;
     font-weight: 400;
@@ -58,7 +58,7 @@
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.08;
-    color: #141414;
+    color: #ffffff;
   }
 
   a { color: inherit; text-decoration: none; }
@@ -76,9 +76,9 @@
 
 /* ── LAYOUT ──────────────────────────────────────────── */
 .page-wrap {
-  background: #fff;
+  background: #07090e;
   min-height: 100vh;
-  color: #141414;
+  color: #adadad;
 }
 
 .container {
@@ -97,19 +97,19 @@
 /* Full-width section wrappers for clear backgrounds and borders */
 .section-wrap-white {
   width: 100%;
-  background: #ffffff;
+  background: #07090e;
 }
 .section-wrap-alt {
   width: 100%;
-  background: #fafafa;
-  border-top: 1px solid #ededed;
-  border-bottom: 1px solid #ededed;
+  background: #0b0e17;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .section-wrap-raised {
   width: 100%;
-  background: #f5f5f5;
-  border-top: 1px solid #ededed;
-  border-bottom: 1px solid #ededed;
+  background: #0e121d;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ── NAV ─────────────────────────────────────────────── */
@@ -129,8 +129,8 @@
 .page-header {
   padding-top: 100px;
   padding-bottom: 64px;
-  border-bottom: 1px solid #ededed;
-  background: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #07090e;
 }
 
 .page-header-inner {
@@ -141,34 +141,34 @@
 
 /* ── CARD ────────────────────────────────────────────── */
 .card {
-  background: #fff;
-  border: 1px solid #ededed;
+  background: #0e121d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.01), 0 2px 12px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .card:hover {
-  border-color: rgba(0,0,0,0.12);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+  border-color: rgba(31, 75, 153, 0.3);
+  box-shadow: 0 4px 30px rgba(31, 75, 153, 0.15);
   transform: translateY(-2px);
 }
 
 .card-alt {
-  background: #fafafa;
-  border: 1px solid #ededed;
+  background: #0e121d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
 }
 
 /* ── GLASS CARD (backward compat) ────────────────────── */
 .glass-card {
-  background: #fff;
-  border: 1px solid #ededed;
+  background: #0e121d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .glass-card:hover {
-  border-color: rgba(0,0,0,0.16);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border-color: rgba(31, 75, 153, 0.3);
+  box-shadow: 0 4px 20px rgba(31, 75, 153, 0.1);
 }
 
 /* ── BUTTONS ─────────────────────────────────────────── */
@@ -191,9 +191,9 @@
 
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 6px;
-  background: #fff;
-  color: #141414;
-  border: 1px solid #ededed;
+  background: #0e121d;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 10px 20px;
   font-size: 14px;
@@ -203,7 +203,7 @@
   white-space: nowrap;
   min-height: 44px; /* iOS tap target */
 }
-.btn-ghost:hover { background: #f5f5f5; border-color: rgba(0,0,0,0.2); }
+.btn-ghost:hover { background: #121724; border-color: rgba(255, 255, 255, 0.15); }
 
 /* ── PILL / BADGE ────────────────────────────────────── */
 .pill {
@@ -212,15 +212,24 @@
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  background: #f5f5f5;
-  color: #717171;
-  border: none;
+  background: #121724;
+  color: #a0a0a0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   font-family: 'Inter', system-ui;
 }
 .pill-blue { background: var(--blue-light); color: var(--blue); }
 
 /* Backward compat aliases */
-.eyebrow { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; background: #f5f5f5; color: #717171; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #121724;
+  color: #a0a0a0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
 /* ── SECTION HEADING ─────────────────────────────────── */
 .section-title {
@@ -228,16 +237,16 @@
   font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 900;
   letter-spacing: -1.5px;
-  color: #141414;
+  color: #FFFFFF;
   line-height: 1.05;
 }
 
 /* ── INPUTS ──────────────────────────────────────────── */
 .field {
-  background: #fff;
-  border: 1px solid #ededed;
+  background: #121724;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  color: #141414;
+  color: #FFFFFF;
   padding: 11px 14px;
   font-size: 14px;
   width: 100%;
@@ -246,17 +255,17 @@
 }
 .field:focus {
   border-color: rgba(31,75,153,0.45);
-  box-shadow: 0 0 0 3px rgba(31,75,153,0.10);
+  box-shadow: 0 0 0 3px rgba(31,75,153,0.15);
 }
-.field::placeholder { color: #adadad; }
+.field::placeholder { color: #666666; }
 
 /* ── TICKER ──────────────────────────────────────────── */
 .ticker-wrap {
   overflow: hidden; width: 100%;
-  border-top: 1px solid #ededed;
-  border-bottom: 1px solid #ededed;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 14px 0;
-  background: #fafafa;
+  background: #0b0e17;
 }
 .ticker-track {
   display: flex; gap: 52px;
@@ -266,7 +275,7 @@
 @keyframes tickerRun { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
 /* ── DIVIDER ─────────────────────────────────────────── */
-.divider { height: 1px; background: #ededed; border: none; margin: 0; }
+.divider { height: 1px; background: rgba(255, 255, 255, 0.08); border: none; margin: 0; }
 
 /* ── SCROLL REVEAL ───────────────────────────────────── */
 .reveal {
@@ -575,8 +584,8 @@ html.lenis, html.lenis body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  color: #141414;
+  background: #07090e;
+  color: #ffffff;
   z-index: 9999;
   gap: 20px;
 }
@@ -588,7 +597,7 @@ html.lenis, html.lenis body {
   padding-top: 140px;
   padding-bottom: 80px;
   overflow: hidden;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 900px) {
