@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, Star, Check, Bot, Send, Sliders, ChevronRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Star, Check, Bot, Flame, CheckCircle, Shield, Zap, Sparkles, TrendingUp, BarChart3, Clock, Users } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
 import MeteorsBackground from '../components/MeteorsBackground';
+import AuroraBackground from '../components/AuroraBackground';
+import TiltCard from '../components/TiltCard';
+import ShinyButton from '../components/ShinyButton';
+import AnimatedBeam from '../components/AnimatedBeam';
+import AnimatedNumber from '../components/AnimatedNumber';
 
 /* ─── SCROLL-REVEAL HOOK ─────────────────────────────────── */
 function useReveal() {
@@ -21,77 +26,54 @@ function useReveal() {
 
 /* ─── DATA ───────────────────────────────────────────────── */
 const STATS = [
-  { num: '4.8×',   label: 'Average client ROAS' },
-  { num: '₹40Cr+', label: 'Media spend managed' },
-  { num: '150+',   label: 'Active brand partners' },
-  { num: '97%',    label: 'Month-over-month retention' },
+  { num: '4.8×',   label: 'Average Client ROAS', desc: 'Across Meta & Google Ads' },
+  { num: '₹40Cr+', label: 'Media Spend Managed', desc: 'Data-driven ad campaigns' },
+  { num: '150+',   label: 'Active Brand Partners', desc: 'Worldwide client base' },
+  { num: '97%',    label: 'Client Retention Rate', desc: 'Month-over-month stability' },
 ];
 
 const SERVICES = [
   {
     num: '01',
-    title: 'AI Lead Automation',
-    desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar without any manual work.',
-    tags: ['24/7 Response', 'CRM Sync', 'WhatsApp & DM'],
-    color: '#1F4B99',
+    title: 'AI Lead & Sales Automation',
+    desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar 24/7 without manual work.',
+    tags: ['< 1s AI Response', 'Enterprise CRM Sync', 'WhatsApp & IG Automation'],
+    color: 'from-orange-500/20 to-amber-500/10',
+    borderColor: 'border-orange-500/30'
   },
   {
     num: '02',
-    title: 'Performance Paid Ads',
-    desc: 'Creative-first Meta and Google campaigns built on margin math, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our data-driven creative testing system.',
-    tags: ['Meta & Google', '4.5× Avg ROAS', 'Creative Testing'],
-    color: '#1F4B99',
+    title: 'Performance Paid Ads Engine',
+    desc: 'Creative-first Meta and Google campaigns engineered on unit economics, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our automated ad testing system.',
+    tags: ['Meta & Google Ads', '4.5× Avg ROAS', 'Creative Matrix Testing'],
+    color: 'from-blue-500/20 to-indigo-500/10',
+    borderColor: 'border-blue-500/30'
   },
   {
     num: '03',
-    title: 'AI Content Engine',
-    desc: 'We aggregate trending topics in your niche, script a full week of hooks, captions, and video scripts using AI, then deliver a content calendar ready to post — all in 60 seconds.',
-    tags: ['Video Scripts', 'Auto-Scheduling', 'Trend Research'],
-    color: '#1F4B99',
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    name: 'Priya Mehta', role: 'Founder, Glow Republic', initials: 'PM',
-    impact: '4.2× ROAS in 60 days',
-    text: 'Our ROAS went from 1.8 to 4.2 in 60 days. Our previous agency gave us pretty reports — Social Ninja\'s gave us revenue we could actually see in Shopify.',
-    platform: 'Meta Ads',
+    title: 'AI Content Studio & Branding',
+    desc: 'High-converting video scripts, carousel graphics, and social posts generated and scheduled automatically for your target niche.',
+    tags: ['Automated Content', 'Viral Script Writing', 'Niche Audio Models'],
+    color: 'from-purple-500/20 to-pink-500/10',
+    borderColor: 'border-purple-500/30'
   },
   {
-    name: 'Rahul Sharma', role: 'Fitness Coach, FitWithRahul', initials: 'RS',
-    impact: '2K → 18K followers in 3 months',
-    text: 'The AI knows my niche better than most agencies. Three months of consistent content got me from 2,000 to 18,000 Instagram followers.',
-    platform: 'Instagram',
-  },
-  {
-    name: 'Vikram Singh', role: 'CEO, Velocity Logistics', initials: 'VS',
-    impact: '40% lower cost per lead',
-    text: 'They found leaks in our ad account we didn\'t even know existed. Two weeks later our CPL dropped 40%. Real money back in our pocket.',
-    platform: 'Google Ads',
-  },
-  {
-    name: 'Fatima Al-Rashidi', role: 'Marketing Head, Al-Futtaim Group', initials: 'FA',
-    impact: '4.5× ROAS across 3 markets',
-    text: 'No jargon, no fluff. Clear numbers showing what we spent and what we made. Their transparency is unlike anything I\'ve seen from an agency.',
-    platform: 'Meta + Google',
-  },
-];
-
-const TOOLS = [
-  { name: 'WhatsApp Generator', desc: 'Build wa.me links with pre-filled messages and QR codes for campaigns.', url: 'https://linkwa.in', label: 'linkwa.in', tag: 'Free Tool' },
-  { name: 'Salary Calculators', desc: 'Gross-to-net tax calculators, hourly converters, FICA deductions.', url: 'https://salary.socialninjas.in', label: 'salary.socialninjas.in', tag: 'Free Tool' },
-  { name: 'AI Content Studio', desc: 'Aggregates trending topics and scripts a full week of content in 60s.', url: '/content-studio', label: 'content-studio', tag: 'AI Product' },
-  { name: 'Fit Ninja Coach', desc: 'Personalized AI fitness coaching with diet plans and workout programs.', url: 'https://fit.socialninjas.in', label: 'fit.socialninjas.in', tag: 'App' },
+    num: '04',
+    title: 'Full-Funnel CRO & Web Systems',
+    desc: 'High-speed landing pages and checkout systems optimized for maximum conversion rate, Instant speed scores, and zero lead dropoff.',
+    tags: ['Sub-Second Speed', 'Instant Conversion', 'A/B Split Testing'],
+    color: 'from-emerald-500/20 to-teal-500/10',
+    borderColor: 'border-emerald-500/30'
+  }
 ];
 
 const DEMO_CHAT = [
-  { from: 'lead', text: 'Hi, I want to run ads for my coaching business.' },
-  { from: 'ai',   text: 'Hi there! Great timing 🎯 — we specialise in coaches and educators. What\'s your current monthly ad budget?' },
+  { from: 'lead', text: 'Hi! I run a fitness brand and need more qualified leads.' },
+  { from: 'ai',   text: 'Hi there! Great timing 🎯 — we specialise in scaling fitness & e-commerce brands. What is your current monthly ad budget?' },
   { from: 'lead', text: 'Around ₹80,000 per month.' },
-  { from: 'ai',   text: 'Perfect. At that budget we typically generate 180–220 qualified leads/month with a CPL of ₹360–450. Can I book a 15-min audit call?' },
-  { from: 'lead', text: 'Yes, tomorrow works.' },
-  { from: 'ai',   text: 'Done! I\'ve sent a calendar link to your email. Our growth strategist will join you tomorrow. 📅' },
+  { from: 'ai',   text: 'Perfect. At that budget we typically generate 180–220 qualified leads/month with a target CPL of ₹360–450. Can I schedule a 15-min audit call for you?' },
+  { from: 'lead', text: 'Yes, tomorrow works!' },
+  { from: 'ai',   text: 'Done! I have booked your call and synced your details directly into our CRM calendar. 📅' },
 ];
 
 /* ─── HOME COMPONENT ─────────────────────────────────────── */
@@ -102,7 +84,7 @@ const Home: React.FC = () => {
   const [chatMsgs, setChatMsgs] = useState<typeof DEMO_CHAT>([]);
   const [typing, setTyping] = useState(false);
   const idxRef = useRef(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<any>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -138,373 +120,258 @@ const Home: React.FC = () => {
   }
 
   /* ROAS slider */
-  const [budget, setBudget] = useState(1000000);
-  const revenue = budget * 4.8;
-  const leads   = Math.round(budget / 380);
+  const [spend, setSpend] = useState(150000);
+  const roas = 4.2;
+  const rev = Math.round(spend * roas);
+  const profit = Math.round(rev - spend);
 
-  /* Testimonial rotation */
-  const [tIdx, setTIdx] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setTIdx(p => (p + 1) % TESTIMONIALS.length), 6500);
-    return () => clearInterval(t);
-  }, []);
-
-  /* Scroll parallax */
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const rawY       = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
-  const smoothY    = useSpring(rawY,       { stiffness: 60, damping: 18 });
-  const smoothOp   = useSpring(rawOpacity, { stiffness: 60, damping: 18 });
-
-  /* Parallax floating layer — cards shift at a different rate than hero text */
-  const rawCardsY  = useTransform(scrollYProgress, [0, 1], [0, 50]);
-  const smoothCards = useSpring(rawCardsY, { stiffness: 50, damping: 20 });
+  const smoothY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const smoothOp = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <div className="page-wrap" style={{ fontFamily: "'Inter',system-ui,sans-serif", background: '#fff', color: '#141414' }}>
+    <div className="min-h-screen bg-[#07090e] text-white font-sans selection:bg-brand-primary selection:text-white">
       <SEO
-        title="Social Ninja's | AI-Powered Performance Marketing Agency"
-        description="AI automation, paid ads, and content creation that actually works. Book a free strategy call."
-        keywords="performance marketing India, AI automation agency, paid ads agency India, AI content creation"
+        title="Social Ninja's | AI-Powered Performance Marketing & Growth Systems"
+        description="We build custom AI sales pipelines, run high-ROAS Meta & Google ads, and engineer automated content systems for scaling brands."
       />
 
-      {/* ── HERO ─────────────────────────────────────────── */}
-      <section ref={heroRef} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 100, paddingBottom: 80, position: 'relative', overflow: 'hidden' }}>
-        <MeteorsBackground number={22} />
+      {/* ── 1. HERO SECTION WITH AURORA & METEORS ──────────────── */}
+      <AuroraBackground className="min-h-screen pt-28 pb-16 relative overflow-hidden">
+        <MeteorsBackground number={24} />
 
-        {/* Subtle grid bg */}
-        <div aria-hidden style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          backgroundImage: 'linear-gradient(#ededed 1px, transparent 1px), linear-gradient(90deg, #ededed 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          maskImage: 'radial-gradient(ellipse 80% 70% at 50% 0%, black 40%, transparent 100%)',
-          opacity: 0.5,
-        }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-        <div className="container" style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="hero-grid-cols">
-
-            {/* Left — text, fades out on scroll */}
-            <motion.div style={{ y: smoothY, opacity: smoothOp }}>
-              <div className="pill" style={{ marginBottom: 24, width: 'fit-content' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3ba213', flexShrink: 0 }} />
-                150+ brands scaled globally since 2022
+            {/* Left Column — Text & CTAs */}
+            <motion.div style={{ y: smoothY, opacity: smoothOp }} className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/25 text-brand-primary text-xs font-bold uppercase tracking-wider shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                150+ Brands Scaled Globally Since 2022
               </div>
 
-              <h1 className="animate-text-shimmer" style={{ fontSize: 'clamp(40px,4.5vw,64px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', marginBottom: 20, fontFamily: "'Plus Jakarta Sans',system-ui" }}>
-                AI-powered<br />growth systems<br />
-                <span style={{ color: '#1F4B99' }}>that scale.</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] animate-text-shimmer">
+                AI-Powered <br /> Growth Systems <br />
+                <span className="text-brand-primary font-black">That Scale Revenue.</span>
               </h1>
 
-              <p style={{ fontSize: 17, fontWeight: 400, color: '#717171', lineHeight: 1.65, maxWidth: 480, marginBottom: 36 }}>
-                We build custom AI sales pipelines, run data-driven paid ads, and engineer content systems for brands that want measurable, repeatable growth.
+              <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
+                We build autonomous AI lead pipelines, run high-margin Meta & Google ad campaigns, and deploy automated content systems engineered for repeatable profit.
               </p>
 
-              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 52 }}>
-                <Link to="/contact"><button className="btn-primary inspira-glow-button" style={{ fontSize: 14, padding: '12px 22px' }}>Book Free Audit <ArrowRight size={14} /></button></Link>
-                <Link to="/services"><button className="btn-ghost" style={{ fontSize: 14 }}>Explore Systems</button></Link>
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <Link to="/contact">
+                  <ShinyButton variant="primary" className="text-sm font-bold">
+                    Book Free Audit <ArrowRight size={16} />
+                  </ShinyButton>
+                </Link>
+                <Link to="/services">
+                  <ShinyButton variant="secondary" className="text-sm font-bold">
+                    Explore Core Systems
+                  </ShinyButton>
+                </Link>
               </div>
 
-              {/* Mini stats row */}
-              <div style={{ display: 'flex', gap: 36, flexWrap: 'wrap', paddingTop: 28, borderTop: '1px solid #ededed' }}>
-                {STATS.slice(0, 3).map(s => (
-                  <div key={s.label}>
-                    <div style={{ fontFamily: "'Plus Jakarta Sans'", fontSize: 22, fontWeight: 900, letterSpacing: '-1px', color: '#141414', lineHeight: 1 }}>{s.num}</div>
-                    <div style={{ fontSize: 11, color: '#adadad', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.label}</div>
-                  </div>
-                ))}
+              {/* Proof Badges */}
+              <div className="pt-6 border-t border-neutral-800/80 flex items-center gap-6 text-xs text-neutral-400">
+                <div className="flex items-center gap-1.5">
+                  <Shield size={14} className="text-emerald-400" />
+                  <span>Guaranteed ROAS Target</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Zap size={14} className="text-amber-400" />
+                  <span>Sub-Second AI Speed</span>
+                </div>
               </div>
             </motion.div>
 
-            {/* Right — chat demo card, scrolls at slightly different rate (parallax) */}
-            <motion.div style={{ y: smoothCards }}>
-              <div className="card" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 40px rgba(0,0,0,0.08)' }}>
-
-                {/* Card header */}
-                <div style={{ background: '#fafafa', padding: '14px 18px', borderBottom: '1px solid #ededed', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Bot size={14} color="#1F4B99" />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: '#141414' }}>AI Lead Qualifier</span>
+            {/* Right Column — 3D Tilt Chat Demo */}
+            <motion.div style={{ y: smoothY }}>
+              <TiltCard className="p-6 bg-[#0e121d]/90 backdrop-blur-xl border border-neutral-800 shadow-2xl">
+                <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-brand-primary/20 border border-brand-primary/30 flex items-center justify-center text-brand-primary">
+                      <Bot size={18} />
+                    </div>
+                    <div>
+                      <div className="font-bold text-xs text-white">AI Qualifier Agent</div>
+                      <div className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Live Automated Sync
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3ba213' }} />
-                    <span style={{ fontSize: 11, color: '#717171', fontWeight: 500 }}>Active</span>
-                  </div>
+                  <span className="text-[10px] text-neutral-400 bg-neutral-800 px-2 py-0.5 rounded-full font-mono">Response: 0.4s</span>
                 </div>
 
-                {/* Messages */}
-                <div ref={chatContainerRef} style={{ padding: '20px 18px', height: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, background: '#fff' }}>
-                  {chatMsgs.length === 0 && !typing && (
-                    <div style={{ textAlign: 'center', color: '#adadad', fontSize: 12, margin: 'auto', fontFamily: "'Geist Mono',monospace" }}>Initialising simulation...</div>
-                  )}
+                <div ref={chatContainerRef} className="space-y-3 h-64 overflow-y-auto pr-1 text-xs font-sans">
                   {chatMsgs.map((m, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: m.from === 'ai' ? 'flex-start' : 'flex-end' }}>
-                      <div style={{
-                        maxWidth: '80%',
-                        padding: '9px 13px',
-                        borderRadius: m.from === 'ai' ? '14px 14px 14px 3px' : '14px 14px 3px 14px',
-                        fontSize: 13,
-                        lineHeight: 1.45,
-                        background: m.from === 'ai' ? '#f5f5f5' : '#1F4B99',
-                        color: m.from === 'ai' ? '#141414' : '#fff',
-                        animation: 'fadeUp 0.25s ease',
-                      }}>
+                    <div key={i} className={`flex ${m.from === 'lead' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[85%] p-3 rounded-2xl leading-relaxed ${
+                        m.from === 'lead'
+                          ? 'bg-brand-primary text-white rounded-br-none shadow-md font-medium'
+                          : 'bg-[#141a29] text-neutral-200 border border-neutral-800 rounded-bl-none'
+                      }`}>
                         {m.text}
                       </div>
                     </div>
                   ))}
                   {typing && (
-                    <div style={{ display: 'flex', gap: 4, padding: '9px 14px', background: '#f5f5f5', borderRadius: '14px 14px 14px 3px', width: 'fit-content' }}>
-                      {[0,1,2].map(i => <span key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: '#adadad', animation: `bounce 1s infinite ${i * 0.2}s`, display: 'block' }} />)}
+                    <div className="flex justify-start">
+                      <div className="bg-[#141a29] border border-neutral-800 p-2.5 rounded-2xl text-neutral-400 text-xs flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" />
+                        <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.2s]" />
+                        <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce [animation-delay:0.4s]" />
+                      </div>
                     </div>
                   )}
                 </div>
+              </TiltCard>
+            </motion.div>
 
-                {/* Input bar mock */}
-                <div style={{ background: '#fafafa', padding: '10px 14px', borderTop: '1px solid #ededed', display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <div style={{ flex: 1, background: '#fff', border: '1px solid #ededed', borderRadius: 8, padding: '7px 12px', fontSize: 12, color: '#adadad' }}>Simulating responses…</div>
-                  <Link to="/contact">
-                    <button className="btn-primary" style={{ padding: '7px 14px', fontSize: 12 }}>Build Mine <ArrowRight size={11} /></button>
-                  </Link>
+          </div>
+        </div>
+      </AuroraBackground>
+
+      {/* ── 2. PROOF METRICS WITH ANIMATED NUMBERS ────────────── */}
+      <section className="py-16 bg-[#0b0e17] border-y border-neutral-800/80 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {STATS.map((stat, i) => (
+              <SpotlightCard key={i} className="p-6 text-center bg-[#0e121d] border border-neutral-800/80">
+                <div className="text-3xl sm:text-4xl font-black text-white tracking-tight text-brand-primary">
+                  <AnimatedNumber value={stat.num} />
+                </div>
+                <div className="font-bold text-xs text-neutral-200 mt-2">{stat.label}</div>
+                <div className="text-[11px] text-neutral-500 mt-1">{stat.desc}</div>
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. BENTO GRID CORE SYSTEMS SECTION ──────────────── */}
+      <section className="py-24 bg-[#07090e] relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="px-3.5 py-1 bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-bold uppercase rounded-full tracking-wider">
+              CORE GROWTH SYSTEMS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+              Everything You Need to Scale Revenue.
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400">
+              Four engineered growth pillars designed to capture leads, scale ads profitability, and automate client acquisition.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {SERVICES.map((svc, i) => (
+              <SpotlightCard key={i} className="p-8 bg-[#0e121d] border border-neutral-800/80 space-y-4 hover:border-brand-primary/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-brand-primary px-2.5 py-1 bg-brand-primary/10 rounded-lg border border-brand-primary/20">
+                    {svc.num}
+                  </span>
+                  <ArrowRight size={16} className="text-neutral-500 group-hover:text-brand-primary transition-colors" />
                 </div>
 
+                <h3 className="text-xl font-bold text-white">{svc.title}</h3>
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{svc.desc}</p>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {svc.tags.map(t => (
+                    <span key={t} className="px-2.5 py-1 bg-[#141a29] border border-neutral-800 text-neutral-300 rounded-lg text-[11px] font-semibold">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </SpotlightCard>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 4. LIVE SYSTEM FLOW (ANIMATED BEAM) ─────────────── */}
+      <section className="py-16 bg-[#07090e] relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedBeam />
+        </div>
+      </section>
+
+      {/* ── 5. INTERACTIVE ROAS CALCULATOR ─────────────────── */}
+      <section className="py-20 bg-[#0b0e17] border-t border-neutral-800/80 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            <div className="space-y-4">
+              <span className="px-3.5 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase rounded-full tracking-wider">
+                PROFIT CALCULATOR
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                Calculate Your Projected Ad Revenue & Profit
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                Adjust your estimated monthly ad budget below to see projected revenue built on our historical 4.2× ROAS average.
+              </p>
+            </div>
+
+            <TiltCard className="p-8 bg-[#0e121d] border border-neutral-800 space-y-6">
+              <div>
+                <div className="flex justify-between items-center text-xs font-bold text-neutral-300 mb-2">
+                  <span>Monthly Ad Budget</span>
+                  <span className="text-base text-brand-primary font-black">₹{spend.toLocaleString('en-IN')}</span>
+                </div>
+                <input
+                  type="range"
+                  min="25000"
+                  max="1000000"
+                  step="25000"
+                  value={spend}
+                  onChange={e => setSpend(Number(e.target.value))}
+                  className="w-full h-2 bg-[#141a29] rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                />
               </div>
-            </motion.div>
+
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-neutral-800">
+                <div className="bg-[#141a29] p-4 rounded-xl border border-neutral-800">
+                  <div className="text-[11px] text-neutral-400 font-bold uppercase">Projected Revenue</div>
+                  <div className="text-xl font-black text-emerald-400 mt-1">₹{rev.toLocaleString('en-IN')}</div>
+                </div>
+
+                <div className="bg-[#141a29] p-4 rounded-xl border border-neutral-800">
+                  <div className="text-[11px] text-neutral-400 font-bold uppercase">Estimated Profit</div>
+                  <div className="text-xl font-black text-brand-primary mt-1">₹{profit.toLocaleString('en-IN')}</div>
+                </div>
+              </div>
+            </TiltCard>
 
           </div>
         </div>
       </section>
 
-      {/* ── LOGO TICKER ──────────────────────────────────── */}
-      <div className="section-wrap-alt" style={{ padding: '24px 0', margin: '40px 0 0 0' }}>
-        <div className="ticker-wrap" style={{ border: 'none', background: 'transparent', padding: 0 }}>
-          <div className="ticker-track">
-            {[...Array(2)].map((_, ri) =>
-              ['Meta Ads','Google Ads','WhatsApp API','AI Automation','Content Creation','Paid Media','Lead Qualification','Instagram Growth','B2B Outbound','CRM Integration'].map(t => (
-                <span key={`${ri}-${t}`} style={{ fontSize: 13, fontWeight: 500, color: '#adadad', whiteSpace: 'nowrap' }}>{t}</span>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* ── SERVICES ─────────────────────────────────────── */}
-      <div className="section-wrap-white">
-        <section className="section">
-          <div style={{ marginBottom: 56 }} className="reveal">
-            <div className="pill" style={{ marginBottom: 16 }}>Core Systems</div>
-            <h2 className="reveal d1" style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414', maxWidth: 560, fontFamily: "'Plus Jakarta Sans',system-ui" }}>
-              Everything you need to grow. Nothing you don't.
+      {/* ── 6. FINAL CALL TO ACTION ─────────────────────────── */}
+      <section className="py-24 bg-[#07090e] relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <SpotlightCard className="p-12 bg-gradient-to-br from-[#0e121d] via-[#121826] to-[#0e121d] border border-neutral-800 space-y-6 shadow-2xl">
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight animate-text-shimmer">
+              Ready to Build Your AI Revenue Engine?
             </h2>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {SERVICES.map((svc, i) => (
-              <div
-                key={svc.num}
-                className="reveal core-system-row"
-                style={{
-                  transitionDelay: `${i * 0.08}s`,
-                }}
-              >
-                <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, color: '#adadad', paddingTop: 4 }}>{svc.num}</div>
-                <div>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.4px', color: '#141414', marginBottom: 10 }}>{svc.title}</h3>
-                  <p style={{ fontSize: 14.5, color: '#717171', lineHeight: 1.65, maxWidth: 580, marginBottom: 16 }}>{svc.desc}</p>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {svc.tags.map(t => <span key={t} className="pill" style={{ fontSize: 11 }}>{t}</span>)}
-                  </div>
-                </div>
-                <Link to="/services">
-                  <button className="btn-ghost" style={{ marginTop: 4, fontSize: 13 }}>Details <ArrowRight size={12} /></button>
-                </Link>
-              </div>
-            ))}
-            <div style={{ borderTop: '1px solid #ededed' }} />
-          </div>
-        </section>
-      </div>
-
-      {/* ── ROAS CALCULATOR + COPY SPLIT ─────────────────── */}
-      <div className="section-wrap-alt">
-        <section className="section">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }} className="hero-grid-cols">
-
-            <div className="reveal-l">
-              <div className="pill" style={{ marginBottom: 16 }}>See The Math</div>
-              <h2 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 16, color: '#141414' }}>
-                We run your ads<br />on pure math.
-              </h2>
-              <p style={{ fontSize: 15, color: '#717171', lineHeight: 1.65, marginBottom: 28 }}>
-                Every campaign starts with a profitability model — your CPL target, your close rate, your LTV. We reverse-engineer from your revenue goal and never burn budget without a data-backed reason.
-              </p>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
-                {['Margin-first media buying','Creative fatigue monitoring','Weekly ROAS reporting','Full attribution across channels'].map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#141414' }}>
-                    <Check size={14} color="#1F4B99" strokeWidth={2.5} />{item}
-                  </li>
-                ))}
-              </ul>
-              <Link to="/contact"><button className="btn-primary">Start Scaling <ArrowRight size={14} /></button></Link>
-            </div>
-
-            <div className="reveal-r d2">
-              <div className="card" style={{ padding: 28, borderRadius: 20, background: '#ffffff' }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: '#adadad', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 20 }}>ROAS Calculator</div>
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <span style={{ fontSize: 13, color: '#717171' }}>Monthly ad budget</span>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: '#141414' }}>₹{(budget / 100000).toFixed(0)}L</span>
-                  </div>
-                  <input type="range" min={200000} max={5000000} step={100000} value={budget} onChange={e => setBudget(+e.target.value)}
-                    style={{ width: '100%', accentColor: '#1F4B99', height: 4, cursor: 'pointer' }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
-                    <span style={{ fontSize: 11, color: '#adadad' }}>₹2L</span>
-                    <span style={{ fontSize: 11, color: '#adadad' }}>₹50L</span>
-                  </div>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
-                  {[
-                    { label: 'Qualified Leads / mo', value: leads.toLocaleString(), sub: 'at ₹380 CPL avg' },
-                    { label: 'Projected Revenue', value: `₹${(revenue / 100000).toFixed(1)}L`, sub: 'at 4.8× ROAS avg' },
-                  ].map(cell => (
-                    <div key={cell.label} style={{ background: '#fafafa', border: '1px solid #ededed', borderRadius: 12, padding: '14px 16px' }}>
-                      <div style={{ fontSize: 11, color: '#adadad', marginBottom: 6 }}>{cell.label}</div>
-                      <div style={{ fontSize: 22, fontWeight: 900, fontFamily: "'Plus Jakarta Sans'", letterSpacing: '-0.5px', color: '#141414' }}>{cell.value}</div>
-                      <div style={{ fontSize: 11, color: '#adadad', marginTop: 4 }}>{cell.sub}</div>
-                    </div>
-                  ))}
-                </div>
-                <Link to="/contact" style={{ display: 'block' }}>
-                  <button className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '12px 0' }}>Get This For My Brand <ArrowRight size={14} /></button>
-                </Link>
-              </div>
-            </div>
-
-          </div>
-        </section>
-      </div>
-
-      {/* ── TESTIMONIALS ─────────────────────────────────── */}
-      <div className="section-wrap-white">
-        <section className="section">
-          <div style={{ marginBottom: 48 }} className="reveal">
-            <div className="pill" style={{ marginBottom: 16 }}>Client Results</div>
-            <h2 className="reveal d1" style={{ fontSize: 'clamp(28px,3.5vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#141414', fontFamily: "'Plus Jakarta Sans',system-ui" }}>
-              Real brands. Real numbers.
-            </h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }} className="services-grid reveal">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={t.name} className="card" style={{ padding: 32, borderRadius: 18 }}>
-                <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
-                  {[...Array(5)].map((_, j) => <Star key={j} size={12} fill="#1F4B99" color="#1F4B99" />)}
-                </div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#141414', marginBottom: 8 }}>{t.impact}</div>
-                <p style={{ fontSize: 13.5, color: '#717171', lineHeight: 1.6, marginBottom: 18 }}>"{t.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid #ededed' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#1F4B99' }}>{t.initials}</div>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#141414' }}>{t.name}</div>
-                      <div style={{ fontSize: 11, color: '#adadad' }}>{t.role}</div>
-                    </div>
-                  </div>
-                  <span className="pill" style={{ fontSize: 11 }}>{t.platform}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      {/* ── TOOLS ECOSYSTEM ──────────────────────────────── */}
-      <div className="section-wrap-alt">
-        <section className="section">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }} className="hero-grid-cols">
-            <div className="reveal-l" style={{ position: 'sticky', top: 80 }} data-no-sticky-mobile="true">
-              <div className="pill" style={{ marginBottom: 16 }}>Free Tools</div>
-              <h2 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 16, color: '#141414' }}>
-                The Social Ninja's<br />product ecosystem.
-              </h2>
-              <p style={{ fontSize: 15, color: '#717171', lineHeight: 1.65, marginBottom: 28 }}>
-                Alongside our agency services, we build and maintain free and SaaS tools for marketers, creators, and businesses — all under our unified brand network.
-              </p>
-              <Link to="/tools"><button className="btn-ghost">View All Tools <ArrowRight size={13} /></button></Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }} className="reveal-r d1">
-              {TOOLS.map((tool, i) => (
-                <a key={tool.name} href={tool.url} target="_blank" rel="noopener" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <div
-                    style={{
-                      borderTop: '1px solid #ededed',
-                      padding: '24px 12px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'start',
-                      cursor: 'pointer',
-                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = '#1F4B99';
-                      e.currentTarget.style.paddingLeft = '24px';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = '#ededed';
-                      e.currentTarget.style.paddingLeft = '12px';
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: '#141414' }}>{tool.name}</span>
-                        <span className="pill" style={{ fontSize: 10, padding: '3px 8px' }}>{tool.tag}</span>
-                      </div>
-                      <p style={{ fontSize: 13, color: '#717171', lineHeight: 1.5, marginBottom: 6 }}>{tool.desc}</p>
-                      <span style={{ fontSize: 12, color: '#adadad', fontFamily: "'Geist Mono',monospace" }}>{tool.label}</span>
-                    </div>
-                    <ArrowUpRight size={16} color="#adadad" style={{ flexShrink: 0, marginTop: 2, marginLeft: 16 }} />
-                  </div>
-                </a>
-              ))}
-              <div style={{ borderTop: '1px solid #ededed' }} />
-            </div>
-          </div>
-        </section>
-      </div>
-
-      {/* ── CTA BANNER ───────────────────────────────────── */}
-      <div className="section-wrap-white">
-        <section className="section">
-          <div className="reveal" style={{ border: '1px solid #ededed', borderRadius: 20, padding: '64px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: '#fff' }}>
-            {/* Subtle top gradient line */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #fff, #1F4B99, #fff)' }} />
-            <div className="pill" style={{ marginBottom: 20, margin: '0 auto 20px' }}>Free Audit</div>
-            <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, letterSpacing: '-2px', color: '#141414', marginBottom: 14, maxWidth: 540, margin: '0 auto 14px' }}>
-              Ready to stop guessing and start scaling?
-            </h2>
-            <p style={{ fontSize: 16, color: '#717171', marginBottom: 32, maxWidth: 440, margin: '0 auto 32px' }}>
-              Book a free 30-minute growth blueprint call. We'll find leaks in your current setup and map out a system to fix them.
+            <p className="text-xs sm:text-sm text-neutral-300 max-w-xl mx-auto leading-relaxed">
+              Book a 15-minute growth strategy session with our agency team. We will audit your current funnels and outline an action plan.
             </p>
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact"><button className="btn-primary" style={{ padding: '13px 28px', fontSize: 15 }}>Book Free Audit <ArrowRight size={14} /></button></Link>
-              <a href="/content-studio">
-                <button className="btn-ghost" style={{ padding: '12px 24px', fontSize: 15 }}>Try Content Studio Free</button>
-              </a>
+            <div className="flex justify-center gap-4 pt-2">
+              <Link to="/contact">
+                <ShinyButton variant="primary" className="text-sm font-bold px-8 py-4">
+                  Schedule Strategy Audit <ArrowRight size={16} />
+                </ShinyButton>
+              </Link>
             </div>
-          </div>
-        </section>
-      </div>
+          </SpotlightCard>
+        </div>
+      </section>
 
-      <style>{`
-        @keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes bounce  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-        @media(max-width:768px){
-          [style*="gridTemplateColumns: '80px 1fr auto'"]{grid-template-columns:1fr!important;gap:8px!important;}
-          [style*="auto"]:last-child{display:none}
-        }
-      `}</style>
     </div>
   );
 };

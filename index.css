@@ -507,6 +507,201 @@ html.lenis, html.lenis body {
 }
 
 /* ── INSPIRA UI GLOW BUTTON ────────────────────────── */
+.core-system-row:hover {
+  border-color: #1F4B99 !important;
+  padding-left: 24px !important;
+}
+
+.blog-stat-badge {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .core-system-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 24px 8px !important;
+  }
+  .core-system-row:hover {
+    padding-left: 16px !important;
+  }
+}
+@media (max-width: 640px) {
+  .blog-stat-badge {
+    display: none !important;
+  }
+}
+
+/* ── MOBILE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .section { padding: 64px 20px; }
+  .page-header { padding-top: 80px; padding-bottom: 48px; }
+  .hero-grid-cols { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .services-grid  { grid-template-columns: 1fr !important; }
+  .three-cols     { grid-template-columns: repeat(2,1fr) !important; }
+  .four-cols      { grid-template-columns: repeat(2,1fr) !important; }
+  .footer-grid    { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+}
+@media (max-width: 640px) {
+  .section { padding: 48px 16px; }
+  .page-header { padding-top: 74px; padding-bottom: 36px; }
+  .three-cols { grid-template-columns: 1fr !important; }
+  .four-cols  { grid-template-columns: 1fr !important; }
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .btn-primary, .btn-ghost { width: 100%; justify-content: center; min-height: 48px; font-size: 15px; }
+  .section-title { font-size: clamp(24px, 7vw, 36px) !important; letter-spacing: -0.8px !important; }
+}
+@media (max-width: 768px) {
+  .hidden-mobile { display: none !important; }
+  .show-mobile   { display: block !important; }
+  /* Disable sticky on mobile — it overlaps content when grid collapses to 1 col */
+  [data-no-sticky-mobile] { position: static !important; top: auto !important; }
+}
+@media (min-width: 769px) {
+  .show-mobile   { display: none !important; }
+  .hidden-mobile { display: flex !important; }
+}
+
+/* ── MISC ANIMATIONS ─────────────────────────────────── */
+@keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes bounce  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes spin    { to{transform:rotate(360deg)} }
+
+/* ── LOADER ──────────────────────────────────────────── */
+.sn-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #141414;
+  z-index: 9999;
+  gap: 20px;
+}
+
+/* ── HERO SECTION RESPONSIVE ─────────────────────────── */
+/* Used across About, Blog, Tools, AIProducts, Services, GrowthSystems */
+.hero-section {
+  position: relative;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  overflow: hidden;
+  border-bottom: 1px solid #ededed;
+}
+
+@media (max-width: 900px) {
+  .hero-section { padding-top: 96px; padding-bottom: 56px; }
+}
+@media (max-width: 640px) {
+  .hero-section { padding-top: 80px; padding-bottom: 40px; }
+}
+
+/* ── MOBILE GLOBAL POLISH ────────────────────────────── */
+@media (max-width: 768px) {
+  /* Images never overflow */
+  img, video { max-width: 100%; height: auto; }
+
+  /* Cards stack cleanly */
+  .card, .glass-card, .card-alt {
+    border-radius: 12px;
+  }
+
+  /* Fix hero sections built with inline paddingTop: 140 */
+  [style*="paddingTop: 140"],
+  [style*="paddingTop:140"] {
+    padding-top: 96px !important;
+    padding-bottom: 56px !important;
+  }
+  [style*="paddingTop: 160"],
+  [style*="paddingTop:160"] {
+    padding-top: 96px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* Ticker stops being cramped */
+  .ticker-wrap { padding: 10px 0; }
+
+  /* Stat numbers scale down */
+  .stat-num { font-size: 28px; }
+
+  /* Footer text tighter */
+  .footer-grid { gap: 24px !important; }
+
+  /* Pill badges wrap */
+  .pill { font-size: 11px; padding: 4px 10px; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small phones */
+  [style*="paddingTop: 140"],
+  [style*="paddingTop:140"] {
+    padding-top: 76px !important;
+    padding-bottom: 40px !important;
+  }
+  [style*="paddingTop: 160"],
+  [style*="paddingTop:160"] {
+    padding-top: 76px !important;
+  }
+  .container, .section { padding-left: 16px !important; padding-right: 16px !important; }
+}
+
+/* ── LENIS SMOOTH SCROLL ───────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ── INSPIRA UI ANIMATION KEYFRAMES ────────────────── */
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-800px);
+    opacity: 0;
+  }
+}
+.animate-meteor {
+  animation: meteor 5s linear infinite;
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-text-shimmer {
+  background: linear-gradient(135deg, #ffffff 0%, #ff8c00 45%, #ff4500 70%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 6s ease infinite;
+}
+
+/* ── INSPIRA UI GLOW BUTTON ────────────────────────── */
 .inspira-glow-button {
   position: relative;
   box-shadow: 0 0 25px -5px rgba(255, 107, 0, 0.45);
@@ -515,4 +710,40 @@ html.lenis, html.lenis body {
 .inspira-glow-button:hover {
   box-shadow: 0 0 45px 8px rgba(255, 107, 0, 0.65);
   transform: translateY(-2px) scale(1.02);
+}
+
+/* ── AURORA & SHIMMER KEYFRAMES ───────────────────── */
+@keyframes aurora-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(60px, 40px) scale(1.15);
+  }
+}
+@keyframes aurora-reverse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-50px, -30px) scale(1.12);
+  }
+}
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-aurora-slow {
+  animation: aurora-slow 18s ease-in-out infinite;
+}
+.animate-aurora-reverse {
+  animation: aurora-reverse 22s ease-in-out infinite;
+}
+.animate-shimmer-sweep {
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
 }
