@@ -31,3 +31,7 @@ build_output.txt
 dist/
 dist-landing/
 
+.env*
+
+# Vercel generated
+.env.local
