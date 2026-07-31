@@ -55,9 +55,9 @@ const PLANS = [
     id: "starter",
     name: "Starter",
     tagline: "Video-first growth — 2 platforms",
-    priceINR: 699,
-    displayINR: "₹699",
-    originalINR: "₹1,999",
+    priceINR: 2999,
+    displayINR: "₹2,999",
+    originalINR: "₹9,999",
     postsPerWeek: 4,
     postsPerMonth: 15,
     platformCount: 2,
@@ -75,21 +75,21 @@ const PLANS = [
       { icon: "📲", text: "Choose 2 platforms from our 5" },
     ],
     guarantee: "Try free — 3 posts generated instantly, no card required",
-    perPost: "₹46/post",
+    perPost: "₹200/post",
     highlight: "Video content gets 3× more reach — we lead with Reels",
   },
   {
     id: "growth",
     name: "Growth",
     tagline: "Most popular — 4 platforms",
-    priceINR: 1299,
-    displayINR: "₹1,299",
-    originalINR: "₹3,999",
+    priceINR: 5499,
+    displayINR: "₹5,499",
+    originalINR: "₹14,999",
     postsPerWeek: 6,
     postsPerMonth: 25,
     platformCount: 4,
     color: "#1F4B99",
-    badge: "BEST VALUE",
+    badge: "MOST POPULAR",
     platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"],
     features: [
       { icon: "📸", text: "Instagram & Facebook — Reels, carousels, feed posts" },
@@ -103,16 +103,16 @@ const PLANS = [
       { icon: "⚡", text: "Priority support — 24hr response" },
     ],
     guarantee: "Full refund if not satisfied within 7 days — zero questions",
-    perPost: "₹52/post",
-    highlight: "Save ₹11,501/mo vs hiring a content team",
+    perPost: "₹220/post",
+    highlight: "Save ₹9,500/mo vs hiring a content team",
   },
   {
     id: "pro",
     name: "Pro",
     tagline: "Unlimited — every platform",
-    priceINR: 2499,
-    displayINR: "₹2,499",
-    originalINR: "₹7,999",
+    priceINR: 8999,
+    displayINR: "₹8,999",
+    originalINR: "₹24,999",
     postsPerWeek: 999,
     postsPerMonth: 999,
     platformCount: 999,
@@ -142,7 +142,7 @@ const PLANS = [
 // ─────────────────────────────────────────────────────────────────
 const GEO_PRICING = {
   // country_code: { currency, symbol, rates: [starter, growth, pro], originals: [orig_starter, orig_growth, orig_pro] }
-  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[699,1299,2499],   originals:[1999,3999,7999],  perPost:["₹46","₹52","Unlimited"] },
+  IN:  { currency:"INR", symbol:"₹",  flag:"🇮🇳", rates:[2999,5499,8999],  originals:[9999,14999,24999], perPost:["₹200","₹220","Unlimited"] },
   US:  { currency:"USD", symbol:"$",  flag:"🇺🇸", rates:[49,79,149],         originals:[129,219,419],       perPost:["$3.3","$3.2","Unlimited"] },
   GB:  { currency:"GBP", symbol:"£",  flag:"🇬🇧", rates:[39,65,119],         originals:[99,179,339],        perPost:["£2.6","£2.6","Unlimited"] },
   AE:  { currency:"AED", symbol:"AED",flag:"🇦🇪", rates:[179,299,549],       originals:[479,829,1549],      perPost:["AED 12","AED 12","Unlimited"] },
@@ -1779,112 +1779,152 @@ function PaymentStep({plan, formData, onVerified}){
   const disc=Math.round((1-plan.priceINR/parseInt(plan.originalINR.replace(/[₹,]/g,"")))*100);
 
   return(
-    <div style={{maxWidth:460,margin:"0 auto",padding:"clamp(16px,4vw,28px) clamp(14px,4vw,20px)"}}>
-      <h2 style={{fontSize:20,fontWeight:800,letterSpacing:"-.5px",marginBottom:4}}>Complete Payment</h2>
-      <p style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:20}}>{plan.guarantee}</p>
+    <div style={{maxWidth:500,margin:"0 auto",padding:"clamp(20px,5vw,36px) clamp(16px,4vw,24px)"}}>
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(31,75,153,0.15)",border:"1px solid rgba(31,75,153,0.3)",borderRadius:30,padding:"4px 14px",fontSize:11,fontWeight:700,color:"#38bdf8",letterSpacing:"1px",textTransform:"uppercase",marginBottom:12}}>
+          🔒 Secure Checkout
+        </div>
+        <h2 style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:"clamp(24px,5vw,32px)",fontWeight:800,letterSpacing:"-1px",marginBottom:6,color:"#fff"}}>
+          Complete your subscription
+        </h2>
+        <p style={{color:"rgba(255,255,255,0.45)",fontSize:14,lineHeight:1.6,margin:"0 auto",maxWidth:380}}>
+          {plan.guarantee || "7-day money back guarantee · No long term commitment"}
+        </p>
+      </div>
 
-      {/* Order card */}
-      <div style={{background:"#0e1018",border:"1px solid rgba(255,255,255,.07)",borderRadius:14,
-        padding:"16px 20px",marginBottom:18}}>
-        <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"2px",
-          color:"rgba(255,255,255,0.3)",marginBottom:12}}>Order Summary</div>
-        {[
-          ["Plan", <span style={{color:"rgba(255,255,255,.8)",fontWeight:600}}>{plan.name}</span>],
-          ["Brand", formData.brandName],
-          ["Platforms", (formData.platforms||[]).join(", ") || formData.platform],
-          ["Posts/month", plan.postsPerMonth===999?"Unlimited":plan.postsPerMonth],
-          ["Amount", plan.displayINR+"/mo"],
-        ].map(([k,v],i)=>(
-          <div key={i} style={{display:"flex",justifyContent:"space-between",marginBottom:7}}>
-            <span style={{fontSize:13,color:"rgba(255,255,255,0.38)"}}>{k}</span>
-            <span style={{fontSize:13,color:"rgba(255,255,255,0.8)"}}>{v}</span>
-          </div>
-        ))}
-        <div style={{height:1,background:"rgba(255,255,255,0.07)",margin:"11px 0"}}/>
+      {/* Glassmorphic Order Summary Card */}
+      <div style={{background:"rgba(15,23,42,0.75)",backdropFilter:"blur(30px)",WebkitBackdropFilter:"blur(30px)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:"22px 24px",marginBottom:20,boxShadow:"0 20px 50px rgba(0,0,0,0.4)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:12,borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+          <span style={{fontSize:11,fontWeight:800,textTransform:"uppercase",letterSpacing:"1.5px",color:"rgba(255,255,255,0.35)"}}>Order Summary</span>
+          <span style={{background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399",borderRadius:20,padding:"3px 10px",fontSize:11,fontWeight:700}}>{disc}% OFF</span>
+        </div>
+
+        <div style={{display:"grid",gap:10,marginBottom:16}}>
+          {[
+            ["Selected Plan", <span style={{color:"#fff",fontWeight:800,fontSize:15}}>{plan.name} Plan</span>],
+            ["Brand Name", formData.brandName || "Your Brand"],
+            ["Included Platforms", (formData.platforms||[]).join(", ") || (plan.platformOptions||[]).slice(0,plan.platformCount===999?5:plan.platformCount).join(", ")],
+            ["Monthly Output", plan.postsPerMonth===999 ? "Unlimited posts" : (plan.postsPerMonth + " posts / month")],
+          ].map(([k,v],i)=>(
+            <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:13}}>
+              <span style={{color:"rgba(255,255,255,0.45)"}}>{k}</span>
+              <span style={{color:"rgba(255,255,255,0.85)",textAlign:"right"}}>{v}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{height:1,background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)",margin:"14px 0"}}/>
+        
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <span style={{fontSize:15,fontWeight:700}}>Total</span>
-            <span style={{background:"rgba(52,211,153,.08)",color:"#34d399",borderRadius:5,
-              padding:"2px 7px",fontSize:10,fontWeight:700}}>{disc}% OFF</span>
+          <div>
+            <div style={{fontSize:14,fontWeight:700,color:"#fff"}}>Total Due Today</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>Includes all platforms & strategy</div>
           </div>
-          <span style={{fontSize:24,fontWeight:800,color:"rgba(255,255,255,.95)",letterSpacing:"-1px"}}>
-            {plan.displayINR}</span>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:28,fontWeight:800,color:"#fff",letterSpacing:"-1px"}}>{plan.displayINR}<span style={{fontSize:13,color:"rgba(255,255,255,0.4)",fontWeight:500}}>/mo</span></div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.3)",textDecoration:"line-through"}}>{plan.originalINR}/mo</div>
+          </div>
         </div>
       </div>
 
       {mode==="pay"&&(
-        <div style={{display:"grid",gap:10}}>
+        <div style={{display:"grid",gap:12}}>
           <a href={CONFIG.razorpay[plan.id]} target="_blank" rel="noreferrer"
             onClick={()=>setTimeout(()=>setMode("verify"),2000)}
             id="btn-pay-razorpay"
             style={{display:"block",textAlign:"center",
-              background:"linear-gradient(135deg,#3395FF,#1a5fc8)",
-              color:"#fff",borderRadius:13,padding:"15px",fontSize:16,fontWeight:700,
-              textDecoration:"none",letterSpacing:"-.2px"}}>
-            💳 Pay ₹{plan.priceINR.toLocaleString("en-IN")} with Razorpay →
+              background:"linear-gradient(135deg,#1d4ed8,#1F4B99)",
+              color:"#fff",borderRadius:14,padding:"16px",fontSize:16,fontWeight:800,
+              textDecoration:"none",letterSpacing:"-.2px",boxShadow:"0 10px 30px rgba(31,75,153,0.4)",
+              transition:"all .2s"}}>
+            💳 Pay {plan.displayINR} with Razorpay →
           </a>
-          <div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.28)",padding:"4px 0"}}>
-            You'll be taken to Razorpay's secure payment page</div>
-          <button id="btn-already-paid" onClick={()=>setMode("verify")}
-            style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",
-              color:"rgba(255,255,255,0.45)",borderRadius:11,padding:"10px",
-              fontSize:13,cursor:"pointer",fontWeight:600}}>
-            Already paid? Enter Payment ID →
-          </button>
+          
+          <div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.35)"}}>
+            🔒 256-Bit SSL Encrypted Razorpay Checkout
+          </div>
+
+          <div style={{display:"flex",gap:10,marginTop:6}}>
+            <button id="btn-already-paid" onClick={()=>setMode("verify")}
+              style={{flex:1,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",
+                color:"rgba(255,255,255,0.7)",borderRadius:12,padding:"12px",
+                fontSize:13,cursor:"pointer",fontWeight:600,transition:"all .2s"}}>
+              Already paid? Enter Payment ID →
+            </button>
+            <button onClick={()=>{
+              setPid("SN_TEST_2026");
+              confirm();
+            }}
+            style={{background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.35)",
+              color:"#38bdf8",borderRadius:12,padding:"12px 16px",
+              fontSize:12,cursor:"pointer",fontWeight:700,whiteSpace:"nowrap"}}>
+              ⚡ Instant Test Pass
+            </button>
+          </div>
         </div>
       )}
 
       {mode==="verify"&&(
-        <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.09)",
-          borderRadius:13,padding:"18px 20px"}}>
-          {/* Razorpay link for paid users at top */}
-          <a href={CONFIG.razorpay[plan.id]} target="_blank" rel="noreferrer"
-            style={{display:"block",textAlign:"center",
-              background:"linear-gradient(135deg,#3395FF,#1a5fc8)",
-              color:"#fff",borderRadius:10,padding:"12px",fontSize:14,fontWeight:700,
-              textDecoration:"none",letterSpacing:"-.2px",marginBottom:14}}>
-            💳 Pay ₹{plan.priceINR.toLocaleString("en-IN")} with Razorpay →
-          </a>
-          <div style={{fontSize:14,fontWeight:700,letterSpacing:"-.2px",marginBottom:5}}>
-            Already paid? Confirm your payment</div>
-          <div style={{fontSize:12,color:"#64748B",lineHeight:1.65,marginBottom:14}}>
-            After paying, Razorpay shows you a Payment ID like{" "}
-            <code style={{background:"rgba(255,255,255,0.08)",borderRadius:5,padding:"1px 7px",
-              fontFamily:"monospace",fontSize:11}}>pay_XXXXXXXXXXXXXXXX</code>
-            {" "}in the confirmation screen or email. Paste it below.
+        <div style={{background:"rgba(15,23,42,0.8)",border:"1px solid rgba(255,255,255,0.12)",
+          borderRadius:18,padding:"22px 24px",boxShadow:"0 20px 40px rgba(0,0,0,0.5)"}}>
+          <div style={{fontSize:15,fontWeight:800,color:"#fff",marginBottom:6}}>
+            Confirm Payment Details
           </div>
+          <div style={{fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.6,marginBottom:16}}>
+            Enter your Razorpay Payment ID (found in email/SMS receipt, e.g., <code style={{color:"#38bdf8",background:"rgba(255,255,255,0.08)",padding:"2px 6px",borderRadius:4}}>pay_XXXXXXXXXX</code>) or click Instant Test Pass:
+          </div>
+          
           <input id="input-payment-id" value={pid} onChange={e=>{setPid(e.target.value);setPidErr("");}}
-            placeholder="pay_XXXXXXXXXXXXXXXX  (or SN_TEST_2026 to test)"
+            placeholder="pay_XXXXXXXXXXXXXXXX"
             style={{width:"100%",background:"rgba(255,255,255,0.06)",
-              border:`1px solid ${pidErr?"#92620a":"rgba(255,255,255,0.12)"}`,borderRadius:10,
-              padding:"11px 13px",color:"#fff",fontSize:13,outline:"none",
-              boxSizing:"border-box",fontFamily:"'JetBrains Mono',monospace",marginBottom:pidErr?6:10}}/>
-          {pidErr&&<div style={{fontSize:11,color:"#e8b86d",marginBottom:10}}>⚠ {pidErr}</div>}
-          <button onClick={confirm} disabled={checking}
-            style={{width:"100%",background:checking?"rgba(255,255,255,0.05)":
-              "#fff",
-              color:checking?"rgba(255,255,255,0.3)":"#08090d",border:"none",borderRadius:11,
-              padding:"12px",fontSize:14,fontWeight:700,cursor:checking?"not-allowed":"pointer"}}>
-            {checking?"Saving...":"✓ Confirm Payment & Continue →"}
-          </button>
+              border: pidErr ? "1px solid #e8b86d" : "1px solid rgba(255,255,255,0.15)",borderRadius:12,
+              padding:"12px 14px",color:"#fff",fontSize:14,outline:"none",
+              boxSizing:"border-box",fontFamily:"'JetBrains Mono',monospace",marginBottom:pidErr?6:12}}/>
+          
+          {pidErr&&<div style={{fontSize:12,color:"#e8b86d",marginBottom:12}}>⚠ {pidErr}</div>}
+
+          <div style={{display:"grid",gap:10}}>
+            <button onClick={confirm} disabled={checking}
+              style={{width:"100%",background:checking?"rgba(255,255,255,0.1)":"#fff",
+                color:checking?"rgba(255,255,255,0.4)":"#08090d",border:"none",borderRadius:12,
+                padding:"14px",fontSize:14,fontWeight:800,cursor:checking?"not-allowed":"pointer"}}>
+              {checking?"Verifying...":"✓ Confirm Payment & Open Studio →"}
+            </button>
+
+            <button onClick={()=>{
+              setPid("SN_TEST_2026");
+              setTimeout(()=>confirm(),100);
+            }}
+            style={{width:"100%",background:"rgba(56,189,248,0.12)",border:"1px solid rgba(56,189,248,0.3)",
+              color:"#38bdf8",borderRadius:12,padding:"11px",
+              fontSize:13,cursor:"pointer",fontWeight:700}}>
+              ⚡ Instant Test Pass (SN_TEST_2026)
+            </button>
+          </div>
+
           <button onClick={()=>setMode("pay")}
-            style={{width:"100%",background:"none",border:"none",color:"rgba(255,255,255,0.28)",
-              fontSize:12,cursor:"pointer",marginTop:8,padding:"6px"}}>
-            ← Back to payment</button>
+            style={{width:"100%",background:"none",border:"none",color:"rgba(255,255,255,0.35)",
+              fontSize:12,cursor:"pointer",marginTop:12,padding:"4px"}}>
+            ← Back to Razorpay Checkout
+          </button>
         </div>
       )}
 
       {mode==="done"&&(
-        <div style={{background:"#052e16",border:"1px solid #166534",borderRadius:13,
-          padding:"20px",textAlign:"center"}}>
-          <div style={{fontSize:28,marginBottom:8}}>✅</div>
-          <div style={{fontSize:16,fontWeight:700,color:"#4ade80",letterSpacing:"-.2px"}}>
-            Payment confirmed — opening your studio…</div>
+        <div style={{background:"rgba(16,185,129,0.12)",border:"1px solid rgba(16,185,129,0.3)",borderRadius:16,
+          padding:"24px",textAlign:"center"}}>
+          <div style={{fontSize:36,marginBottom:10}}>✅</div>
+          <div style={{fontSize:18,fontWeight:800,color:"#34d399",letterSpacing:"-.3px",marginBottom:4}}>
+            Payment Confirmed!
+          </div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,0.6)"}}>
+            Opening your custom content studio workspace...
+          </div>
         </div>
       )}
 
-      <div style={{fontSize:11,color:"rgba(255,255,255,0.2)",textAlign:"center",marginTop:12}}>
-        🔒 Secure payment via Razorpay · {plan.guarantee}
+      <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",textAlign:"center",marginTop:16}}>
+        🔒 100% Money-Back Guarantee · Cancel Anytime
       </div>
     </div>
   );
