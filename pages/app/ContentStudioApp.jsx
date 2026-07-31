@@ -2726,29 +2726,46 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
 
   // ── PLANS SCREEN ──
   if(screen==="plans") return(
-    <div style={{maxWidth:920,margin:"0 auto",padding:"36px 20px"}}>
-      {/* Hero */}
-      <div style={{textAlign:"center",marginBottom:40}}>
-        <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.09)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,margin:"0 auto 20px"}}>🥷</div>
-        <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",textTransform:"uppercase",letterSpacing:"2px",marginBottom:14}}>AI Content Studio</div>
-        <h1 style={{fontSize:"clamp(28px,5.5vw,46px)",fontWeight:800,margin:"0 0 14px",letterSpacing:"-2px",lineHeight:1.05}}>
-          Choose your plan.
+    <div style={{maxWidth:960,margin:"0 auto",padding:"clamp(24px,5vw,48px) clamp(16px,4vw,24px)"}}>
+      {/* Step Indicator Header */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:32}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(31,75,153,0.2)",border:"1px solid rgba(56,189,248,0.3)",borderRadius:30,padding:"5px 16px",fontSize:12,fontWeight:700,color:"#38bdf8"}}>
+          <span>1. Select Plan</span>
+        </div>
+        <span style={{color:"rgba(255,255,255,0.2)"}}>→</span>
+        <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:30,padding:"5px 16px",fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.4)"}}>
+          <span>2. Payment</span>
+        </div>
+        <span style={{color:"rgba(255,255,255,0.2)"}}>→</span>
+        <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:30,padding:"5px 16px",fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.4)"}}>
+          <span>3. Brand Profile</span>
+        </div>
+      </div>
+
+      {/* Hero Header */}
+      <div style={{textAlign:"center",marginBottom:44}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:30,padding:"4px 14px",fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:16}}>
+          🥷 Agency-Grade Content Engine
+        </div>
+        <h1 style={{fontFamily:"'Bricolage Grotesque',sans-serif",fontSize:"clamp(32px,6vw,52px)",fontWeight:800,margin:"0 0 16px",letterSpacing:"-1.5px",lineHeight:1.05,color:"#fff"}}>
+          Scale your brand with AI.
         </h1>
-        <p style={{color:"rgba(255,255,255,.42)",fontSize:15,maxWidth:440,margin:"0 auto 24px",lineHeight:1.7}}>
-          AI researches trends and writes your captions, scripts and carousels every week. Copy, paste, post.
+        <p style={{color:"rgba(255,255,255,0.5)",fontSize:16,maxWidth:520,margin:"0 auto 28px",lineHeight:1.65}}>
+          Researches current trends in your niche, writes your captions, scripts, and carousels every week. Ready to paste & post.
         </p>
-        {/* Feature pills */}
-        <div style={{display:"flex",flexWrap:"wrap",gap:7,justifyContent:"center",marginBottom:10}}>
-          {["✓ Instagram & Facebook","✓ YouTube Shorts","✓ YouTube Long-Form","✓ LinkedIn","✓ Twitter/X","✓ Reel scripts","✓ Carousel slides","✓ Never repeats"].map(f=>(
-            <span key={f} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",
-              borderRadius:30,padding:"5px 13px",fontSize:12,color:"rgba(255,255,255,0.65)"}}>{f}</span>
+        
+        {/* Feature Pills */}
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",marginBottom:24}}>
+          {["✓ Reels & Shorts Scripts","✓ LinkedIn Document Decks","✓ GPT-4 Niche Research","✓ Zero Topic Repetition","✓ Cancel Anytime"].map(f=>(
+            <span key={f} style={{background:"rgba(15,23,42,0.6)",backdropFilter:"blur(10px)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:30,padding:"6px 14px",fontSize:12,color:"rgba(255,255,255,0.75)",fontWeight:500}}>{f}</span>
           ))}
         </div>
+
         <button onClick={()=>{
           setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#1F4B99", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
           setScreen("details");
-        }} className="sn-btn sn-btn-primary sn-btn-lg" style={{marginTop:24,width:"100%"}}>
-          ⚡ Try 3 Posts Free — No Card Needed
+        }} style={{background:"linear-gradient(135deg,rgba(56,189,248,0.15),rgba(31,75,153,0.25))",border:"1px solid rgba(56,189,248,0.4)",color:"#38bdf8",borderRadius:50,padding:"14px 28px",fontSize:14,fontWeight:800,cursor:"pointer",boxShadow:"0 10px 30px rgba(56,189,248,0.15)",transition:"all .2s"}}>
+          ⚡ Try 3 Posts Free — No Credit Card Needed
         </button>
       </div>
 
