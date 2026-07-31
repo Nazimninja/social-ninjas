@@ -6,16 +6,6 @@ import AuroraBackground from '../components/AuroraBackground';
 
 const TOOLS = [
   {
-    id: 'fit-ninja',
-    Icon: Sparkles,
-    title: 'Fit Ninja — AI Fitness & Diet Coach',
-    desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching tailored to your body type & goals.',
-    badge: 'AI Product',
-    badgeColor: '#ef4444',
-    url: 'https://fit.socialninjas.in',
-    isExternal: true,
-  },
-  {
     id: 'whatsapp',
     Icon: MessageSquare,
     title: 'WhatsApp Link Generator',

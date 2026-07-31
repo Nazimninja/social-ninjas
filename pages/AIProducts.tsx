@@ -31,17 +31,22 @@ const products = [
     ],
   },
   {
-    id: 'fit-ninja', badge: '🟢 Live Now', icon: '🏋️', name: 'Fit Ninja AI',
+    id: 'fit-ninja', badge: '🟢 Live Now', icon: '💪', name: 'Fit Ninja',
     tagline: 'Your personalized AI fitness coach & diet planner.',
-    desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching tailored to your exact body type, goals, and lifestyle.',
+    desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching — all built around your exact body, goal, and lifestyle.',
     color: '#ef4444',
-    tryLink: '/fit-ninja',
-    learnLink: '/fit-ninja',
-    stats: [['1,200+','Active Members'], ['90 Days','Body Transformation'], ['24/7','AI Coach Support'], ['100%','Custom Diets']],
-    features: ['Personalized calorie & macro calculation','Custom home or gym workout splits','24/7 instant AI fitness coach answers','Weekly progress and weight tracking','Recipe & meal swap recommendations'],
+    tryLink: 'https://fit.socialninjas.in',
+    learnLink: 'https://fit.socialninjas.in',
+    stats: [['4.9★','User Rating'], ['12K+','Active Members'], ['₹299/mo','Starting Price'], ['100%','Personalized']],
+    features: [
+      'Custom diet plans based on your weight, height, age & activity',
+      'Structured gym and home workout programs with set tracking',
+      'Vegetarian, vegan, and non-vegetarian customized meal options',
+      'Monthly AI coaching updates as your weight & strength progress',
+      'Built-in Sign In for paid members & fast signup for new users'
+    ],
     plans: [
-      { name: 'Monthly Pass', price: '₹1,499', note: 'Full AI fitness & diet coaching' },
-      { name: 'Pro Pass', price: '₹3,999', note: '90-day transformation plan', popular: true },
+      { name: 'Monthly Pass', price: '₹299/mo', note: 'Full AI Diet & Workout Plan' },
     ],
   },
   {

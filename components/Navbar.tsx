@@ -10,10 +10,11 @@ const BLUE_DEEP    = '#153880';
 const BORDER       = 'rgba(255, 255, 255, 0.08)';
 
 const navLinks = [
-  { label: 'Services', path: '/services' },
-  { label: 'Tools',    path: '/tools' },
-  { label: 'Blog',     path: '/blog' },
-  { label: 'About',    path: '/about' },
+  { label: 'AI Products', path: '/ai-products' },
+  { label: 'Services',    path: '/services' },
+  { label: 'Free Tools',  path: '/tools' },
+  { label: 'Blog',        path: '/blog' },
+  { label: 'About',       path: '/about' },
 ];
 
 const Navbar: React.FC = () => {

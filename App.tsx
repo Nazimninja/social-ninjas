@@ -30,7 +30,6 @@ const AIProductLanding = lazy(() => import('./pages/AIProductLanding'));
 const Tools = lazy(() => import('./pages/Tools'));
 
 const ContentStudio = lazy(() => import('./pages/app/ContentStudioApp.jsx'));
-const FitNinja = lazy(() => import('./pages/FitNinja'));
 
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
@@ -89,7 +88,6 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/promo/ai-lead-handling" element={<PageTransition><LeadAutomation /></PageTransition>} />
         <Route path="/ai-products" element={<PageTransition><AIProducts /></PageTransition>} />
         <Route path="/ai-products/:id" element={<PageTransition><AIProductLanding /></PageTransition>} />
-        <Route path="/fit-ninja" element={<PageTransition><FitNinja /></PageTransition>} />
         <Route path="/tools" element={<PageTransition><Tools /></PageTransition>} />
         <Route path="/app/content-studio" element={<PageTransition><ContentStudio /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
