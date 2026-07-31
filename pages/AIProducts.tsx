@@ -25,9 +25,23 @@ const products = [
     stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
     features: ['Researches live trends before writing — every time','Word-for-word scripts for Reels and YouTube Shorts','Captions written specifically for each platform','Carousel slide copy — paste straight into Canva','Real hashtag research — never generic or repeated','Thread writer for Twitter/X and Threads','Posting checklist with the best time to post'],
     plans: [
-      { name: 'Starter', price: '₹699', note: '15 posts/mo · 2 platforms' },
-      { name: 'Growth',  price: '₹1,299', note: '25 posts/mo · 4 platforms', popular: true },
-      { name: 'Pro',     price: '₹2,499', note: 'Unlimited posts · All 7 platforms' },
+      { name: 'Starter', price: '₹2,999', note: '15 posts/mo · 2 platforms' },
+      { name: 'Growth',  price: '₹5,499', note: '25 posts/mo · 4 platforms', popular: true },
+      { name: 'Pro',     price: '₹8,999', note: 'Unlimited posts · All 7 platforms' },
+    ],
+  },
+  {
+    id: 'fit-ninja', badge: '🟢 Live Now', icon: '🏋️', name: 'Fit Ninja AI',
+    tagline: 'Your personalized AI fitness coach & diet planner.',
+    desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching tailored to your exact body type, goals, and lifestyle.',
+    color: '#ef4444',
+    tryLink: '/fit-ninja',
+    learnLink: '/fit-ninja',
+    stats: [['1,200+','Active Members'], ['90 Days','Body Transformation'], ['24/7','AI Coach Support'], ['100%','Custom Diets']],
+    features: ['Personalized calorie & macro calculation','Custom home or gym workout splits','24/7 instant AI fitness coach answers','Weekly progress and weight tracking','Recipe & meal swap recommendations'],
+    plans: [
+      { name: 'Monthly Pass', price: '₹1,499', note: 'Full AI fitness & diet coaching' },
+      { name: 'Pro Pass', price: '₹3,999', note: '90-day transformation plan', popular: true },
     ],
   },
   {
