@@ -19,7 +19,7 @@ const products = [
     id: 'content-studio', badge: '🟢 Live Now', icon: '⚡', name: 'AI Content Studio',
     tagline: 'Your whole week of content — written in 60 seconds.',
     desc: 'Tell the AI about your brand once. Every week it looks up what\'s trending in your niche, then writes your captions, Reel scripts, carousel slides, and hashtags. All platform-specific. All ready to copy and post.',
-    color: '#1F4B99',
+    color: '#4281f5',
     tryLink: '/app/content-studio?plan=trial',
     learnLink: '/content-studio',
     stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
@@ -34,7 +34,7 @@ const products = [
     id: 'fit-ninja', badge: '🟢 Live Now', icon: '💪', name: 'Fit Ninja',
     tagline: 'Your personalized AI fitness coach & diet planner.',
     desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching — all built around your exact body, goal, and lifestyle.',
-    color: '#ef4444',
+    color: '#3ba213',
     tryLink: 'https://fit.socialninjas.in',
     learnLink: 'https://fit.socialninjas.in',
     stats: [['4.9★','User Rating'], ['12K+','Active Members'], ['₹299/mo','Starting Price'], ['100%','Personalized']],
@@ -52,7 +52,7 @@ const products = [
   {
     id: 'ai-sales-agent', badge: '🔜 Coming Soon', icon: '🤖', name: 'AI Sales Agent',
     tagline: 'Never miss a lead again. Even at 3am.',
-    desc: 'An AI that replies to every new lead in under 1 second — any time of day or night. It answers their questions, figures out if they\'re a good fit, and books them straight into your calendar. Your sales team only talks to people who are ready to buy.',
+    desc: 'An AI that replies to every new lead in under 1 second — any time of day or night. It answers their questions, figures out if they\'re a good fit, and books them straight into your calendar.',
     color: '#9b8ef0',
     tryLink: '/contact',
     learnLink: '/ai-products/ai-sales-agent',
@@ -62,7 +62,7 @@ const products = [
   {
     id: 'ad-copy-generator', badge: '🔜 Coming Soon', icon: '🎯', name: 'AI Ad Copy Generator',
     tagline: 'High-converting ad copy in seconds, not days.',
-    desc: 'Stop spending hours writing Facebook and Google ads. Describe what you\'re selling, and the AI writes multiple versions of your headline, body copy, and CTA — all based on proven frameworks that actually convert. Test 10 variations before breakfast.',
+    desc: 'Stop spending hours writing Facebook and Google ads. Describe what you\'re selling, and the AI writes multiple versions of your headline, body copy, and CTA — all based on proven frameworks.',
     color: '#2fcf8e',
     tryLink: '/contact',
     learnLink: '/ai-products/ad-copy-generator',
@@ -72,7 +72,7 @@ const products = [
   {
     id: 'reporting-assistant', badge: '🔜 Coming Soon', icon: '📊', name: 'AI Reporting Assistant',
     tagline: 'Know exactly what\'s working — without the spreadsheets.',
-    desc: 'Connect your ad accounts and every week the AI sends you a plain-English summary of what worked, what didn\'t, and what to do about it. No more spending Mondays building reports — just clear answers and next steps.',
+    desc: 'Connect your ad accounts and every week the AI sends you a plain-English summary of what worked, what didn\'t, and what to do about it. No more spending Mondays building reports.',
     color: '#e8b86d',
     tryLink: '/contact',
     learnLink: '/ai-products/reporting-assistant',
@@ -81,120 +81,165 @@ const products = [
   },
 ];
 
-const AIProducts: React.FC = () => {
+export const AIProducts: React.FC = () => {
   useReveal();
   return (
-    <div className="page-wrap" style={{ fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+    <div className="page-wrap bg-[#07090e] text-white min-h-screen font-sans selection:bg-[#1F4B99]/40">
       
       <SEO
-        title="AI Products | Social Ninja's"
-        description="AI tools built for brands that want to grow — Content Studio, AI Sales Agent, Ad Copy Generator, Reporting Assistant. Try free."
-        keywords="AI content generator India, AI marketing tools, AI sales agent, ad copy AI, marketing automation, AI social media tool, content studio AI, AI tools for brands, AI SaaS India"
+        title="AI Products & SaaS Suite | Social Ninja's"
+        description="Explore AI Content Studio, Fit Ninja, AI Sales Agent, Ad Copy Generator, and Reporting Assistant built by Social Ninja's."
+        keywords="AI content generator India, AI marketing tools, Fit Ninja, Social Ninja's AI"
       />
 
       {/* HERO */}
-      <div style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden', borderBottom: '1px solid #ededed' }}>
-        
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <div className="pill reveal" style={{ justifyContent: 'center' }}>AI Products</div>
-          <h1 className="reveal d1" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(40px,6.5vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 20, color: '#141414' }}>
-            Tools that do the work<br /><span style={{ background: 'linear-gradient(135deg,#1F4B99,#2fcf8e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>you don't have time for.</span>
+      <div className="relative pt-36 pb-20 overflow-hidden border-b border-neutral-800/80">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+            ✨ PREMIUM AI SAAS PRODUCTS
+          </div>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight font-['Bricolage_Grotesque'] text-white">
+            Tools that do the work <br />
+            <span className="bg-gradient-to-r from-white via-[#4281f5] to-[#3ba213] bg-clip-text text-transparent">
+              you don't have time for.
+            </span>
           </h1>
-          <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.8vw,18px)', fontWeight: 300, color: '#717171', lineHeight: 1.72, maxWidth: 560, margin: '0 auto 40px' }}>
-            We're building a suite of AI tools that handle the repetitive parts of marketing — so you can spend your time on the things that actually need you.
+          <p className="text-neutral-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            We're building a suite of AI tools that handle repetitive marketing and health workflows — so you can focus on scaling your business.
           </p>
-          <div className="reveal d3" style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/app/content-studio?plan=trial"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 28px' }}>⚡ Try Content Studio Free</button></Link>
-            <Link to="/contact"><button className="btn-ghost" style={{ fontSize: 15 }}>Join Waitlist for New Tools →</button></Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+            <Link to="/app/content-studio?plan=trial" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
+              ⚡ Try Content Studio Free
+            </Link>
+            <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-8 py-3.5 rounded-full hover:border-neutral-700 transition-all text-sm">
+              Join Waitlist for New Tools →
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* PRODUCTS */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 28px', display: 'flex', flexDirection: 'column', gap: 72, position: 'relative', zIndex: 1 }}>
+      {/* PRODUCTS LIST */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-24">
         {products.map((p, i) => (
-          <div key={p.id} className="product-grid reveal" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
-            <div style={{ order: i % 2 === 0 ? 0 : 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-                <div style={{ width: 48, height: 48, borderRadius: 14, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{p.icon}</div>
-                <div style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 50, background: p.badge.includes('Live') ? 'rgba(47,207,142,0.12)' : '#f0f0f0', border: p.badge.includes('Live') ? '1px solid rgba(47,207,142,0.25)' : '1px solid #e5e5e5', color: p.badge.includes('Live') ? '#2fcf8e' : '#717171' }}>{p.badge}</div>
+          <div key={p.id} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-[#0e121d] border border-neutral-800/80 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
+            <div className={`space-y-6 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-2xl shadow-inner">
+                  {p.icon}
+                </div>
+                <span className={`text-xs font-bold px-3 py-1 rounded-full border ${p.badge.includes('Live') ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-neutral-800 border-neutral-700 text-neutral-400'}`}>
+                  {p.badge}
+                </span>
               </div>
-              <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(26px,3.5vw,44px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.06, color: '#141414', marginBottom: 8 }}>{p.name}</h2>
-              <div style={{ fontSize: 16, fontWeight: 500, color: p.color, marginBottom: 16, letterSpacing: '-0.2px' }}>{p.tagline}</div>
-              <p style={{ fontSize: 15, fontWeight: 300, color: '#717171', lineHeight: 1.72, marginBottom: 28, maxWidth: 460 }}>{p.desc}</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 32 }}>
-                {p.stats.map(([n,l]) => (
-                  <div key={l} style={{ background: '#f5f5f5', border: '1px solid #ededed', borderRadius: 13, padding: '14px 10px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 17, fontWeight: 700, color: p.color, letterSpacing: '-0.5px', lineHeight: 1 }}>{n}</div>
-                    <div style={{ fontSize: 10, color: '#adadad', marginTop: 4, lineHeight: 1.3 }}>{l}</div>
+
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-['Bricolage_Grotesque'] mb-2">
+                  {p.name}
+                </h2>
+                <p className="text-sm sm:text-base font-semibold" style={{ color: p.color }}>
+                  {p.tagline}
+                </p>
+              </div>
+
+              <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
+                {p.desc}
+              </p>
+
+              {/* Stats Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {p.stats.map(([n, l]) => (
+                  <div key={l} className="bg-neutral-950/80 border border-neutral-800/80 rounded-2xl p-3 text-center space-y-1">
+                    <div className="text-base sm:text-lg font-bold font-['Bricolage_Grotesque']" style={{ color: p.color }}>
+                      {n}
+                    </div>
+                    <div className="text-[10px] text-neutral-400 leading-tight">
+                      {l}
+                    </div>
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <Link to={p.tryLink}><button className="btn-primary" style={{ fontSize: 14, padding: '13px 24px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}</button></Link>
-                {p.learnLink === '/content-studio' ? (
-                  <a href={p.learnLink} style={{ textDecoration: 'none' }}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></a>
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                {p.tryLink.startsWith('http') ? (
+                  <a href={p.tryLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
+                    {p.badge.includes('Live') ? '⚡ Open App →' : 'Join Waitlist →'}
+                  </a>
                 ) : (
-                  <Link to={p.learnLink}><button className="btn-ghost" style={{ fontSize: 14 }}>See Full Details</button></Link>
+                  <Link to={p.tryLink} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
+                    {p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}
+                  </Link>
+                )}
+
+                {p.learnLink.startsWith('http') ? (
+                  <a href={p.learnLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-6 py-3 rounded-xl text-xs hover:border-neutral-700 transition-all">
+                    See Full Details
+                  </a>
+                ) : (
+                  <Link to={p.learnLink} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-6 py-3 rounded-xl text-xs hover:border-neutral-700 transition-all">
+                    See Full Details
+                  </Link>
                 )}
               </div>
             </div>
-            <div style={{ order: i % 2 === 0 ? 1 : 0 }}>
-              <div className="glass-card" style={{ borderRadius: 22, padding: 28, borderColor: `${p.color}20` }}>
-                <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: p.color, marginBottom: 18 }}>What's included</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: p.plans ? 28 : 0 }}>
-                  {p.features.map((f, j) => (
-                    <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13.5, color: '#525252' }}>
-                      <CheckCircle2 size={14} color={p.color} strokeWidth={2} style={{ flexShrink: 0, marginTop: 2 }} />{f}
-                    </div>
-                  ))}
-                </div>
-                {p.plans && (
-                  <>
-                    <div style={{ height: 1, background: '#ededed', margin: '24px 0' }} />
-                    <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#adadad', marginBottom: 14 }}>Pricing</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {p.plans.map((pl: any) => (
-                        <div key={pl.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: 12, background: pl.popular ? 'rgba(31,75,153,0.1)' : '#f5f5f5', border: pl.popular ? '1px solid rgba(31,75,153,0.25)' : '1px solid #ededed' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ fontSize: 13, fontWeight: pl.popular ? 700 : 400, color: pl.popular ? '#1F4B99' : '#404040' }}>{pl.name}</span>
-                            {pl.popular && <span style={{ fontSize: 9, fontWeight: 700, background: 'rgba(31,75,153,0.15)', border: '1px solid rgba(31,75,153,0.25)', borderRadius: 20, padding: '2px 7px', color: '#1F4B99' }}>POPULAR</span>}
-                          </div>
-                          <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 18, fontWeight: 700, color: pl.popular ? '#1F4B99' : '#1a1a1a', letterSpacing: '-0.5px' }}>{pl.price}<span style={{ fontSize: 12, fontWeight: 400 }}>/mo</span></div>
-                            <div style={{ fontSize: 10, color: '#adadad' }}>{pl.note}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, color: '#adadad' }}>First 3 posts completely free · No card needed</div>
-                  </>
-                )}
+
+            {/* Included Features & Pricing Column */}
+            <div className={`bg-neutral-950/70 border border-neutral-800/80 rounded-2xl p-6 sm:p-8 space-y-6 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+              <div className="text-[11px] font-bold uppercase tracking-widest" style={{ color: p.color }}>
+                WHAT'S INCLUDED
               </div>
+
+              <div className="space-y-3">
+                {p.features.map((f, j) => (
+                  <div key={j} className="flex items-start gap-3 text-xs sm:text-sm text-neutral-200 leading-relaxed">
+                    <CheckCircle2 size={16} style={{ color: p.color }} className="shrink-0 mt-0.5" />
+                    <span>{f}</span>
+                  </div>
+                ))}
+              </div>
+
+              {p.plans && (
+                <div className="pt-4 border-t border-neutral-800/80 space-y-4">
+                  <div className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">
+                    PRICING OPTIONS
+                  </div>
+                  <div className="space-y-2.5">
+                    {p.plans.map((pl: any) => (
+                      <div
+                        key={pl.name}
+                        className={`flex items-center justify-between p-3.5 rounded-xl border text-xs ${
+                          pl.popular
+                            ? 'bg-[#1F4B99]/15 border-[#1F4B99]/40 text-white'
+                            : 'bg-neutral-900/80 border-neutral-800 text-neutral-300'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold">{pl.name}</span>
+                          {pl.popular && (
+                            <span className="text-[9px] font-extrabold bg-[#1F4B99]/30 border border-[#1F4B99]/50 text-[#4281f5] px-2 py-0.5 rounded-full uppercase">
+                              POPULAR
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold text-sm text-white font-['Bricolage_Grotesque']">
+                            {pl.price}
+                          </div>
+                          <div className="text-[10px] text-neutral-400">{pl.note}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-center text-[11px] text-neutral-500 pt-1">
+                    Instant access · Cancel anytime
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ))}
       </div>
-
-      {/* CTA */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-        <div className="reveal" style={{ background: '#fff', backdropFilter: 'blur(60px)', border: '1px solid #ededed', borderRadius: 26, padding: '72px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(31,75,153,0.35),transparent)' }} />
-          <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4.5vw,50px)', fontWeight: 700, letterSpacing: '-2px', marginBottom: 14, color: '#141414', lineHeight: 1.06 }}>
-            Want to know when new<br />tools launch?
-          </h2>
-          <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 480, margin: '0 auto 32px' }}>
-            Join the waitlist and be the first to get access when AI Sales Agent, Ad Copy Generator and Reporting Assistant go live.
-          </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact"><button className="btn-primary" style={{ fontSize: 15, padding: '14px 30px' }}>Join the Waitlist →</button></Link>
-            <Link to="/app/content-studio?plan=trial"><button className="btn-ghost" style={{ fontSize: 15 }}>⚡ Try Content Studio Free</button></Link>
-          </div>
-        </div>
-      </div>
-
-      <style>{`@media(max-width:900px){.product-grid{grid-template-columns:1fr!important;gap:32px!important;} .product-grid>div{order:unset!important;}}`}</style>
     </div>
   );
 };
+
 export default AIProducts;
