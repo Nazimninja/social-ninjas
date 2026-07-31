@@ -16,11 +16,13 @@ CREATE TABLE IF NOT EXISTS leads (
   message       TEXT,
   source        TEXT DEFAULT 'main-contact-page',
   status        TEXT DEFAULT 'new',
+  next_follow_up   TIMESTAMP WITH TIME ZONE,
+  follow_up_notes  TEXT,
   notes         TEXT,
   created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX leads_created_at_idx ON leads(created_at DESC);
+CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads(created_at DESC);
 
 -- ====================
 -- 2. CONTENT STUDIO CLIENTS TABLE
@@ -42,6 +44,8 @@ CREATE TABLE IF NOT EXISTS content_studio_clients (
   subscription_id   TEXT,
   join_date         TEXT,
   source            TEXT DEFAULT 'content-studio',
+  next_follow_up    TIMESTAMP WITH TIME ZONE,
+  notes             TEXT,
   created_at        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at        TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -54,9 +58,45 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS update_content_studio_clients_updated_at ON content_studio_clients;
 CREATE TRIGGER update_content_studio_clients_updated_at
   BEFORE UPDATE ON content_studio_clients
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-ALTER TABLE leads DISABLE ROW LEVEL SECURITY;
-ALTER TABLE content_studio_clients DISABLE ROW LEVEL SECURITY;
+-- =========================================================
+-- 3. ROW LEVEL SECURITY (RLS) FIX (Fixes Security Advisor Errors)
+-- =========================================================
+
+-- Enable RLS on both public tables
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.content_studio_clients ENABLE ROW LEVEL SECURITY;
+
+-- Clean up any existing policies
+DROP POLICY IF EXISTS "Allow public lead creation" ON public.leads;
+DROP POLICY IF EXISTS "Allow public client registration" ON public.content_studio_clients;
+DROP POLICY IF EXISTS "Allow public client update" ON public.content_studio_clients;
+
+-- LEADS TABLE POLICIES:
+-- Allow website visitors (anon/public) to submit contact forms / new leads
+CREATE POLICY "Allow public lead creation"
+  ON public.leads
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+-- CONTENT STUDIO CLIENTS TABLE POLICIES:
+-- Allow new client signups / onboarding form submissions
+CREATE POLICY "Allow public client registration"
+  ON public.content_studio_clients
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+-- Allow updating client details during onboarding
+CREATE POLICY "Allow public client update"
+  ON public.content_studio_clients
+  FOR UPDATE
+  TO anon, authenticated
+  USING (true)
+  WITH CHECK (true);
+
