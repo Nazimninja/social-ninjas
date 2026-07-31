@@ -3,90 +3,90 @@ import { CaseStudy } from '../types';
 export const caseStudies: CaseStudy[] = [
     {
         id: 1,
-        client: "TechStart Inc",
-        logo: "https://placehold.co/200x60/020617/ffffff?text=TechStart",
-        category: "B2B Lead Gen",
-        mainMetric: "+120%",
-        metricLabel: "Qualified Leads",
+        client: "Zara Skin Co.",
+        logo: "https://placehold.co/200x60/020617/ffffff?text=Zara+Skin+Co.",
+        category: "E-Commerce",
+        mainMetric: "6.1x",
+        metricLabel: "ROAS in 90 Days",
         secondaryMetrics: [
-            { label: "Cost Per Lead", value: "-40%" },
-            { label: "Conv. Rate", value: "+25%" }
+            { label: "Monthly Revenue", value: "₹18L+" },
+            { label: "CPA Drop", value: "-38%" }
         ],
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-        challenge: "TechStart Inc. faced a critical bottleneck in their B2B lead generation pipeline. Despite significant investment in LinkedIn marketing, their efforts were yielding a prohibitively high Cost Per Lead (CPL) exceeding $150. Furthermore, the leads that were coming through had low intent scores, resulting in a wasted effort for the sales team and a low conversion rate down the funnel.",
-        solution: "We engineered a precision-targeted Account-Based Marketing (ABM) strategy to reverse this trend. By identifying the top 500 ideal customer profiles, we deployed high-value lead magnets specifically tailored to C-suite pain points. We coupled this with a retargeting layer that nurtured prospects with case studies, resulting in higher intent before they even booked a demo.",
-        tags: ["LinkedIn Ads", "Strategy", "Copywriting"],
+        image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=800",
+        challenge: "A Jaipur-based skincare D2C brand spending ₹2L/month on Meta Ads but stuck at a 1.4x ROAS — barely breaking even. Their ad creatives were brand-led and static, and their audience targeting was too broad, leading to sky-high CPMs and irrelevant clicks from non-buyers.",
+        solution: "We rebuilt their entire paid media stack from zero. We created a 3-tier UGC creative pipeline — problem-agitation reels, ingredient breakdown carousels, and before/after testimonial videos — and matched each to a tightly defined audience segment. Budget was reallocated dynamically every 72 hours to only the top-performing ad sets. Result: 6.1x ROAS in month 3 with ₹18L+ monthly revenue.",
+        tags: ["Meta Ads", "UGC Creatives", "D2C", "Skincare"],
         testimonial: {
-            text: "We were burning cash on LinkedIn with zero ROI. The team came in, completely restructured our funnel, and now our calendar is full of qualified demos. Our CPL dropped by 40% in the first month.",
-            author: "Mark S.",
-            role: "VP of Sales",
-            image: "https://randomuser.me/api/portraits/men/32.jpg"
+            text: "We went from barely breaking even to our best quarter ever. The creative approach they used was completely different from anything we'd tried — it actually felt like content, not ads.",
+            author: "Priya V.",
+            role: "Founder, Zara Skin Co.",
+            image: "https://randomuser.me/api/portraits/women/28.jpg"
         }
     },
     {
         id: 2,
-        client: "FashionNova Style",
-        logo: "https://placehold.co/200x60/020617/ffffff?text=FashionNova",
-        category: "E-Commerce",
-        mainMetric: "5.2x",
-        metricLabel: "ROAS",
+        client: "Nexvue Technologies",
+        logo: "https://placehold.co/200x60/020617/ffffff?text=Nexvue+Tech",
+        category: "B2B Lead Gen",
+        mainMetric: "+134%",
+        metricLabel: "Qualified Pipeline",
         secondaryMetrics: [
-            { label: "Revenue", value: "$250k" },
-            { label: "CPA Redux", value: "15%" }
+            { label: "Cost Per Lead", value: "-52%" },
+            { label: "Demo Book Rate", value: "+31%" }
         ],
-        image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80&w=800",
-        challenge: "As a fast-growing e-commerce brand, FashionNova Style hit a plateau. They needed to aggressively scale their monthly ad spend from $10k to $50k to meet revenue targets. However, previous attempts to scale resulted in diminishing returns, with CPA skyrocketing and ROAS dropping below the profitable threshold of 3.0x.",
-        solution: "We deployed our proprietary 'Creative Testing Framework' to unlock scale. By launching 20+ unique User Generated Content (UGC) variations weekly, we were able to combat ad fatigue effectively. We tested these creatives against broad and lookalike audiences, rapidly allocating budget to the winning variations to maintain efficiency at higher spend levels.",
-        tags: ["Meta Ads", "UGC", "Scaling"],
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
+        challenge: "A Pune-based B2B SaaS company selling HR automation software to mid-market firms. Despite a solid product, their LinkedIn campaigns were generating high-volume but low-quality leads — mostly junior HR executives with no buying authority. Their CPL was ₹4,200 and demo-to-close was under 8%.",
+        solution: "We scrapped the broad LinkedIn campaign and built a precision ABM system targeting 800 verified decision-makers — CHROs, VP-HR, and Heads of People at companies with 200–2,000 employees. We deployed a 5-touch nurture sequence: cold outreach → lead magnet (ROI calculator) → retargeted case study → demo invite → urgency close. CPL dropped to ₹2,015 and demo bookings doubled.",
+        tags: ["LinkedIn Ads", "ABM", "B2B SaaS", "Lead Nurture"],
         testimonial: {
-            text: "I was terrified to scale spend because our ROAS always crashed. Social Ninja's didn't just maintain efficiency; they improved it while 5x-ing our budget. They are true growth partners.",
-            author: "Sarah J.",
-            role: "Founder",
-            image: "https://randomuser.me/api/portraits/women/44.jpg"
+            text: "We wasted 6 months getting the wrong people on calls. Social Ninja's rebuilt our targeting from the ground up and within 8 weeks our pipeline was full of actual decision-makers. The ROI calculator lead magnet alone booked 40 demos in a month.",
+            author: "Rohit M.",
+            role: "VP Marketing, Nexvue Technologies",
+            image: "https://randomuser.me/api/portraits/men/41.jpg"
         }
     },
     {
         id: 3,
-        client: "Urban Eats",
-        logo: "https://placehold.co/200x60/020617/ffffff?text=Urban+Eats",
+        client: "The Biryani House",
+        logo: "https://placehold.co/200x60/020617/ffffff?text=Biryani+House",
         category: "Local Business",
-        mainMetric: "2M+",
-        metricLabel: "Organic Views",
+        mainMetric: "4.2M+",
+        metricLabel: "Organic Views in 60 Days",
         secondaryMetrics: [
-            { label: "Foot Traffic", value: "+45%" },
-            { label: "New Followers", value: "15k" }
+            { label: "Zomato Orders", value: "+210%" },
+            { label: "New Followers", value: "62K" }
         ],
-        image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
-        challenge: "Urban Eats was launching a flagship location in a hyper-competitive downtown district. With established competitors dominating the market and a limited launch budget, they needed to generate massive local awareness and foot traffic immediately upon opening to ensure the location's viability.",
-        solution: "We bypassed traditional PR and focused on a viral social strategy. We produced a cinematic 'Hidden Gem' Reels series and collaborated with 15 key local food influencers. This content flood triggered the Instagram algorithm, landing the brand on the Explore page for local users and creating a 'must-visit' hype that led to lines around the block.",
-        tags: ["Content Creation", "Influencer", "Reels"],
+        image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800",
+        challenge: "A beloved Hyderabad cloud kitchen chain with 3 locations that had zero social presence despite excellent food and reviews. They were entirely dependent on Zomato/Swiggy for discovery and paying up to 30% commission per order. New location launch was 60 days away.",
+        solution: "We built a 'Biryani ASMR' short-form content series — slow-motion dum biryani reveals, chef POV cooking videos, and 'what 500 grams of Hyderabadi biryani looks like' reels. We partnered with 12 Hyderabad food micro-influencers for launch week. The campaign hit 1M views in 11 days. Zomato self-ordering via Google Maps surged 210% as they became the top result for 'best biryani Hyderabad' locally.",
+        tags: ["Reels", "Influencer", "Food & Beverage", "Local SEO"],
         testimonial: {
-            text: "We had a line around the block on opening day purely because of the social campaign. The 'Hidden Gem' series they produced went viral instantly. Best launch investment we ever made.",
-            author: "David R.",
-            role: "Owner",
-            image: "https://randomuser.me/api/portraits/men/86.jpg"
+            text: "62,000 followers in 2 months. People now come in saying 'I saw you on Instagram' every single day. Our new branch had a 45-minute wait on day one because of the content campaign. Worth every rupee.",
+            author: "Azhar K.",
+            role: "Co-Founder, The Biryani House",
+            image: "https://randomuser.me/api/portraits/men/67.jpg"
         }
     },
     {
         id: 4,
-        client: "FitLife App",
-        logo: "https://placehold.co/200x60/020617/ffffff?text=FitLife",
+        client: "PocketFit India",
+        logo: "https://placehold.co/200x60/020617/ffffff?text=PocketFit",
         category: "App Growth",
-        mainMetric: "-40%",
-        metricLabel: "CPI",
+        mainMetric: "-61%",
+        metricLabel: "Cost Per Install",
         secondaryMetrics: [
-            { label: "Store Visits", value: "+200%" },
-            { label: "LTV Increase", value: "3.5x" }
+            { label: "D30 Retention", value: "+2.8x" },
+            { label: "App Store Rank", value: "Top 12" }
         ],
         image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800",
-        challenge: "FitLife App was struggling with unsustainable unit economics. User acquisition costs (CAC) on Meta and Google were skyrocketing due to market saturation, severely impacting their LTV/CAC ratio. They needed a new, cost-effective channel to acquire high-quality users who would stick around.",
-        solution: "We pivoted the acquisition strategy entirely to TikTok. By utilizing Spark Ads and partnering with fitness creators to demonstrate the app's utility in real-time, we created native, non-salesy content. This approach felt authentic to the platform, drastically lowering CPMs and attracting users with 3.5x higher retention rates.",
-        tags: ["TikTok Ads", "App Store Opt", "Creators"],
+        challenge: "A Mumbai-based fitness app targeting tier-2 Indian cities faced a brutal CPI of ₹180 on Meta and Google — unsustainable given their ₹299/year subscription price. Their generic 'get fit at home' creatives were being ignored in saturated feeds, and retention at day 30 was below 12%.",
+        solution: "We pivoted the acquisition channel to YouTube Shorts and Instagram Reels with hyper-regional creator partnerships — vernacular trainers from Bhopal, Nagpur, and Surat who had 50K–500K engaged audiences. Content was produced in Hindi and Marathi, showing the app's 15-minute home workout plans in real living rooms. CPI dropped to ₹71. We also ran App Store Optimization to push them into the top 12 in the Health & Fitness category for key search terms.",
+        tags: ["Creator Marketing", "App Store Opt.", "Regional", "Fitness"],
         testimonial: {
-            text: "Our CAC was killing us before we met this team. They understood that TikTok requires a completely different language. The native ads they produced felt like real content, and the results were immediate.",
-            author: "Jessica M.",
-            role: "CMO",
-            image: "https://randomuser.me/api/portraits/women/65.jpg"
+            text: "Regional creators in tier-2 cities changed everything for us. Our users now feel like the app was made for them. CPI went from ₹180 to ₹71 and the users who come in from this channel actually stay.",
+            author: "Sneha P.",
+            role: "Growth Lead, PocketFit India",
+            image: "https://randomuser.me/api/portraits/women/53.jpg"
         }
     }
 ];
