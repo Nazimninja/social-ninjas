@@ -2447,6 +2447,13 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
   });
   const [screen,setScreen]=useState(() => {
     if (upgradePlanId && trialData) return "payment";
+    const querySource = typeof window !== 'undefined' ? (window.location.search || window.location.hash) : '';
+    if (querySource.includes("?")) {
+      const urlParams = new URLSearchParams(querySource.split("?")[1]);
+      const planParam = urlParams.get("plan");
+      if (planParam === "trial") return "details";
+      if (planParam && PLANS.some(p => p.id === planParam)) return "payment";
+    }
     return "plans"; // plans|details|otp|payment|profile|trial|trial_generation
   });
   // Pre-fill form from trial data if upgrading
@@ -2475,7 +2482,6 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
     if (querySource.includes("?")) {
       const urlParams = new URLSearchParams(querySource.split("?")[1]);
       const planParam = urlParams.get("plan");
-      const isUpgrade = urlParams.get("upgrade") === "1";
       if (planParam === "trial") {
         setPlan({ id: "trial", isTrialFlow: true, name: "Free Trial", color: "#1F4B99", platformCount: 1, platformOptions: ["Instagram","YouTube Shorts","YouTube","LinkedIn","Twitter/X"] });
         setScreen("details");
@@ -2483,10 +2489,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
         const selectedPlan = PLANS.find(p => p.id === planParam);
         if (selectedPlan) {
           setPlan({...selectedPlan, isTrialFlow: false});
-          // If coming from trial upgrade, go straight to details or payment screen
-          if (isUpgrade || trialData) {
-            setScreen(trialData ? "payment" : "details");
-          }
+          setScreen("payment");
         }
       }
     }
@@ -2808,7 +2811,7 @@ function Onboarding({onComplete, geo={country:"_DEFAULT"}, trialData=null, upgra
               <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:500,textAlign:"center",marginBottom:14}}>
                 🛡 {pl.guarantee}</div>
               {true?(
-                <button onClick={()=>{setPlan({...pl, isTrialFlow: false});setScreen("details");}}
+                <button onClick={()=>{setPlan({...pl, isTrialFlow: false});setScreen("payment");}}
                   style={{width:"100%",background:"#fff",color:"#08090d",border:"none",borderRadius:9,padding:"13px",fontSize:14,fontWeight:600,cursor:"pointer",letterSpacing:"-.2px",fontFamily:"'Sora',system-ui,sans-serif"}}>
                   Select {pl.name} →
                 </button>
