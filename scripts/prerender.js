@@ -53,6 +53,14 @@ const routes = {
     title: "Free Marketing & SaaS Growth Tools | Social Ninja's",
     description: "Free digital marketing tools, salary calculators, WhatsApp link builders, and our unified AI content studio."
   },
+  'ai-products': {
+    title: "AI Products & SaaS Suite | Social Ninja's — Content Studio, Fit Ninja & More",
+    description: "Explore our suite of AI products: Content Studio writes a week of social content in 60 seconds, Fit Ninja delivers personalized AI fitness coaching, and more coming soon."
+  },
+  'case-studies': {
+    title: "Case Studies | Real Growth Results | Social Ninja's",
+    description: "See the proof. Real client results — 6.1x ROAS for D2C skincare, +134% B2B pipeline growth, 4.2M organic views for a food brand. No fluff, just data."
+  },
   'blog': {
     title: "Digital Marketing & AI Agency Blog | Insights by Social Ninja's",
     description: "Expert performance marketing advice, AI agency guides, and B2B growth systems from the Social Ninja's team."
