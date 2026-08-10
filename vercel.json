@@ -24,7 +24,7 @@
     { "source": "/blog", "destination": "/index.html" },
     { "source": "/about", "destination": "/index.html" },
     { "source": "/contact", "destination": "/index.html" },
-    { "source": "/((?!api/|standalone-crm|standalone-landing|assets/|favicon|logo|manifest|robots|sitemap|og-image|BingSite).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|standalone-crm|standalone-landing|assets/|favicon|logo|manifest|robots|sitemap|og-image|BingSite|ads|yandex_|8f7f1ad4b9714ebca808d4b3c95e1d90).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
