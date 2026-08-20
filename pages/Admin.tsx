@@ -1,1092 +1,1843 @@
-import { useState, useEffect, useCallback } from 'react'
-import { supabase } from './supabase'
+import React, { useState, useEffect, useCallback } from 'react';
+import { 
+  Plus, Trash2, Save, X, Lock, Mail, Phone, Globe, Building, Calendar as CalendarIcon, 
+  Check, Shield, Activity, Dumbbell, Sparkles, User, Search, Filter, 
+  Edit3, Clock, ChevronLeft, ChevronRight, UserPlus, FileText, CheckCircle2, 
+  AlertCircle, PlusCircle, Share2, Video, Eye, Users, Layers, ExternalLink,
+  Flame, CheckSquare, Copy, RefreshCw, Send, CheckCircle, ArrowRight
+} from 'lucide-react';
+import SEO from '../components/SEO';
+import { supabase } from './supabase';
+import { getApiUrl } from '../services/api';
 
-// ── Design tokens ─────────────────────────────────────────────
+// ── Design Tokens & Palettes ─────────────────────────────────────────
 const C = {
-  bg:       '#0A1628',
-  surface:  '#111E35',
-  surfaceHi:'#172743',
-  border:   '#1E3355',
-  borderHi: '#2A4A7A',
-  steel:    '#37649B',
-  blue:     '#5B8FD4',
-  blueLight:'#8CB4DC',
-  white:    '#EDF2FA',
-  muted:    '#5A7599',
-  dim:      '#3A5070',
-  green:    '#27C98A',
-  red:      '#E05454',
-  amber:    '#F5A623',
-  pink:     '#FF3D9A',
-  purple:   '#9B5CF6',
-  teal:     '#00C9B1',
-}
+  bg: '#07090e',
+  surface: '#0d1322',
+  surfaceHi: '#131b30',
+  surfaceCard: '#0f172a',
+  border: '#1e293b',
+  borderHi: '#334155',
+  steel: '#37649B',
+  blue: '#5B8FD4',
+  blueLight: '#8CB4DC',
+  white: '#EDF2FA',
+  muted: '#64748b',
+  dim: '#475569',
+  green: '#22c55e',
+  red: '#ef4444',
+  amber: '#f59e0b',
+  pink: '#ec4899',
+  purple: '#a855f7',
+  teal: '#14b8a6',
+  orange: '#f97316'
+};
 
 const PROFILES = [
-  { id:'socialninja',  label:'Social Ninjas', color:C.steel  },
-  { id:'nazim_ninja',  label:'Nazim Ninja',   color:C.blue   },
-  { id:'9thgear_',     label:'9th Gear',       color:C.amber  },
-  { id:'vicevault.gg', label:'Vice Vault',     color:C.pink   },
-]
+  { id: 'socialninja', label: 'Social Ninjas', color: '#f97316', tag: 'Agency' },
+  { id: 'nazim_ninja', label: 'Nazim Ninja', color: '#38bdf8', tag: 'Personal' },
+  { id: '9thgear_', label: '9th Gear', color: '#fbbf24', tag: 'Supercars' },
+  { id: 'vicevault.gg', label: 'Vice Vault', color: '#f43f5e', tag: 'Gaming/GTA' },
+];
 
-const ROLES = {
-  founder: { label:'Founder',         color:C.purple, tabs:['tasks','publish','scripts','queue','crm','clients','monitor','calendar','team'] },
-  content: { label:'Content Manager', color:C.blue,   tabs:['tasks','publish','scripts','queue','calendar'] },
-  sales:   { label:'Sales',           color:C.green,  tabs:['tasks','crm','calendar'] },
-  client:  { label:'Client Manager',  color:C.amber,  tabs:['tasks','clients','calendar'] },
-}
+const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = {
+  founder: { label: 'Founder & CEO', color: '#a855f7', tabs: ['tasks', 'crm', 'clients', 'fit', 'publish', 'scripts', 'queue', 'monitor', 'calendar', 'blogs', 'team'] },
+  content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'publish', 'scripts', 'queue', 'blogs', 'calendar'] },
+  sales: { label: 'Growth & Sales', color: '#22c55e', tabs: ['tasks', 'crm', 'clients', 'calendar'] },
+  client: { label: 'Account Manager', color: '#fbbf24', tabs: ['tasks', 'clients', 'fit', 'calendar'] },
+};
 
 const ALL_TABS = [
-  { id:'tasks',    label:'Tasks',    icon:'✅' },
-  { id:'publish',  label:'Publisher',icon:'📡' },
-  { id:'scripts',  label:'Scripts',  icon:'📝' },
-  { id:'queue',    label:'Queue',    icon:'🎬' },
-  { id:'crm',      label:'Leads',    icon:'💼' },
-  { id:'clients',  label:'Clients',  icon:'🏢' },
-  { id:'monitor',  label:'Monitor',  icon:'👁'  },
-  { id:'calendar', label:'Calendar', icon:'📅' },
-  { id:'team',     label:'Team',     icon:'👥' },
-]
+  { id: 'tasks', label: 'Daily Ops', icon: CheckSquare, badge: 'Daily' },
+  { id: 'crm', label: 'Inbound Leads', icon: Mail, badge: 'Pipeline' },
+  { id: 'clients', label: 'Client Workspaces', icon: Building, badge: 'Studio' },
+  { id: 'fit', label: 'Fit Ninja Members', icon: Dumbbell, badge: 'SaaS' },
+  { id: 'publish', label: 'Multi-Publisher', icon: Share2, badge: 'Social' },
+  { id: 'scripts', label: 'Script Vault', icon: FileText, badge: 'Content' },
+  { id: 'queue', label: 'Media Queue', icon: Video, badge: 'Drive' },
+  { id: 'monitor', label: 'Radar Monitor', icon: Eye, badge: 'Web' },
+  { id: 'calendar', label: 'Master Calendar', icon: CalendarIcon, badge: 'Schedule' },
+  { id: 'blogs', label: 'SEO Blog Studio', icon: Edit3, badge: 'Articles' },
+  { id: 'team', label: 'Team & Roles', icon: Users, badge: 'Access' },
+];
 
 const TASK_TEMPLATE = [
-  {id:'sn_ig',    block:'morning',  label:'Post Reel — Social Ninjas',   brand:'socialninja',  tab:'publish'},
-  {id:'nn_ig',    block:'morning',  label:'Post Reel — Nazim Ninja',     brand:'nazim_ninja',  tab:'publish'},
-  {id:'9g_ig',    block:'morning',  label:'Post Reel — 9th Gear',        brand:'9thgear_',     tab:'publish'},
-  {id:'vv_ig',    block:'morning',  label:'Post Reel — Vice Vault',      brand:'vicevault.gg', tab:'publish'},
-  {id:'li_post',  block:'morning',  label:'Post on LinkedIn',            brand:'nazim_ninja',  tab:'publish'},
-  {id:'dms',      block:'morning',  label:'Reply all DMs — all accounts',brand:null,           tab:null},
-  {id:'li_cmts',  block:'engage',   label:'5 LinkedIn comments',         brand:null,           tab:null},
-  {id:'ig_cmts',  block:'engage',   label:'5 Instagram comments',        brand:null,           tab:null},
-  {id:'comp',     block:'engage',   label:'3 competitor comments',       brand:null,           tab:null},
-  {id:'cold',     block:'outreach', label:'3 cold DMs — Social Ninjas',  brand:'socialninja',  tab:'crm'},
-  {id:'fu',       block:'outreach', label:'Follow up open leads',        brand:null,           tab:'crm'},
-  {id:'film',     block:'content',  label:'Film 1 video',                brand:null,           tab:null},
-  {id:'drive',    block:'content',  label:'Drop video in Drive folder',  brand:null,           tab:'queue'},
-]
+  { id: 'sn_ig', block: 'morning', label: 'Post Reel — Social Ninjas', brand: 'socialninja', tab: 'publish' },
+  { id: 'nn_ig', block: 'morning', label: 'Post Reel — Nazim Ninja', brand: 'nazim_ninja', tab: 'publish' },
+  { id: '9g_ig', block: 'morning', label: 'Post Reel — 9th Gear', brand: '9thgear_', tab: 'publish' },
+  { id: 'vv_ig', block: 'morning', label: 'Post Reel — Vice Vault', brand: 'vicevault.gg', tab: 'publish' },
+  { id: 'li_post', block: 'morning', label: 'Post Thought Leadership — LinkedIn', brand: 'nazim_ninja', tab: 'publish' },
+  { id: 'dms', block: 'morning', label: 'Inbox Zero: Reply all DMs across 4 brands', brand: null, tab: null },
+  { id: 'li_cmts', block: 'engage', label: '5 High-Value LinkedIn Comments on ICP founders', brand: null, tab: null },
+  { id: 'ig_cmts', block: 'engage', label: '10 Instagram interactions on trending target reels', brand: null, tab: null },
+  { id: 'comp', block: 'engage', label: 'Audit & engage on 3 competitor accounts', brand: null, tab: null },
+  { id: 'cold', block: 'outreach', label: '5 Personalized Cold DMs for Agency Retainer', brand: 'socialninja', tab: 'crm' },
+  { id: 'fu', block: 'outreach', label: 'Execute all scheduled follow-ups in CRM', brand: null, tab: 'crm' },
+  { id: 'film', block: 'content', label: 'Film batch: 2 Short-form reels', brand: null, tab: null },
+  { id: 'drive', block: 'content', label: 'Upload raw footage to Video Queue Drive', brand: null, tab: 'queue' },
+];
 
-const BLOCK_META = {
-  morning: {label:'Morning',    time:'30 min', color:C.blue},
-  engage:  {label:'Engagement', time:'20 min', color:C.green},
-  outreach:{label:'Outreach',   time:'15 min', color:C.amber},
-  content: {label:'Content',    time:'varies', color:C.purple},
-}
+const BLOCK_META: Record<string, { label: string, time: string, color: string, icon: string }> = {
+  morning: { label: 'Morning Launch', time: '30 min', color: '#38bdf8', icon: '⚡' },
+  engage: { label: 'Social Engagement', time: '20 min', color: '#22c55e', icon: '💬' },
+  outreach: { label: 'Growth Outreach', time: '15 min', color: '#f59e0b', icon: '🎯' },
+  content: { label: 'Production Engine', time: '45 min', color: '#a855f7', icon: '🎬' },
+};
 
 const XPROMO = [
-  {label:'Social Ninjas → Nazim Ninja', sub:"'Our founder @nazim_ninja built this system'",          color:C.steel},
-  {label:'Nazim Ninja → Social Ninjas', sub:"'My agency @socialninja.s handles this for brands'",    color:C.blue},
-  {label:'9th Gear → Vice Vault',       sub:"'Real life version of this GTA 6 car 👀 @vicevault.gg'",color:C.amber},
-  {label:'Vice Vault → 9th Gear',       sub:"'GTA fans — this exists IRL. @9thgear_ Bangalore'",     color:C.pink},
-]
+  { label: 'Social Ninjas → Nazim Ninja', sub: "'Our founder @nazim_ninja built this automation system'", color: '#f97316' },
+  { label: 'Nazim Ninja → Social Ninjas', sub: "'My agency @socialninja.s scales brands to $100k/mo'", color: '#38bdf8' },
+  { label: '9th Gear → Vice Vault', sub: "'Real life version of this GTA 6 hypercar 👀 @vicevault.gg'", color: '#fbbf24' },
+  { label: 'Vice Vault → 9th Gear', sub: "'GTA fans — this exists in Bangalore IRL @9thgear_'", color: '#f43f5e' },
+];
 
-// ── Helpers ───────────────────────────────────────────────────
-const pc = id => PROFILES.find(p=>p.id===id)?.color || C.steel
-const pl = id => PROFILES.find(p=>p.id===id)?.label || id
-const todayKey = () => new Date().toDateString()
-const dayName = () => new Date().toLocaleDateString('en',{weekday:'long'})
-const doy = () => Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000)
-const fmtDate = d => d ? new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'}) : '—'
-const fmtTime = d => d ? new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) : ''
+const LEAD_STATUS_CONFIG: Record<string, { label: string, color: string, bg: string, border: string }> = {
+  'NEW LEAD': { label: 'New Lead', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30' },
+  'CONTACTED': { label: 'Contacted', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
+  'DEMO SCHEDULED': { label: 'Demo Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
+  'PROPOSAL SENT': { label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
+  'WON': { label: 'Won 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'LOST': { label: 'Lost', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
+};
 
-// ── UI Components ─────────────────────────────────────────────
-const Card = ({children, style={}}) => (
-  <div style={{background:C.surface, border:`1px solid ${C.border}`, borderRadius:12, padding:18, ...style}}>
-    {children}
-  </div>
-)
+const pc = (id: string) => PROFILES.find(p => p.id === id)?.color || '#38bdf8';
+const pl = (id: string) => PROFILES.find(p => p.id === id)?.label || id;
+const todayKey = () => new Date().toDateString();
+const fmtDate = (d?: string | null) => d ? new Date(d).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : '—';
+const fmtTime = (d?: string | null) => d ? new Date(d).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+const doy = () => Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
 
-const Btn = ({children, onClick, color=C.steel, small, full, ghost, disabled, style={}}) => (
-  <button onClick={onClick} disabled={disabled} style={{
-    background: ghost ? 'transparent' : disabled ? C.surfaceHi : color,
-    color: ghost ? color : disabled ? C.muted : '#fff',
-    border: ghost ? `1px solid ${color}55` : 'none',
-    borderRadius: 8,
-    padding: small ? '5px 12px' : '9px 18px',
-    fontSize: small ? 12 : 13,
-    fontWeight: 700,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    width: full ? '100%' : 'auto',
-    opacity: disabled ? 0.5 : 1,
-    transition: 'opacity .15s, background .15s',
-    letterSpacing: 0.2,
-    ...style
-  }}>{children}</button>
-)
+export const Admin: React.FC = () => {
+  // ── Tab & Global States ─────────────────────────────────────────────
+  const [activeTab, setActiveTab] = useState<string>('tasks');
+  const [userRole, setUserRole] = useState<string>('founder');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-const Badge = ({children, color}) => (
-  <span style={{
-    background:`${color}20`, color, border:`1px solid ${color}40`,
-    borderRadius:6, padding:'2px 8px', fontSize:11, fontWeight:700, letterSpacing:0.4, whiteSpace:'nowrap'
-  }}>{children}</span>
-)
+  // ── Database Resource Datasets ───────────────────────────────────────
+  const [leads, setLeads] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+  const [fitClients, setFitClients] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [scripts, setScripts] = useState<any[]>([]);
+  const [queueItems, setQueueItems] = useState<any[]>([]);
+  const [mentions, setMentions] = useState<any[]>([]);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
 
-const StatusBadge = ({s}) => {
-  const map = {
-    'New':C.blue, 'Draft Ready':C.amber, 'Sent':C.green, 'Replied':C.muted,
-    'ready':C.green, 'filmed':C.amber, 'posted':C.muted,
-    'Ready':C.green, 'Posted':C.muted, 'Scheduled':C.purple,
-    'NEW LEAD':C.blue, 'DEMO SCHEDULED':C.amber, 'WON':C.green, 'LOST':C.red,
-    'active':C.green, 'suspended':C.amber,
-  }
-  return <Badge color={map[s]||C.muted}>{s}</Badge>
-}
+  // ── Modal & Form States ──────────────────────────────────────────────
+  const [showAddLead, setShowAddLead] = useState<boolean>(false);
+  const [showAddClient, setShowAddClient] = useState<boolean>(false);
+  const [showAddMember, setShowAddMember] = useState<boolean>(false);
+  const [showScheduleModal, setShowScheduleModal] = useState<boolean>(false);
+  const [viewFitClientDetails, setViewFitClientDetails] = useState<any>(null);
+  const [manageFitStatus, setManageFitStatus] = useState<any>(null);
+  const [newFitStatus, setNewFitStatus] = useState<string>('free');
+  const [viewClientHist, setViewClientHist] = useState<any>(null);
+  const [clientHistData, setClientHistData] = useState<any[]>([]);
+  const [openScriptId, setOpenScriptId] = useState<string | null>(null);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
-const Inp = ({value, onChange, placeholder, multiline, rows=3, type='text', style={}}) => {
-  const base = {
-    background:C.surfaceHi, border:`1px solid ${C.border}`, borderRadius:8,
-    color:C.white, padding:'9px 13px', fontSize:13, width:'100%',
-    boxSizing:'border-box', outline:'none', resize:'vertical', fontFamily:'inherit',
-    colorScheme:'dark', ...style
-  }
-  return multiline
-    ? <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} style={base}/>
-    : <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={base}/>
-}
+  // ── Quick Scheduling State ───────────────────────────────────────────
+  const [scheduleTargetType, setScheduleTargetType] = useState<'lead' | 'client'>('lead');
+  const [scheduleTargetId, setScheduleTargetId] = useState<string>('');
+  const [scheduleDate, setScheduleDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [scheduleNotes, setScheduleNotes] = useState<string>('');
 
-const Sel = ({value, onChange, children, style={}}) => (
-  <select value={value} onChange={onChange} style={{
-    background:C.surfaceHi, border:`1px solid ${C.border}`, borderRadius:8,
-    color:C.white, padding:'9px 13px', fontSize:13, outline:'none', cursor:'pointer',
-    width:'100%', ...style
-  }}>{children}</select>
-)
+  // ── Daily Checklist Task State ──────────────────────────────────────
+  const taskKey = `nazim_os_done_${todayKey()}`;
+  const [doneTasks, setDoneTasks] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem(taskKey) || '[]'); } catch { return []; }
+  });
 
-const Label = ({children}) => (
-  <div style={{fontSize:11, color:C.muted, fontWeight:700, letterSpacing:0.8, marginBottom:6}}>{children}</div>
-)
+  const toggleTask = (id: string) => {
+    const next = doneTasks.includes(id) ? doneTasks.filter(x => x !== id) : [...doneTasks, id];
+    setDoneTasks(next);
+    try { localStorage.setItem(taskKey, JSON.stringify(next)); } catch {}
+  };
 
-const Divider = () => <div style={{borderTop:`1px solid ${C.border}`, margin:'14px 0'}}/>
+  // ── Blog Editor State ────────────────────────────────────────────────
+  const [isEditingBlog, setIsEditingBlog] = useState<boolean>(false);
+  const [currentBlog, setCurrentBlog] = useState({ id: '', title: '', content: '', excerpt: '', author: "Social Ninja's Team", category: 'Insights' });
 
-const Empty = ({icon='📭', text}) => (
-  <div style={{textAlign:'center', padding:'48px 24px', color:C.muted}}>
-    <div style={{fontSize:32, marginBottom:10}}>{icon}</div>
-    <div style={{fontSize:14}}>{text}</div>
-  </div>
-)
+  // ── Publisher State ──────────────────────────────────────────────────
+  const [pubProfile, setPubProfile] = useState<string>('socialninja');
+  const [pubPlatform, setPubPlatform] = useState<string>('instagram');
+  const [pubTopic, setPubTopic] = useState<string>('');
+  const [pubSchedMode, setPubSchedMode] = useState<boolean>(false);
+  const [pubSchedDate, setPubSchedDate] = useState<string>('');
+  const [pubSchedTime, setPubSchedTime] = useState<string>('09:00');
+  const [pubStatus, setPubStatus] = useState<string | null>(null);
 
-const Spinner = () => (
-  <div style={{textAlign:'center', padding:40, color:C.muted, fontSize:13}}>Loading...</div>
-)
+  // ── Master Loader ────────────────────────────────────────────────────
+  const loadAllData = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const [
+        leadsRes, clientsRes, fitRes, postsRes, scriptsRes, queueRes, mentionsRes, teamRes, blogsRes
+      ] = await Promise.all([
+        supabase.from('leads').select('*').order('created_at', { ascending: false }),
+        supabase.from('content_studio_clients').select('*').order('created_at', { ascending: false }),
+        fetch(getApiUrl('/api/fit-clients')).then(r => r.json()).catch(() => []),
+        supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(20),
+        supabase.from('scripts').select('*').order('created_at', { ascending: false }),
+        supabase.from('scheduled_posts').select('*').order('created_at', { ascending: false }),
+        supabase.from('mentions').select('*').eq('dismissed', false).order('created_at', { ascending: false }),
+        supabase.from('team_members').select('*').order('created_at', { ascending: false }),
+        fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.json()).catch(() => [])
+      ]);
 
-// ── TASKS ─────────────────────────────────────────────────────
-function Tasks({setTab}) {
-  const key = `done_${todayKey()}`
-  const [done, setDone] = useState(() => { try{return JSON.parse(localStorage.getItem(key)||'[]')}catch{return []} })
-
-  const toggle = id => {
-    const next = done.includes(id) ? done.filter(x=>x!==id) : [...done,id]
-    setDone(next)
-    try{localStorage.setItem(key,JSON.stringify(next))}catch{}
-  }
-
-  const total = TASK_TEMPLATE.length
-  const comp = done.filter(id=>TASK_TEMPLATE.find(t=>t.id===id)).length
-  const pct = Math.round((comp/total)*100)
-  const xp = XPROMO[doy()%4]
-
-  return (
-    <div style={{display:'grid', gridTemplateColumns:'1fr 280px', gap:20}}>
-      <div>
-        <Card style={{marginBottom:16}}>
-          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12}}>
-            <div>
-              <div style={{fontSize:20, fontWeight:800, color:C.white}}>{comp}/{total} tasks</div>
-              <div style={{fontSize:12, color:C.muted}}>{dayName()} · {new Date().toLocaleDateString('en',{month:'long',day:'numeric',year:'numeric'})}</div>
-            </div>
-            <div style={{fontSize:28, fontWeight:900, color:pct===100?C.green:pct>60?C.blue:C.amber}}>{pct}%</div>
-          </div>
-          <div style={{background:C.surfaceHi, borderRadius:99, height:6, overflow:'hidden'}}>
-            <div style={{background:`linear-gradient(90deg,${C.steel},${C.blue})`, width:`${pct}%`, height:'100%', borderRadius:99, transition:'width .4s'}}/>
-          </div>
-          {pct===100 && <div style={{marginTop:10, fontSize:13, color:C.green, fontWeight:700}}>🎉 All done. Go build.</div>}
-        </Card>
-
-        {['morning','engage','outreach','content'].map(block => {
-          const meta = BLOCK_META[block]
-          const tasks = TASK_TEMPLATE.filter(t=>t.block===block)
-          const bd = tasks.filter(t=>done.includes(t.id)).length
-          return (
-            <div key={block} style={{marginBottom:16}}>
-              <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8}}>
-                <div style={{width:3, height:18, background:meta.color, borderRadius:99}}/>
-                <span style={{fontSize:12, fontWeight:700, color:meta.color, letterSpacing:0.6}}>{meta.label.toUpperCase()}</span>
-                <span style={{fontSize:11, color:C.dim}}>· {meta.time}</span>
-                <span style={{marginLeft:'auto', fontSize:12, color:bd===tasks.length?C.green:C.muted, fontWeight:700}}>{bd}/{tasks.length}</span>
-              </div>
-              <div style={{display:'grid', gap:6}}>
-                {tasks.map(t => {
-                  const isDone = done.includes(t.id)
-                  return (
-                    <div key={t.id} onClick={()=>toggle(t.id)} style={{
-                      background:isDone?C.surfaceHi:C.surface,
-                      border:`1px solid ${isDone?C.green+'33':C.border}`,
-                      borderRadius:10, padding:'11px 14px', cursor:'pointer',
-                      display:'flex', alignItems:'center', gap:12,
-                      opacity:isDone?0.6:1, transition:'all .15s'
-                    }}>
-                      <div style={{
-                        width:20, height:20, borderRadius:5, flexShrink:0,
-                        background:isDone?C.green:C.surfaceHi,
-                        border:`2px solid ${isDone?C.green:C.border}`,
-                        display:'flex', alignItems:'center', justifyContent:'center',
-                        color:'#fff', fontSize:12, transition:'all .15s'
-                      }}>{isDone?'✓':''}</div>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:13, fontWeight:600, color:isDone?C.muted:C.white, textDecoration:isDone?'line-through':'none', display:'flex', gap:8, alignItems:'center', flexWrap:'wrap'}}>
-                          {t.label}
-                          {t.brand && <Badge color={pc(t.brand)}>{pl(t.brand)}</Badge>}
-                        </div>
-                      </div>
-                      {t.tab && !isDone && (
-                        <Btn small ghost color={C.steel} onClick={e=>{e.stopPropagation();setTab(t.tab)}}>Go →</Btn>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      <div style={{display:'flex', flexDirection:'column', gap:14}}>
-        <Card style={{border:`1px solid ${xp.color}33`}}>
-          <Label>TODAY'S CROSS-PROMO</Label>
-          <div style={{fontSize:13, fontWeight:700, color:C.white, marginBottom:4}}>{xp.label}</div>
-          <div style={{fontSize:12, color:C.muted, lineHeight:1.6, marginBottom:10}}>{xp.sub}</div>
-          <div style={{background:C.surfaceHi, borderRadius:8, padding:'8px 10px', fontSize:11, color:C.blue}}>Every 4th post → cross-promote another brand</div>
-        </Card>
-
-        <Card>
-          <Label>ALGORITHM NOTES</Label>
-          {[
-            {e:'📸',t:'Post IG Reels in first 2h of waking'},
-            {e:'💬',t:'Comment within 60 min of posting'},
-            {e:'🔗',t:'LinkedIn: comment before you post'},
-            {e:'▶️',t:'YT Shorts: 3–5/week minimum per channel'},
-            {e:'💼',t:'LinkedIn daily = fastest B2B lead growth'},
-          ].map((tip,i)=>(
-            <div key={i} style={{display:'flex', gap:8, marginBottom:8, fontSize:12, color:C.muted, lineHeight:1.5}}>
-              <span>{tip.e}</span><span>{tip.t}</span>
-            </div>
-          ))}
-        </Card>
-
-        <Card>
-          <Label>XPROMO ROTATION</Label>
-          {XPROMO.map((x,i)=>(
-            <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start', marginBottom:8}}>
-              <div style={{width:6,height:6,borderRadius:'50%',background:x.color,marginTop:4,flexShrink:0}}/>
-              <div style={{fontSize:12, color:i===doy()%4?C.white:C.muted, fontWeight:i===doy()%4?700:400}}>{x.label}</div>
-            </div>
-          ))}
-        </Card>
-      </div>
-    </div>
-  )
-}
-
-// ── PUBLISHER ─────────────────────────────────────────────────
-function Publisher() {
-  const [profile,setProfile]=useState('socialninja')
-  const [platform,setPlatform]=useState('instagram')
-  const [topic,setTopic]=useState('')
-  const [schedMode,setSchedMode]=useState(false)
-  const [schedDate,setSchedDate]=useState('')
-  const [schedTime,setSchedTime]=useState('09:00')
-  const [status,setStatus]=useState(null)
-  const [log,setLog]=useState([])
-  const [loading,setLoading]=useState(true)
-
-  useEffect(()=>{
-    supabase.from('posts').select('*').order('created_at',{ascending:false}).limit(10)
-      .then(({data})=>{ if(data) setLog(data); setLoading(false) })
-  },[])
-
-  const fire = async () => {
-    if(!topic.trim()){setStatus('error');return}
-    setStatus('posting')
-    const entry = {
-      profile, platform, file_name:'pending...', caption:'',
-      yt_title:'', status:schedMode?'scheduled':'published',
-      scheduled_for: schedMode && schedDate ? new Date(`${schedDate}T${schedTime}`).toISOString() : null
+      if (leadsRes.data) setLeads(leadsRes.data);
+      if (clientsRes.data) setClients(clientsRes.data);
+      if (Array.isArray(fitRes)) setFitClients(fitRes);
+      if (postsRes.data) setPosts(postsRes.data);
+      if (scriptsRes.data) setScripts(scriptsRes.data);
+      if (queueRes.data) setQueueItems(queueRes.data);
+      if (mentionsRes.data) setMentions(mentionsRes.data);
+      if (teamRes.data) setTeamMembers(teamRes.data);
+      if (Array.isArray(blogsRes)) setBlogs(blogsRes);
+    } catch (e) {
+      console.error('Failed to load CRM data:', e);
     }
-    const {data} = await supabase.from('posts').insert([entry]).select()
-    setStatus('done')
-    if(data) setLog(prev=>[data[0],...prev])
-    setTopic(''); setSchedDate(''); setSchedTime('09:00'); setScheduleMode&&setSchedMode(false)
-    setTimeout(()=>setStatus(null),3000)
-  }
+    setLoading(false);
+    setRefreshing(false);
+  }, []);
 
-  const p = PROFILES.find(x=>x.id===profile)
+  useEffect(() => {
+    loadAllData();
+  }, [loadAllData]);
+
+  // ── Action Handlers ──────────────────────────────────────────────────
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text).catch(() => {});
+    setCopiedText(id);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
+
+  const handleSaveLead = async (leadForm: any) => {
+    setLoading(true);
+    const payload = {
+      ...leadForm,
+      status: (leadForm.status || 'NEW LEAD').toUpperCase(),
+      created_at: leadForm.created_at || new Date().toISOString()
+    };
+    if (leadForm.id) {
+      await supabase.from('leads').update(payload).eq('id', leadForm.id);
+    } else {
+      await supabase.from('leads').insert([payload]);
+    }
+    setShowAddLead(false);
+    await loadAllData();
+  };
+
+  const handleDeleteLead = async (id: string) => {
+    if (!window.confirm('Delete this lead from pipeline?')) return;
+    await supabase.from('leads').delete().eq('id', id);
+    setLeads(prev => prev.filter(l => l.id !== id));
+  };
+
+  const handleSaveClient = async (clientForm: any) => {
+    setLoading(true);
+    const payload = {
+      ...clientForm,
+      active: clientForm.active !== false,
+      join_date: clientForm.join_date || new Date().toISOString()
+    };
+    if (clientForm.id) {
+      await supabase.from('content_studio_clients').update(payload).eq('id', clientForm.id);
+    } else {
+      await supabase.from('content_studio_clients').insert([payload]);
+    }
+    setShowAddClient(false);
+    await loadAllData();
+  };
+
+  const handleToggleClient = async (id: string, currentActive: boolean) => {
+    await supabase.from('content_studio_clients').update({ active: !currentActive }).eq('id', id);
+    setClients(prev => prev.map(c => c.id === id ? { ...c, active: !currentActive } : c));
+  };
+
+  const handleViewClientHistory = async (client: any) => {
+    setViewClientHist(client);
+    try {
+      const res = await fetch(getApiUrl(`/api/data?resource=history&clientId=${client.id}`));
+      const data = await res.json();
+      setClientHistData(Array.isArray(data) ? data : []);
+    } catch {
+      setClientHistData([]);
+    }
+  };
+
+  const handleSaveFitStatus = async () => {
+    if (!manageFitStatus) return;
+    try {
+      const res = await fetch(getApiUrl('/api/fit-clients'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: manageFitStatus.id, plan_status: newFitStatus })
+      });
+      if (res.ok) {
+        setManageFitStatus(null);
+        await loadAllData();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleScheduleSubmit = async () => {
+    if (!scheduleTargetId) return alert('Select a lead or client to schedule');
+    if (scheduleTargetType === 'lead') {
+      await supabase.from('leads').update({
+        next_follow_up: scheduleDate,
+        follow_up_notes: scheduleNotes || 'Scheduled from Master Calendar'
+      }).eq('id', scheduleTargetId);
+    } else {
+      await supabase.from('content_studio_clients').update({
+        next_follow_up: scheduleDate,
+        notes: scheduleNotes || 'Scheduled client review from Master Calendar'
+      }).eq('id', scheduleTargetId);
+    }
+    setShowScheduleModal(false);
+    setScheduleNotes('');
+    await loadAllData();
+  };
+
+  const handlePublishPost = async () => {
+    if (!pubTopic.trim()) { setPubStatus('error'); return; }
+    setPubStatus('posting');
+    const entry = {
+      profile: pubProfile,
+      platform: pubPlatform,
+      file_name: pubTopic.substring(0, 40) + '...',
+      caption: '',
+      yt_title: pubTopic,
+      status: pubSchedMode ? 'Scheduled' : 'Published',
+      scheduled_for: pubSchedMode && pubSchedDate ? new Date(`${pubSchedDate}T${pubSchedTime}`).toISOString() : null,
+      created_at: new Date().toISOString()
+    };
+    await supabase.from('posts').insert([entry]);
+    setPubStatus('done');
+    setPubTopic('');
+    setPubSchedDate('');
+    setTimeout(() => setPubStatus(null), 3000);
+    await loadAllData();
+  };
+
+  // ── Computed Metrics & Filters ───────────────────────────────────────
+  const totalTasks = TASK_TEMPLATE.length;
+  const completedTasksCount = doneTasks.filter(id => TASK_TEMPLATE.some(t => t.id === id)).length;
+  const taskProgressPct = Math.round((completedTasksCount / totalTasks) * 100);
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const followupsToday = [
+    ...leads.filter(l => (l.next_follow_up || l.nextFollowUp || '').startsWith(todayStr)),
+    ...clients.filter(c => (c.next_follow_up || c.nextFollowUp || '').startsWith(todayStr))
+  ];
+
+  const wonLeadsCount = leads.filter(l => (l.status || '').toUpperCase() === 'WON').length;
+  const activeClientsCount = clients.filter(c => c.active !== false).length;
+  const premiumFitCount = fitClients.filter(f => f.plan_status === 'premium').length;
+
+  const currentXpromo = XPROMO[doy() % 4];
+  const allowedTabs = ROLES[userRole]?.tabs || ROLES.founder.tabs;
+  const visibleTabs = ALL_TABS.filter(t => allowedTabs.includes(t.id));
+
+  // Global search filtering
+  const filteredLeads = leads.filter(l => 
+    (l.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (l.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (l.company || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredClients = clients.filter(c =>
+    (c.brand_name || c.brandName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (c.niche || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (c.email || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredFitClients = fitClients.filter(f =>
+    (f.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (f.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (f.assessment_data?.goal || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:20}}>
-      <div style={{display:'flex', flexDirection:'column', gap:14}}>
-        <Card>
-          <Label>PROFILE</Label>
-          <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-            {PROFILES.map(pr=>(
-              <button key={pr.id} onClick={()=>setProfile(pr.id)} style={{
-                background:profile===pr.id?pr.color:C.surfaceHi,
-                border:`1px solid ${pr.color}44`, borderRadius:8,
-                color:profile===pr.id?'#fff':C.muted,
-                padding:'7px 14px', fontSize:12, fontWeight:700, cursor:'pointer', transition:'all .15s'
-              }}>{pr.label}</button>
-            ))}
-          </div>
-        </Card>
+    <div className="min-h-screen bg-[#07090e] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-20">
+      <SEO title="Nazim OS 3.0 | Executive Agency Command Deck" description="Master Management Dashboard" />
 
-        <Card>
-          <Label>PLATFORM</Label>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:8}}>
-            {[
-              {id:'instagram',label:'Instagram',icon:'📸',ready:true},
-              {id:'youtube',  label:'YouTube',  icon:'▶️', ready:true},
-              {id:'both',     label:'IG + YT',  icon:'📡', ready:true},
-              {id:'linkedin', label:'LinkedIn', icon:'💼', ready:false},
-            ].map(pl=>(
-              <button key={pl.id} onClick={()=>pl.ready&&setPlatform(pl.id)} style={{
-                background:platform===pl.id?C.steel:C.surfaceHi,
-                border:`1px solid ${platform===pl.id?C.steel:C.border}`,
-                borderRadius:10, padding:'10px 12px',
-                color:platform===pl.id?'#fff':pl.ready?C.muted:C.dim,
-                fontSize:12, fontWeight:700, cursor:pl.ready?'pointer':'not-allowed',
-                transition:'all .15s', textAlign:'left', position:'relative'
-              }}>
-                <div style={{fontSize:16,marginBottom:2}}>{pl.icon}</div>
-                <div>{pl.label}</div>
-                {!pl.ready&&<div style={{position:'absolute',top:5,right:6,fontSize:9,color:C.amber,fontWeight:700,background:C.amber+'22',borderRadius:4,padding:'1px 5px'}}>SOON</div>}
-              </button>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <Label>TOPIC</Label>
-          <Inp value={topic} onChange={e=>setTopic(e.target.value)} multiline rows={3}
-            placeholder="e.g. how luxury brands in UAE are cutting agency costs using AI"
-            style={{marginBottom:10}}
-          />
-          <div style={{background:C.surfaceHi,borderRadius:8,padding:'8px 12px',fontSize:12,color:C.muted}}>
-            <span style={{color:C.blue}}>Command: </span>
-            <span style={{color:C.white}}>post on {pl(profile).toLowerCase()} {platform==='both'?'instagram and youtube':platform}{topic?` about ${topic}`:''}</span>
-          </div>
-        </Card>
-
-        <Card style={{border:`1px solid ${schedMode?C.purple+'55':C.border}`}}>
-          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:schedMode?14:0}}>
+      {/* ── TOP COCKPIT BAR ───────────────────────────────────────────── */}
+      <header className="border-b border-slate-800/80 bg-[#0c101b]/95 backdrop-blur-xl sticky top-0 z-50 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+          
+          {/* Logo & Operating Identity */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-brand-primary to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-primary/20 border border-white/10">
+              🥷
+            </div>
             <div>
-              <div style={{fontSize:13,fontWeight:700,color:C.white}}>📅 Schedule for later</div>
-              <div style={{fontSize:11,color:C.muted}}>Post at a specific date and time</div>
-            </div>
-            <button onClick={()=>setSchedMode(!schedMode)} style={{
-              width:42,height:22,borderRadius:99,background:schedMode?C.purple:C.surfaceHi,
-              border:`1px solid ${schedMode?C.purple:C.border}`,cursor:'pointer',position:'relative',transition:'all .2s'
-            }}>
-              <div style={{width:16,height:16,borderRadius:'50%',background:'#fff',position:'absolute',top:3,left:schedMode?23:3,transition:'left .2s'}}/>
-            </button>
-          </div>
-          {schedMode&&(
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-              <div><Label>DATE</Label><Inp type="date" value={schedDate} onChange={e=>setSchedDate(e.target.value)}/></div>
-              <div><Label>TIME</Label><Inp type="time" value={schedTime} onChange={e=>setSchedTime(e.target.value)}/></div>
-              {schedDate&&<div style={{gridColumn:'1/-1',fontSize:12,color:C.purple}}>
-                Scheduled: {new Date(`${schedDate}T${schedTime}`).toLocaleString('en',{weekday:'long',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'})}
-              </div>}
-            </div>
-          )}
-        </Card>
-
-        <Btn onClick={fire} full
-          color={status==='posting'?C.muted:status==='done'?C.green:status==='error'?C.red:schedMode?C.purple:p?.color||C.steel}
-        >
-          {status==='posting'?'⏳ Publishing...'
-            :status==='done'?schedMode?'📅 Scheduled!':'✅ Published!'
-            :status==='error'?'⚠️ Add a topic'
-            :schedMode?`📅 Schedule — ${schedDate||'pick a date'} ${schedTime}`
-            :'📡 Publish Now'}
-        </Btn>
-      </div>
-
-      <Card>
-        <Label>PUBLISH LOG</Label>
-        {loading ? <Spinner/> : log.length===0 ? <Empty text="No posts yet."/> : log.map((l,i)=>(
-          <div key={l.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<log.length-1?`1px solid ${C.border}`:'none'}}>
-            <div style={{width:7,height:7,borderRadius:'50%',background:l.status==='published'?C.green:l.status==='scheduled'?C.purple:C.muted,flexShrink:0}}/>
-            <div style={{flex:1}}>
-              <div style={{fontSize:13,color:C.white,fontWeight:600,display:'flex',gap:6,alignItems:'center'}}>
-                {pl(l.profile)} → {l.platform}
-                {l.status==='scheduled'&&<Badge color={C.purple}>Scheduled</Badge>}
+              <div className="font-extrabold text-sm tracking-wide text-white flex items-center gap-2">
+                <span>NAZIM OS</span>
+                <span className="text-[10px] bg-gradient-to-r from-brand-primary/20 to-purple-500/20 text-brand-primary border border-brand-primary/30 px-2 py-0.5 rounded-full uppercase font-bold tracking-widest">
+                  v3.0 PRO
+                </span>
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
               </div>
-              <div style={{fontSize:11,color:C.muted,marginTop:2}}>{l.file_name} · {fmtDate(l.created_at)} {fmtTime(l.created_at)}</div>
+              <p className="text-[10px] text-slate-400 font-medium">Enterprise Growth & Operations Deck</p>
             </div>
           </div>
-        ))}
-        <div style={{marginTop:16,background:C.teal+'11',border:`1px solid ${C.teal}33`,borderRadius:8,padding:'10px 14px'}}>
-          <div style={{fontSize:11,fontWeight:700,color:C.teal,marginBottom:3}}>💼 LinkedIn — Coming Next</div>
-          <div style={{fontSize:11,color:C.muted}}>Being added to the n8n publisher workflow.</div>
-        </div>
-      </Card>
-    </div>
-  )
-}
 
-// ── SCRIPTS ───────────────────────────────────────────────────
-function Scripts() {
-  const [scripts,setScripts]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [open,setOpen]=useState(null)
-  const [copied,setCopied]=useState(null)
-
-  useEffect(()=>{
-    supabase.from('scripts').select('*').order('created_at',{ascending:false})
-      .then(({data})=>{ if(data) setScripts(data); setLoading(false) })
-  },[])
-
-  const mark = async (id,status) => {
-    await supabase.from('scripts').update({status}).eq('id',id)
-    setScripts(s=>s.map(x=>x.id===id?{...x,status}:x))
-  }
-  const copy = (text,id) => { navigator.clipboard.writeText(text).catch(()=>{}); setCopied(id); setTimeout(()=>setCopied(null),2000) }
-
-  if(loading) return <Spinner/>
-  if(scripts.length===0) return <Empty icon="📝" text="No scripts yet. Flow 3 runs every Sunday at 8AM and drops scripts here automatically."/>
-
-  return (
-    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:14}}>
-      {scripts.map(s=>(
-        <Card key={s.id}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:10}}>
-            <Badge color={pc(s.profile)}>{pl(s.profile)}</Badge>
-            <StatusBadge s={s.status}/>
-          </div>
-          <div style={{fontSize:14,fontWeight:700,color:C.white,marginBottom:3}}>{s.topic}</div>
-          <div style={{fontSize:12,color:C.blue,marginBottom:10}}>🎬 {s.yt_title}</div>
-          <div style={{fontSize:12,color:C.muted,marginBottom:12,lineHeight:1.5}}><span style={{color:C.blueLight}}>🪝 </span>{s.hook}</div>
-          <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-            <Btn small ghost color={C.steel} onClick={()=>setOpen(open===s.id?null:s.id)}>{open===s.id?'Hide':'View Script'}</Btn>
-            <Btn small ghost color={C.muted} onClick={()=>copy(s.caption,`c${s.id}`)}>{copied===`c${s.id}`?'✅ Copied!':'Copy Caption'}</Btn>
-            {s.status==='ready'&&<Btn small color={C.amber} onClick={()=>mark(s.id,'filmed')}>Mark Filmed</Btn>}
-            {s.status==='filmed'&&<Btn small color={C.green} onClick={()=>mark(s.id,'posted')}>Mark Posted</Btn>}
-          </div>
-          {open===s.id&&(
-            <div style={{marginTop:14,borderTop:`1px solid ${C.border}`,paddingTop:14}}>
-              {[['🪝 Hook',s.hook],['Section 1',s.section1],['Section 2',s.section2],['Section 3',s.section3],['CTA',s.cta]].map(([l,t])=>t&&(
-                <div key={l} style={{marginBottom:10}}>
-                  <div style={{fontSize:10,color:C.muted,fontWeight:700,marginBottom:3}}>{l}</div>
-                  <div style={{fontSize:12,color:C.white,lineHeight:1.6}}>{t}</div>
-                </div>
-              ))}
-              {s.caption&&<>
-                <Divider/>
-                <div style={{fontSize:10,color:C.muted,fontWeight:700,marginBottom:6}}>INSTAGRAM CAPTION</div>
-                <div style={{background:C.surfaceHi,borderRadius:8,padding:10,fontSize:12,color:C.blueLight,lineHeight:1.7,whiteSpace:'pre-wrap'}}>{s.caption}</div>
-                <Btn small ghost color={C.steel} style={{marginTop:8}} onClick={()=>copy(s.caption,`c2${s.id}`)}>{copied===`c2${s.id}`?'✅ Copied!':'Copy Caption'}</Btn>
-              </>}
-            </div>
-          )}
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-// ── QUEUE ─────────────────────────────────────────────────────
-function Queue() {
-  const [items,setItems]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [posting,setPosting]=useState(null)
-  const [showSched,setShowSched]=useState(null)
-  const [schedDate,setSchedDate]=useState('')
-  const [schedTime,setSchedTime]=useState('09:00')
-
-  useEffect(()=>{
-    supabase.from('scheduled_posts').select('*').order('created_at',{ascending:false})
-      .then(({data})=>{ if(data) setItems(data); setLoading(false) })
-  },[])
-
-  const postNow = async id => {
-    setPosting(id)
-    await supabase.from('scheduled_posts').update({status:'Posted'}).eq('id',id)
-    setItems(q=>q.map(x=>x.id===id?{...x,status:'Posted'}:x))
-    setPosting(null)
-  }
-
-  const saveSchedule = async id => {
-    if(!schedDate) return
-    const scheduled_for = new Date(`${schedDate}T${schedTime}`).toISOString()
-    await supabase.from('scheduled_posts').update({scheduled_for,status:'Scheduled'}).eq('id',id)
-    setItems(q=>q.map(x=>x.id===id?{...x,scheduled_for,status:'Scheduled'}:x))
-    setShowSched(null)
-  }
-
-  if(loading) return <Spinner/>
-  if(items.length===0) return <Empty icon="🎬" text="No videos in queue. Drop files in your Drive folders and they'll appear here."/>
-
-  return (
-    <div style={{display:'grid',gap:10}}>
-      {items.map(item=>(
-        <Card key={item.id} style={{display:'flex',alignItems:'center',gap:14}}>
-          <div style={{width:42,height:42,borderRadius:10,background:pc(item.profile)+'22',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>
-            {item.platform==='youtube'?'▶️':'📸'}
-          </div>
-          <div style={{flex:1}}>
-            <div style={{fontSize:13,fontWeight:700,color:C.white}}>{item.file_name||item.topic}</div>
-            <div style={{fontSize:11,color:C.muted,marginTop:3,display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
-              <Badge color={pc(item.profile)}>{pl(item.profile)}</Badge>
-              <span style={{textTransform:'capitalize'}}>{item.platform}</span>
-              {item.scheduled_for&&<span>📅 {fmtDate(item.scheduled_for)} {fmtTime(item.scheduled_for)}</span>}
-            </div>
-          </div>
-          <StatusBadge s={item.status}/>
-          <div style={{display:'flex',gap:8}}>
-            {item.status!=='Posted'&&<>
-              <Btn small color={C.steel} onClick={()=>postNow(item.id)}>{posting===item.id?'Posting...':'Post Now'}</Btn>
-              <Btn small ghost color={C.purple} onClick={()=>setShowSched(showSched===item.id?null:item.id)}>Schedule</Btn>
-            </>}
-          </div>
-          {showSched===item.id&&(
-            <div style={{width:'100%',marginTop:12,display:'grid',gridTemplateColumns:'1fr 1fr auto',gap:8,alignItems:'end'}}>
-              <div><Label>DATE</Label><Inp type="date" value={schedDate} onChange={e=>setSchedDate(e.target.value)}/></div>
-              <div><Label>TIME</Label><Inp type="time" value={schedTime} onChange={e=>setSchedTime(e.target.value)}/></div>
-              <Btn color={C.green} onClick={()=>saveSchedule(item.id)}>Save</Btn>
-            </div>
-          )}
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-// ── CRM / LEADS ───────────────────────────────────────────────
-function CRM() {
-  const [leads,setLeads]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [modal,setModal]=useState(null)
-  const [showForm,setShowForm]=useState(false)
-  const [saving,setSaving]=useState(false)
-  const [form,setForm]=useState({name:'',email:'',phone:'',company:'',source:'',message:'',status:'NEW LEAD',notes:''})
-
-  const load = useCallback(()=>{
-    supabase.from('leads').select('*').order('created_at',{ascending:false})
-      .then(({data})=>{ if(data) setLeads(data); setLoading(false) })
-  },[])
-
-  useEffect(()=>{ load() },[load])
-
-  const save = async () => {
-    if(!form.name||!form.email) return
-    setSaving(true)
-    const {data} = await supabase.from('leads').insert([{...form,created_at:new Date().toISOString()}]).select()
-    if(data) setLeads(prev=>[data[0],...prev])
-    setForm({name:'',email:'',phone:'',company:'',source:'',message:'',status:'NEW LEAD',notes:''})
-    setShowForm(false); setSaving(false)
-  }
-
-  const updateStatus = async (id,status) => {
-    await supabase.from('leads').update({status}).eq('id',id)
-    setLeads(l=>l.map(x=>x.id===id?{...x,status}:x))
-  }
-
-  const statuses = ['NEW LEAD','DEMO SCHEDULED','WON','LOST']
-  const statusColor = {'NEW LEAD':C.blue,'DEMO SCHEDULED':C.amber,'WON':C.green,'LOST':C.red}
-
-  if(loading) return <Spinner/>
-
-  return (
-    <div>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-        <div style={{display:'flex',gap:20}}>
-          {statuses.map(s=>(
-            <div key={s} style={{textAlign:'center'}}>
-              <div style={{fontSize:20,fontWeight:800,color:statusColor[s]}}>{leads.filter(l=>l.status===s).length}</div>
-              <div style={{fontSize:10,color:C.muted}}>{s}</div>
-            </div>
-          ))}
-        </div>
-        <Btn color={C.steel} onClick={()=>setShowForm(!showForm)}>+ Add Lead</Btn>
-      </div>
-
-      {showForm&&(
-        <Card style={{marginBottom:14}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
-            <div><Label>NAME</Label><Inp value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))} placeholder="Full name"/></div>
-            <div><Label>EMAIL</Label><Inp value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="Email"/></div>
-            <div><Label>PHONE</Label><Inp value={form.phone} onChange={e=>setForm(p=>({...p,phone:e.target.value}))} placeholder="Phone"/></div>
-            <div><Label>COMPANY</Label><Inp value={form.company} onChange={e=>setForm(p=>({...p,company:e.target.value}))} placeholder="Company"/></div>
-            <div><Label>SOURCE</Label><Inp value={form.source} onChange={e=>setForm(p=>({...p,source:e.target.value}))} placeholder="Instagram DM, LinkedIn, Referral..."/></div>
-            <div><Label>STATUS</Label>
-              <Sel value={form.status} onChange={e=>setForm(p=>({...p,status:e.target.value}))}>
-                {statuses.map(s=><option key={s}>{s}</option>)}
-              </Sel>
-            </div>
-          </div>
-          <div style={{marginBottom:10}}><Label>MESSAGE / NOTES</Label><Inp value={form.message} onChange={e=>setForm(p=>({...p,message:e.target.value}))} multiline placeholder="What are they looking for?"/></div>
-          <Btn color={C.green} onClick={save} disabled={saving}>{saving?'Saving...':'Save Lead'}</Btn>
-        </Card>
-      )}
-
-      <div style={{display:'grid',gap:10}}>
-        {leads.map(lead=>(
-          <Card key={lead.id} style={{cursor:'pointer'}} onClick={()=>setModal(modal===lead.id?null:lead.id)}>
-            <div style={{display:'flex',alignItems:'center',gap:12}}>
-              <div style={{width:38,height:38,borderRadius:'50%',background:C.steel,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,color:'#fff',fontSize:15,flexShrink:0}}>
-                {(lead.name||'?').charAt(0).toUpperCase()}
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:700,color:C.white}}>{lead.name}</div>
-                <div style={{fontSize:11,color:C.muted,marginTop:2}}>{lead.company} · {lead.source} · {fmtDate(lead.created_at)}</div>
-              </div>
-              <StatusBadge s={lead.status}/>
-              {lead.next_follow_up&&(
-                <div style={{fontSize:11,color:C.amber,textAlign:'right'}}>
-                  <div>Follow up</div>
-                  <div style={{fontWeight:700}}>{fmtDate(lead.next_follow_up)}</div>
-                </div>
-              )}
-            </div>
-            {modal===lead.id&&(
-              <div style={{marginTop:12,borderTop:`1px solid ${C.border}`,paddingTop:12}} onClick={e=>e.stopPropagation()}>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:12}}>
-                  <div style={{fontSize:12,color:C.muted}}>📧 {lead.email}</div>
-                  <div style={{fontSize:12,color:C.muted}}>📱 {lead.phone}</div>
-                </div>
-                {lead.message&&<div style={{fontSize:12,color:C.muted,marginBottom:12,lineHeight:1.5}}>💬 {lead.message}</div>}
-                {lead.notes&&<div style={{fontSize:12,color:C.muted,marginBottom:12,background:C.surfaceHi,borderRadius:8,padding:10}}>{lead.notes}</div>}
-                <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-                  <Label>UPDATE STATUS:</Label>
-                  {statuses.map(s=>(
-                    <Btn key={s} small color={statusColor[s]} ghost={lead.status!==s} onClick={()=>updateStatus(lead.id,s)}>{s}</Btn>
-                  ))}
-                </div>
-              </div>
+          {/* Global Fuzzy Search */}
+          <div className="hidden md:flex items-center flex-1 max-w-sm relative">
+            <Search size={14} className="absolute left-3 text-slate-500" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Search leads, brands, fit users, posts..."
+              className="w-full bg-[#121929] border border-slate-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary transition-colors"
+            />
+            {searchTerm && (
+              <button onClick={() => setSearchTerm('')} className="absolute right-2.5 text-slate-500 hover:text-white">
+                <X size={13} />
+              </button>
             )}
-          </Card>
-        ))}
-        {leads.length===0&&<Empty icon="💼" text="No leads yet. Add your first lead above."/>}
-      </div>
-    </div>
-  )
-}
-
-// ── CLIENTS ───────────────────────────────────────────────────
-function Clients() {
-  const [clients,setClients]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [open,setOpen]=useState(null)
-  const [showForm,setShowForm]=useState(false)
-  const [form,setForm]=useState({brand_name:'',niche:'',email:'',phone:'',plan_name:'',payment_status:'pending',tone_of_voice:'',target_audience:'',active:true})
-
-  useEffect(()=>{
-    supabase.from('content_studio_clients').select('*').order('join_date',{ascending:false})
-      .then(({data})=>{ if(data) setClients(data); setLoading(false) })
-  },[])
-
-  const save = async () => {
-    if(!form.brand_name) return
-    const {data} = await supabase.from('content_studio_clients').insert([{...form,join_date:new Date().toISOString()}]).select()
-    if(data) setClients(prev=>[data[0],...prev])
-    setForm({brand_name:'',niche:'',email:'',phone:'',plan_name:'',payment_status:'pending',tone_of_voice:'',target_audience:'',active:true})
-    setShowForm(false)
-  }
-
-  const toggle = async (id,active) => {
-    await supabase.from('content_studio_clients').update({active:!active}).eq('id',id)
-    setClients(c=>c.map(x=>x.id===id?{...x,active:!active}:x))
-  }
-
-  if(loading) return <Spinner/>
-
-  return (
-    <div>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-        <div style={{display:'flex',gap:20}}>
-          <div style={{textAlign:'center'}}>
-            <div style={{fontSize:20,fontWeight:800,color:C.green}}>{clients.filter(c=>c.active).length}</div>
-            <div style={{fontSize:10,color:C.muted}}>ACTIVE</div>
           </div>
-          <div style={{textAlign:'center'}}>
-            <div style={{fontSize:20,fontWeight:800,color:C.amber}}>{clients.filter(c=>!c.active).length}</div>
-            <div style={{fontSize:10,color:C.muted}}>INACTIVE</div>
-          </div>
-          <div style={{textAlign:'center'}}>
-            <div style={{fontSize:20,fontWeight:800,color:C.white}}>{clients.length}</div>
-            <div style={{fontSize:10,color:C.muted}}>TOTAL</div>
-          </div>
-        </div>
-        <Btn color={C.steel} onClick={()=>setShowForm(!showForm)}>+ Add Client</Btn>
-      </div>
 
-      {showForm&&(
-        <Card style={{marginBottom:14}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
-            <div><Label>BRAND NAME</Label><Inp value={form.brand_name} onChange={e=>setForm(p=>({...p,brand_name:e.target.value}))} placeholder="Brand name"/></div>
-            <div><Label>NICHE</Label><Inp value={form.niche} onChange={e=>setForm(p=>({...p,niche:e.target.value}))} placeholder="e.g. Luxury fashion"/></div>
-            <div><Label>EMAIL</Label><Inp value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="Email"/></div>
-            <div><Label>PHONE</Label><Inp value={form.phone} onChange={e=>setForm(p=>({...p,phone:e.target.value}))} placeholder="Phone"/></div>
-            <div><Label>PLAN</Label><Inp value={form.plan_name} onChange={e=>setForm(p=>({...p,plan_name:e.target.value}))} placeholder="e.g. Premium Retainer"/></div>
-            <div><Label>PAYMENT STATUS</Label>
-              <Sel value={form.payment_status} onChange={e=>setForm(p=>({...p,payment_status:e.target.value}))}>
-                <option value="active">Active</option>
-                <option value="pending">Pending</option>
-                <option value="overdue">Overdue</option>
-              </Sel>
-            </div>
-          </div>
-          <div style={{marginBottom:10}}><Label>BRAND VOICE / TONE</Label><Inp value={form.tone_of_voice} onChange={e=>setForm(p=>({...p,tone_of_voice:e.target.value}))} placeholder="Premium, aspirational, no fluff..."/></div>
-          <div style={{marginBottom:10}}><Label>TARGET AUDIENCE</Label><Inp value={form.target_audience} onChange={e=>setForm(p=>({...p,target_audience:e.target.value}))} placeholder="Luxury brand CMOs in India and UAE..."/></div>
-          <Btn color={C.green} onClick={save}>Save Client</Btn>
-        </Card>
-      )}
-
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:12}}>
-        {clients.map(c=>(
-          <Card key={c.id} style={{border:`1px solid ${c.active?C.green+'33':C.border}`}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
-              <div>
-                <div style={{fontSize:14,fontWeight:700,color:C.white}}>{c.brand_name}</div>
-                <div style={{fontSize:11,color:C.muted}}>{c.niche}</div>
-              </div>
-              <Badge color={c.active?C.green:C.amber}>{c.active?'Active':'Inactive'}</Badge>
-            </div>
-            {c.plan_name&&<div style={{fontSize:12,color:C.blue,marginBottom:6}}>📦 {c.plan_name}</div>}
-            {c.email&&<div style={{fontSize:11,color:C.muted,marginBottom:3}}>📧 {c.email}</div>}
-            {c.phone&&<div style={{fontSize:11,color:C.muted,marginBottom:8}}>📱 {c.phone}</div>}
-            <button onClick={()=>setOpen(open===c.id?null:c.id)} style={{background:'none',border:'none',color:C.steel,fontSize:12,cursor:'pointer',fontWeight:700,marginRight:10}}>
-              {open===c.id?'Hide details':'View details'}
+          {/* Master Action Triggers */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowScheduleModal(true)}
+              className="bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+            >
+              <CalendarIcon size={14} /> <span className="hidden sm:inline">+ Schedule</span>
             </button>
-            <button onClick={()=>toggle(c.id,c.active)} style={{background:'none',border:'none',color:c.active?C.amber:C.green,fontSize:12,cursor:'pointer',fontWeight:700}}>
-              {c.active?'Suspend':'Reactivate'}
+
+            <button
+              onClick={() => setShowAddLead(true)}
+              className="bg-sky-600/20 hover:bg-sky-600/30 text-sky-400 border border-sky-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+            >
+              <UserPlus size={14} /> <span className="hidden sm:inline">+ Lead</span>
             </button>
-            {open===c.id&&(
-              <div style={{marginTop:12,borderTop:`1px solid ${C.border}`,paddingTop:12}}>
-                {c.tone_of_voice&&<div style={{fontSize:12,color:C.muted,marginBottom:6}}><strong style={{color:C.blueLight}}>Voice:</strong> {c.tone_of_voice}</div>}
-                {c.target_audience&&<div style={{fontSize:12,color:C.muted,marginBottom:6}}><strong style={{color:C.blueLight}}>Audience:</strong> {c.target_audience}</div>}
-                {c.payment_status&&<Badge color={c.payment_status==='active'?C.green:c.payment_status==='overdue'?C.red:C.amber}>{c.payment_status}</Badge>}
+
+            <button
+              onClick={() => setShowAddClient(true)}
+              className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm"
+            >
+              <Plus size={14} /> <span className="hidden sm:inline">+ Client</span>
+            </button>
+
+            <button
+              onClick={loadAllData}
+              disabled={refreshing}
+              className="p-2 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-800 rounded-xl transition-colors text-xs"
+              title="Refresh All Database Streams"
+            >
+              <RefreshCw size={14} className={refreshing ? 'animate-spin text-brand-primary' : ''} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── METRICS DASHBOARD CARDS ───────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          {/* Leads Stat Card */}
+          <div 
+            onClick={() => setActiveTab('crm')}
+            className="cursor-pointer bg-gradient-to-br from-[#0e1628] to-[#0a101d] border border-slate-800/90 hover:border-sky-500/50 p-4 rounded-2xl transition-all shadow-lg hover:shadow-sky-500/5 group"
+          >
+            <div className="flex items-center justify-between text-slate-400 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider group-hover:text-sky-400 transition-colors">Inbound Leads</span>
+              <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center">
+                <Mail size={16} />
               </div>
-            )}
-          </Card>
-        ))}
-        {clients.length===0&&<Empty icon="🏢" text="No clients yet."/>}
-      </div>
-    </div>
-  )
-}
-
-// ── MONITOR ───────────────────────────────────────────────────
-function Monitor() {
-  const [mentions,setMentions]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [copied,setCopied]=useState(null)
-
-  useEffect(()=>{
-    supabase.from('mentions').select('*').eq('dismissed',false).order('created_at',{ascending:false})
-      .then(({data})=>{ if(data) setMentions(data); setLoading(false) })
-  },[])
-
-  const dismiss = async id => {
-    await supabase.from('mentions').update({dismissed:true}).eq('id',id)
-    setMentions(m=>m.filter(x=>x.id!==id))
-  }
-  const copy = (text,id) => { navigator.clipboard.writeText(text).catch(()=>{}); setCopied(id); setTimeout(()=>setCopied(null),2000) }
-
-  if(loading) return <Spinner/>
-  if(mentions.length===0) return <Empty icon="👁" text="No new mentions. Flow 5 checks Reddit every 4 hours."/>
-
-  return (
-    <div style={{display:'grid',gap:12}}>
-      {mentions.map(m=>(
-        <Card key={m.id}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:10}}>
-            <div style={{display:'flex',gap:8}}><Badge color={C.steel}>{m.platform}</Badge><Badge color={C.muted}>{m.keyword}</Badge></div>
-            <span style={{fontSize:11,color:C.muted}}>{fmtDate(m.created_at)}</span>
-          </div>
-          <div style={{fontSize:13,fontWeight:700,color:C.white,marginBottom:6}}>{m.title}</div>
-          <div style={{fontSize:12,color:C.muted,marginBottom:12,lineHeight:1.5}}>{m.body}</div>
-          {m.suggested_reply&&(
-            <div style={{background:C.surfaceHi,borderRadius:8,padding:10,marginBottom:12}}>
-              <div style={{fontSize:10,color:C.blue,fontWeight:700,marginBottom:4}}>SUGGESTED REPLY</div>
-              <div style={{fontSize:12,color:C.white,lineHeight:1.6}}>{m.suggested_reply}</div>
             </div>
-          )}
-          <div style={{display:'flex',gap:8}}>
-            <Btn small ghost color={C.steel} onClick={()=>copy(m.suggested_reply,m.id)}>{copied===m.id?'✅ Copied!':'Copy Reply'}</Btn>
-            {m.url&&<Btn small ghost color={C.muted} onClick={()=>window.open(m.url,'_blank')}>View Post</Btn>}
-            <Btn small ghost color={C.red} onClick={()=>dismiss(m.id)}>Dismiss</Btn>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{leads.length}</span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                {wonLeadsCount} Won
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-2">Active pipeline prospects</p>
           </div>
-        </Card>
-      ))}
-    </div>
-  )
-}
 
-// ── CALENDAR ──────────────────────────────────────────────────
-function Calendar() {
-  const todayD = new Date()
-  const [month,setMonth]=useState(todayD.getMonth())
-  const [year,setYear]=useState(todayD.getFullYear())
-  const [posts,setPosts]=useState([])
-  const [scheduled,setScheduled]=useState([])
-  const [showAdd,setShowAdd]=useState(false)
-  const [newPost,setNewPost]=useState({profile:'socialninja',platform:'instagram',topic:'',scheduled_for:''})
+          {/* Client Workspaces Stat Card */}
+          <div 
+            onClick={() => setActiveTab('clients')}
+            className="cursor-pointer bg-gradient-to-br from-[#0e1628] to-[#0a101d] border border-slate-800/90 hover:border-emerald-500/50 p-4 rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/5 group"
+          >
+            <div className="flex items-center justify-between text-slate-400 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider group-hover:text-emerald-400 transition-colors">Client Brands</span>
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <Building size={16} />
+              </div>
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{clients.length}</span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                {activeClientsCount} Active
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-2">Content Studio Workspaces</p>
+          </div>
 
-  useEffect(()=>{
-    supabase.from('posts').select('profile,platform,created_at').then(({data})=>{ if(data) setPosts(data) })
-    supabase.from('scheduled_posts').select('*').eq('status','Scheduled').then(({data})=>{ if(data) setScheduled(data) })
-  },[])
+          {/* Fit Ninja Stat Card */}
+          <div 
+            onClick={() => setActiveTab('fit')}
+            className="cursor-pointer bg-gradient-to-br from-[#0e1628] to-[#0a101d] border border-slate-800/90 hover:border-amber-500/50 p-4 rounded-2xl transition-all shadow-lg hover:shadow-amber-500/5 group"
+          >
+            <div className="flex items-center justify-between text-slate-400 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider group-hover:text-amber-400 transition-colors">Fit Ninja Users</span>
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <Dumbbell size={16} />
+              </div>
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{fitClients.length}</span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                {premiumFitCount} Pro
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-2">Personal Training SaaS</p>
+          </div>
 
-  const addScheduled = async () => {
-    if(!newPost.topic||!newPost.scheduled_for) return
-    const {data} = await supabase.from('scheduled_posts').insert([{...newPost,status:'Scheduled'}]).select()
-    if(data) setScheduled(prev=>[...prev,data[0]])
-    setNewPost({profile:'socialninja',platform:'instagram',topic:'',scheduled_for:''})
-    setShowAdd(false)
-  }
+          {/* Follow-up & Agenda Stat Card */}
+          <div 
+            onClick={() => setActiveTab('calendar')}
+            className="cursor-pointer bg-gradient-to-br from-[#0e1628] to-[#0a101d] border border-slate-800/90 hover:border-purple-500/50 p-4 rounded-2xl transition-all shadow-lg hover:shadow-purple-500/5 group"
+          >
+            <div className="flex items-center justify-between text-slate-400 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider group-hover:text-purple-400 transition-colors">Today's Agenda</span>
+              <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                <Clock size={16} />
+              </div>
+            </div>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-black text-white">{followupsToday.length}</span>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                Action Req.
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-2">Follow-ups & calls today</p>
+          </div>
 
-  const getEventsOn = d => {
-    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`
-    const postEvents = posts.filter(p=>p.created_at?.startsWith(dateStr)).map(p=>({label:`${pl(p.profile).split(' ')[0]} ${p.platform==='youtube'?'YT':'IG'}`,color:pc(p.profile)}))
-    const schedEvents = scheduled.filter(s=>s.scheduled_for?.startsWith(dateStr)).map(s=>({label:`📅 ${pl(s.profile).split(' ')[0]}`,color:C.purple}))
-    return [...postEvents,...schedEvents]
-  }
-
-  const daysInMonth = new Date(year,month+1,0).getDate()
-  const firstDay = new Date(year,month,1).getDay()
-  const days = [...Array(firstDay).fill(null),...Array(daysInMonth).fill(0).map((_,i)=>i+1)]
-  const monthStr = new Date(year,month).toLocaleString('default',{month:'long',year:'numeric'})
-
-  return (
-    <div style={{display:'grid',gridTemplateColumns:'1fr 260px',gap:20}}>
-      <div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-          <Btn small ghost color={C.steel} onClick={()=>{if(month===0){setMonth(11);setYear(y=>y-1);}else setMonth(m=>m-1)}}>← Prev</Btn>
-          <div style={{fontSize:16,fontWeight:800,color:C.white}}>{monthStr}</div>
-          <Btn small ghost color={C.steel} onClick={()=>{if(month===11){setMonth(0);setYear(y=>y+1);}else setMonth(m=>m+1)}}>Next →</Btn>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:3,marginBottom:6}}>
-          {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=><div key={d} style={{textAlign:'center',fontSize:11,color:C.muted,fontWeight:700,padding:'3px 0'}}>{d}</div>)}
-        </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:3}}>
-          {days.map((d,i)=>{
-            const isToday=d===todayD.getDate()&&month===todayD.getMonth()&&year===todayD.getFullYear()
-            const events=d?getEventsOn(d):[]
+      </div>
+
+      {/* ── HORIZONTAL NAVIGATION TABS ───────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+        <div className="bg-[#0b101c] border border-slate-800/90 rounded-2xl p-1.5 flex gap-1.5 overflow-x-auto shadow-xl scrollbar-none">
+          {visibleTabs.map(tab => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
             return (
-              <div key={i} style={{
-                background:d?(isToday?C.steel+'33':C.surface):'transparent',
-                border:isToday?`1px solid ${C.steel}`:d?`1px solid ${C.border}`:'none',
-                borderRadius:8,padding:'5px',minHeight:64
-              }}>
-                {d&&<>
-                  <div style={{fontSize:11,fontWeight:isToday?800:600,color:isToday?C.blue:C.muted,marginBottom:2}}>{d}</div>
-                  {events.slice(0,3).map((e,j)=>(
-                    <div key={j} style={{background:e.color+'28',borderRadius:3,padding:'1px 4px',fontSize:9,color:e.color,marginBottom:1,fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{e.label}</div>
-                  ))}
-                  {events.length>3&&<div style={{fontSize:9,color:C.muted}}>+{events.length-3}</div>}
-                </>}
-              </div>
-            )
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  isActive
+                    ? 'bg-gradient-to-r from-brand-primary to-orange-500 text-white shadow-lg shadow-brand-primary/20 scale-[1.02]'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                }`}
+              >
+                <Icon size={14} className={isActive ? 'text-white' : 'text-slate-400'} />
+                <span>{tab.label}</span>
+                {tab.id === 'crm' && leads.length > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                    {leads.length}
+                  </span>
+                )}
+                {tab.id === 'fit' && fitClients.length > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                    {fitClients.length}
+                  </span>
+                )}
+              </button>
+            );
           })}
         </div>
       </div>
 
-      <div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-          <Label>SCHEDULED</Label>
-          <Btn small color={C.steel} onClick={()=>setShowAdd(!showAdd)}>+ Add</Btn>
-        </div>
-        {showAdd&&(
-          <Card style={{marginBottom:12}}>
-            <div style={{marginBottom:8}}><Label>PROFILE</Label><Sel value={newPost.profile} onChange={e=>setNewPost(p=>({...p,profile:e.target.value}))}>
-              {PROFILES.map(pr=><option key={pr.id} value={pr.id}>{pr.label}</option>)}
-            </Sel></div>
-            <div style={{marginBottom:8}}><Label>PLATFORM</Label><Sel value={newPost.platform} onChange={e=>setNewPost(p=>({...p,platform:e.target.value}))}>
-              <option value="instagram">Instagram</option><option value="youtube">YouTube</option>
-            </Sel></div>
-            <div style={{marginBottom:8}}><Label>TOPIC</Label><Inp value={newPost.topic} onChange={e=>setNewPost(p=>({...p,topic:e.target.value}))} placeholder="Topic"/></div>
-            <div style={{marginBottom:10}}><Label>DATE & TIME</Label><Inp type="datetime-local" value={newPost.scheduled_for} onChange={e=>setNewPost(p=>({...p,scheduled_for:e.target.value}))}/></div>
-            <Btn color={C.green} full onClick={addScheduled}>Schedule</Btn>
-          </Card>
-        )}
-        <div style={{display:'flex',flexDirection:'column',gap:8}}>
-          {scheduled.sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for)).map(s=>(
-            <div key={s.id} style={{background:C.surface,border:`1px solid ${pc(s.profile)}33`,borderRadius:8,padding:'10px 12px'}}>
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
-                <Badge color={pc(s.profile)}>{pl(s.profile).split(' ')[0]}</Badge>
-                <span style={{fontSize:10,color:C.muted}}>{fmtDate(s.scheduled_for)}</span>
+      {/* ── MAIN CONTENT WORKSPACE ────────────────────────────────────── */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+        
+        {/* 1. DAILY OPS & CHECKLIST */}
+        {activeTab === 'tasks' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              
+              {/* Daily Progress Card */}
+              <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-5 shadow-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h2 className="text-xl font-black text-white tracking-tight">
+                      {completedTasksCount}/{totalTasks} Core Operations Completed
+                    </h2>
+                    <p className="text-xs text-slate-400">
+                      {new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  </div>
+                  <div className={`text-2xl font-black ${taskProgressPct === 100 ? 'text-emerald-400' : taskProgressPct > 50 ? 'text-sky-400' : 'text-amber-400'}`}>
+                    {taskProgressPct}%
+                  </div>
+                </div>
+
+                <div className="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-brand-primary via-purple-500 to-emerald-400 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${taskProgressPct}%` }}
+                  />
+                </div>
+                {taskProgressPct === 100 && (
+                  <div className="mt-3 text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                    <CheckCircle2 size={14} /> All operations complete for today. Ready for scale.
+                  </div>
+                )}
               </div>
-              <div style={{fontSize:12,color:C.white,fontWeight:600,marginBottom:2}}>{s.topic}</div>
-              <div style={{fontSize:11,color:C.muted,textTransform:'capitalize'}}>{s.platform} · {fmtTime(s.scheduled_for)}</div>
+
+              {/* Task Checklist Blocks */}
+              {(['morning', 'engage', 'outreach', 'content'] as const).map(block => {
+                const meta = BLOCK_META[block];
+                const blockTasks = TASK_TEMPLATE.filter(t => t.block === block);
+                const blockDoneCount = blockTasks.filter(t => doneTasks.includes(t.id)).length;
+
+                return (
+                  <div key={block} className="bg-[#0e1424] border border-slate-800/80 rounded-2xl p-5 shadow-lg space-y-3">
+                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{meta.icon}</span>
+                        <h3 className="text-xs font-black uppercase tracking-wider text-slate-200" style={{ color: meta.color }}>
+                          {meta.label}
+                        </h3>
+                        <span className="text-[11px] text-slate-500 font-medium">· {meta.time}</span>
+                      </div>
+                      <span className="text-xs font-bold text-slate-400">{blockDoneCount}/{blockTasks.length}</span>
+                    </div>
+
+                    <div className="grid gap-2">
+                      {blockTasks.map(t => {
+                        const isDone = doneTasks.includes(t.id);
+                        return (
+                          <div
+                            key={t.id}
+                            onClick={() => toggleTask(t.id)}
+                            className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                              isDone
+                                ? 'bg-slate-900/60 border-emerald-500/20 opacity-60'
+                                : 'bg-[#121929] border-slate-800/80 hover:border-slate-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-xs font-bold border transition-colors ${
+                                isDone ? 'bg-emerald-500 border-emerald-400 text-white' : 'border-slate-700 bg-slate-800 text-transparent'
+                              }`}>
+                                ✓
+                              </div>
+                              <span className={`text-xs font-semibold ${isDone ? 'line-through text-slate-500' : 'text-slate-200'}`}>
+                                {t.label}
+                              </span>
+                              {t.brand && (
+                                <span 
+                                  className="text-[10px] font-bold px-2 py-0.5 rounded-full border"
+                                  style={{ backgroundColor: `${pc(t.brand)}15`, color: pc(t.brand), borderColor: `${pc(t.brand)}30` }}
+                                >
+                                  {pl(t.brand)}
+                                </span>
+                              )}
+                            </div>
+
+                            {t.tab && !isDone && (
+                              <button
+                                onClick={e => { e.stopPropagation(); setActiveTab(t.tab!); }}
+                                className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 bg-sky-500/10 px-2 py-1 rounded-lg border border-sky-500/20"
+                              >
+                                Go →
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-          {scheduled.length===0&&<div style={{fontSize:12,color:C.muted}}>No scheduled posts.</div>}
-        </div>
-      </div>
-    </div>
-  )
-}
 
-// ── TEAM ──────────────────────────────────────────────────────
-function Team() {
-  const [members,setMembers]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [showForm,setShowForm]=useState(false)
-  const [form,setForm]=useState({name:'',email:'',role:'content'})
+            {/* Sidebar Ops Insights */}
+            <div className="space-y-6">
+              
+              {/* Today's Cross Promo Card */}
+              <div className="bg-[#0e1424] border border-orange-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+                <div className="text-[10px] font-black uppercase tracking-widest text-orange-400 mb-2">🔥 Active Cross-Promo Angle</div>
+                <div className="text-sm font-bold text-white mb-2">{currentXpromo.label}</div>
+                <div className="text-xs text-slate-300 italic mb-4 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  {currentXpromo.sub}
+                </div>
+                <p className="text-[11px] text-slate-400">Rule: Every 4th reel must mention a sister brand to compound network reach.</p>
+              </div>
 
-  useEffect(()=>{
-    supabase.from('team_members').select('*').order('created_at',{ascending:false})
-      .then(({data})=>{ if(data) setMembers(data); setLoading(false) })
-  },[])
+              {/* Algorithm Quick Notes */}
+              <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-3">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                  <Activity size={14} className="text-sky-400" /> Platform Algorithm Directives
+                </h3>
+                <div className="space-y-2.5 text-xs text-slate-400">
+                  <div className="flex gap-2 items-start"><span className="text-sm">📸</span><span>IG Reels: Best reach when posted in first 90m of waking.</span></div>
+                  <div className="flex gap-2 items-start"><span className="text-sm">💬</span><span>Engage on 5 comments within 60 mins of publishing.</span></div>
+                  <div className="flex gap-2 items-start"><span className="text-sm">💼</span><span>LinkedIn: Drop genuine comment on target CMOs before posting.</span></div>
+                  <div className="flex gap-2 items-start"><span className="text-sm">▶️</span><span>YT Shorts: 3–5 high-hook videos weekly per profile.</span></div>
+                </div>
+              </div>
 
-  const save = async () => {
-    if(!form.name||!form.email) return
-    const {data} = await supabase.from('team_members').insert([form]).select()
-    if(data) setMembers(prev=>[data[0],...prev])
-    setForm({name:'',email:'',role:'content'}); setShowForm(false)
-  }
+              {/* 4 Brand Network Stack */}
+              <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-3">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-300">4-Brand Ecosystem</h3>
+                <div className="grid gap-2">
+                  {PROFILES.map(pr => (
+                    <div key={pr.id} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/50 border border-slate-800">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: pr.color }}></div>
+                        <span className="text-xs font-bold text-white">{pr.label}</span>
+                      </div>
+                      <span className="text-[10px] font-semibold text-slate-400">{pr.tag}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-  const toggle = async (id,active) => {
-    await supabase.from('team_members').update({active:!active}).eq('id',id)
-    setMembers(m=>m.map(x=>x.id===id?{...x,active:!active}:x))
-  }
-
-  if(loading) return <Spinner/>
-
-  return (
-    <div>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-        <div style={{fontSize:13,color:C.muted}}>
-          {members.filter(m=>m.active).length} active member{members.filter(m=>m.active).length!==1?'s':''}
-        </div>
-        <Btn color={C.steel} onClick={()=>setShowForm(!showForm)}>+ Add Member</Btn>
-      </div>
-
-      {showForm&&(
-        <Card style={{marginBottom:14}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:10}}>
-            <div><Label>NAME</Label><Inp value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))} placeholder="Name"/></div>
-            <div><Label>EMAIL</Label><Inp value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="Email"/></div>
-            <div><Label>ROLE</Label><Sel value={form.role} onChange={e=>setForm(p=>({...p,role:e.target.value}))}>
-              {Object.entries(ROLES).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
-            </Sel></div>
+            </div>
           </div>
-          <Btn color={C.green} onClick={save}>Add Member</Btn>
-        </Card>
+        )}
+
+        {/* 2. INBOUND LEADS / CRM */}
+        {activeTab === 'crm' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <Mail size={18} className="text-sky-400" /> Inbound Lead Pipeline
+                </h2>
+                <p className="text-xs text-slate-400">Track, qualify, and convert agency client inquiries</p>
+              </div>
+              <button
+                onClick={() => setShowAddLead(true)}
+                className="bg-brand-primary hover:opacity-90 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-md"
+              >
+                <Plus size={15} /> + Add Lead
+              </button>
+            </div>
+
+            {/* Pipeline Stage Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {Object.keys(LEAD_STATUS_CONFIG).map(st => {
+                const conf = LEAD_STATUS_CONFIG[st];
+                const count = leads.filter(l => (l.status || '').toUpperCase() === st).length;
+                return (
+                  <div key={st} className={`p-3 rounded-xl border text-center ${conf.bg} ${conf.border}`}>
+                    <div className={`text-xl font-black ${conf.color}`}>{count}</div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase mt-0.5">{conf.label}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Leads Table List */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th className="pb-3 pr-4">Prospect</th>
+                    <th className="pb-3 pr-4">Company & Source</th>
+                    <th className="pb-3 pr-4">Pipeline Status</th>
+                    <th className="pb-3 pr-4">Next Follow-Up</th>
+                    <th className="pb-3 pr-4">Received</th>
+                    <th className="pb-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-xs">
+                  {filteredLeads.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-slate-500 italic">
+                        No leads found in pipeline. Click "+ Add Lead" to record a new prospect.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredLeads.map(lead => {
+                      const st = (lead.status || 'NEW LEAD').toUpperCase();
+                      const conf = LEAD_STATUS_CONFIG[st] || LEAD_STATUS_CONFIG['NEW LEAD'];
+                      return (
+                        <tr key={lead.id} className="hover:bg-slate-900/60 transition-colors">
+                          <td className="py-3.5 pr-4">
+                            <div className="font-bold text-white text-sm">{lead.name || 'Anonymous'}</div>
+                            <div className="text-slate-400 text-[11px]">{lead.email} · {lead.phone || 'No phone'}</div>
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            <div className="font-semibold text-slate-200">{lead.company || lead.website || 'Direct Client'}</div>
+                            <div className="text-[11px] text-slate-500">{lead.source || 'Website'}</div>
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            <span className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full border uppercase ${conf.bg} ${conf.color} ${conf.border}`}>
+                              {conf.label}
+                            </span>
+                          </td>
+                          <td className="py-3.5 pr-4">
+                            {lead.next_follow_up ? (
+                              <div className="text-amber-400 font-bold">
+                                📅 {fmtDate(lead.next_follow_up)}
+                                <div className="text-[10px] text-slate-500 font-normal truncate max-w-[140px]">{lead.follow_up_notes || 'Scheduled call'}</div>
+                              </div>
+                            ) : (
+                              <span className="text-slate-600 italic">Not scheduled</span>
+                            )}
+                          </td>
+                          <td className="py-3.5 pr-4 text-slate-400">
+                            {fmtDate(lead.created_at)}
+                          </td>
+                          <td className="py-3.5 text-right">
+                            <div className="flex gap-1.5 justify-end">
+                              <button
+                                onClick={() => {
+                                  setScheduleTargetType('lead');
+                                  setScheduleTargetId(lead.id);
+                                  setShowScheduleModal(true);
+                                }}
+                                className="p-1.5 bg-purple-500/10 hover:bg-purple-600 text-purple-300 hover:text-white rounded-lg transition-colors text-xs font-bold"
+                                title="Schedule Call"
+                              >
+                                <CalendarIcon size={14} />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteLead(lead.id)}
+                                className="p-1.5 bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white rounded-lg transition-colors text-xs"
+                                title="Delete Lead"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 3. CLIENT WORKSPACES */}
+        {activeTab === 'clients' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <Building size={18} className="text-emerald-400" /> Content Studio Client Workspaces
+                </h2>
+                <p className="text-xs text-slate-400">Manage client brand voices, retainers, and content generation histories</p>
+              </div>
+              <button
+                onClick={() => setShowAddClient(true)}
+                className="bg-emerald-600 hover:opacity-90 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-md"
+              >
+                <Plus size={15} /> + Add Client Workspace
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredClients.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-slate-500 italic">
+                  No client workspaces found. Click "+ Add Client Workspace" to set up a brand.
+                </div>
+              ) : (
+                filteredClients.map(client => (
+                  <div 
+                    key={client.id}
+                    className={`bg-[#121929] border rounded-2xl p-5 space-y-4 transition-all ${
+                      client.active !== false ? 'border-slate-800/90 hover:border-emerald-500/40' : 'border-rose-500/30 opacity-75'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-extrabold text-white text-base">{client.brand_name || client.brandName}</h3>
+                        <p className="text-xs text-slate-400">{client.niche || 'General Business'}</p>
+                      </div>
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase border ${
+                        client.active !== false ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                      }`}>
+                        {client.active !== false ? 'Active' : 'Suspended'}
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs text-slate-300">
+                      <div><span className="text-slate-500">Plan:</span> <span className="font-semibold text-brand-primary">{client.plan_name || client.planName || 'Growth Plan'}</span></div>
+                      <div><span className="text-slate-500">Email:</span> {client.email || '—'}</div>
+                      <div><span className="text-slate-500">Target:</span> {client.target_audience || client.targetAudience || '—'}</div>
+                      <div><span className="text-slate-500">Tone:</span> {client.tone_of_voice || client.toneOfVoice || 'Authoritative & Inspiring'}</div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
+                      <button
+                        onClick={() => handleViewClientHistory(client)}
+                        className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 bg-sky-500/10 px-2.5 py-1.5 rounded-lg border border-sky-500/20"
+                      >
+                        <FileText size={13} /> View History
+                      </button>
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleToggleClient(client.id, client.active !== false)}
+                          className={`text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors ${
+                            client.active !== false ? 'bg-rose-500/10 text-rose-400 hover:bg-rose-600 hover:text-white' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-600 hover:text-white'
+                          }`}
+                        >
+                          {client.active !== false ? 'Suspend' : 'Activate'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 4. FIT NINJA MEMBERS (SAAS APP INTEGRATION) */}
+        {activeTab === 'fit' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <Dumbbell size={18} className="text-amber-400" /> Fit Ninja Member Accounts & Nutrition Engine
+                </h2>
+                <p className="text-xs text-slate-400">Live synchronized database from fit.socialninjas.in</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-400">Total: {fitClients.length}</span>
+                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                  {premiumFitCount} Paid Subscribers
+                </span>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th className="pb-3 pr-4">User</th>
+                    <th className="pb-3 pr-4">Fitness Goal</th>
+                    <th className="pb-3 pr-4">Plan Status</th>
+                    <th className="pb-3 pr-4">Daily Targets</th>
+                    <th className="pb-3 pr-4">Joined</th>
+                    <th className="pb-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-xs">
+                  {filteredFitClients.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-slate-500 italic">
+                        No Fit Ninja profiles found.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredFitClients.map(fit => (
+                      <tr key={fit.id} className="hover:bg-slate-900/60 transition-colors">
+                        <td className="py-3.5 pr-4">
+                          <div className="font-bold text-white text-sm">{fit.name || 'Anonymous User'}</div>
+                          <div className="text-slate-400 text-[11px]">{fit.email}</div>
+                        </td>
+                        <td className="py-3.5 pr-4 font-semibold text-slate-300 capitalize">
+                          {fit.assessment_data?.goal?.replace('_', ' ') || 'General Fitness'}
+                        </td>
+                        <td className="py-3.5 pr-4">
+                          <span className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase border ${
+                            fit.plan_status === 'premium' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-slate-800 text-slate-400 border-slate-700'
+                          }`}>
+                            {fit.plan_status || 'free'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 pr-4 text-slate-300">
+                          {fit.generated_plan ? (
+                            <span className="font-bold text-emerald-400">{fit.generated_plan.kcal} kcal · {fit.generated_plan.protein}g protein</span>
+                          ) : (
+                            <span className="text-slate-600 italic">Not generated</span>
+                          )}
+                        </td>
+                        <td className="py-3.5 pr-4 text-slate-400">
+                          {fit.created_at ? new Date(fit.created_at).toLocaleDateString('en-IN') : '—'}
+                        </td>
+                        <td className="py-3.5 text-right">
+                          <div className="flex gap-1.5 justify-end">
+                            <button
+                              onClick={() => setViewFitClientDetails(fit)}
+                              className="bg-sky-500/10 hover:bg-sky-600 text-sky-400 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold transition-colors"
+                            >
+                              Details
+                            </button>
+                            <button
+                              onClick={() => {
+                                setManageFitStatus(fit);
+                                setNewFitStatus(fit.plan_status || 'free');
+                              }}
+                              className="bg-amber-500/10 hover:bg-amber-600 text-amber-400 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold transition-colors"
+                            >
+                              Manage
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 5. MULTI-BRAND PUBLISHER */}
+        {activeTab === 'publish' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-5">
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <Share2 size={18} className="text-brand-primary" /> Multi-Brand Fast Publisher
+              </h2>
+
+              {/* Brand Selector */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Select Brand Profile</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {PROFILES.map(pr => (
+                    <button
+                      key={pr.id}
+                      onClick={() => setPubProfile(pr.id)}
+                      className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
+                        pubProfile === pr.id
+                          ? 'border-white bg-slate-800 text-white shadow-md'
+                          : 'border-slate-800 bg-[#121929] text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: pr.color }}></div>
+                      <span>{pr.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Platform Selector */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Destination Platform</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { id: 'instagram', label: 'Instagram Reels', icon: '📸', ready: true },
+                    { id: 'youtube', label: 'YouTube Shorts', icon: '▶️', ready: true },
+                    { id: 'both', label: 'IG + YT Sync', icon: '📡', ready: true },
+                    { id: 'linkedin', label: 'LinkedIn Post', icon: '💼', ready: true },
+                  ].map(pl => (
+                    <button
+                      key={pl.id}
+                      onClick={() => setPubPlatform(pl.id)}
+                      className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
+                        pubPlatform === pl.id
+                          ? 'border-sky-500 bg-sky-500/10 text-white'
+                          : 'border-slate-800 bg-[#121929] text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <span>{pl.icon}</span>
+                      <span>{pl.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Topic / Prompt */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Content Angle / Topic Prompt</label>
+                <textarea
+                  value={pubTopic}
+                  onChange={e => setPubTopic(e.target.value)}
+                  rows={3}
+                  placeholder="e.g. How top UAE real estate agencies automate 500 leads/day using AI"
+                  className="w-full bg-[#121929] border border-slate-800 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary"
+                />
+              </div>
+
+              {/* Schedule Mode Switcher */}
+              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-bold text-white">📅 Schedule for Future Slot</div>
+                  <div className="text-[10px] text-slate-400">Post automatically at optimal engagement hour</div>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={pubSchedMode}
+                  onChange={e => setPubSchedMode(e.target.checked)}
+                  className="w-4 h-4 accent-brand-primary rounded"
+                />
+              </div>
+
+              {pubSchedMode && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 block mb-1">DATE</label>
+                    <input
+                      type="date"
+                      value={pubSchedDate}
+                      onChange={e => setPubSchedDate(e.target.value)}
+                      className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 block mb-1">TIME</label>
+                    <input
+                      type="time"
+                      value={pubSchedTime}
+                      onChange={e => setPubSchedTime(e.target.value)}
+                      className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handlePublishPost}
+                className="w-full bg-gradient-to-r from-brand-primary to-orange-600 text-white font-extrabold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition-opacity text-xs"
+              >
+                {pubStatus === 'posting' ? '⏳ Dispatching...' : pubStatus === 'done' ? '✅ Logged to Queue!' : pubSchedMode ? '📅 Schedule Post Entry' : '📡 Dispatch to Publisher'}
+              </button>
+            </div>
+
+            {/* Live Feed of Output Logs */}
+            <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-4">
+              <h3 className="text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-3">
+                Live Production Feed ({posts.length} Posts)
+              </h3>
+              <div className="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+                {posts.length === 0 ? (
+                  <p className="text-xs text-slate-500 italic py-10 text-center">No recent post dispatch logs found.</p>
+                ) : (
+                  posts.map(p => (
+                    <div key={p.id} className="p-3.5 rounded-xl bg-[#121929] border border-slate-800 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-2">
+                            <span>{pl(p.profile)}</span>
+                            <span className="text-[10px] text-slate-400 capitalize">→ {p.platform}</span>
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-1">{p.file_name || p.yt_title}</p>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-500 whitespace-nowrap">{fmtDate(p.created_at)}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 6. SCRIPT VAULT */}
+        {activeTab === 'scripts' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <FileText size={18} className="text-purple-400" /> Automated Video Script Vault
+                </h2>
+                <p className="text-xs text-slate-400">Pre-hooked scripts and captions for YouTube Shorts & Instagram Reels</p>
+              </div>
+              <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-xl border border-purple-500/20">
+                {scripts.length} Scripts Ready
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {scripts.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-slate-500 italic">
+                  No scripts in vault. New automated scripts will populate automatically from research flows.
+                </div>
+              ) : (
+                scripts.map(sc => (
+                  <div key={sc.id} className="bg-[#121929] border border-slate-800 rounded-2xl p-5 space-y-3 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full border" style={{ backgroundColor: `${pc(sc.profile)}15`, color: pc(sc.profile), borderColor: `${pc(sc.profile)}30` }}>
+                          {pl(sc.profile)}
+                        </span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400">{sc.status || 'Ready'}</span>
+                      </div>
+                      <h3 className="font-bold text-white text-sm">{sc.topic}</h3>
+                      <p className="text-xs text-sky-400 font-semibold">🎬 {sc.yt_title}</p>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300">
+                        <span className="text-amber-400 font-bold">🪝 Hook: </span>{sc.hook}
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => setOpenScriptId(openScriptId === sc.id ? null : sc.id)}
+                        className="text-xs font-bold text-slate-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg"
+                      >
+                        {openScriptId === sc.id ? 'Hide' : 'Full Script'}
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
+                        className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
+                      >
+                        {copiedText === sc.id ? '✅ Copied' : 'Copy Caption'}
+                      </button>
+                    </div>
+
+                    {openScriptId === sc.id && (
+                      <div className="mt-3 pt-3 border-t border-slate-800 text-xs text-slate-300 space-y-2 max-h-60 overflow-y-auto">
+                        <div><strong className="text-slate-400">Section 1:</strong> {sc.section1 || '—'}</div>
+                        <div><strong className="text-slate-400">Section 2:</strong> {sc.section2 || '—'}</div>
+                        <div><strong className="text-slate-400">Section 3:</strong> {sc.section3 || '—'}</div>
+                        <div><strong className="text-slate-400">CTA:</strong> {sc.cta || '—'}</div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 7. MEDIA QUEUE */}
+        {activeTab === 'queue' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="border-b border-slate-800 pb-4">
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <Video size={18} className="text-pink-400" /> Media & Video Production Queue
+              </h2>
+              <p className="text-xs text-slate-400">Raw and finished video assets ready for multi-platform delivery</p>
+            </div>
+
+            <div className="grid gap-3">
+              {queueItems.length === 0 ? (
+                <p className="text-xs text-slate-500 italic py-12 text-center">No videos queued. Drop reels in your Drive folders to populate.</p>
+              ) : (
+                queueItems.map(item => (
+                  <div key={item.id} className="p-4 rounded-xl bg-[#121929] border border-slate-800 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-lg">
+                        {item.platform === 'youtube' ? '▶️' : '📸'}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white">{item.file_name || item.topic}</div>
+                        <div className="text-[11px] text-slate-400 mt-0.5 flex gap-2">
+                          <span style={{ color: pc(item.profile) }}>{pl(item.profile)}</span>
+                          <span>·</span>
+                          <span className="capitalize">{item.platform}</span>
+                          {item.scheduled_for && <span>· 📅 {fmtDate(item.scheduled_for)}</span>}
+                        </div>
+                      </div>
+                    </div>
+
+                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 uppercase">
+                      {item.status || 'Pending'}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 8. RADAR MONITOR */}
+        {activeTab === 'monitor' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="border-b border-slate-800 pb-4">
+              <h2 className="text-lg font-black text-white flex items-center gap-2">
+                <Eye size={18} className="text-teal-400" /> Brand Radar & Social Mentions
+              </h2>
+              <p className="text-xs text-slate-400">Automated listening stream for brand keywords and opportunities</p>
+            </div>
+
+            <div className="grid gap-4">
+              {mentions.length === 0 ? (
+                <p className="text-xs text-slate-500 italic py-12 text-center">No active brand mentions. Radar scans Reddit and Twitter every 4 hours.</p>
+              ) : (
+                mentions.map(m => (
+                  <div key={m.id} className="p-5 rounded-2xl bg-[#121929] border border-slate-800 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/30 uppercase">{m.platform || 'Web'}</span>
+                        <span className="text-[10px] font-semibold text-slate-400">{m.keyword}</span>
+                      </div>
+                      <span className="text-[10px] text-slate-500">{fmtDate(m.created_at)}</span>
+                    </div>
+
+                    <h4 className="font-bold text-white text-sm">{m.title}</h4>
+                    <p className="text-xs text-slate-300 leading-relaxed">{m.body}</p>
+
+                    {m.suggested_reply && (
+                      <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-sky-300">
+                        <strong className="text-sky-400 block mb-1">🤖 Suggested Reply:</strong>
+                        {m.suggested_reply}
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-end gap-2 pt-2">
+                      <button onClick={() => copyToClipboard(m.suggested_reply || m.body, m.id)} className="text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1.5 rounded-lg">
+                        {copiedText === m.id ? '✅ Copied' : 'Copy Reply'}
+                      </button>
+                      <button onClick={async () => {
+                        await supabase.from('mentions').update({ dismissed: true }).eq('id', m.id);
+                        setMentions(prev => prev.filter(x => x.id !== m.id));
+                      }} className="text-xs font-bold text-slate-400 hover:text-rose-400 bg-slate-800 px-3 py-1.5 rounded-lg">
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 9. MASTER AGENCY CALENDAR */}
+        {activeTab === 'calendar' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <CalendarIcon size={18} className="text-purple-400" /> Master Agency Work Calendar
+                </h2>
+                <p className="text-xs text-slate-400">Integrated schedule of lead demos, client review check-ins, and scheduled content</p>
+              </div>
+              <button
+                onClick={() => setShowScheduleModal(true)}
+                className="bg-purple-600 hover:opacity-90 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5"
+              >
+                <Plus size={14} /> + Schedule Event
+              </button>
+            </div>
+
+            {/* Upcoming Agenda Feed */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Scheduled Actions & Pipeline Calls</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes })),
+                  ...clients.filter(c => c.next_follow_up).map(c => ({ type: 'Client', name: c.brand_name || c.brandName, sub: c.niche || c.email, date: c.next_follow_up, notes: c.notes })),
+                  ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Post', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform }))
+                ].length === 0 ? (
+                  <p className="col-span-full py-10 text-center text-slate-500 italic">No calendar follow-ups or posts scheduled.</p>
+                ) : (
+                  [
+                    ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Follow-up', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
+                    ...clients.filter(c => c.next_follow_up).map(c => ({ type: 'Client Check-in', name: c.brand_name || c.brandName, sub: c.niche || c.email, date: c.next_follow_up, notes: c.notes, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' })),
+                    ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Content Slot', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' }))
+                  ].map((item, idx) => (
+                    <div key={idx} className="p-4 rounded-xl bg-[#121929] border border-slate-800 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${item.color}`}>
+                          {item.type}
+                        </span>
+                        <span className="text-xs font-bold text-amber-400">📅 {fmtDate(item.date)}</span>
+                      </div>
+                      <div className="font-bold text-white text-sm">{item.name}</div>
+                      <p className="text-xs text-slate-400">{item.sub}</p>
+                      {item.notes && <p className="text-[11px] text-slate-500 italic bg-slate-900/60 p-2 rounded-lg">{item.notes}</p>}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 10. SEO BLOG STUDIO */}
+        {activeTab === 'blogs' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <Edit3 size={18} className="text-brand-primary" /> SEO Insights & Article Studio
+                </h2>
+                <p className="text-xs text-slate-400">Publish high-ranking marketing guides and case studies directly to socialninjas.in/blog</p>
+              </div>
+              <button
+                onClick={() => {
+                  setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: "Social Ninja's Team", category: 'Insights' });
+                  setIsEditingBlog(true);
+                }}
+                className="bg-brand-primary hover:opacity-90 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5"
+              >
+                <Plus size={14} /> + New Article
+              </button>
+            </div>
+
+            {isEditingBlog ? (
+              <div className="space-y-4 bg-[#121929] border border-slate-800 p-5 rounded-2xl">
+                <input
+                  type="text"
+                  placeholder="Article Headline"
+                  value={currentBlog.title}
+                  onChange={e => setCurrentBlog({ ...currentBlog, title: e.target.value })}
+                  className="w-full bg-[#0b101c] border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-primary"
+                />
+                <textarea
+                  placeholder="Short excerpt summary for cards..."
+                  value={currentBlog.excerpt}
+                  onChange={e => setCurrentBlog({ ...currentBlog, excerpt: e.target.value })}
+                  rows={2}
+                  className="w-full bg-[#0b101c] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-primary"
+                />
+                <textarea
+                  placeholder="Full Markdown Content Body (# Heading, ## Section, bullet points, CTA links)..."
+                  value={currentBlog.content}
+                  onChange={e => setCurrentBlog({ ...currentBlog, content: e.target.value })}
+                  rows={10}
+                  className="w-full bg-[#0b101c] border border-slate-800 rounded-xl p-3 text-xs font-mono text-white focus:outline-none focus:border-brand-primary"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => setIsEditingBlog(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await fetch(getApiUrl('/api/data?resource=blogs'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(currentBlog)
+                      });
+                      setIsEditingBlog(false);
+                      await loadAllData();
+                    }}
+                    className="px-4 py-2 bg-brand-primary text-white rounded-xl text-xs font-bold"
+                  >
+                    Save & Publish Article
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid gap-3">
+                {blogs.length === 0 ? (
+                  <p className="text-xs text-slate-500 italic py-12 text-center">No articles found.</p>
+                ) : (
+                  blogs.map(blog => (
+                    <div key={blog.id} className="p-4 rounded-xl bg-[#121929] border border-slate-800 flex items-center justify-between gap-4">
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{blog.title}</h4>
+                        <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{blog.excerpt}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => { setCurrentBlog(blog); setIsEditingBlog(true); }}
+                          className="px-3 py-1.5 bg-sky-500/10 text-sky-400 hover:bg-sky-600 hover:text-white rounded-lg text-xs font-bold transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (!window.confirm('Delete blog post?')) return;
+                            await fetch(getApiUrl(`/api/data?resource=blogs&id=${blog.id}`), { method: 'DELETE' });
+                            await loadAllData();
+                          }}
+                          className="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-600 hover:text-white rounded-lg text-xs transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 11. TEAM & ROLES */}
+        {activeTab === 'team' && (
+          <div className="bg-[#0e1424] border border-slate-800/90 rounded-2xl p-6 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <Users size={18} className="text-purple-400" /> Agency Team Members & Security Privileges
+                </h2>
+                <p className="text-xs text-slate-400">Configure role-based access control and dashboard permissions</p>
+              </div>
+              <button
+                onClick={() => setShowAddMember(true)}
+                className="bg-purple-600 hover:opacity-90 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5"
+              >
+                <Plus size={14} /> + Add Team Member
+              </button>
+            </div>
+
+            {/* Role privilege matrix */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {Object.entries(ROLES).map(([key, roleInfo]) => (
+                <div key={key} className="p-4 rounded-xl bg-[#121929] border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold" style={{ color: roleInfo.color }}>{roleInfo.label}</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-semibold">{roleInfo.tabs.length} Tabs</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {roleInfo.tabs.map(tb => (
+                      <span key={tb} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                        {tb}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Team Roster */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-slate-800">
+              {teamMembers.length === 0 ? (
+                <p className="col-span-full py-8 text-center text-slate-500 italic">No external team members added yet.</p>
+              ) : (
+                teamMembers.map(m => (
+                  <div key={m.id} className="p-4 rounded-xl bg-[#121929] border border-slate-800 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 font-extrabold flex items-center justify-center">
+                        {(m.name || 'U').charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div className="font-bold text-white text-xs">{m.name}</div>
+                        <div className="text-[11px] text-slate-400">{m.email}</div>
+                        <span className="text-[9px] font-bold text-purple-400 capitalize">{m.role || 'Member'}</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        await supabase.from('team_members').update({ active: !m.active }).eq('id', m.id);
+                        await loadAllData();
+                      }}
+                      className={`text-[10px] font-bold px-2.5 py-1 rounded-lg ${m.active !== false ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}
+                    >
+                      {m.active !== false ? 'Active' : 'Suspended'}
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+      </main>
+
+      {/* ── MODALS ───────────────────────────────────────────────────── */}
+
+      {/* ADD LEAD MODAL */}
+      {showAddLead && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <UserPlus size={16} className="text-sky-400" /> Add Inbound Prospect Lead
+              </h3>
+              <button onClick={() => setShowAddLead(false)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <form onSubmit={e => {
+              e.preventDefault();
+              const fd = new FormData(e.currentTarget);
+              handleSaveLead({
+                name: fd.get('name'),
+                email: fd.get('email'),
+                phone: fd.get('phone'),
+                company: fd.get('company'),
+                source: fd.get('source'),
+                status: fd.get('status'),
+                message: fd.get('message'),
+                next_follow_up: fd.get('next_follow_up') || null,
+                follow_up_notes: fd.get('follow_up_notes') || null
+              });
+            }} className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <input name="name" placeholder="Full Name *" required className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <input name="email" type="email" placeholder="Email *" required className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input name="phone" placeholder="Phone Number" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <input name="company" placeholder="Company / Brand" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input name="source" placeholder="Source (e.g. IG DM, LinkedIn)" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <select name="status" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                  {Object.keys(LEAD_STATUS_CONFIG).map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] text-slate-400 block mb-1">NEXT FOLLOW-UP</label>
+                  <input name="next_follow_up" type="date" className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2 text-xs text-white" />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-400 block mb-1">FOLLOW-UP NOTE</label>
+                  <input name="follow_up_notes" placeholder="Call agenda..." className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2 text-xs text-white" />
+                </div>
+              </div>
+              <textarea name="message" placeholder="Client inquiry details & notes..." rows={3} className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              <div className="flex gap-2 justify-end pt-2">
+                <button type="button" onClick={() => setShowAddLead(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-sky-600 text-white rounded-xl text-xs font-bold">Save Lead</button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
-      {/* Role access map */}
-      <Card style={{marginBottom:16}}>
-        <Label>ROLE ACCESS MAP</Label>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:10}}>
-          {Object.entries(ROLES).map(([k,v])=>(
-            <div key={k} style={{background:C.surfaceHi,borderRadius:8,padding:12}}>
-              <div style={{marginBottom:8}}><Badge color={v.color}>{v.label}</Badge></div>
-              <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-                {v.tabs.map(t=>(
-                  <span key={t} style={{fontSize:10,color:C.muted,background:C.border+'55',borderRadius:4,padding:'2px 6px'}}>{t}</span>
-                ))}
+      {/* ADD CLIENT WORKSPACE MODAL */}
+      {showAddClient && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Building size={16} className="text-emerald-400" /> Create Client Workspace
+              </h3>
+              <button onClick={() => setShowAddClient(false)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <form onSubmit={e => {
+              e.preventDefault();
+              const fd = new FormData(e.currentTarget);
+              handleSaveClient({
+                brand_name: fd.get('brand_name'),
+                niche: fd.get('niche'),
+                email: fd.get('email'),
+                phone: fd.get('phone'),
+                plan_name: fd.get('plan_name'),
+                tone_of_voice: fd.get('tone_of_voice'),
+                target_audience: fd.get('target_audience'),
+                call_to_action: fd.get('call_to_action'),
+                active: true
+              });
+            }} className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <input name="brand_name" placeholder="Brand Name *" required className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <input name="niche" placeholder="Niche (e.g. Luxury Fashion) *" required className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input name="email" type="email" placeholder="Billing Email" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <input name="phone" placeholder="Contact Phone" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <input name="plan_name" placeholder="Plan (e.g. Growth Retainer)" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+                <input name="call_to_action" placeholder="Default CTA (e.g. Book Demo)" className="bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              </div>
+              <textarea name="tone_of_voice" placeholder="Brand Voice & Personality Guidelines..." rows={2} className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              <textarea name="target_audience" placeholder="Ideal Customer Profile / Target Audience..." rows={2} className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              <div className="flex gap-2 justify-end pt-2">
+                <button type="button" onClick={() => setShowAddClient(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">Create Workspace</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* QUICK SCHEDULE MODAL */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <CalendarIcon size={16} className="text-purple-400" /> Schedule Agency Event / Call
+              </h3>
+              <button onClick={() => setShowScheduleModal(false)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Target Type</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => { setScheduleTargetType('lead'); setScheduleTargetId(''); }}
+                    className={`py-2 rounded-xl text-xs font-bold border transition-colors ${scheduleTargetType === 'lead' ? 'bg-sky-500/20 border-sky-500 text-sky-400' : 'bg-slate-800 border-slate-700 text-slate-400'}`}
+                  >
+                    Inbound Lead
+                  </button>
+                  <button
+                    onClick={() => { setScheduleTargetType('client'); setScheduleTargetId(''); }}
+                    className={`py-2 rounded-xl text-xs font-bold border transition-colors ${scheduleTargetType === 'client' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-slate-800 border-slate-700 text-slate-400'}`}
+                  >
+                    Client Workspace
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Select Prospect / Brand</label>
+                <select
+                  value={scheduleTargetId}
+                  onChange={e => setScheduleTargetId(e.target.value)}
+                  className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white"
+                >
+                  <option value="">-- Choose target --</option>
+                  {scheduleTargetType === 'lead' ? (
+                    leads.map(l => <option key={l.id} value={l.id}>{l.name} ({l.company || l.email})</option>)
+                  ) : (
+                    clients.map(c => <option key={c.id} value={c.id}>{c.brand_name || c.brandName}</option>)
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Date</label>
+                <input
+                  type="date"
+                  value={scheduleDate}
+                  onChange={e => setScheduleDate(e.target.value)}
+                  className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Agenda / Notes</label>
+                <textarea
+                  value={scheduleNotes}
+                  onChange={e => setScheduleNotes(e.target.value)}
+                  rows={2}
+                  placeholder="e.g. Discovery demo call to close retainer"
+                  className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white"
+                />
+              </div>
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button onClick={() => setShowScheduleModal(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+                <button onClick={handleScheduleSubmit} className="px-4 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold">Schedule Event</button>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </Card>
+      )}
 
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:12}}>
-        {members.map(m=>(
-          <Card key={m.id} style={{display:'flex',alignItems:'center',gap:12}}>
-            <div style={{width:40,height:40,borderRadius:'50%',background:ROLES[m.role]?.color||C.steel,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,color:'#fff',fontSize:16,flexShrink:0}}>
-              {m.name.charAt(0).toUpperCase()}
+      {/* FIT NINJA MANAGE MODAL */}
+      {manageFitStatus && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Dumbbell size={16} className="text-amber-400" /> Manage Member Status
+              </h3>
+              <button onClick={() => setManageFitStatus(null)} className="text-slate-400 hover:text-white"><X size={16} /></button>
             </div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:700,color:C.white}}>{m.name}</div>
-              <div style={{fontSize:11,color:C.muted}}>{m.email}</div>
-              <div style={{marginTop:4}}><Badge color={ROLES[m.role]?.color||C.muted}>{ROLES[m.role]?.label||m.role}</Badge></div>
+            <div>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Subscription Tier</label>
+              <select
+                value={newFitStatus}
+                onChange={e => setNewFitStatus(e.target.value)}
+                className="w-full bg-[#121929] border border-slate-800 rounded-xl p-3 text-xs text-white"
+              >
+                <option value="premium">Premium (Full Unlimited Access)</option>
+                <option value="free">Free (Onboarding Only)</option>
+                <option value="suspended">Suspended</option>
+                <option value="expired">Expired</option>
+              </select>
             </div>
-            <button onClick={()=>toggle(m.id,m.active)} style={{background:'none',border:'none',color:m.active?C.amber:C.green,fontSize:11,cursor:'pointer',fontWeight:700}}>
-              {m.active?'Suspend':'Restore'}
-            </button>
-          </Card>
-        ))}
-        {members.length===0&&<Empty icon="👥" text="No team members yet. Just you for now."/>}
-      </div>
+            <div className="flex gap-2 justify-end pt-2">
+              <button onClick={() => setManageFitStatus(null)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+              <button onClick={handleSaveFitStatus} className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold">Save Status</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FIT NINJA FULL DETAILS MODAL */}
+      {viewFitClientDetails && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Dumbbell size={18} className="text-amber-400" /> {viewFitClientDetails.name || 'Anonymous User'}
+              </h3>
+              <button onClick={() => setViewFitClientDetails(null)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 bg-[#121929] p-4 rounded-xl border border-slate-800">
+              <div><span className="text-slate-500">Email:</span> <b className="text-white">{viewFitClientDetails.email}</b></div>
+              <div><span className="text-slate-500">Goal:</span> <b className="text-white capitalize">{viewFitClientDetails.assessment_data?.goal || 'General Fitness'}</b></div>
+              <div><span className="text-slate-500">Calories:</span> <b className="text-emerald-400">{viewFitClientDetails.generated_plan?.kcal || '—'} kcal</b></div>
+              <div><span className="text-slate-500">Protein:</span> <b className="text-amber-400">{viewFitClientDetails.generated_plan?.protein || '—'}g</b></div>
+              <div><span className="text-slate-500">Carbs:</span> <b className="text-sky-400">{viewFitClientDetails.generated_plan?.carbs || '—'}g</b></div>
+              <div><span className="text-slate-500">Fats:</span> <b className="text-rose-400">{viewFitClientDetails.generated_plan?.fats || '—'}g</b></div>
+            </div>
+            {viewFitClientDetails.assessment_data && (
+              <div className="space-y-2">
+                <h4 className="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Onboarding Assessment Responses</h4>
+                <div className="bg-[#121929] p-4 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 max-h-60 overflow-y-auto whitespace-pre-wrap">
+                  {JSON.stringify(viewFitClientDetails.assessment_data, null, 2)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* CLIENT GENERATION HISTORY MODAL */}
+      {viewClientHist && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <FileText size={18} className="text-sky-400" /> {viewClientHist.brand_name || viewClientHist.brandName} · Generated Posts History
+              </h3>
+              <button onClick={() => setViewClientHist(null)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <div className="space-y-3">
+              {clientHistData.length === 0 ? (
+                <div className="text-slate-500 italic text-center py-8">No historical content logs recorded for this client.</div>
+              ) : (
+                clientHistData.map((h: any, idx: number) => (
+                  <div key={idx} className="bg-[#121929] p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div className="font-bold text-white text-xs flex justify-between">
+                      <span>Week {h.week || idx + 1}</span>
+                      <span className="text-slate-400 font-normal">{h.date}</span>
+                    </div>
+                    <div className="text-slate-300 font-mono text-[11px] bg-[#0b101c] p-3 rounded-lg max-h-48 overflow-y-auto whitespace-pre-wrap">
+                      {JSON.stringify(h.posts || h, null, 2)}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ADD TEAM MEMBER MODAL */}
+      {showAddMember && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Users size={16} className="text-purple-400" /> Add Team Member
+              </h3>
+              <button onClick={() => setShowAddMember(false)} className="text-slate-400 hover:text-white"><X size={16} /></button>
+            </div>
+            <form onSubmit={async e => {
+              e.preventDefault();
+              const fd = new FormData(e.currentTarget);
+              await supabase.from('team_members').insert([{
+                name: fd.get('name'),
+                email: fd.get('email'),
+                role: fd.get('role'),
+                active: true,
+                created_at: new Date().toISOString()
+              }]);
+              setShowAddMember(false);
+              await loadAllData();
+            }} className="space-y-3">
+              <input name="name" placeholder="Member Name *" required className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              <input name="email" type="email" placeholder="Email Address *" required className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white" />
+              <select name="role" className="w-full bg-[#121929] border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                {Object.entries(ROLES).map(([k, r]) => <option key={k} value={k}>{r.label}</option>)}
+              </select>
+              <div className="flex gap-2 justify-end pt-2">
+                <button type="button" onClick={() => setShowAddMember(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold">Add Member</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
-  )
-}
-
-// ── APP SHELL ─────────────────────────────────────────────────
-const Admin = () => {
-  const [tab,setTab]=useState('tasks')
-  const [role]=useState('founder') // Future: auth-based role selection
-  const allowedTabs = ROLES[role]?.tabs || ROLES.founder.tabs
-  const visibleTabs = ALL_TABS.filter(t=>allowedTabs.includes(t.id))
-
-  // Task progress for header
-  const key = `done_${todayKey()}`
-  const [done,setDoneCount]=useState(()=>{ try{return JSON.parse(localStorage.getItem(key)||'[]').length}catch{return 0} })
-  const total = TASK_TEMPLATE.length
-  const pct = Math.round((done/total)*100)
-
-  return (
-    <div style={{minHeight:'100vh', background:C.bg, color:C.white}}>
-      {/* Header */}
-      <div style={{background:C.surface, borderBottom:`1px solid ${C.border}`, height:56, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 22px', position:'sticky', top:0, zIndex:100}}>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{fontSize:18}}>🥷</div>
-          <div>
-            <div style={{fontSize:14,fontWeight:800,color:C.white,letterSpacing:-0.3}}>Nazim OS</div>
-            <div style={{fontSize:9,color:C.muted,letterSpacing:1.5}}>COMMAND CENTER</div>
-          </div>
-        </div>
-
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
-          {/* Progress */}
-          <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <div style={{fontSize:11,color:C.muted}}>{done}/{total}</div>
-            <div style={{width:72,height:4,background:C.surfaceHi,borderRadius:99,overflow:'hidden'}}>
-              <div style={{background:`linear-gradient(90deg,${C.steel},${C.blue})`,width:`${pct}%`,height:'100%',borderRadius:99}}/>
-            </div>
-            <div style={{fontSize:11,fontWeight:700,color:pct===100?C.green:C.muted}}>{pct}%</div>
-          </div>
-          {/* Brand dots */}
-          <div style={{display:'flex',gap:5,alignItems:'center'}}>
-            {PROFILES.map(p=><div key={p.id} style={{width:6,height:6,borderRadius:'50%',background:p.color}} title={p.label}/>)}
-          </div>
-          {/* Live indicator */}
-          <div style={{display:'flex',alignItems:'center',gap:4}}>
-            <div style={{width:6,height:6,borderRadius:'50%',background:C.green}}/>
-            <div style={{fontSize:11,color:C.green,fontWeight:700}}>Live</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Nav */}
-      <div style={{background:C.surface, borderBottom:`1px solid ${C.border}`, display:'flex', gap:2, padding:'0 22px', overflowX:'auto'}}>
-        {visibleTabs.map(t=>(
-          <button key={t.id} onClick={()=>setTab(t.id)} style={{
-            background:'none', border:'none',
-            borderBottom:tab===t.id?`2px solid ${C.blue}`:'2px solid transparent',
-            color:tab===t.id?C.white:C.muted,
-            padding:'12px 14px', fontSize:12, fontWeight:700, cursor:'pointer',
-            transition:'color .15s', display:'flex', alignItems:'center', gap:5, whiteSpace:'nowrap'
-          }}>
-            <span>{t.icon}</span>{t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div style={{padding:'20px 22px', maxWidth:1300, margin:'0 auto'}}>
-        {tab==='tasks'    && <Tasks setTab={setTab}/>}
-        {tab==='publish'  && <Publisher/>}
-        {tab==='scripts'  && <Scripts/>}
-        {tab==='queue'    && <Queue/>}
-        {tab==='crm'      && <CRM/>}
-        {tab==='clients'  && <Clients/>}
-        {tab==='monitor'  && <Monitor/>}
-        {tab==='calendar' && <Calendar/>}
-        {tab==='team'     && <Team/>}
-      </div>
-    </div>
-  )
-}
+  );
+};
 
 export default Admin;
