@@ -5,18 +5,19 @@ import {
   Edit3, Clock, UserPlus, FileText, CheckCircle2, 
   Share2, Video, Eye, Users, RefreshCw, Send, 
   CheckSquare, Copy, ArrowUpRight, Flame, Layers,
-  TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star
+  TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star,
+  ExternalLink, ArrowRight, ShieldCheck, Check
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { supabase } from './supabase';
 import { getApiUrl } from '../services/api';
 
-// ── Theme Palettes & Design Tokens ───────────────────────────────────
+// ── Multi-Brand Ecosystem Configuration ──────────────────────────────
 const PROFILES = [
-  { id: 'socialninja', label: 'Social Ninjas', color: '#f97316', bgGlow: 'rgba(249,115,22,0.15)', tag: 'Agency HQ' },
-  { id: 'nazim_ninja', label: 'Nazim Ninja', color: '#38bdf8', bgGlow: 'rgba(56,189,248,0.15)', tag: 'Founder Brand' },
-  { id: '9thgear_', label: '9th Gear', color: '#fbbf24', bgGlow: 'rgba(251,191,36,0.15)', tag: 'Automotive Media' },
-  { id: 'vicevault.gg', label: 'Vice Vault', color: '#f43f5e', bgGlow: 'rgba(244,63,94,0.15)', tag: 'Gaming & GTA' },
+  { id: 'socialninja', label: 'Social Ninjas', color: '#f97316', tag: 'Agency HQ' },
+  { id: 'nazim_ninja', label: 'Nazim Ninja', color: '#38bdf8', tag: 'Founder Channel' },
+  { id: '9thgear_', label: '9th Gear', color: '#fbbf24', tag: 'Supercar Media' },
+  { id: 'vicevault.gg', label: 'Vice Vault', color: '#f43f5e', tag: 'Gaming Hub' },
 ];
 
 const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = {
@@ -26,38 +27,38 @@ const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = 
 };
 
 const ALL_TABS = [
-  { id: 'tasks', label: 'Mission Control', icon: Zap, badge: 'Daily' },
-  { id: 'crm', label: 'Lead Pipeline', icon: Mail, badge: 'Growth' },
-  { id: 'blogs', label: 'SEO Blog Studio', icon: Edit3, badge: 'Articles' },
-  { id: 'fit', label: 'Fit Ninja SaaS', icon: Dumbbell, badge: 'Members' },
-  { id: 'publish', label: 'Multi-Publisher', icon: Share2, badge: 'Social' },
-  { id: 'scripts', label: 'Viral Script Vault', icon: FileText, badge: 'Content' },
-  { id: 'queue', label: 'Media Production', icon: Video, badge: 'Assets' },
-  { id: 'monitor', label: 'Brand Radar', icon: Eye, badge: 'Listening' },
-  { id: 'calendar', label: 'Operations Calendar', icon: CalendarIcon, badge: 'Schedule' },
-  { id: 'team', label: 'Team & Security', icon: Users, badge: 'Roles' },
+  { id: 'tasks', label: 'Mission Control', icon: Zap },
+  { id: 'crm', label: 'Inbound Leads', icon: Mail },
+  { id: 'blogs', label: 'SEO Blog Studio', icon: Edit3 },
+  { id: 'fit', label: 'Fit Ninja SaaS', icon: Dumbbell },
+  { id: 'publish', label: 'Fast Publisher', icon: Share2 },
+  { id: 'scripts', label: 'Viral Script Vault', icon: FileText },
+  { id: 'queue', label: 'Video Production', icon: Video },
+  { id: 'monitor', label: 'Brand Radar', icon: Eye },
+  { id: 'calendar', label: 'Agency Calendar', icon: CalendarIcon },
+  { id: 'team', label: 'Team & Access', icon: Users },
 ];
 
 const TASK_TEMPLATE = [
-  { id: 'sn_ig', block: 'morning', label: 'Deploy Reel: Social Ninjas', brand: 'socialninja', tab: 'publish' },
-  { id: 'nn_ig', block: 'morning', label: 'Deploy Reel: Nazim Ninja', brand: 'nazim_ninja', tab: 'publish' },
+  { id: 'sn_ig', block: 'morning', label: 'Deploy Reel: Social Ninjas Agency', brand: 'socialninja', tab: 'publish' },
+  { id: 'nn_ig', block: 'morning', label: 'Deploy Reel: Nazim Ninja Personal', brand: 'nazim_ninja', tab: 'publish' },
   { id: '9g_ig', block: 'morning', label: 'Deploy Reel: 9th Gear Supercars', brand: '9thgear_', tab: 'publish' },
   { id: 'vv_ig', block: 'morning', label: 'Deploy Reel: Vice Vault Gaming', brand: 'vicevault.gg', tab: 'publish' },
   { id: 'li_post', block: 'morning', label: 'LinkedIn Founder Thought Leadership', brand: 'nazim_ninja', tab: 'publish' },
-  { id: 'dms', block: 'morning', label: 'Inbox Zero: Resolve DMs across all 4 brands', brand: null, tab: null },
-  { id: 'li_cmts', block: 'engage', label: 'Drop 5 High-Authority Comments on Target ICP Founders', brand: null, tab: null },
+  { id: 'dms', block: 'morning', label: 'Inbox Zero: Resolve DMs across all 4 channels', brand: null, tab: null },
+  { id: 'li_cmts', block: 'engage', label: '5 High-Value Comments on Target ICP Founders', brand: null, tab: null },
   { id: 'ig_cmts', block: 'engage', label: 'Engage on 10 High-Growth Niche Reels', brand: null, tab: null },
-  { id: 'cold', block: 'outreach', label: 'Execute 5 Hyper-Personalized Growth Inquiries', brand: 'socialninja', tab: 'crm' },
+  { id: 'cold', block: 'outreach', label: 'Send 5 Hyper-Personalized Growth Inquiries', brand: 'socialninja', tab: 'crm' },
   { id: 'fu', block: 'outreach', label: 'Execute All Pending CRM Follow-Up Calls', brand: null, tab: 'crm' },
   { id: 'blog_write', block: 'content', label: 'Draft / Refine Weekly SEO Authority Article', brand: 'socialninja', tab: 'blogs' },
   { id: 'film', block: 'content', label: 'Film & Batch 2 Short-Form Video Assets', brand: null, tab: 'queue' },
 ];
 
-const BLOCK_META: Record<string, { label: string, time: string, color: string, icon: string, border: string }> = {
-  morning: { label: 'Morning Launch Protocol', time: '30m', color: 'text-sky-400', icon: '⚡', border: 'border-sky-500/20' },
-  engage: { label: 'Network Engagement', time: '20m', color: 'text-emerald-400', icon: '💬', border: 'border-emerald-500/20' },
-  outreach: { label: 'Revenue & Inbound Pipeline', time: '25m', color: 'text-amber-400', icon: '🎯', border: 'border-amber-500/20' },
-  content: { label: 'Media & SEO Engine', time: '45m', color: 'text-purple-400', icon: '🎬', border: 'border-purple-500/20' },
+const BLOCK_META: Record<string, { label: string, time: string, color: string, icon: string }> = {
+  morning: { label: 'Morning Launch Protocol', time: '30m', color: 'text-sky-400', icon: '⚡' },
+  engage: { label: 'Network Engagement', time: '20m', color: 'text-emerald-400', icon: '💬' },
+  outreach: { label: 'Revenue & Lead Pipeline', time: '25m', color: 'text-amber-400', icon: '🎯' },
+  content: { label: 'Media & SEO Engine', time: '45m', color: 'text-purple-400', icon: '🎬' },
 };
 
 const XPROMO = [
@@ -83,7 +84,7 @@ const fmtDate = (d?: string | null) => d ? new Date(d).toLocaleDateString('en-IN
 const doy = () => Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
 
 export const Admin: React.FC = () => {
-  // ── Tab & Global State ──────────────────────────────────────────────
+  // ── Navigation & Global States ──────────────────────────────────────
   const [activeTab, setActiveTab] = useState<string>('tasks');
   const [userRole, setUserRole] = useState<string>('founder');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -100,7 +101,7 @@ export const Admin: React.FC = () => {
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
 
-  // ── Modal States ────────────────────────────────────────────────────
+  // ── Modals ──────────────────────────────────────────────────────────
   const [showAddLead, setShowAddLead] = useState<boolean>(false);
   const [showAddMember, setShowAddMember] = useState<boolean>(false);
   const [showScheduleModal, setShowScheduleModal] = useState<boolean>(false);
@@ -110,7 +111,7 @@ export const Admin: React.FC = () => {
   const [openScriptId, setOpenScriptId] = useState<string | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
-  // ── Quick Scheduling State ──────────────────────────────────────────
+  // ── Scheduler ───────────────────────────────────────────────────────
   const [scheduleLeadId, setScheduleLeadId] = useState<string>('');
   const [scheduleDate, setScheduleDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [scheduleNotes, setScheduleNotes] = useState<string>('');
@@ -287,46 +288,46 @@ export const Admin: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#05070c] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-24 relative overflow-hidden">
-      <SEO title="Nazim OS 3.0 | Executive Agency Command Deck" description="Internal Social Ninjas Command Deck" />
+    <div className="min-h-screen bg-[#06080e] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-28">
+      <SEO title="Social Ninja's | Agency Command Deck" description="Executive Operations Dashboard" />
 
-      {/* Ambient background glow orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
-      <div className="absolute top-1/3 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
-
-      {/* ── TOP EXECUTIVE COCKPIT BAR ─────────────────────────────────── */}
-      <header className="border-b border-white/[0.08] bg-[#070b14]/90 backdrop-blur-2xl sticky top-0 z-50 shadow-2xl">
+      {/* ── TOP LUXURY EXECUTIVE HEADER ──────────────────────────────── */}
+      <header className="border-b border-white/[0.08] bg-[#090d18]/90 backdrop-blur-2xl sticky top-0 z-50 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
           
-          {/* Logo & Operational Identity */}
+          {/* Real Social Ninja's Official Logo & Brand */}
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-brand-primary to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-primary/25 border border-white/20 ring-2 ring-brand-primary/20">
-              🥷
+            <div className="relative flex items-center justify-center p-1 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/10 shadow-lg">
+              <img 
+                src="/ninja-logo.png" 
+                alt="Social Ninja's Logo" 
+                className="w-8 h-8 object-contain drop-shadow-md"
+              />
             </div>
             <div>
-              <div className="font-extrabold text-sm tracking-wide text-white flex items-center gap-2">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-400">NAZIM OS</span>
-                <span className="text-[9px] bg-gradient-to-r from-brand-primary/20 to-purple-500/20 text-brand-primary border border-brand-primary/40 px-2 py-0.5 rounded-full uppercase font-bold tracking-widest">
-                  INTERNAL HQ
+              <div className="font-extrabold text-sm tracking-tight text-white flex items-center gap-2">
+                <span>Social<span className="text-brand-primary">Ninja's</span></span>
+                <span className="text-[10px] font-bold text-slate-400 bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full">
+                  COMMAND DECK
                 </span>
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 font-medium">Social Ninjas Command & Growth Architecture</p>
+              <p className="text-[10.5px] text-slate-400 font-medium">Enterprise Growth Engine · v3.2</p>
             </div>
           </div>
 
-          {/* Quick Search Hub */}
+          {/* Quick Search */}
           <div className="hidden md:flex items-center flex-1 max-w-sm relative">
             <Search size={14} className="absolute left-3.5 text-slate-500" />
             <input
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              placeholder="Search leads, fit users, blogs, scripts..."
-              className="w-full bg-[#0d1424] border border-white/[0.08] rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/30 transition-all shadow-inner"
+              placeholder="Search leads, fit users, blog articles..."
+              className="w-full bg-[#101728] border border-white/[0.08] rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary transition-all shadow-inner"
             />
             {searchTerm && (
               <button onClick={() => setSearchTerm('')} className="absolute right-2.5 text-slate-500 hover:text-white">
@@ -357,7 +358,7 @@ export const Admin: React.FC = () => {
                 setIsEditingBlog(true);
                 setActiveTab('blogs');
               }}
-              className="bg-gradient-to-r from-brand-primary to-orange-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-brand-primary/20 hover:opacity-95 transition-all active:scale-95"
+              className="bg-gradient-to-r from-brand-primary to-orange-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-brand-primary/25 hover:opacity-95 transition-all active:scale-95"
             >
               <Edit3 size={14} /> <span className="hidden sm:inline">+ Draft Blog</span>
             </button>
@@ -365,7 +366,7 @@ export const Admin: React.FC = () => {
             <button
               onClick={loadAllData}
               disabled={refreshing}
-              className="p-2 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-800 border border-white/[0.06] rounded-xl transition-all text-xs active:scale-95"
+              className="p-2 text-slate-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] rounded-xl transition-all text-xs active:scale-95"
               title="Refresh All Database Streams"
             >
               <RefreshCw size={14} className={refreshing ? 'animate-spin text-brand-primary' : ''} />
@@ -374,96 +375,96 @@ export const Admin: React.FC = () => {
         </div>
       </header>
 
-      {/* ── HIGH-IMPACT METRICS COCKPIT ──────────────────────────────── */}
+      {/* ── METRICS COCKPIT CARDS (CLEAN & SPACIOUS) ────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           
-          {/* Leads Stat Card */}
+          {/* Leads Card */}
           <div 
             onClick={() => setActiveTab('crm')}
-            className="cursor-pointer bg-[#0c1220]/90 backdrop-blur-xl border border-white/[0.08] hover:border-sky-500/50 p-4.5 rounded-2xl transition-all shadow-xl hover:shadow-sky-500/10 group relative overflow-hidden"
+            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-sky-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-sky-500/10 group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider group-hover:text-sky-400 transition-colors">Inbound Growth Pipeline</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-sky-400 transition-colors">Inbound Growth Leads</span>
               <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center border border-sky-500/20">
                 <Mail size={15} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-black text-white tracking-tight">{leads.length}</span>
+              <span className="text-3xl font-black text-white">{leads.length}</span>
               <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                 {wonLeadsCount} Closed
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">Active agency prospect inquiries</p>
+            <p className="text-xs text-slate-400 mt-2">Active pipeline prospects</p>
           </div>
 
           {/* Fit Ninja SaaS Card */}
           <div 
             onClick={() => setActiveTab('fit')}
-            className="cursor-pointer bg-[#0c1220]/90 backdrop-blur-xl border border-white/[0.08] hover:border-amber-500/50 p-4.5 rounded-2xl transition-all shadow-xl hover:shadow-amber-500/10 group relative overflow-hidden"
+            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-amber-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-amber-500/10 group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider group-hover:text-amber-400 transition-colors">Fit Ninja Members</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-amber-400 transition-colors">Fit Ninja Members</span>
               <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
                 <Dumbbell size={15} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-black text-white tracking-tight">{fitClients.length}</span>
+              <span className="text-3xl font-black text-white">{fitClients.length}</span>
               <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
                 {premiumFitCount} Pro Active
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">SaaS nutrition & training users</p>
+            <p className="text-xs text-slate-400 mt-2">SaaS workout & diet users</p>
           </div>
 
-          {/* SEO Articles Published */}
+          {/* SEO Blog Card */}
           <div 
             onClick={() => setActiveTab('blogs')}
-            className="cursor-pointer bg-[#0c1220]/90 backdrop-blur-xl border border-white/[0.08] hover:border-emerald-500/50 p-4.5 rounded-2xl transition-all shadow-xl hover:shadow-emerald-500/10 group relative overflow-hidden"
+            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-emerald-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-emerald-500/10 group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider group-hover:text-emerald-400 transition-colors">SEO Blog Knowledgebase</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-emerald-400 transition-colors">SEO Knowledgebase</span>
               <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
                 <FileText size={15} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-black text-white tracking-tight">{blogs.length}</span>
+              <span className="text-3xl font-black text-white">{blogs.length}</span>
               <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                 Live on Web
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">Targeting high-intent organic keywords</p>
+            <p className="text-xs text-slate-400 mt-2">High-intent organic articles</p>
           </div>
 
-          {/* Follow-up / Agenda Card */}
+          {/* Agenda Card */}
           <div 
             onClick={() => setActiveTab('calendar')}
-            className="cursor-pointer bg-[#0c1220]/90 backdrop-blur-xl border border-white/[0.08] hover:border-purple-500/50 p-4.5 rounded-2xl transition-all shadow-xl hover:shadow-purple-500/10 group relative overflow-hidden"
+            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-purple-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-purple-500/10 group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider group-hover:text-purple-400 transition-colors">Today's Execution Agenda</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-purple-400 transition-colors">Today's Agenda</span>
               <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
                 <Clock size={15} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-black text-white tracking-tight">{followupsToday.length}</span>
+              <span className="text-3xl font-black text-white">{followupsToday.length}</span>
               <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">
                 Action Today
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2">Scheduled prospect discovery calls</p>
+            <p className="text-xs text-slate-400 mt-2">Scheduled discovery calls</p>
           </div>
 
         </div>
       </div>
 
-      {/* ── HIGH-TECH NAVIGATION PILL BAR ────────────────────────────── */}
+      {/* ── SEAMLESS PILL NAVIGATION ─────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
-        <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-1.5 flex gap-1.5 overflow-x-auto shadow-2xl scrollbar-none">
+        <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-1.5 flex gap-1.5 overflow-x-auto shadow-2xl scrollbar-none">
           {visibleTabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -471,7 +472,7 @@ export const Admin: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 ${
                   isActive
                     ? 'bg-gradient-to-r from-brand-primary via-orange-500 to-amber-500 text-white shadow-lg shadow-brand-primary/25 scale-[1.02]'
                     : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
@@ -500,7 +501,7 @@ export const Admin: React.FC = () => {
         </div>
       </div>
 
-      {/* ── WORKSPACE CONTENT ────────────────────────────────────────── */}
+      {/* ── WORKSPACE PANELS ─────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
         
         {/* 1. MISSION CONTROL / DAILY OPS */}
@@ -509,12 +510,12 @@ export const Admin: React.FC = () => {
             <div className="lg:col-span-2 space-y-6">
               
               {/* Daily Progress Banner */}
-              <div className="bg-gradient-to-r from-[#0e1628] via-[#10182c] to-[#0d1424] border border-white/[0.08] rounded-2xl p-5 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between mb-3">
+              <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-3">
+                <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
-                      <span>{completedTasksCount}/{totalTasks} Core Directives Executed</span>
-                      {taskProgressPct === 100 && <span className="text-emerald-400 text-base">🔥 MAX POWER</span>}
+                      <span>{completedTasksCount}/{totalTasks} Daily Directives Executed</span>
+                      {taskProgressPct === 100 && <span className="text-emerald-400 text-sm">🔥 100% COMPLETE</span>}
                     </h2>
                     <p className="text-xs text-slate-400">
                       {new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
@@ -527,7 +528,7 @@ export const Admin: React.FC = () => {
 
                 <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden p-0.5 border border-white/[0.05]">
                   <div 
-                    className="bg-gradient-to-r from-brand-primary via-purple-500 to-emerald-400 h-full rounded-full transition-all duration-500 shadow-sm shadow-brand-primary"
+                    className="bg-gradient-to-r from-brand-primary via-purple-500 to-emerald-400 h-full rounded-full transition-all duration-500"
                     style={{ width: `${taskProgressPct}%` }}
                   />
                 </div>
@@ -540,14 +541,14 @@ export const Admin: React.FC = () => {
                 const blockDoneCount = blockTasks.filter(t => doneTasks.includes(t.id)).length;
 
                 return (
-                  <div key={block} className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 shadow-xl space-y-3">
+                  <div key={block} className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-5 shadow-xl space-y-3">
                     <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{meta.icon}</span>
                         <h3 className={`text-xs font-black uppercase tracking-wider ${meta.color}`}>
                           {meta.label}
                         </h3>
-                        <span className="text-[11px] text-slate-400 font-medium">· {meta.time}</span>
+                        <span className="text-xs text-slate-400 font-medium">· {meta.time}</span>
                       </div>
                       <span className="text-xs font-bold text-slate-400">{blockDoneCount}/{blockTasks.length}</span>
                     </div>
@@ -562,7 +563,7 @@ export const Admin: React.FC = () => {
                             className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                               isDone
                                 ? 'bg-slate-900/40 border-emerald-500/20 opacity-50'
-                                : 'bg-[#101728]/80 border-white/[0.05] hover:border-white/[0.15]'
+                                : 'bg-[#121929] border-white/[0.05] hover:border-white/[0.15]'
                             }`}
                           >
                             <div className="flex items-center gap-3">
@@ -587,7 +588,7 @@ export const Admin: React.FC = () => {
                             {t.tab && !isDone && (
                               <button
                                 onClick={e => { e.stopPropagation(); setActiveTab(t.tab!); }}
-                                className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 bg-sky-500/10 px-2 py-1 rounded-lg border border-sky-500/20"
+                                className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 bg-sky-500/10 px-2 py-1 rounded-lg border border-sky-500/20"
                               >
                                 Launch →
                               </button>
@@ -605,7 +606,7 @@ export const Admin: React.FC = () => {
             <div className="space-y-6">
               
               {/* Today's Cross Promo Card */}
-              <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-orange-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+              <div className="bg-[#0e1424] border border-orange-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
                 <div className="text-[10px] font-black uppercase tracking-widest text-orange-400 mb-2 flex items-center gap-1.5">
                   <Flame size={13} /> Active Synergy Angle
                 </div>
@@ -613,15 +614,15 @@ export const Admin: React.FC = () => {
                 <div className="text-xs text-slate-300 italic mb-4 bg-slate-900/80 p-3 rounded-xl border border-white/[0.06]">
                   {currentXpromo.sub}
                 </div>
-                <p className="text-[11px] text-slate-400">Rule: Maintain algorithmic cross-pollination across all 4 properties.</p>
+                <p className="text-xs text-slate-400">Rule: Maintain algorithmic cross-pollination across all 4 properties.</p>
               </div>
 
               {/* 4 Brand Network Stack */}
-              <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 shadow-2xl space-y-3">
+              <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-5 shadow-2xl space-y-3">
                 <h3 className="text-xs font-black uppercase tracking-wider text-slate-300">4-Brand Ecosystem</h3>
                 <div className="grid gap-2">
                   {PROFILES.map(pr => (
-                    <div key={pr.id} className="flex items-center justify-between p-3 rounded-xl bg-[#101728]/80 border border-white/[0.05]">
+                    <div key={pr.id} className="flex items-center justify-between p-3 rounded-xl bg-[#121929] border border-white/[0.05]">
                       <div className="flex items-center gap-2.5">
                         <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: pr.color }}></div>
                         <span className="text-xs font-bold text-white">{pr.label}</span>
@@ -638,7 +639,7 @@ export const Admin: React.FC = () => {
 
         {/* 2. INBOUND LEADS / CRM */}
         {activeTab === 'crm' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -753,7 +754,7 @@ export const Admin: React.FC = () => {
 
         {/* 3. SEO BLOG STUDIO */}
         {activeTab === 'blogs' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -773,7 +774,7 @@ export const Admin: React.FC = () => {
             </div>
 
             {isEditingBlog ? (
-              <div className="space-y-4 bg-[#101728]/90 border border-white/[0.08] p-5 rounded-2xl shadow-xl">
+              <div className="space-y-4 bg-[#121929] border border-white/[0.08] p-5 rounded-2xl shadow-xl">
                 <input
                   type="text"
                   placeholder="Article Headline (H1 Target Keyword)..."
@@ -821,7 +822,7 @@ export const Admin: React.FC = () => {
                   <p className="text-xs text-slate-500 italic py-12 text-center">No articles found.</p>
                 ) : (
                   filteredBlogs.map(blog => (
-                    <div key={blog.id} className="p-4 rounded-xl bg-[#101728]/80 border border-white/[0.05] flex items-center justify-between gap-4 hover:border-white/[0.1] transition-all">
+                    <div key={blog.id} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-4 hover:border-white/[0.1] transition-all">
                       <div>
                         <h4 className="font-bold text-white text-sm">{blog.title}</h4>
                         <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{blog.excerpt}</p>
@@ -854,7 +855,7 @@ export const Admin: React.FC = () => {
 
         {/* 4. FIT NINJA MEMBERS (SAAS HUB) */}
         {activeTab === 'fit' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -947,7 +948,7 @@ export const Admin: React.FC = () => {
         {/* 5. MULTI-BRAND PUBLISHER */}
         {activeTab === 'publish' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-5">
+            <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-5">
               <h2 className="text-lg font-black text-white flex items-center gap-2">
                 <Share2 size={18} className="text-brand-primary" /> Multi-Brand Fast Publisher
               </h2>
@@ -963,7 +964,7 @@ export const Admin: React.FC = () => {
                       className={`p-3.5 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
                         pubProfile === pr.id
                           ? 'border-white bg-slate-800 text-white shadow-lg'
-                          : 'border-white/[0.06] bg-[#101728] text-slate-400 hover:border-white/[0.15]'
+                          : 'border-white/[0.06] bg-[#121929] text-slate-400 hover:border-white/[0.15]'
                       }`}
                     >
                       <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: pr.color }}></div>
@@ -989,7 +990,7 @@ export const Admin: React.FC = () => {
                       className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
                         pubPlatform === pl.id
                           ? 'border-sky-500 bg-sky-500/10 text-white'
-                          : 'border-white/[0.06] bg-[#101728] text-slate-400 hover:border-white/[0.15]'
+                          : 'border-white/[0.06] bg-[#121929] text-slate-400 hover:border-white/[0.15]'
                       }`}
                     >
                       <span>{pl.icon}</span>
@@ -1012,7 +1013,7 @@ export const Admin: React.FC = () => {
               </div>
 
               {/* Schedule Mode Switcher */}
-              <div className="p-3.5 rounded-xl bg-[#101728] border border-white/[0.06] flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.06] flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-white">📅 Future Slot Scheduling</div>
                   <div className="text-[10px] text-slate-400">Automatically sync with calendar queue</div>
@@ -1057,7 +1058,7 @@ export const Admin: React.FC = () => {
             </div>
 
             {/* Live Feed */}
-            <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-4">
               <h3 className="text-xs font-black text-white uppercase tracking-wider border-b border-white/[0.06] pb-3">
                 Live Distribution Feed ({posts.length} Posts)
               </h3>
@@ -1066,7 +1067,7 @@ export const Admin: React.FC = () => {
                   <p className="text-xs text-slate-500 italic py-10 text-center">No recent post dispatch logs found.</p>
                 ) : (
                   posts.map(p => (
-                    <div key={p.id} className="p-3.5 rounded-xl bg-[#101728]/80 border border-white/[0.05] flex items-center justify-between gap-3">
+                    <div key={p.id} className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
                         <div>
@@ -1088,7 +1089,7 @@ export const Admin: React.FC = () => {
 
         {/* 6. VIRAL SCRIPT VAULT */}
         {activeTab === 'scripts' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -1108,7 +1109,7 @@ export const Admin: React.FC = () => {
                 </div>
               ) : (
                 scripts.map(sc => (
-                  <div key={sc.id} className="bg-[#101728]/80 border border-white/[0.06] rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-white/[0.15] transition-all">
+                  <div key={sc.id} className="bg-[#121929] border border-white/[0.06] rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-white/[0.15] transition-all">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-[9px] font-extrabold px-2.5 py-0.5 rounded-full border" style={{ backgroundColor: `${pc(sc.profile)}15`, color: pc(sc.profile), borderColor: `${pc(sc.profile)}30` }}>
@@ -1155,7 +1156,7 @@ export const Admin: React.FC = () => {
 
         {/* 7. MEDIA QUEUE */}
         {activeTab === 'queue' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="border-b border-white/[0.06] pb-4">
               <h2 className="text-lg font-black text-white flex items-center gap-2">
                 <Video size={18} className="text-pink-400" /> Media & Video Production Queue
@@ -1168,7 +1169,7 @@ export const Admin: React.FC = () => {
                 <p className="text-xs text-slate-500 italic py-12 text-center">No videos queued in pipeline.</p>
               ) : (
                 queueItems.map(item => (
-                  <div key={item.id} className="p-4 rounded-xl bg-[#101728]/80 border border-white/[0.05] flex items-center justify-between gap-4">
+                  <div key={item.id} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-lg">
                         {item.platform === 'youtube' ? '▶️' : '📸'}
@@ -1196,7 +1197,7 @@ export const Admin: React.FC = () => {
 
         {/* 8. BRAND RADAR MONITOR */}
         {activeTab === 'monitor' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="border-b border-white/[0.06] pb-4">
               <h2 className="text-lg font-black text-white flex items-center gap-2">
                 <Eye size={18} className="text-teal-400" /> Brand Radar & Social Mentions
@@ -1209,7 +1210,7 @@ export const Admin: React.FC = () => {
                 <p className="text-xs text-slate-500 italic py-12 text-center">No active brand mentions. Radar scans Reddit and Twitter every 4 hours.</p>
               ) : (
                 mentions.map(m => (
-                  <div key={m.id} className="p-5 rounded-2xl bg-[#101728]/80 border border-white/[0.05] space-y-3">
+                  <div key={m.id} className="p-5 rounded-2xl bg-[#121929] border border-white/[0.05] space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/30 uppercase">{m.platform || 'Web'}</span>
@@ -1248,7 +1249,7 @@ export const Admin: React.FC = () => {
 
         {/* 9. MASTER OPERATIONS CALENDAR */}
         {activeTab === 'calendar' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -1278,7 +1279,7 @@ export const Admin: React.FC = () => {
                     ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Discovery', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
                     ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Content Slot', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' }))
                   ].map((item, idx) => (
-                    <div key={idx} className="p-4 rounded-xl bg-[#101728]/80 border border-white/[0.05] space-y-2">
+                    <div key={idx} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] space-y-2">
                       <div className="flex items-center justify-between">
                         <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border uppercase ${item.color}`}>
                           {item.type}
@@ -1287,7 +1288,7 @@ export const Admin: React.FC = () => {
                       </div>
                       <div className="font-bold text-white text-sm">{item.name}</div>
                       <p className="text-xs text-slate-400">{item.sub}</p>
-                      {item.notes && <p className="text-[11px] text-slate-400 italic bg-slate-900/60 p-2 rounded-lg">{item.notes}</p>}
+                      {item.notes && <p className="text-xs text-slate-400 italic bg-slate-900/60 p-2 rounded-lg">{item.notes}</p>}
                     </div>
                   ))
                 )}
@@ -1298,7 +1299,7 @@ export const Admin: React.FC = () => {
 
         {/* 10. TEAM & ROLES */}
         {activeTab === 'team' && (
-          <div className="bg-[#0b101c]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
@@ -1316,7 +1317,7 @@ export const Admin: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {Object.entries(ROLES).map(([key, roleInfo]) => (
-                <div key={key} className="p-4 rounded-xl bg-[#101728]/80 border border-white/[0.05] space-y-2">
+                <div key={key} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-extrabold" style={{ color: roleInfo.color }}>{roleInfo.label}</span>
                     <span className="text-[10px] text-slate-400 uppercase font-semibold">{roleInfo.tabs.length} Modules</span>
@@ -1337,7 +1338,7 @@ export const Admin: React.FC = () => {
                 <p className="col-span-full py-8 text-center text-slate-500 italic">No external operators registered.</p>
               ) : (
                 teamMembers.map(m => (
-                  <div key={m.id} className="p-4 rounded-xl bg-[#101728]/80 border border-white/[0.05] flex items-center justify-between">
+                  <div key={m.id} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 font-extrabold flex items-center justify-center">
                         {(m.name || 'U').charAt(0).toUpperCase()}
@@ -1371,7 +1372,7 @@ export const Admin: React.FC = () => {
       {/* ADD LEAD MODAL */}
       {showAddLead && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <UserPlus size={16} className="text-sky-400" /> Record Inbound Prospect Lead
@@ -1430,7 +1431,7 @@ export const Admin: React.FC = () => {
       {/* QUICK SCHEDULE MODAL */}
       {showScheduleModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <CalendarIcon size={16} className="text-purple-400" /> Schedule Discovery Call
@@ -1483,7 +1484,7 @@ export const Admin: React.FC = () => {
       {/* FIT NINJA MANAGE MODAL */}
       {manageFitStatus && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Dumbbell size={16} className="text-amber-400" /> Manage Member Access
@@ -1514,14 +1515,14 @@ export const Admin: React.FC = () => {
       {/* FIT NINJA FULL DETAILS MODAL */}
       {viewFitClientDetails && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
+          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Dumbbell size={18} className="text-amber-400" /> {viewFitClientDetails.name || 'Anonymous User'}
               </h3>
               <button onClick={() => setViewFitClientDetails(null)} className="text-slate-400 hover:text-white"><X size={16} /></button>
             </div>
-            <div className="grid grid-cols-2 gap-4 bg-[#101728] p-4 rounded-xl border border-white/[0.06]">
+            <div className="grid grid-cols-2 gap-4 bg-[#121929] p-4 rounded-xl border border-white/[0.06]">
               <div><span className="text-slate-400">Email:</span> <b className="text-white">{viewFitClientDetails.email}</b></div>
               <div><span className="text-slate-400">Goal:</span> <b className="text-white capitalize">{viewFitClientDetails.assessment_data?.goal || 'General Fitness'}</b></div>
               <div><span className="text-slate-400">Daily Energy:</span> <b className="text-emerald-400">{viewFitClientDetails.generated_plan?.kcal || '—'} kcal</b></div>
@@ -1532,7 +1533,7 @@ export const Admin: React.FC = () => {
             {viewFitClientDetails.assessment_data && (
               <div className="space-y-2">
                 <h4 className="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Onboarding Assessment Responses</h4>
-                <div className="bg-[#101728] p-4 rounded-xl border border-white/[0.06] font-mono text-[11px] text-slate-300 max-h-60 overflow-y-auto whitespace-pre-wrap">
+                <div className="bg-[#121929] p-4 rounded-xl border border-white/[0.06] font-mono text-[11px] text-slate-300 max-h-60 overflow-y-auto whitespace-pre-wrap">
                   {JSON.stringify(viewFitClientDetails.assessment_data, null, 2)}
                 </div>
               </div>
@@ -1544,7 +1545,7 @@ export const Admin: React.FC = () => {
       {/* ADD TEAM MEMBER MODAL */}
       {showAddMember && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Users size={16} className="text-purple-400" /> Add Team Member
