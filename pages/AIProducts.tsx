@@ -31,22 +31,23 @@ const products = [
     ],
   },
   {
-    id: 'fit-ninja', badge: '🟢 Live Now', icon: '💪', name: 'Fit Ninja',
-    tagline: 'Your personalized AI fitness coach & diet planner.',
-    desc: 'Get custom diet plans, structured gym/home workout programs, and monthly AI coaching — all built around your exact body, goal, and lifestyle.',
-    color: '#3ba213',
+    id: 'fit-ninja', badge: '🟢 v2.0 Live', icon: '🥷', name: 'Fit Ninja',
+    tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
+    desc: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
+    color: '#f59e0b',
     tryLink: 'https://fit.socialninjas.in',
     learnLink: 'https://fit.socialninjas.in',
-    stats: [['4.9★','User Rating'], ['12K+','Active Members'], ['₹299/mo','Starting Price'], ['100%','Personalized']],
+    stats: [['1,324+','Animated Exercises'], ['4.9★','User Rating'], ['100%','Offline PWA Ready'], ['₹299/mo','Starting Price']],
     features: [
-      'Custom diet plans based on your weight, height, age & activity',
-      'Structured gym and home workout programs with set tracking',
-      'Vegetarian, vegan, and non-vegetarian customized meal options',
-      'Monthly AI coaching updates as your weight & strength progress',
-      'Built-in Sign In for paid members & fast signup for new users'
+      '1,324+ searchable exercises with animated demos & equipment filters',
+      'Guided workout execution player with live rest timers and wake-lock',
+      'Anatomical muscle heatmap showing trained vs neglected muscle groups',
+      'Greyskull LP, linear progression & 1RM strength tracking algorithms',
+      'AI Macro & Nutrition engine with custom high-protein & veg meal plans',
+      '100% offline-capable PWA for seamless gym use on iPhone & Android'
     ],
     plans: [
-      { name: 'Monthly Pass', price: '₹299/mo', note: 'Full AI Diet & Workout Plan' },
+      { name: 'Fit Ninja Pro', price: '₹299/mo', note: 'Full 1,324+ Exercises, Workouts & AI Nutrition' },
     ],
   },
   {

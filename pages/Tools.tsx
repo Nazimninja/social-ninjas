@@ -1,10 +1,20 @@
 import React from 'react';
-import { ArrowRight, Zap, MessageSquare, Clock, Home, DollarSign, Sparkles } from 'lucide-react';
+import { ArrowRight, Zap, MessageSquare, Clock, Home, DollarSign, Sparkles, Dumbbell } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
 import AuroraBackground from '../components/AuroraBackground';
 
 const TOOLS = [
+  {
+    id: 'fit-ninja',
+    Icon: Dumbbell,
+    title: 'Fit Ninja — Workout & Nutrition PWA',
+    desc: '1,324+ animated exercises, guided workout player, smart rest timers, muscle heatmaps, and AI macro nutrition engine.',
+    badge: 'Fitness OS',
+    badgeColor: '#f59e0b',
+    url: 'https://fit.socialninjas.in',
+    isExternal: true,
+  },
   {
     id: 'whatsapp',
     Icon: MessageSquare,
