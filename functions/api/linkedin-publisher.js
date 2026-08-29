@@ -12,6 +12,7 @@ export async function onRequestPost(context) {
 
   const {
     videoUrl,
+    videoBase64,
     text,
     title = 'Nazim OS Video',
     author = 'urn:li:person:WEfd679Fsv',
@@ -21,17 +22,35 @@ export async function onRequestPost(context) {
   try {
     let videoUrn = null;
 
-    if (videoUrl) {
-      // 1. Download video binary from Catbox / Drive URL
-      console.log('Downloading video from URL:', videoUrl);
-      const vidRes = await fetch(videoUrl);
-      if (!vidRes.ok) throw new Error(`Failed to download video: ${vidRes.statusText}`);
-      const arrayBuf = await vidRes.arrayBuffer();
-      const videoBuffer = new Uint8Array(arrayBuf);
-      console.log('Downloaded video buffer size:', videoBuffer.length);
+    // 1. Obtain video binary buffer
+    let videoBuffer = null;
 
-      // 2. Initialize LinkedIn Modern Video Upload
-      console.log('Initializing LinkedIn upload...');
+    if (videoBase64) {
+      // Decode base64
+      const binaryString = atob(videoBase64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      videoBuffer = bytes;
+      console.log('Obtained video from base64, size:', videoBuffer.length);
+    } else if (videoUrl) {
+      console.log('Downloading video from URL:', videoUrl);
+      const vidRes = await fetch(videoUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+      });
+      if (!vidRes.ok) throw new Error(`Failed to download video from URL (${vidRes.status}): ${vidRes.statusText}`);
+      const arrayBuf = await vidRes.arrayBuffer();
+      videoBuffer = new Uint8Array(arrayBuf);
+      console.log('Downloaded video buffer size:', videoBuffer.length);
+    }
+
+    // 2. Upload video if binary is present
+    if (videoBuffer && videoBuffer.length > 0) {
+      console.log('Initializing LinkedIn upload for video size:', videoBuffer.length);
       const initRes = await fetch('https://api.linkedin.com/rest/videos?action=initializeUpload', {
         method: 'POST',
         headers: {
@@ -117,7 +136,7 @@ export async function onRequestPost(context) {
     }
 
     const postId = postRes.headers.get('x-restli-id') || 'published';
-    console.log('Post created! ID:', postId);
+    console.log('Post created successfully! ID:', postId);
 
     return new Response(JSON.stringify({
       success: true,
