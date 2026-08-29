@@ -248,6 +248,25 @@ export const Admin: React.FC = () => {
       created_at: new Date().toISOString()
     };
     await supabase.from('posts').insert([entry]);
+
+    // Dispatch directly to Railway n8n publisher webhook for instant processing
+    if (!pubSchedMode) {
+      try {
+        await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            profile: pubProfile,
+            platform: pubPlatform,
+            topic: pubTopic,
+            source: 'crm_direct'
+          })
+        });
+      } catch (err) {
+        console.error('Direct webhook dispatch error:', err);
+      }
+    }
+
     setPubStatus('done');
     setPubTopic('');
     setPubSchedDate('');
@@ -960,7 +979,12 @@ export const Admin: React.FC = () => {
                   {PROFILES.map(pr => (
                     <button
                       key={pr.id}
-                      onClick={() => setPubProfile(pr.id)}
+                      onClick={() => {
+                        setPubProfile(pr.id);
+                        if ((pr.id === '9thgear_' || pr.id === 'vicevault.gg') && (pubPlatform === 'linkedin' || pubPlatform === 'linkedin_video' || pubPlatform === 'linkedin_article')) {
+                          setPubPlatform('instagram');
+                        }
+                      }}
                       className={`p-3.5 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
                         pubProfile === pr.id
                           ? 'border-white bg-slate-800 text-white shadow-lg'
@@ -982,14 +1006,17 @@ export const Admin: React.FC = () => {
                     { id: 'instagram', label: 'Instagram Reels', icon: '📸' },
                     { id: 'youtube', label: 'YouTube Shorts', icon: '▶️' },
                     { id: 'both', label: 'IG + YT Sync', icon: '📡' },
-                    { id: 'linkedin', label: 'LinkedIn Article', icon: '💼' },
+                    ...((pubProfile === 'socialninja' || pubProfile === 'nazim_ninja') ? [
+                      { id: 'linkedin_video', label: 'LinkedIn Video', icon: '🎬' },
+                      { id: 'linkedin_article', label: 'LinkedIn Article', icon: '📝' },
+                    ] : []),
                   ].map(pl => (
                     <button
                       key={pl.id}
                       onClick={() => setPubPlatform(pl.id)}
                       className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
                         pubPlatform === pl.id
-                          ? 'border-sky-500 bg-sky-500/10 text-white'
+                          ? 'border-sky-500 bg-sky-500/10 text-white shadow-md shadow-sky-500/20'
                           : 'border-white/[0.06] bg-[#121929] text-slate-400 hover:border-white/[0.15]'
                       }`}
                     >
