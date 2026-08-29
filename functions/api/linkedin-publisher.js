@@ -11,95 +11,108 @@ export async function onRequestPost(context) {
   }
 
   const {
+    fileUrl,
     videoUrl,
-    videoBase64,
+    pdfUrl,
+    mediaType = 'document', // 'document' (carousel/pdf), 'video', 'article'
     text,
-    title = 'Nazim OS Video',
+    title = 'Swipe Through — Carousel Playbook',
     author = 'urn:li:person:WEfd679Fsv',
     token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ'
   } = body;
 
+  const downloadUrl = fileUrl || pdfUrl || videoUrl;
+
   try {
-    let videoUrn = null;
+    let mediaUrn = null;
 
-    // 1. Obtain video binary buffer
-    let videoBuffer = null;
-
-    if (videoBase64) {
-      // Decode base64
-      const binaryString = atob(videoBase64);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      videoBuffer = bytes;
-      console.log('Obtained video from base64, size:', videoBuffer.length);
-    } else if (videoUrl) {
-      console.log('Downloading video from URL:', videoUrl);
-      const vidRes = await fetch(videoUrl, {
+    if (downloadUrl) {
+      console.log('Downloading file from:', downloadUrl);
+      const fileRes = await fetch(downloadUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
       });
-      if (!vidRes.ok) throw new Error(`Failed to download video from URL (${vidRes.status}): ${vidRes.statusText}`);
-      const arrayBuf = await vidRes.arrayBuffer();
-      videoBuffer = new Uint8Array(arrayBuf);
-      console.log('Downloaded video buffer size:', videoBuffer.length);
+      if (!fileRes.ok) throw new Error(`Failed to download file from URL (${fileRes.status}): ${fileRes.statusText}`);
+      const arrayBuf = await fileRes.arrayBuffer();
+      const fileBuffer = new Uint8Array(arrayBuf);
+      console.log('Downloaded file buffer, size:', fileBuffer.length, 'bytes');
+
+      const isVideo = mediaType === 'video' || downloadUrl.endsWith('.mp4');
+
+      if (isVideo) {
+        // Video upload flow
+        const initRes = await fetch('https://api.linkedin.com/rest/videos?action=initializeUpload', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'LinkedIn-Version': '202602',
+            'Content-Type': 'application/json',
+            'X-Restli-Protocol-Version': '2.0.0'
+          },
+          body: JSON.stringify({
+            initializeUploadRequest: {
+              owner: author,
+              fileSizeBytes: fileBuffer.length,
+              uploadCaptions: false,
+              uploadThumbnail: false
+            }
+          })
+        });
+
+        if (!initRes.ok) throw new Error(`LinkedIn video init failed: ${await initRes.text()}`);
+        const initData = await initRes.json();
+        mediaUrn = initData.value.video;
+        const uploadUrl = initData.value.uploadInstructions[0].uploadUrl;
+
+        const upRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: fileBuffer
+        });
+        if (!upRes.ok) throw new Error(`LinkedIn video CDN upload failed: ${await upRes.text()}`);
+      } else {
+        // Document / PDF Carousel upload flow
+        console.log('Initializing LinkedIn Document Carousel upload...');
+        const initRes = await fetch('https://api.linkedin.com/rest/documents?action=initializeUpload', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'LinkedIn-Version': '202602',
+            'Content-Type': 'application/json',
+            'X-Restli-Protocol-Version': '2.0.0'
+          },
+          body: JSON.stringify({
+            initializeUploadRequest: {
+              owner: author
+            }
+          })
+        });
+
+        if (!initRes.ok) throw new Error(`LinkedIn document init failed: ${await initRes.text()}`);
+        const initData = await initRes.json();
+        mediaUrn = initData.value.document;
+        const uploadUrl = initData.value.uploadUrl;
+        console.log('Document URN:', mediaUrn);
+
+        // Upload PDF / Document binary
+        const upRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/pdf' },
+          body: fileBuffer
+        });
+        if (!upRes.ok && upRes.status !== 201 && upRes.status !== 200) {
+          throw new Error(`LinkedIn document upload failed: ${await upRes.text()}`);
+        }
+        console.log('PDF Carousel uploaded successfully to LinkedIn (201 Created)!');
+      }
     }
 
-    // 2. Upload video if binary is present
-    if (videoBuffer && videoBuffer.length > 0) {
-      console.log('Initializing LinkedIn upload for video size:', videoBuffer.length);
-      const initRes = await fetch('https://api.linkedin.com/rest/videos?action=initializeUpload', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'LinkedIn-Version': '202602',
-          'Content-Type': 'application/json',
-          'X-Restli-Protocol-Version': '2.0.0'
-        },
-        body: JSON.stringify({
-          initializeUploadRequest: {
-            owner: author,
-            fileSizeBytes: videoBuffer.length,
-            uploadCaptions: false,
-            uploadThumbnail: false
-          }
-        })
-      });
-
-      if (!initRes.ok) {
-        const errText = await initRes.text();
-        throw new Error(`LinkedIn initializeUpload failed (${initRes.status}): ${errText}`);
-      }
-
-      const initData = await initRes.json();
-      videoUrn = initData.value.video;
-      const uploadUrl = initData.value.uploadInstructions[0].uploadUrl;
-
-      // 3. Upload Binary directly to LinkedIn CDN
-      console.log('Uploading binary to LinkedIn CDN...');
-      const uploadRes = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/octet-stream'
-        },
-        body: videoBuffer
-      });
-
-      if (!uploadRes.ok) {
-        const errText = await uploadRes.text();
-        throw new Error(`LinkedIn CDN upload failed (${uploadRes.status}): ${errText}`);
-      }
-      console.log('Video binary successfully uploaded to LinkedIn CDN!');
-    }
-
-    // 4. Publish Post to LinkedIn
-    console.log('Creating post on LinkedIn...');
+    // Create LinkedIn Post
+    console.log('Publishing post on LinkedIn...');
     const postPayload = {
       author,
-      commentary: text || 'Automated post from Social Ninjas',
+      commentary: text || 'Swipe through for the full breakdown! 👉',
       visibility: 'PUBLIC',
       distribution: {
         feedDistribution: 'MAIN_FEED',
@@ -110,11 +123,11 @@ export async function onRequestPost(context) {
       isReshareDisabledByAuthor: false
     };
 
-    if (videoUrn) {
+    if (mediaUrn) {
       postPayload.content = {
         media: {
-          title,
-          id: videoUrn
+          title: title || 'Carousel Slide Deck',
+          id: mediaUrn
         }
       };
     }
@@ -136,12 +149,12 @@ export async function onRequestPost(context) {
     }
 
     const postId = postRes.headers.get('x-restli-id') || 'published';
-    console.log('Post created successfully! ID:', postId);
+    console.log('LinkedIn Carousel post created successfully! ID:', postId);
 
     return new Response(JSON.stringify({
       success: true,
       postId,
-      type: videoUrn ? 'video' : 'article'
+      type: mediaUrn ? 'carousel_document' : 'article'
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }

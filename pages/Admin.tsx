@@ -1007,7 +1007,7 @@ export const Admin: React.FC = () => {
                     { id: 'youtube', label: 'YouTube Shorts', icon: '▶️' },
                     { id: 'both', label: 'IG + YT Sync', icon: '📡' },
                     ...((pubProfile === 'socialninja' || pubProfile === 'nazim_ninja') ? [
-                      { id: 'linkedin_video', label: 'LinkedIn Video', icon: '🎬' },
+                      { id: 'linkedin_carousel', label: 'LinkedIn Carousel', icon: '📑' },
                       { id: 'linkedin_article', label: 'LinkedIn Article', icon: '📝' },
                     ] : []),
                   ].map(pl => (
