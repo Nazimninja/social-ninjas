@@ -140,6 +140,7 @@ export const Admin: React.FC = () => {
   const [pubSchedDate, setPubSchedDate] = useState<string>('');
   const [pubSchedTime, setPubSchedTime] = useState<string>('10:00');
   const [pubStatus, setPubStatus] = useState<string | null>(null);
+  const [pubFilter, setPubFilter] = useState<string>('all');
 
   // ── Master Loader ───────────────────────────────────────────────────
   const loadAllData = useCallback(async () => {
@@ -150,7 +151,7 @@ export const Admin: React.FC = () => {
       ] = await Promise.all([
         supabase.from('leads').select('*').order('created_at', { ascending: false }),
         fetch(getApiUrl('/api/fit-clients')).then(r => r.json()).catch(() => []),
-        supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(20),
+        supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
         supabase.from('scripts').select('*').order('created_at', { ascending: false }),
         supabase.from('scheduled_posts').select('*').order('created_at', { ascending: false }),
         supabase.from('mentions').select('*').eq('dismissed', false).order('created_at', { ascending: false }),
@@ -1084,30 +1085,103 @@ export const Admin: React.FC = () => {
               </button>
             </div>
 
-            {/* Live Feed */}
+            {/* Live Feed & Content Queue */}
             <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-4">
-              <h3 className="text-xs font-black text-white uppercase tracking-wider border-b border-white/[0.06] pb-3">
-                Live Distribution Feed ({posts.length} Posts)
-              </h3>
+              <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+                <h3 className="text-xs font-black text-white uppercase tracking-wider">
+                  Content Distribution Feed ({posts.length})
+                </h3>
+                <div className="flex items-center gap-1 bg-[#070b14] p-1 rounded-xl border border-white/[0.06]">
+                  {[
+                    { id: 'all', label: 'All' },
+                    { id: 'scheduled', label: `Scheduled (${posts.filter(p => p.status === 'Scheduled').length})` },
+                    { id: 'published', label: `Published (${posts.filter(p => p.status === 'published' || p.status === 'Published').length})` }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setPubFilter(tab.id)}
+                      className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg transition-all ${
+                        pubFilter === tab.id
+                          ? 'bg-purple-600 text-white shadow-sm'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
-                {posts.length === 0 ? (
-                  <p className="text-xs text-slate-500 italic py-10 text-center">No recent post dispatch logs found.</p>
+                {posts.filter(p => {
+                  if (pubFilter === 'scheduled') return p.status === 'Scheduled';
+                  if (pubFilter === 'published') return p.status === 'published' || p.status === 'Published';
+                  return true;
+                }).length === 0 ? (
+                  <p className="text-xs text-slate-500 italic py-10 text-center">No posts found for this filter.</p>
                 ) : (
-                  posts.map(p => (
-                    <div key={p.id} className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
-                        <div>
-                          <div className="text-xs font-bold text-white flex items-center gap-2">
-                            <span>{pl(p.profile)}</span>
-                            <span className="text-[10px] text-slate-400 capitalize">→ {p.platform}</span>
+                  posts.filter(p => {
+                    if (pubFilter === 'scheduled') return p.status === 'Scheduled';
+                    if (pubFilter === 'published') return p.status === 'published' || p.status === 'Published';
+                    return true;
+                  }).map(p => {
+                    const isPub = p.status === 'published' || p.status === 'Published';
+                    return (
+                      <div key={p.id} className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-3 hover:border-white/[0.12] transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: pc(p.profile) }}></div>
+                          <div>
+                            <div className="text-xs font-bold text-white flex items-center gap-2">
+                              <span>{pl(p.profile)}</span>
+                              <span className="text-[10px] text-purple-300 font-mono bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">
+                                {p.platform}
+                              </span>
+                              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border uppercase ${
+                                isPub ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+                              }`}>
+                                {isPub ? 'Published' : 'Scheduled'}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-300 mt-1 font-semibold line-clamp-1">{p.yt_title || p.file_name}</p>
+                            <p className="text-[10px] text-slate-500 font-mono">{p.file_name}</p>
                           </div>
-                          <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-1">{p.file_name || p.yt_title}</p>
+                        </div>
+
+                        <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                          <span className="text-[10px] font-bold text-slate-400 whitespace-nowrap">
+                            {p.scheduled_for ? `📅 ${new Date(p.scheduled_for).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}` : fmtDate(p.created_at)}
+                          </span>
+                          {!isPub && (
+                            <button
+                              onClick={async () => {
+                                if (!window.confirm(`Publish "${p.file_name}" now?`)) return;
+                                try {
+                                  await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      profile: p.profile || 'socialninja',
+                                      platform: p.platform || 'linkedin_carousel',
+                                      topic: p.yt_title,
+                                      fileName: p.file_name,
+                                      source: 'crm_fast_publisher_button'
+                                    })
+                                  });
+                                  alert('🚀 Dispatched! Check your Telegram group in ~30s.');
+                                  await loadAllData();
+                                } catch (e) {
+                                  alert('Error: ' + (e as Error).message);
+                                }
+                              }}
+                              className="text-[9px] font-extrabold text-white bg-purple-600 hover:bg-purple-500 px-2 py-0.5 rounded shadow transition-all"
+                            >
+                              🚀 Now
+                            </button>
+                          )}
                         </div>
                       </div>
-                      <span className="text-[10px] font-bold text-slate-500 whitespace-nowrap">{fmtDate(p.created_at)}</span>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
             </div>
@@ -1274,33 +1348,124 @@ export const Admin: React.FC = () => {
           </div>
         )}
 
-        {/* 9. MASTER OPERATIONS CALENDAR */}
+        {/* 9. MASTER OPERATIONS CALENDAR & CONTENT PLAN */}
         {activeTab === 'calendar' && (
           <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/[0.06] pb-4 gap-4">
               <div>
                 <h2 className="text-lg font-black text-white flex items-center gap-2">
-                  <CalendarIcon size={18} className="text-purple-400" /> Master Operations Calendar
+                  <CalendarIcon size={18} className="text-purple-400" /> September 2026 Content Plan & Operations Calendar
                 </h2>
-                <p className="text-xs text-slate-400">Integrated schedule of lead demos, discovery calls, and queued content</p>
+                <p className="text-xs text-slate-400">Automated daily morning LinkedIn carousel slots, pipeline discovery calls, and scheduled broadcasts</p>
               </div>
-              <button
-                onClick={() => setShowScheduleModal(true)}
-                className="bg-purple-600 hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-purple-600/20"
-              >
-                <Plus size={14} /> + Schedule Event
-              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  ⏰ Daily Trigger Active: 09:30 AM IST
+                </span>
+                <button
+                  onClick={() => setShowScheduleModal(true)}
+                  className="bg-purple-600 hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-purple-600/20"
+                >
+                  <Plus size={14} /> + Schedule Event
+                </button>
+              </div>
             </div>
 
-            {/* Upcoming Agenda */}
+            {/* September Carousel Content Plan Section */}
             <div className="space-y-3">
-              <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">Scheduled Actions & Pipeline Calls</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-purple-300 flex items-center gap-2">
+                  📑 September 2026 Carousel Publication Plan ({posts.filter(p => p.scheduled_for || p.file_name?.includes('.pdf')).length} Posts)
+                </h3>
+                <span className="text-[10px] text-slate-400">
+                  {posts.filter(p => p.status === 'published' || p.status === 'Published').length} Published / {posts.filter(p => p.status === 'Scheduled').length} Queued
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {posts
+                  .filter(p => p.scheduled_for || p.file_name?.includes('.pdf'))
+                  .sort((a, b) => new Date(a.scheduled_for || a.created_at).getTime() - new Date(b.scheduled_for || b.created_at).getTime())
+                  .map((p, idx) => {
+                    const isPub = p.status === 'published' || p.status === 'Published';
+                    return (
+                      <div key={p.id || idx} className={`p-4 rounded-xl border flex flex-col justify-between gap-3 transition-all ${
+                        isPub 
+                          ? 'bg-emerald-500/[0.04] border-emerald-500/20 hover:border-emerald-500/40' 
+                          : 'bg-[#121929] border-white/[0.06] hover:border-purple-500/30'
+                      }`}>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-md">
+                              📅 {p.scheduled_for ? new Date(p.scheduled_for).toLocaleDateString('en-US', { month: 'short', day: '2-digit', weekday: 'short' }) : fmtDate(p.created_at)}
+                            </span>
+                            <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border uppercase ${
+                              isPub ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-purple-500/10 text-purple-300 border-purple-500/30'
+                            }`}>
+                              {isPub ? '✅ Published' : '⏳ 09:30 AM Auto'}
+                            </span>
+                          </div>
+
+                          <div className="font-bold text-white text-xs leading-snug line-clamp-2">
+                            {p.yt_title || p.file_name?.replace(/^[0-9]+_[A-Za-z0-9]+_/, '').replace(/\.[^/.]+$/, '').replace(/_/g, ' ')}
+                          </div>
+
+                          <div className="text-[10px] text-slate-400 flex items-center gap-1.5 font-mono">
+                            <span>📄</span>
+                            <span className="truncate">{p.file_name}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
+                            <span className="text-[10px] font-bold text-slate-400">{pl(p.profile)}</span>
+                          </div>
+
+                          {!isPub && (
+                            <button
+                              onClick={async () => {
+                                if (!window.confirm(`Publish "${p.file_name}" to LinkedIn now?`)) return;
+                                try {
+                                  await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      profile: p.profile || 'socialninja',
+                                      platform: 'linkedin_carousel',
+                                      topic: p.yt_title,
+                                      fileName: p.file_name,
+                                      source: 'crm_manual_trigger'
+                                    })
+                                  });
+                                  alert('🚀 Dispatched to LinkedIn Publisher! Check your Telegram group in ~30s.');
+                                  await loadAllData();
+                                } catch (e) {
+                                  alert('Trigger error: ' + (e as Error).message);
+                                }
+                              }}
+                              className="text-[10px] font-extrabold text-white bg-purple-600 hover:bg-purple-500 px-2.5 py-1 rounded-lg shadow-md transition-all flex items-center gap-1"
+                            >
+                              <span>🚀</span> Publish Now
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+
+            {/* Upcoming Agenda & Pipeline */}
+            <div className="space-y-3 pt-4 border-t border-white/[0.06]">
+              <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">Scheduled Inbound Pipeline & Discovery Calls</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {[
                   ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Discovery', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
                   ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Content Slot', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' }))
                 ].length === 0 ? (
-                  <p className="col-span-full py-10 text-center text-slate-500 italic">No calendar events scheduled.</p>
+                  <p className="col-span-full py-6 text-center text-slate-500 italic text-xs">No pending client discovery calls scheduled.</p>
                 ) : (
                   [
                     ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Discovery', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
