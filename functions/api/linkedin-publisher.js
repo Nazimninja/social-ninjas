@@ -21,6 +21,8 @@ export async function onRequestPost(context) {
     token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ'
   } = body;
 
+  // Always use the authorized person URN if organization is passed without org token
+  const effectiveAuthor = author.includes('person') ? author : 'urn:li:person:WEfd679Fsv';
   const downloadUrl = fileUrl || pdfUrl || videoUrl;
 
   try {
@@ -38,7 +40,7 @@ export async function onRequestPost(context) {
       const fileBuffer = new Uint8Array(arrayBuf);
       console.log('Downloaded file buffer, size:', fileBuffer.length, 'bytes');
 
-      const isVideo = mediaType === 'video' || downloadUrl.endsWith('.mp4');
+      const isVideo = mediaType === 'video' || (downloadUrl.endsWith('.mp4') && mediaType !== 'document');
 
       if (isVideo) {
         // Video upload flow
@@ -52,7 +54,7 @@ export async function onRequestPost(context) {
           },
           body: JSON.stringify({
             initializeUploadRequest: {
-              owner: author,
+              owner: effectiveAuthor,
               fileSizeBytes: fileBuffer.length,
               uploadCaptions: false,
               uploadThumbnail: false
@@ -73,7 +75,7 @@ export async function onRequestPost(context) {
         if (!upRes.ok) throw new Error(`LinkedIn video CDN upload failed: ${await upRes.text()}`);
       } else {
         // Document / PDF Carousel upload flow
-        console.log('Initializing LinkedIn Document Carousel upload...');
+        console.log('Initializing LinkedIn Document Carousel upload for author:', effectiveAuthor);
         const initRes = await fetch('https://api.linkedin.com/rest/documents?action=initializeUpload', {
           method: 'POST',
           headers: {
@@ -84,7 +86,7 @@ export async function onRequestPost(context) {
           },
           body: JSON.stringify({
             initializeUploadRequest: {
-              owner: author
+              owner: effectiveAuthor
             }
           })
         });
@@ -111,7 +113,7 @@ export async function onRequestPost(context) {
     // Create LinkedIn Post
     console.log('Publishing post on LinkedIn...');
     const postPayload = {
-      author,
+      author: effectiveAuthor,
       commentary: text || 'Swipe through for the full breakdown! 👉',
       visibility: 'PUBLIC',
       distribution: {
