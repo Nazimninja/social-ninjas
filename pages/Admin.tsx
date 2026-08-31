@@ -21,9 +21,9 @@ const PROFILES = [
 ];
 
 const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = {
-  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'fit', 'publish', 'scripts', 'calendar', 'monitor', 'team'] },
+  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'fit', 'publish', 'scripts', 'calendar', 'meetings', 'monitor', 'team'] },
   content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'publish', 'scripts', 'calendar'] },
-  sales: { label: 'Growth Lead', color: '#34d399', tabs: ['tasks', 'crm', 'calendar'] },
+  sales: { label: 'Growth Lead', color: '#34d399', tabs: ['tasks', 'crm', 'meetings'] },
 };
 
 const ALL_TABS = [
@@ -32,7 +32,8 @@ const ALL_TABS = [
   { id: 'fit', label: 'Fit Ninja SaaS', icon: Dumbbell },
   { id: 'publish', label: 'Fast Publisher', icon: Share2 },
   { id: 'scripts', label: 'Viral Script Vault', icon: FileText },
-  { id: 'calendar', label: 'Agency Calendar', icon: CalendarIcon },
+  { id: 'calendar', label: 'Content Calendar', icon: CalendarIcon },
+  { id: 'meetings', label: 'Meetings & Calls', icon: Clock },
   { id: 'monitor', label: 'Brand Radar', icon: Eye },
   { id: 'team', label: 'Team & Access', icon: Users },
 ];
@@ -448,24 +449,24 @@ export const Admin: React.FC = () => {
             <p className="text-xs text-slate-400 mt-2">LinkedIn carousel slots queued</p>
           </div>
 
-          {/* Agenda Card */}
+          {/* Meetings & Calls Card */}
           <div 
-            onClick={() => setActiveTab('calendar')}
+            onClick={() => setActiveTab('meetings')}
             className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">Today's Agenda</span>
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">Meetings & Calls</span>
               <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
                 <Clock size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold text-white">{followupsToday.length}</span>
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
-                Action Today
+              <span className="text-2xl font-bold text-white">{leads.filter(l => l.next_follow_up).length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                {followupsToday.length} Today
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-2">Scheduled discovery calls</p>
+            <p className="text-xs text-slate-400 mt-2">Discovery calls & follow-ups</p>
           </div>
 
         </div>
@@ -497,6 +498,11 @@ export const Admin: React.FC = () => {
                 {tab.id === 'fit' && fitClients.length > 0 && (
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
                     {fitClients.length}
+                  </span>
+                )}
+                {tab.id === 'meetings' && leads.filter(l => l.next_follow_up).length > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                    {leads.filter(l => l.next_follow_up).length}
                   </span>
                 )}
               </button>
@@ -1456,24 +1462,107 @@ export const Admin: React.FC = () => {
                 </div>
               );
             })()}
+          </div>
+        )}
 
-            {/* Upcoming Lead Pipeline Agenda */}
-            <div className="space-y-3 pt-5 border-t border-white/[0.06]">
-              <h3 className="text-xs font-semibold text-slate-400">Scheduled Inbound Discovery & Follow-ups</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {/* 10. MEETINGS & SCHEDULED CALLS CALENDAR */}
+        {activeTab === 'meetings' && (
+          <div className="bg-[#0b0f19] border border-white/[0.08] rounded-2xl p-6 shadow-xl space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/[0.06] pb-5 gap-4">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <Clock size={16} className="text-purple-400" /> Meetings & Discovery Calls Calendar
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">Track prospect discovery calls, client demo walkthroughs, and revenue follow-ups</p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                  {followupsToday.length} Action Required Today
+                </span>
+                <button
+                  onClick={() => setShowScheduleModal(true)}
+                  className="bg-purple-600 hover:bg-purple-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors shadow-sm"
+                >
+                  <Plus size={13} /> + Schedule Call
+                </button>
+              </div>
+            </div>
+
+            {/* Scheduled Calls List */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold text-slate-300">
+                  Upcoming Client Discovery Calls ({leads.filter(l => l.next_follow_up).length})
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {leads.filter(l => l.next_follow_up).length === 0 ? (
-                  <p className="col-span-full py-6 text-center text-slate-500 italic text-xs">No pending client discovery calls scheduled.</p>
+                  <div className="col-span-full py-16 text-center text-slate-500 italic text-xs bg-[#101522] rounded-xl border border-white/[0.05]">
+                    No discovery calls scheduled. Click "+ Schedule Call" to add a new prospect meeting.
+                  </div>
                 ) : (
                   leads.filter(l => l.next_follow_up).map((l, idx) => (
-                    <div key={idx} className="p-3.5 rounded-xl bg-[#101522] border border-white/[0.05] space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-medium text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded">
-                          Lead Discovery
-                        </span>
-                        <span className="text-[11px] font-medium text-slate-400">{fmtDate(l.next_follow_up)}</span>
+                    <div key={l.id || idx} className="bg-[#101522] border border-white/[0.06] hover:border-purple-500/30 rounded-xl p-4 flex flex-col justify-between gap-3 transition-all">
+                      <div className="space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 rounded-md">
+                            📅 {fmtDate(l.next_follow_up)}
+                          </span>
+                          <span className="text-[10px] font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
+                            {l.status || 'PROSPECT'}
+                          </span>
+                        </div>
+
+                        <div>
+                          <div className="font-bold text-white text-sm">{l.name}</div>
+                          <div className="text-xs text-slate-400">{l.company || 'Direct Founder'}</div>
+                        </div>
+
+                        {l.email && (
+                          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 truncate">
+                            <span>✉️</span>
+                            <span className="truncate">{l.email}</span>
+                          </div>
+                        )}
+
+                        {l.phone && (
+                          <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                            <span>📞</span>
+                            <span>{l.phone}</span>
+                          </div>
+                        )}
+
+                        {l.follow_up_notes && (
+                          <div className="text-xs text-slate-300 bg-black/30 p-2.5 rounded-lg border border-white/[0.04] italic">
+                            "{l.follow_up_notes}"
+                          </div>
+                        )}
                       </div>
-                      <div className="font-semibold text-white text-xs">{l.name}</div>
-                      <p className="text-[11px] text-slate-400 truncate">{l.company || l.email}</p>
+
+                      <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.05]">
+                        <button
+                          onClick={() => {
+                            if (l.phone) window.open(`tel:${l.phone}`);
+                            else if (l.email) window.open(`mailto:${l.email}`);
+                            else alert('No contact details available');
+                          }}
+                          className="text-[11px] font-medium text-slate-300 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] px-3 py-1 rounded-lg transition-colors"
+                        >
+                          📞 Connect
+                        </button>
+                        <button
+                          onClick={async () => {
+                            await supabase.from('leads').update({ next_follow_up: null, follow_up_notes: 'Completed' }).eq('id', l.id);
+                            await loadAllData();
+                          }}
+                          className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 px-3 py-1 rounded-lg transition-colors"
+                        >
+                          ✓ Mark Done
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}
