@@ -14,8 +14,8 @@ import { getApiUrl } from '../services/api';
 
 // ── Multi-Brand Ecosystem Configuration ──────────────────────────────
 const PROFILES = [
+  { id: 'nazim_ninja', label: 'Nazim Pasha (Personal Profile)', color: '#38bdf8', tag: 'Personal Founder' },
   { id: 'socialninja', label: 'Social Ninjas', color: '#f97316', tag: 'Agency HQ' },
-  { id: 'nazim_ninja', label: 'Nazim Ninja', color: '#38bdf8', tag: 'Founder Channel' },
   { id: '9thgear_', label: '9th Gear', color: '#fbbf24', tag: 'Supercar Media' },
   { id: 'vicevault.gg', label: 'Vice Vault', color: '#f43f5e', tag: 'Gaming Hub' },
 ];
