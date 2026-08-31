@@ -21,15 +21,14 @@ const PROFILES = [
 ];
 
 const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = {
-  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'blogs', 'fit', 'publish', 'scripts', 'monitor', 'calendar', 'team'] },
-  content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'blogs', 'publish', 'scripts', 'calendar'] },
+  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'fit', 'publish', 'scripts', 'calendar', 'monitor', 'team'] },
+  content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'publish', 'scripts', 'calendar'] },
   sales: { label: 'Growth Lead', color: '#34d399', tabs: ['tasks', 'crm', 'calendar'] },
 };
 
 const ALL_TABS = [
   { id: 'tasks', label: 'Mission Control', icon: Zap },
   { id: 'crm', label: 'Inbound Leads', icon: Mail },
-  { id: 'blogs', label: 'SEO Blog Studio', icon: Edit3 },
   { id: 'fit', label: 'Fit Ninja SaaS', icon: Dumbbell },
   { id: 'publish', label: 'Fast Publisher', icon: Share2 },
   { id: 'scripts', label: 'Viral Script Vault', icon: FileText },
@@ -374,17 +373,6 @@ export const Admin: React.FC = () => {
             </button>
 
             <button
-              onClick={() => {
-                setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: "Social Ninja's Team", category: 'Growth Strategy' });
-                setIsEditingBlog(true);
-                setActiveTab('blogs');
-              }}
-              className="bg-gradient-to-r from-brand-primary to-orange-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-brand-primary/25 hover:opacity-95 transition-all active:scale-95"
-            >
-              <Edit3 size={14} /> <span className="hidden sm:inline">+ Draft Blog</span>
-            </button>
-
-            <button
               onClick={loadAllData}
               disabled={refreshing}
               className="p-2 text-slate-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] rounded-xl transition-all text-xs active:scale-95"
@@ -440,24 +428,24 @@ export const Admin: React.FC = () => {
             <p className="text-xs text-slate-400 mt-2">SaaS workout & diet users</p>
           </div>
 
-          {/* SEO Blog Card */}
+          {/* September Content Plan Card */}
           <div 
-            onClick={() => setActiveTab('blogs')}
+            onClick={() => setActiveTab('calendar')}
             className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">SEO Knowledgebase</span>
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">September Content Plan</span>
               <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
-                <FileText size={14} />
+                <CalendarIcon size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold text-white">{blogs.length}</span>
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
-                Live on Web
+              <span className="text-2xl font-bold text-white">{posts.filter(p => p.status === 'Scheduled').length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                {posts.filter(p => p.status === 'published' || p.status === 'Published').length} Published
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-2">High-intent organic articles</p>
+            <p className="text-xs text-slate-400 mt-2">LinkedIn carousel slots queued</p>
           </div>
 
           {/* Agenda Card */}
@@ -509,11 +497,6 @@ export const Admin: React.FC = () => {
                 {tab.id === 'fit' && fitClients.length > 0 && (
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
                     {fitClients.length}
-                  </span>
-                )}
-                {tab.id === 'blogs' && blogs.length > 0 && (
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
-                    {blogs.length}
                   </span>
                 )}
               </button>
@@ -773,108 +756,7 @@ export const Admin: React.FC = () => {
           </div>
         )}
 
-        {/* 3. SEO BLOG STUDIO */}
-        {activeTab === 'blogs' && (
-          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
-              <div>
-                <h2 className="text-lg font-black text-white flex items-center gap-2">
-                  <Edit3 size={18} className="text-brand-primary" /> SEO Insights & Article Studio
-                </h2>
-                <p className="text-xs text-slate-400">Publish high-ranking marketing guides and case studies directly to socialninjas.in/blog</p>
-              </div>
-              <button
-                onClick={() => {
-                  setCurrentBlog({ id: '', title: '', content: '', excerpt: '', author: "Social Ninja's Team", category: 'Growth Strategy' });
-                  setIsEditingBlog(true);
-                }}
-                className="bg-brand-primary hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-brand-primary/20"
-              >
-                <Plus size={14} /> + New Article
-              </button>
-            </div>
-
-            {isEditingBlog ? (
-              <div className="space-y-4 bg-[#121929] border border-white/[0.08] p-5 rounded-2xl shadow-xl">
-                <input
-                  type="text"
-                  placeholder="Article Headline (H1 Target Keyword)..."
-                  value={currentBlog.title}
-                  onChange={e => setCurrentBlog({ ...currentBlog, title: e.target.value })}
-                  className="w-full bg-[#070b14] border border-white/[0.08] rounded-xl p-3.5 text-sm text-white focus:outline-none focus:border-brand-primary"
-                />
-                <textarea
-                  placeholder="Short excerpt summary for meta description and card views..."
-                  value={currentBlog.excerpt}
-                  onChange={e => setCurrentBlog({ ...currentBlog, excerpt: e.target.value })}
-                  rows={2}
-                  className="w-full bg-[#070b14] border border-white/[0.08] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-primary"
-                />
-                <textarea
-                  placeholder="Markdown Body (# Heading, ## Section, bullet points, CTA links)..."
-                  value={currentBlog.content}
-                  onChange={e => setCurrentBlog({ ...currentBlog, content: e.target.value })}
-                  rows={12}
-                  className="w-full bg-[#070b14] border border-white/[0.08] rounded-xl p-3.5 text-xs font-mono text-white focus:outline-none focus:border-brand-primary"
-                />
-                <div className="flex gap-2 justify-end">
-                  <button onClick={() => setIsEditingBlog(false)} className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">
-                    Cancel
-                  </button>
-                  <button
-                    onClick={async () => {
-                      await fetch(getApiUrl('/api/data?resource=blogs'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(currentBlog)
-                      });
-                      setIsEditingBlog(false);
-                      await loadAllData();
-                    }}
-                    className="px-5 py-2.5 bg-gradient-to-r from-brand-primary to-orange-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-brand-primary/20"
-                  >
-                    Save & Deploy Article
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="grid gap-3">
-                {filteredBlogs.length === 0 ? (
-                  <p className="text-xs text-slate-500 italic py-12 text-center">No articles found.</p>
-                ) : (
-                  filteredBlogs.map(blog => (
-                    <div key={blog.id} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-4 hover:border-white/[0.1] transition-all">
-                      <div>
-                        <h4 className="font-bold text-white text-sm">{blog.title}</h4>
-                        <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{blog.excerpt}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => { setCurrentBlog(blog); setIsEditingBlog(true); }}
-                          className="px-3 py-1.5 bg-sky-500/10 text-sky-400 hover:bg-sky-600 hover:text-white rounded-lg text-xs font-bold transition-colors"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={async () => {
-                            if (!window.confirm('Delete blog post?')) return;
-                            await fetch(getApiUrl(`/api/data?resource=blogs&id=${blog.id}`), { method: 'DELETE' });
-                            await loadAllData();
-                          }}
-                          className="p-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-600 hover:text-white rounded-lg text-xs transition-colors"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 4. FIT NINJA MEMBERS (SAAS HUB) */}
+        {/* 3. FIT NINJA MEMBERS (SAAS HUB) */}
         {activeTab === 'fit' && (
           <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-4">
