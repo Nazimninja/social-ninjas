@@ -133,8 +133,8 @@ export const Admin: React.FC = () => {
   const [currentBlog, setCurrentBlog] = useState({ id: '', title: '', content: '', excerpt: '', author: "Social Ninja's Team", category: 'Growth Strategy' });
 
   // ── Publisher State ─────────────────────────────────────────────────
-  const [pubProfile, setPubProfile] = useState<string>('socialninja');
-  const [pubPlatform, setPubPlatform] = useState<string>('instagram');
+  const [pubProfile, setPubProfile] = useState<string>('nazim_ninja');
+  const [pubPlatform, setPubPlatform] = useState<string>('linkedin_carousel');
   const [pubTopic, setPubTopic] = useState<string>('');
   const [pubSchedMode, setPubSchedMode] = useState<boolean>(false);
   const [pubSchedDate, setPubSchedDate] = useState<string>('');
