@@ -141,6 +141,8 @@ export const Admin: React.FC = () => {
   const [pubSchedTime, setPubSchedTime] = useState<string>('10:00');
   const [pubStatus, setPubStatus] = useState<string | null>(null);
   const [pubFilter, setPubFilter] = useState<string>('all');
+  const [calFilter, setCalFilter] = useState<string>('all');
+  const [calView, setCalView] = useState<'grid' | 'table'>('grid');
 
   // ── Master Loader ───────────────────────────────────────────────────
   const loadAllData = useCallback(async () => {
@@ -395,24 +397,24 @@ export const Admin: React.FC = () => {
         </div>
       </header>
 
-      {/* ── METRICS COCKPIT CARDS (CLEAN & SPACIOUS) ────────────────── */}
+      {/* ── METRICS COCKPIT CARDS (CLEAN & MINIMALIST) ─────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           
           {/* Leads Card */}
           <div 
             onClick={() => setActiveTab('crm')}
-            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-sky-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-sky-500/10 group flex flex-col justify-between"
+            className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-sky-400 transition-colors">Inbound Growth Leads</span>
-              <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center border border-sky-500/20">
-                <Mail size={15} />
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">Inbound Growth Leads</span>
+              <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
+                <Mail size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-white">{leads.length}</span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="text-2xl font-bold text-white">{leads.length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
                 {wonLeadsCount} Closed
               </span>
             </div>
@@ -422,17 +424,17 @@ export const Admin: React.FC = () => {
           {/* Fit Ninja SaaS Card */}
           <div 
             onClick={() => setActiveTab('fit')}
-            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-amber-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-amber-500/10 group flex flex-col justify-between"
+            className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-amber-400 transition-colors">Fit Ninja Members</span>
-              <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
-                <Dumbbell size={15} />
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">Fit Ninja Members</span>
+              <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
+                <Dumbbell size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-white">{fitClients.length}</span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
+              <span className="text-2xl font-bold text-white">{fitClients.length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
                 {premiumFitCount} Pro Active
               </span>
             </div>
@@ -442,17 +444,17 @@ export const Admin: React.FC = () => {
           {/* SEO Blog Card */}
           <div 
             onClick={() => setActiveTab('blogs')}
-            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-emerald-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-emerald-500/10 group flex flex-col justify-between"
+            className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-emerald-400 transition-colors">SEO Knowledgebase</span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-                <FileText size={15} />
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">SEO Knowledgebase</span>
+              <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
+                <FileText size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-white">{blogs.length}</span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="text-2xl font-bold text-white">{blogs.length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
                 Live on Web
               </span>
             </div>
@@ -462,17 +464,17 @@ export const Admin: React.FC = () => {
           {/* Agenda Card */}
           <div 
             onClick={() => setActiveTab('calendar')}
-            className="cursor-pointer bg-[#0e1424] border border-white/[0.08] hover:border-purple-500/50 p-5 rounded-2xl transition-all shadow-xl hover:shadow-purple-500/10 group flex flex-col justify-between"
+            className="cursor-pointer bg-[#0b0f19] border border-white/[0.08] hover:border-white/[0.18] p-5 rounded-2xl transition-all shadow-lg group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-purple-400 transition-colors">Today's Agenda</span>
-              <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
-                <Clock size={15} />
+              <span className="text-xs font-semibold text-slate-400 group-hover:text-white transition-colors">Today's Agenda</span>
+              <div className="w-7 h-7 rounded-lg bg-white/[0.05] text-slate-300 flex items-center justify-center border border-white/[0.08]">
+                <Clock size={14} />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-3xl font-black text-white">{followupsToday.length}</span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">
+              <span className="text-2xl font-bold text-white">{followupsToday.length}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
                 Action Today
               </span>
             </div>
@@ -484,7 +486,7 @@ export const Admin: React.FC = () => {
 
       {/* ── SEAMLESS PILL NAVIGATION ─────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
-        <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-1.5 flex gap-1.5 overflow-x-auto shadow-2xl scrollbar-none">
+        <div className="bg-[#0b0f19] border border-white/[0.08] rounded-2xl p-1.5 flex gap-1 overflow-x-auto shadow-xl scrollbar-none">
           {visibleTabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -492,26 +494,26 @@ export const Admin: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-150 ${
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-150 ${
                   isActive
-                    ? 'bg-gradient-to-r from-brand-primary via-orange-500 to-amber-500 text-white shadow-lg shadow-brand-primary/25 scale-[1.02]'
-                    : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                    ? 'bg-slate-800 text-white border border-white/[0.12] shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon size={14} className={isActive ? 'text-white' : 'text-slate-400'} />
                 <span>{tab.label}</span>
                 {tab.id === 'crm' && leads.length > 0 && (
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black ${isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
                     {leads.length}
                   </span>
                 )}
                 {tab.id === 'fit' && fitClients.length > 0 && (
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black ${isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
                     {fitClients.length}
                   </span>
                 )}
                 {tab.id === 'blogs' && blogs.length > 0 && (
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black ${isActive ? 'bg-black/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/10 text-white' : 'bg-slate-800 text-slate-400'}`}>
                     {blogs.length}
                   </span>
                 )}
@@ -1350,137 +1352,288 @@ export const Admin: React.FC = () => {
 
         {/* 9. MASTER OPERATIONS CALENDAR & CONTENT PLAN */}
         {activeTab === 'calendar' && (
-          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/[0.06] pb-4 gap-4">
+          <div className="bg-[#0b0f19] border border-white/[0.08] rounded-2xl p-6 shadow-xl space-y-6">
+            
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/[0.06] pb-5 gap-4">
               <div>
-                <h2 className="text-lg font-black text-white flex items-center gap-2">
-                  <CalendarIcon size={18} className="text-purple-400" /> September 2026 Content Plan & Operations Calendar
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <CalendarIcon size={16} className="text-slate-400" /> September 2026 Content Plan
                 </h2>
-                <p className="text-xs text-slate-400">Automated daily morning LinkedIn carousel slots, pipeline discovery calls, and scheduled broadcasts</p>
+                <p className="text-xs text-slate-400 mt-0.5">Automated daily morning LinkedIn carousel slots and operations agenda</p>
               </div>
+
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  ⏰ Daily Trigger Active: 09:30 AM IST
+                <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Daily Auto-Trigger: 09:30 AM IST
                 </span>
                 <button
                   onClick={() => setShowScheduleModal(true)}
-                  className="bg-purple-600 hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-purple-600/20"
+                  className="bg-white/10 hover:bg-white/15 text-white border border-white/10 px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors shadow-sm"
                 >
-                  <Plus size={14} /> + Schedule Event
+                  <Plus size={13} /> Schedule Event
                 </button>
               </div>
             </div>
 
-            {/* September Carousel Content Plan Section */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-purple-300 flex items-center gap-2">
-                  📑 September 2026 Carousel Publication Plan ({posts.filter(p => p.scheduled_for || p.file_name?.includes('.pdf')).length} Posts)
-                </h3>
-                <span className="text-[10px] text-slate-400">
-                  {posts.filter(p => p.status === 'published' || p.status === 'Published').length} Published / {posts.filter(p => p.status === 'Scheduled').length} Queued
-                </span>
-              </div>
+            {/* Filter & View Controls */}
+            {(() => {
+              const septPosts = posts
+                .filter(p => p.file_name?.includes('Sep') || p.scheduled_for?.includes('2026-09'))
+                .sort((a, b) => {
+                  const getDay = (x: any) => {
+                    const match = (x.file_name || '').match(/Sep(\d+)/i);
+                    if (match) return parseInt(match[1], 10);
+                    if (x.scheduled_for) return new Date(x.scheduled_for).getUTCDate();
+                    return 99;
+                  };
+                  return getDay(a) - getDay(b);
+                });
 
+              const filtered = septPosts.filter(p => {
+                const isPub = p.status === 'published' || p.status === 'Published';
+                if (calFilter === 'scheduled') return !isPub;
+                if (calFilter === 'published') return isPub;
+                return true;
+              });
+
+              const pubCount = septPosts.filter(p => p.status === 'published' || p.status === 'Published').length;
+              const schedCount = septPosts.filter(p => p.status === 'Scheduled').length;
+
+              return (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#080b12] p-2 rounded-xl border border-white/[0.05]">
+                    {/* Filter Pills */}
+                    <div className="flex items-center gap-1">
+                      {[
+                        { id: 'all', label: `All September (${septPosts.length})` },
+                        { id: 'scheduled', label: `Upcoming Queue (${schedCount})` },
+                        { id: 'published', label: `Published (${pubCount})` }
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          onClick={() => setCalFilter(tab.id)}
+                          className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-all ${
+                            calFilter === tab.id
+                              ? 'bg-slate-800 text-white border border-white/10 shadow-sm'
+                              : 'text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* View Switcher */}
+                    <div className="flex items-center gap-1 bg-[#111625] p-1 rounded-lg border border-white/[0.06]">
+                      <button
+                        onClick={() => setCalView('grid')}
+                        className={`text-xs font-medium px-2.5 py-1 rounded transition-all flex items-center gap-1.5 ${
+                          calView === 'grid' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        <span>▦</span> Grid View
+                      </button>
+                      <button
+                        onClick={() => setCalView('table')}
+                        className={`text-xs font-medium px-2.5 py-1 rounded transition-all flex items-center gap-1.5 ${
+                          calView === 'table' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        <span>☰</span> List View
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Grid View */}
+                  {calView === 'grid' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {filtered.length === 0 ? (
+                        <p className="col-span-full py-12 text-center text-slate-500 italic text-xs">No posts matching this filter.</p>
+                      ) : (
+                        filtered.map((p, idx) => {
+                          const isPub = p.status === 'published' || p.status === 'Published';
+                          const dayMatch = (p.file_name || '').match(/Sep(\d+)/i);
+                          const dayNumber = dayMatch ? dayMatch[1] : (p.scheduled_for ? new Date(p.scheduled_for).getUTCDate() : (idx + 1));
+                          const cleanTitle = p.yt_title || p.file_name?.replace(/^[0-9]+_[A-Za-z0-9]+_/, '').replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+
+                          return (
+                            <div key={p.id || idx} className="bg-[#101522] border border-white/[0.06] hover:border-white/[0.14] rounded-xl p-4 flex flex-col justify-between gap-3 transition-all">
+                              <div className="space-y-2.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-semibold text-slate-200 bg-white/[0.06] border border-white/[0.08] px-2.5 py-1 rounded-md">
+                                    Sep {String(dayNumber).padStart(2, '0')}
+                                  </span>
+
+                                  {isPub ? (
+                                    <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Published
+                                    </span>
+                                  ) : (
+                                    <span className="text-[11px] font-medium text-slate-400 bg-slate-800/80 border border-white/[0.06] px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Scheduled · 09:30 AM
+                                    </span>
+                                  )}
+                                </div>
+
+                                <h3 className="font-semibold text-white text-xs leading-relaxed line-clamp-2">
+                                  {cleanTitle}
+                                </h3>
+
+                                <div className="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 bg-black/20 p-2 rounded-lg border border-white/[0.04]">
+                                  <span className="text-slate-500">📄</span>
+                                  <span className="truncate">{p.file_name}</span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.05]">
+                                <div className="flex items-center gap-1.5">
+                                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
+                                  <span className="text-[11px] font-medium text-slate-400">{pl(p.profile)}</span>
+                                </div>
+
+                                {!isPub && (
+                                  <button
+                                    onClick={async () => {
+                                      if (!window.confirm(`Publish "${p.file_name}" to LinkedIn right now?`)) return;
+                                      try {
+                                        await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
+                                          method: 'POST',
+                                          headers: { 'Content-Type': 'application/json' },
+                                          body: JSON.stringify({
+                                            profile: p.profile || 'socialninja',
+                                            platform: 'linkedin_carousel',
+                                            topic: p.yt_title,
+                                            fileName: p.file_name,
+                                            source: 'crm_calendar_trigger'
+                                          })
+                                        });
+                                        alert('🚀 Dispatched! Post will appear on LinkedIn in ~30s.');
+                                        await loadAllData();
+                                      } catch (e) {
+                                        alert('Trigger error: ' + (e as Error).message);
+                                      }
+                                    }}
+                                    className="text-[11px] font-medium text-slate-200 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] hover:border-white/[0.2] px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5"
+                                  >
+                                    <span>🚀</span> Publish Now
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  )}
+
+                  {/* Table View */}
+                  {calView === 'table' && (
+                    <div className="bg-[#101522] border border-white/[0.06] rounded-xl overflow-hidden">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-[#0c101a] border-b border-white/[0.06] text-slate-400 text-[11px] font-semibold">
+                          <tr>
+                            <th className="py-3 px-4">Date</th>
+                            <th className="py-3 px-4">Post Title & Angle</th>
+                            <th className="py-3 px-4">PDF Document</th>
+                            <th className="py-3 px-4">Channel</th>
+                            <th className="py-3 px-4">Status</th>
+                            <th className="py-3 px-4 text-right">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/[0.04]">
+                          {filtered.map((p, idx) => {
+                            const isPub = p.status === 'published' || p.status === 'Published';
+                            const dayMatch = (p.file_name || '').match(/Sep(\d+)/i);
+                            const dayNumber = dayMatch ? dayMatch[1] : (p.scheduled_for ? new Date(p.scheduled_for).getUTCDate() : (idx + 1));
+                            const cleanTitle = p.yt_title || p.file_name?.replace(/^[0-9]+_[A-Za-z0-9]+_/, '').replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+
+                            return (
+                              <tr key={p.id || idx} className="hover:bg-white/[0.02] transition-colors">
+                                <td className="py-3 px-4 font-semibold text-slate-200 whitespace-nowrap">
+                                  Sep {String(dayNumber).padStart(2, '0')}
+                                </td>
+                                <td className="py-3 px-4 font-medium text-white max-w-xs truncate">
+                                  {cleanTitle}
+                                </td>
+                                <td className="py-3 px-4 text-slate-400 font-mono text-[11px] max-w-[180px] truncate">
+                                  {p.file_name}
+                                </td>
+                                <td className="py-3 px-4 whitespace-nowrap">
+                                  <span className="text-[11px] text-slate-300 flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: pc(p.profile) }}></span>
+                                    {pl(p.profile)}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-4 whitespace-nowrap">
+                                  {isPub ? (
+                                    <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                                      Published
+                                    </span>
+                                  ) : (
+                                    <span className="text-[10px] font-medium text-slate-400 bg-slate-800 border border-white/[0.06] px-2 py-0.5 rounded-full">
+                                      Scheduled (09:30 AM)
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="py-3 px-4 text-right whitespace-nowrap">
+                                  {!isPub && (
+                                    <button
+                                      onClick={async () => {
+                                        if (!window.confirm(`Publish "${p.file_name}" to LinkedIn right now?`)) return;
+                                        try {
+                                          await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                              profile: p.profile || 'socialninja',
+                                              platform: 'linkedin_carousel',
+                                              topic: p.yt_title,
+                                              fileName: p.file_name,
+                                              source: 'crm_calendar_trigger'
+                                            })
+                                          });
+                                          alert('🚀 Dispatched to LinkedIn!');
+                                          await loadAllData();
+                                        } catch (e) {
+                                          alert('Error: ' + (e as Error).message);
+                                        }
+                                      }}
+                                      className="text-[11px] font-medium text-slate-300 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] px-2.5 py-1 rounded transition-colors"
+                                    >
+                                      Publish Now
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* Upcoming Lead Pipeline Agenda */}
+            <div className="space-y-3 pt-5 border-t border-white/[0.06]">
+              <h3 className="text-xs font-semibold text-slate-400">Scheduled Inbound Discovery & Follow-ups</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {posts
-                  .filter(p => p.scheduled_for || p.file_name?.includes('.pdf'))
-                  .sort((a, b) => new Date(a.scheduled_for || a.created_at).getTime() - new Date(b.scheduled_for || b.created_at).getTime())
-                  .map((p, idx) => {
-                    const isPub = p.status === 'published' || p.status === 'Published';
-                    return (
-                      <div key={p.id || idx} className={`p-4 rounded-xl border flex flex-col justify-between gap-3 transition-all ${
-                        isPub 
-                          ? 'bg-emerald-500/[0.04] border-emerald-500/20 hover:border-emerald-500/40' 
-                          : 'bg-[#121929] border-white/[0.06] hover:border-purple-500/30'
-                      }`}>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                              📅 {p.scheduled_for ? new Date(p.scheduled_for).toLocaleDateString('en-US', { month: 'short', day: '2-digit', weekday: 'short' }) : fmtDate(p.created_at)}
-                            </span>
-                            <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border uppercase ${
-                              isPub ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-purple-500/10 text-purple-300 border-purple-500/30'
-                            }`}>
-                              {isPub ? '✅ Published' : '⏳ 09:30 AM Auto'}
-                            </span>
-                          </div>
-
-                          <div className="font-bold text-white text-xs leading-snug line-clamp-2">
-                            {p.yt_title || p.file_name?.replace(/^[0-9]+_[A-Za-z0-9]+_/, '').replace(/\.[^/.]+$/, '').replace(/_/g, ' ')}
-                          </div>
-
-                          <div className="text-[10px] text-slate-400 flex items-center gap-1.5 font-mono">
-                            <span>📄</span>
-                            <span className="truncate">{p.file_name}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: pc(p.profile) }}></div>
-                            <span className="text-[10px] font-bold text-slate-400">{pl(p.profile)}</span>
-                          </div>
-
-                          {!isPub && (
-                            <button
-                              onClick={async () => {
-                                if (!window.confirm(`Publish "${p.file_name}" to LinkedIn now?`)) return;
-                                try {
-                                  await fetch('https://n8n-production-29f31.up.railway.app/webhook/publisher', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                      profile: p.profile || 'socialninja',
-                                      platform: 'linkedin_carousel',
-                                      topic: p.yt_title,
-                                      fileName: p.file_name,
-                                      source: 'crm_manual_trigger'
-                                    })
-                                  });
-                                  alert('🚀 Dispatched to LinkedIn Publisher! Check your Telegram group in ~30s.');
-                                  await loadAllData();
-                                } catch (e) {
-                                  alert('Trigger error: ' + (e as Error).message);
-                                }
-                              }}
-                              className="text-[10px] font-extrabold text-white bg-purple-600 hover:bg-purple-500 px-2.5 py-1 rounded-lg shadow-md transition-all flex items-center gap-1"
-                            >
-                              <span>🚀</span> Publish Now
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-
-            {/* Upcoming Agenda & Pipeline */}
-            <div className="space-y-3 pt-4 border-t border-white/[0.06]">
-              <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">Scheduled Inbound Pipeline & Discovery Calls</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {[
-                  ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Discovery', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
-                  ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Content Slot', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' }))
-                ].length === 0 ? (
+                {leads.filter(l => l.next_follow_up).length === 0 ? (
                   <p className="col-span-full py-6 text-center text-slate-500 italic text-xs">No pending client discovery calls scheduled.</p>
                 ) : (
-                  [
-                    ...leads.filter(l => l.next_follow_up).map(l => ({ type: 'Lead Discovery', name: l.name, sub: l.company || l.email, date: l.next_follow_up, notes: l.follow_up_notes, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' })),
-                    ...queueItems.filter(q => q.scheduled_for).map(q => ({ type: 'Content Slot', name: pl(q.profile), sub: q.topic || q.file_name, date: q.scheduled_for, notes: q.platform, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' }))
-                  ].map((item, idx) => (
-                    <div key={idx} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] space-y-2">
+                  leads.filter(l => l.next_follow_up).map((l, idx) => (
+                    <div key={idx} className="p-3.5 rounded-xl bg-[#101522] border border-white/[0.05] space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border uppercase ${item.color}`}>
-                          {item.type}
+                        <span className="text-[10px] font-medium text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded">
+                          Lead Discovery
                         </span>
-                        <span className="text-xs font-bold text-amber-400">📅 {fmtDate(item.date)}</span>
+                        <span className="text-[11px] font-medium text-slate-400">{fmtDate(l.next_follow_up)}</span>
                       </div>
-                      <div className="font-bold text-white text-sm">{item.name}</div>
-                      <p className="text-xs text-slate-400">{item.sub}</p>
-                      {item.notes && <p className="text-xs text-slate-400 italic bg-slate-900/60 p-2 rounded-lg">{item.notes}</p>}
+                      <div className="font-semibold text-white text-xs">{l.name}</div>
+                      <p className="text-[11px] text-slate-400 truncate">{l.company || l.email}</p>
                     </div>
                   ))
                 )}
