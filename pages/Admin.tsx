@@ -21,8 +21,8 @@ const PROFILES = [
 ];
 
 const ROLES: Record<string, { label: string, color: string, tabs: string[] }> = {
-  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'blogs', 'fit', 'publish', 'scripts', 'queue', 'monitor', 'calendar', 'team'] },
-  content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'blogs', 'publish', 'scripts', 'queue', 'calendar'] },
+  founder: { label: 'Founder & CEO', color: '#c084fc', tabs: ['tasks', 'crm', 'blogs', 'fit', 'publish', 'scripts', 'monitor', 'calendar', 'team'] },
+  content: { label: 'Content Lead', color: '#38bdf8', tabs: ['tasks', 'blogs', 'publish', 'scripts', 'calendar'] },
   sales: { label: 'Growth Lead', color: '#34d399', tabs: ['tasks', 'crm', 'calendar'] },
 };
 
@@ -33,9 +33,8 @@ const ALL_TABS = [
   { id: 'fit', label: 'Fit Ninja SaaS', icon: Dumbbell },
   { id: 'publish', label: 'Fast Publisher', icon: Share2 },
   { id: 'scripts', label: 'Viral Script Vault', icon: FileText },
-  { id: 'queue', label: 'Video Production', icon: Video },
-  { id: 'monitor', label: 'Brand Radar', icon: Eye },
   { id: 'calendar', label: 'Agency Calendar', icon: CalendarIcon },
+  { id: 'monitor', label: 'Brand Radar', icon: Eye },
   { id: 'team', label: 'Team & Access', icon: Users },
 ];
 
@@ -1257,48 +1256,7 @@ export const Admin: React.FC = () => {
           </div>
         )}
 
-        {/* 7. MEDIA QUEUE */}
-        {activeTab === 'queue' && (
-          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
-            <div className="border-b border-white/[0.06] pb-4">
-              <h2 className="text-lg font-black text-white flex items-center gap-2">
-                <Video size={18} className="text-pink-400" /> Media & Video Production Queue
-              </h2>
-              <p className="text-xs text-slate-400">Raw and finished video assets ready for multi-platform delivery</p>
-            </div>
-
-            <div className="grid gap-3">
-              {queueItems.length === 0 ? (
-                <p className="text-xs text-slate-500 italic py-12 text-center">No videos queued in pipeline.</p>
-              ) : (
-                queueItems.map(item => (
-                  <div key={item.id} className="p-4 rounded-xl bg-[#121929] border border-white/[0.05] flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-lg">
-                        {item.platform === 'youtube' ? '▶️' : '📸'}
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">{item.file_name || item.topic}</div>
-                        <div className="text-[11px] text-slate-400 mt-0.5 flex gap-2">
-                          <span style={{ color: pc(item.profile) }}>{pl(item.profile)}</span>
-                          <span>·</span>
-                          <span className="capitalize">{item.platform}</span>
-                          {item.scheduled_for && <span>· 📅 {fmtDate(item.scheduled_for)}</span>}
-                        </div>
-                      </div>
-                    </div>
-
-                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 uppercase">
-                      {item.status || 'Pending'}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* 8. BRAND RADAR MONITOR */}
+        {/* 7. BRAND RADAR MONITOR */}
         {activeTab === 'monitor' && (
           <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
             <div className="border-b border-white/[0.06] pb-4">
