@@ -100,13 +100,38 @@ export async function onRequestPost(context) {
         // Upload PDF / Document binary
         const upRes = await fetch(uploadUrl, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/pdf' },
+          headers: { 'Content-Type': 'application/octet-stream' },
           body: fileBuffer
         });
         if (!upRes.ok && upRes.status !== 201 && upRes.status !== 200) {
           throw new Error(`LinkedIn document upload failed: ${await upRes.text()}`);
         }
-        console.log('PDF Carousel uploaded successfully to LinkedIn (201 Created)!');
+        console.log('PDF Carousel uploaded successfully to LinkedIn CDN (201 Created)!');
+
+        // Poll until document status is AVAILABLE (guarantees slides are converted before publishing)
+        const encodedDocId = encodeURIComponent(mediaUrn);
+        console.log('Polling LinkedIn document conversion status for:', encodedDocId);
+        for (let attempt = 1; attempt <= 10; attempt++) {
+          await new Promise(r => setTimeout(r, 2000));
+          const docStatusRes = await fetch(`https://api.linkedin.com/rest/documents/${encodedDocId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'LinkedIn-Version': '202602',
+              'X-Restli-Protocol-Version': '2.0.0'
+            }
+          });
+          if (docStatusRes.ok) {
+            const docData = await docStatusRes.json();
+            console.log(`[Document Check ${attempt}] Status:`, docData.status);
+            if (docData.status === 'AVAILABLE') {
+              console.log('🎉 Document is AVAILABLE and ready for LinkedIn feed post!');
+              break;
+            }
+            if (docData.status === 'PROCESSING_FAILED') {
+              throw new Error('LinkedIn backend rejected the PDF document conversion');
+            }
+          }
+        }
       }
     }
 
