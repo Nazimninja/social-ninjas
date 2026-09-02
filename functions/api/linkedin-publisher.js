@@ -27,8 +27,17 @@ export async function onRequestPost(context) {
 
   try {
     let mediaUrn = null;
+    let fileBuffer = null;
 
-    if (downloadUrl) {
+    if (body.fileBase64) {
+      console.log('Decoding file from direct base64 payload...');
+      const binaryString = atob(body.fileBase64);
+      fileBuffer = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        fileBuffer[i] = binaryString.charCodeAt(i);
+      }
+      console.log('Decoded file buffer, size:', fileBuffer.length, 'bytes');
+    } else if (downloadUrl) {
       console.log('Downloading file from:', downloadUrl);
       const fileRes = await fetch(downloadUrl, {
         headers: {
@@ -37,10 +46,12 @@ export async function onRequestPost(context) {
       });
       if (!fileRes.ok) throw new Error(`Failed to download file from URL (${fileRes.status}): ${fileRes.statusText}`);
       const arrayBuf = await fileRes.arrayBuffer();
-      const fileBuffer = new Uint8Array(arrayBuf);
+      fileBuffer = new Uint8Array(arrayBuf);
       console.log('Downloaded file buffer, size:', fileBuffer.length, 'bytes');
+    }
 
-      const isVideo = mediaType === 'video' || (downloadUrl.endsWith('.mp4') && mediaType !== 'document');
+    if (fileBuffer) {
+      const isVideo = mediaType === 'video' || (downloadUrl && downloadUrl.endsWith('.mp4') && mediaType !== 'document');
 
       if (isVideo) {
         // Video upload flow
