@@ -1,35 +1,54 @@
 export async function onRequestPost(context) {
   const req = context.request;
-  let body = {};
-  try {
-    body = await req.json();
-  } catch (e) {
-    return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
-  }
+  const contentType = req.headers.get('content-type') || '';
 
-  const {
-    fileUrl,
-    videoUrl,
-    pdfUrl,
-    mediaType = 'document', // 'document' (carousel/pdf), 'video', 'article'
-    text,
-    title = 'Swipe Through — Carousel Playbook',
-    author = 'urn:li:person:WEfd679Fsv',
-    token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ'
-  } = body;
+  let fileBuffer = null;
+  let text = '';
+  let title = 'Swipe Through — Carousel Playbook';
+  let mediaType = 'document';
+  let author = 'urn:li:person:WEfd679Fsv';
+  let token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ';
+  let downloadUrl = null;
 
-  // Always use the authorized person URN if organization is passed without org token
-  const effectiveAuthor = author.includes('person') ? author : 'urn:li:person:WEfd679Fsv';
-  const downloadUrl = fileUrl || pdfUrl || videoUrl;
+  if (contentType.includes('multipart/form-data')) {
+    try {
+      const formData = await req.formData();
+      const file = formData.get('file');
+      if (file && typeof file.arrayBuffer === 'function') {
+        const arrayBuf = await file.arrayBuffer();
+        fileBuffer = new Uint8Array(arrayBuf);
+        console.log('Received binary file via multipart/form-data, size:', fileBuffer.length, 'bytes');
+      }
+      text = formData.get('text') || text;
+      title = formData.get('title') || title;
+      mediaType = formData.get('mediaType') || mediaType;
+      author = formData.get('author') || author;
+      token = formData.get('token') || token;
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Failed to parse multipart/form-data: ' + e.message }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
+  } else {
+    let body = {};
+    try {
+      body = await req.json();
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
 
-  try {
-    let mediaUrn = null;
-    let fileBuffer = null;
+    text = body.text || text;
+    title = body.title || title;
+    mediaType = body.mediaType || mediaType;
+    author = body.author || author;
+    token = body.token || token;
+    downloadUrl = body.fileUrl || body.pdfUrl || body.videoUrl;
 
-    if (body.fileBase64) {
+    if (body.fileBase64 && body.fileBase64 !== 'filesystem-v2') {
       console.log('Decoding file from direct base64 payload...');
       const binaryString = atob(body.fileBase64);
       fileBuffer = new Uint8Array(binaryString.length);
@@ -37,7 +56,15 @@ export async function onRequestPost(context) {
         fileBuffer[i] = binaryString.charCodeAt(i);
       }
       console.log('Decoded file buffer, size:', fileBuffer.length, 'bytes');
-    } else if (downloadUrl) {
+    }
+  }
+
+  const effectiveAuthor = author.includes('person') ? author : 'urn:li:person:WEfd679Fsv';
+
+  try {
+    let mediaUrn = null;
+
+    if (!fileBuffer && downloadUrl) {
       console.log('Downloading file from:', downloadUrl);
       const fileRes = await fetch(downloadUrl, {
         headers: {
