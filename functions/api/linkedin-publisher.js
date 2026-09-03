@@ -146,11 +146,19 @@ export async function onRequestPost(context) {
       }
     }
 
+    if (mediaType === 'document' && !mediaUrn) {
+      throw new Error('Refusing to publish carousel post: No document was provided or document conversion failed. Refusing to publish an empty post.');
+    }
+
+    if (!text || text.trim() === '' || text.trim() === 'Swipe through for the full breakdown! 👉') {
+      console.warn('Warning: Default or empty text detected.');
+    }
+
     // Create LinkedIn Post
     console.log('Publishing post on LinkedIn...');
     const postPayload = {
       author: effectiveAuthor,
-      commentary: text || 'Swipe through for the full breakdown! 👉',
+      commentary: text,
       visibility: 'PUBLIC',
       distribution: {
         feedDistribution: 'MAIN_FEED',
