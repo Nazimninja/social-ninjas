@@ -78,8 +78,8 @@ const CaseStudies: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-16">
         {filteredStudies.map((study, index) => (
           <SpotlightCard key={study.id} className="p-8 md:p-12 bg-[#0e121d] border border-neutral-800 rounded-3xl group hover:border-neutral-700 transition-colors duration-500 relative overflow-hidden">
-            {/* Background glow */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-[#1F4B99]/5 rounded-full blur-[100px] pointer-events-none group-hover:bg-[#1F4B99]/10 transition-colors duration-700" />
+            {/* Background glow (GPU-optimized radial gradient) */}
+            <div className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'radial-gradient(circle, rgba(31,75,153,0.18) 0%, transparent 70%)', transform: 'translateZ(0)' }} />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 relative z-10">
               {/* LEFT: Details */}
@@ -135,7 +135,7 @@ const CaseStudies: React.FC = () => {
               {/* RIGHT: Metrics */}
               <div className="relative">
                 {/* Metric Card */}
-                <SpotlightCard className="bg-[#0b0e17] border border-neutral-800 rounded-2xl p-8 mb-5 group-hover:border-neutral-700 transition-colors duration-500">
+                <div className="bg-[#0b0e17] border border-neutral-800 rounded-2xl p-8 mb-5 hover:border-neutral-700 transition-colors duration-300">
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1">Primary Outcome</p>
@@ -161,7 +161,7 @@ const CaseStudies: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </SpotlightCard>
+                </div>
 
                 {/* Testimonial */}
                 {study.testimonial && (
