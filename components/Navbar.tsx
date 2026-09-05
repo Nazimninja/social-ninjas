@@ -89,23 +89,6 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
 
-            {/* Content Studio pill */}
-            <a href="/content-studio" style={{ textDecoration: 'none' }}>
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: 5,
-                background: 'rgba(31,75,153,0.12)',
-                border: '1px solid rgba(31,75,153,0.3)',
-                borderRadius: 20, padding: '5px 13px',
-                color: '#4281f5', fontSize: 13, fontWeight: 600,
-                transition: 'all 0.15s', cursor: 'pointer',
-              }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = BLUE; el.style.color = '#fff'; el.style.borderColor = BLUE; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(31,75,153,0.12)'; el.style.color = '#4281f5'; el.style.borderColor = 'rgba(31,75,153,0.3)'; }}
-              >
-                <span style={{ fontSize: 10 }}>⚡</span> Content Studio
-              </div>
-            </a>
-
             <Link to="/contact" style={{ textDecoration: 'none' }}>
               <button style={{
                 fontFamily: "'Inter', system-ui, sans-serif",
@@ -222,18 +205,6 @@ const Navbar: React.FC = () => {
 
         {/* CTA buttons */}
         <div style={{ padding: '20px 20px', display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0 }}>
-          <a href="/content-studio" style={{ textDecoration: 'none' }}>
-            <button style={{
-              width: '100%', padding: '15px',
-              borderRadius: 12, background: 'rgba(31,75,153,0.12)',
-              color: '#4281f5', border: '1.5px solid rgba(31,75,153,0.3)',
-              fontSize: 15, fontWeight: 600,
-              cursor: 'pointer', fontFamily: "'Inter', system-ui, sans-serif",
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-            }}>
-              ⚡ Try Content Studio Free
-            </button>
-          </a>
           <Link to="/contact" onClick={close} style={{ textDecoration: 'none' }}>
             <button style={{
               width: '100%', padding: '15px',

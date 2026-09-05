@@ -1,15 +1,13 @@
-// data.js — Unified API for blogs, history, clients, leads (v2)
-// Blogs & history: Upstash KV (fast, tiny data)
-// Leads & Content Studio clients: Supabase CRM (structured, queryable)
+// data.js — Unified API for blogs and leads
+// Blogs: Upstash KV (fast, tiny data)
+// Leads: Supabase CRM (structured, queryable)
 
 const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
-// ── Supabase CRM helpers (separate project from Fit Ninja) ────────────
+// ── Supabase CRM helpers ──────────────────────────────────────────────
 const CRM_URL = process.env.SUPABASE_CRM_URL;
 const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY;
-
-console.log('[CRM Env Check] CRM_URL:', CRM_URL ? 'DEFINED' : 'UNDEFINED', 'CRM_KEY:', CRM_KEY ? 'DEFINED' : 'UNDEFINED');
 
 async function crmGet(table, options = {}) {
   if (!CRM_URL || !CRM_KEY) return null;
@@ -84,12 +82,6 @@ async function kvSet(key, value) {
   } catch { return false; }
 }
 
-function sanitizeClient(c) {
-  if (!c) return null;
-  const { password, hash, token, secret, apiKey, key, ...safe } = c;
-  return safe;
-}
-
 // Seed blogs — shown until admin creates real ones
 const SEED_BLOGS = [
   {
@@ -107,7 +99,7 @@ const SEED_BLOGS = [
     id: 'posting-frequency-myth',
     title: 'The Content Trap: Why Posting More Is Killing Your Engagement',
     excerpt: 'Most brands are posting 7 times a week and seeing 0.3% engagement. The solution isn\'t more content — it\'s smarter content backed by live trend data.',
-    content: `## The Posting Frequency Myth\n\nEvery social media "guru" tells you to post every day. Multiple times. Consistency is key, they say.\n\nBut here's what the data actually shows:\n\nThe top 10% of Instagram accounts by engagement post an average of **3.2 times per week** — not 7. They win on *quality and timing*, not volume.\n\n## Why More Often = Less Reach\n\nPlatform algorithms are smarter than most marketers give them credit for. They track:\n\n- **Save rate** — Are people bookmarking your content?\n- **Share rate** — Are people sending it to friends?\n- **Watch time** — Are people watching your Reels to the end?\n- **Comment quality** — Are people having real conversations?\n\nWhen you post mediocre content to "stay consistent," you teach the algorithm that your content isn't worth amplifying. Your reach quietly shrinks — and you don't even notice until it's too late.\n\n## What Actually Drives Reach in 2026\n\n### 1. Trend Timing\nPosting about a topic 48 hours after it peaks gets you 60% less reach than posting during the rising phase. This requires live research — not a content calendar built 4 weeks ago.\n\n### 2. Platform-Native Hooks\nInstagram hooks are different from LinkedIn hooks, which are different from YouTube hooks. Generic captions that "work everywhere" actually work nowhere.\n\n### 3. Content Memory\nYour audience follows you because they trust your perspective. If you post the same angle twice, they disengage — and you never get a second chance at that first impression.\n\n## The Better Approach\n\nPost 3 times per week. But:\n\n- Research what's trending in your exact niche **this week**\n- Write platform-native copy with hooks that stop the scroll\n- Track which angles resonate and never repeat them\n\nThis is exactly what our AI Content Studio does — live trend research before every generation, permanent content memory, and platform-specific writing for every format.\n\n[Try 3 posts free, no card required →](/app/content-studio?plan=trial)`,
+    content: `## The Posting Frequency Myth\n\nEvery social media "guru" tells you to post every day. Multiple times. Consistency is key, they say.\n\nBut here's what the data actually shows:\n\nThe top 10% of Instagram accounts by engagement post an average of **3.2 times per week** — not 7. They win on *quality and timing*, not volume.\n\n## Why More Often = Less Reach\n\nPlatform algorithms are smarter than most marketers give them credit for. They track:\n\n- **Save rate** — Are people bookmarking your content?\n- **Share rate** — Are people sending it to friends?\n- **Watch time** — Are people watching your Reels to the end?\n- **Comment quality** — Are people having real conversations?\n\nWhen you post mediocre content to "stay consistent," you teach the algorithm that your content isn't worth amplifying. Your reach quietly shrinks — and you don't even notice until it's too late.\n\n## What Actually Drives Reach in 2026\n\n### 1. Trend Timing\nPosting about a topic 48 hours after it peaks gets you 60% less reach than posting during the rising phase. This requires live research — not a content calendar built 4 weeks ago.\n\n### 2. Platform-Native Hooks\nInstagram hooks are different from LinkedIn hooks, which are different from YouTube hooks. Generic captions that "work everywhere" actually work nowhere.\n\n### 3. Content Memory\nYour audience follows you because they trust your perspective. If you post the same angle twice, they disengage — and you never get a second chance at that first impression.\n\n## The Better Approach\n\nPost 3 times per week. But:\n\n- Research what's trending in your exact niche **this week**\n- Write platform-native copy with hooks that stop the scroll\n- Track which angles resonate and never repeat them\n\nThis is how we help modern brands scale organically — live trend research before every campaign, creative angle testing, and platform-specific writing for every format.\n\n[Book a free organic strategy call →](/contact)`,
     author: 'Social Ninja\'s Team',
     category: 'Content Strategy',
     readTime: '4 min read',
@@ -187,79 +179,6 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── CLIENTS (Supabase CRM) ───────────────────────────────────
-  if (resource === 'clients') {
-    if (req.method === 'GET') {
-      // Try Supabase CRM first, fall back to KV for backwards compat
-      const supaClients = await crmGet('content_studio_clients', { order: 'created_at.desc' });
-      if (supaClients !== null) {
-        return res.json(supaClients.map(c => ({
-          id: c.id,
-          brandName: c.brand_name,
-          niche: c.niche,
-          email: c.email,
-          phone: c.phone,
-          toneOfVoice: c.tone_of_voice,
-          targetAudience: c.target_audience,
-          callToAction: c.call_to_action,
-          plan: c.plan,
-          planName: c.plan_name,
-          paymentStatus: c.payment_status,
-          active: c.active,
-          paymentId: c.payment_id,
-          subscriptionId: c.subscription_id,
-          joinDate: c.join_date,
-          source: c.source,
-          nextFollowUp: c.next_follow_up,
-          notes: c.notes,
-          created_at: c.created_at
-        })));
-      }
-      // Fallback: KV (legacy data)
-      const stored = await kvGet('sn_clients') || [];
-      return res.json(stored.map(sanitizeClient));
-    }
-    if (req.method === 'POST') {
-      const body = req.body;
-      const clientRow = {
-        id: body.id || `client_${Date.now()}`,
-        brand_name: body.brandName,
-        niche: body.niche,
-        email: body.email,
-        phone: body.phone,
-        tone_of_voice: body.toneOfVoice,
-        target_audience: body.targetAudience,
-        call_to_action: body.callToAction,
-        plan: body.plan,
-        plan_name: body.planName,
-        payment_status: body.paymentStatus,
-        active: body.active !== undefined ? body.active : true,
-        payment_id: body.paymentId,
-        subscription_id: body.subscriptionId,
-        join_date: body.joinDate || new Date().toLocaleDateString('en-IN'),
-        source: body.source || 'content-studio',
-        next_follow_up: body.nextFollowUp || body.next_follow_up || null,
-        notes: body.notes || null
-      };
-      // Upsert to Supabase CRM
-      const ok = await crmUpsert('content_studio_clients', clientRow, 'id');
-      if (!ok) {
-        // Fallback: also write to KV for safety
-        const stored = await kvGet('sn_clients') || [];
-        const idx = stored.findIndex(c => c.id === body.id || c.email === body.email);
-        if (idx >= 0) stored[idx] = { ...stored[idx], ...body };
-        else stored.push(body);
-        await kvSet('sn_clients', stored);
-      }
-      return res.status(201).json({ success: true });
-    }
-    if (req.method === 'DELETE') {
-      if (!id) return res.status(400).json({ error: 'id required' });
-      await crmDelete('content_studio_clients', 'id', id);
-      return res.json({ success: true });
-    }
-  }
-
   // ── LEADS (Supabase CRM) ─────────────────────────────────────
   if (resource === 'leads') {
     if (req.method === 'GET') {
@@ -289,21 +208,6 @@ export default async function handler(req, res) {
       if (!id) return res.status(400).json({ error: 'id required' });
       await crmDelete('leads', 'id', id);
       return res.json({ success: true });
-    }
-  }
-
-  // ── HISTORY ───────────────────────────────────────────────────
-  if (resource === 'history') {
-    if (req.method === 'GET') {
-      if (!id) return res.status(400).json({ error: 'Client ID required' });
-      const stored = await kvGet(`sn_hist_${id}`);
-      return res.json(stored || []);
-    }
-    if (req.method === 'POST') {
-      if (!id) return res.status(400).json({ error: 'Client ID required' });
-      // body should be the history array
-      await kvSet(`sn_hist_${id}`, req.body);
-      return res.status(200).json({ success: true });
     }
   }
 

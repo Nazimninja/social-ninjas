@@ -51,7 +51,7 @@ const SERVICES = [
   },
   {
     num: '03',
-    title: 'AI Content Studio & Branding',
+    title: 'Content Creation & Branding',
     desc: 'High-converting video scripts, carousel graphics, and social posts generated and scheduled automatically for your target niche.',
     tags: ['Automated Content', 'Viral Script Writing', 'Niche Audio Models'],
     color: 'from-purple-500/20 to-pink-500/10',

@@ -360,12 +360,12 @@ There's a 48-72 hour window where posting about a trending topic gets massive or
 
 ## What Actually Works: The 3×/week System
 
-Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each piece should use a platform-native hook (Instagram hooks are different from LinkedIn hooks), reference something that's happening this week in your niche, and never repeat an angle you've used before. Our AI Content Studio does the live research before every generation — so every post is timed to trend momentum.
+Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each piece should use a platform-native hook (Instagram hooks are different from LinkedIn hooks), reference something that's happening this week in your niche, and never repeat an angle you've used before. We research live trends before every campaign — so every post is timed to trend momentum.
 
 *Quality + timing beats volume every single time. The data is not ambiguous.*
     `,
-    cta: 'Try 3 AI Posts Free →',
-    ctaHref: '/content-studio',
+    cta: 'Book a Strategy Call →',
+    ctaHref: '/contact',
   },
   {
     id: 'roas-myth',
@@ -618,10 +618,10 @@ This **Instagram SEO guide** outlines the exact steps to optimize your profile, 
 
 Unlike temporary social media posts that disappear from user feeds in 24 hours, search-optimized Reels can rank and drive traffic for months. Combining an active organic search strategy with automated creation tools is the most cost-effective way to generate inbound inquiries.
 
-To start generating keyword-targeted posts in seconds, try our [AI Content Studio](/content-studio) or sign up for a [Free Organic Strategy Call](/contact) with our team.
+To start scaling your social search strategy, sign up for a [Free Organic Strategy Call](/contact) with our team.
     `,
     cta: 'Start Scaling Organic Content →',
-    ctaHref: '/content-studio',
+    ctaHref: '/contact',
   },
   {
     id: 'outbound-email-deliverability-2026',

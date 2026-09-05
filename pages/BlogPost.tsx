@@ -222,9 +222,6 @@ const BlogPost: React.FC = () => {
             <Link to="/contact">
               <button style={{ fontSize: 14, padding: '12px 28px', background: '#1F4B99', color: '#fff', border: 'none', borderRadius: 10, cursor: 'pointer', fontWeight: 700 }}>Book Free Session →</button>
             </Link>
-            <a href="/content-studio">
-              <button style={{ fontSize: 14, padding: '12px 28px', background: 'rgba(255,255,255,0.06)', color: '#c0c8d8', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, cursor: 'pointer', fontWeight: 600 }}>Try AI Content Studio</button>
-            </a>
           </div>
         </div>
       </div>

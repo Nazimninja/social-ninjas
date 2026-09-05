@@ -51,7 +51,6 @@ const FOOTER_HTML = `
       <div>
         <h4 style="font-size:13px;font-weight:600;color:#ffffff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Products</h4>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;">
-          <li><a href="/ai-products" style="color:#707080;text-decoration:none;">AI Content Studio</a></li>
           <li><a href="/ai-products" style="color:#707080;text-decoration:none;">Fit Ninja</a></li>
           <li><a href="/tools" style="color:#707080;text-decoration:none;">Free Business Tools</a></li>
         </ul>
@@ -221,15 +220,6 @@ const marketingPagesContent = {
       <div style="display:flex;flex-direction:column;gap:36px;margin-bottom:60px;">
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;">
           <div style="max-width:540px;">
-            <span style="color:#1F4B99;font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Featured Product</span>
-            <h3 style="font-size:26px;color:#ffffff;margin:8px 0 16px;">AI Content Studio</h3>
-            <p style="color:#a0a0b0;font-size:15px;line-height:1.65;margin-bottom:20px;">Generate a full week of SEO-optimized social media posts in under 60 seconds. Our engine researches live search trends, formats native Hooks, and integrates with major channels automatically.</p>
-            <a href="/app/content-studio" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Open Content Studio</a>
-          </div>
-        </div>
-        
-        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;">
-          <div style="max-width:540px;">
             <span style="color:#2fcf8e;font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Active Product</span>
             <h3 style="font-size:26px;color:#ffffff;margin:8px 0 16px;">Fit Ninja</h3>
             <p style="color:#a0a0b0;font-size:15px;line-height:1.65;margin-bottom:20px;">Deploy personalized AI fitness and diet coaching. Delivers tailored daily macros, exercise plans, and motivational guidelines via instant messaging.</p>
@@ -350,8 +340,8 @@ const routes = {
     description: "Meet the team building premium AI products and revenue growth systems for modern brands worldwide."
   },
   'ai-products': {
-    title: "AI Products & SaaS Suite | Social Ninja's — Content Studio, Fit Ninja & More",
-    description: "Explore our suite of AI products: Content Studio writes a week of social content in 60 seconds, Fit Ninja delivers personalized AI fitness coaching, and more coming soon."
+    title: "AI Products & SaaS Suite | Social Ninja's — Fit Ninja & More",
+    description: "Explore our suite of AI products: Fit Ninja delivers personalized AI fitness coaching, AI sales agents, and more."
   },
   'case-studies': {
     title: "Case Studies | Real Growth Results | Social Ninja's",

@@ -33,7 +33,7 @@ const sections = [
   {
     icon: Globe,
     title: '6. Acceptable Use of AI Tools',
-    content: `Social Ninja's AI-powered tools (Content Studio, AI Lead Automation, CRM 2.0) may only be used for lawful purposes. Users must not use our tools to generate spam, misleading content, illegal advertising, or content violating platform policies of Meta, Google, LinkedIn, or WhatsApp. Violation of acceptable use may result in immediate account termination without refund.`,
+    content: `Social Ninja's AI-powered tools (AI Lead Automation, CRM 2.0) may only be used for lawful purposes. Users must not use our tools to generate spam, misleading content, illegal advertising, or content violating platform policies of Meta, Google, LinkedIn, or WhatsApp. Violation of acceptable use may result in immediate account termination without refund.`,
   },
   {
     icon: Scale,

@@ -4,32 +4,6 @@ import { ArrowLeft, CheckCircle2, ArrowRight, Star } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const productsData: Record<string, any> = {
-  'content-studio': {
-    name: 'AI Content Studio', icon: '⚡', color: '#1F4B99', badge: '🟢 Live',
-    tagline: 'Your whole week of content — written in 60 seconds.',
-    hero: 'You know you should be posting more content. But coming up with ideas, researching what\'s trending, writing captions for different platforms, making scripts for Reels, finding hashtags — it takes hours every week. We built AI Content Studio to do all of that for you.',
-    tryLink: '/app/content-studio?plan=trial',
-    problem: 'Most content tools give you templates. Fancy, flexible, well-designed templates — that still require you to do all the thinking. You still need to research trends, write the actual content, adapt it for each platform, and figure out the hashtags.',
-    solution: 'AI Content Studio does the research first, then the writing. Before it writes a single word, it checks what\'s actually trending in your niche this week. Then it writes everything — captions, scripts, carousel slides, hashtags — in the voice of your brand.',
-    steps: [
-      { n: '01', t: 'Tell it about your brand', d: 'Describe your niche, your audience, your tone and what you sell. Takes about 5 minutes. You only do this once.' },
-      { n: '02', t: 'It researches live trends', d: 'Every time you generate, the AI checks what\'s trending in your specific niche right now — not last month, not templates.' },
-      { n: '03', t: 'Your posts are written', d: 'Full captions, word-for-word video scripts, carousel slide copy, hashtag sets — platform-specific for every piece.' },
-      { n: '04', t: 'Copy, paste, post', d: 'Click copy on what you need. Paste your script into your phone and film. Paste slides into Canva. You\'re done.' },
-    ],
-    features: ['Live trend research before every single generation','Word-for-word Reel and YouTube Short scripts with camera directions','Platform-native captions — Instagram, LinkedIn, X, Facebook, Threads all sound different','Carousel slide copy ready to paste into Canva — every slide written out','Real hashtag research per post — broad, mid, and niche mix, never repeated','Thread writer — full multi-tweet threads and Threads posts, one-click copy per tweet','Posting checklist with the best time to post for your niche','Your brand voice stored permanently — every post sounds like you'],
-    reviews: [
-      { name: 'Rahul Sharma', role: 'Fitness Coach · Delhi · Growth Plan', result: '2K → 18K followers in 3 months', text: 'I used to spend Sunday nights dreading content week. Now I open the app, click generate, and have 3 complete posts with scripts ready in under a minute. My engagement tripled. I just read the scripts on camera — they\'re that good.', stars: 5 },
-      { name: 'Priya Mehta', role: 'Skincare Brand Founder · Mumbai · Growth Plan', result: 'Saving ₹18,000/month vs a freelancer', text: 'I paid a freelancer ₹18,000 for 8 posts last month. They were generic, missed trends, and didn\'t sound like me at all. Social Ninja\'s gives me 25 posts per month at lower cost, and every caption sounds exactly like I wrote it.', stars: 5 },
-      { name: 'Meera Pillai', role: 'Social Media Manager (6 clients) · Kochi · Pro Plan', result: 'Manages 6 brands in 45 mins/week', text: 'I run social media for 6 different brands. Each brand has its own saved profile, I generate fresh content for all 6 in about 45 minutes total. The Pro plan pays for itself many times over in time saved alone.', stars: 5 },
-    ],
-    plans: [
-      { name: 'Starter', price: '₹699', period: '/mo', features: ['15 posts per month','2 platforms of your choice','Captions + Scripts + Slides','Hashtag strategy','Posting checklist'] },
-      { name: 'Growth', price: '₹1,299', period: '/mo', popular: true, features: ['25 posts per month','4 platforms included','Everything in Starter','Thread writer for X/Threads','Monthly strategy call'] },
-      { name: 'Pro', price: '₹2,499', period: '/mo', features: ['Unlimited posts','All 7 platforms','Everything in Growth','Priority email support','Multi-brand workspace'] },
-    ],
-    stats: [['150+','Brands Using It'],['2.4M+','Posts Generated'],['7','Platforms Supported'],['60s','To Generate Everything']],
-  },
   'ai-sales-agent': {
     name: 'AI Sales Agent', icon: '🤖', color: '#9b8ef0', badge: '🔜 Coming Soon',
     tagline: 'Your 24/7 sales team. Never misses a lead.',
@@ -152,7 +126,7 @@ const AIProductLanding: React.FC = () => {
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.6vw,17px)', fontWeight: 300, color: '#94a3b8', lineHeight: 1.72, maxWidth: 600, margin: '0 auto 40px' }}>{p.hero}</p>
           <div className="reveal d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 32px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{isLive ? '⚡ Try Free — No Card Needed' : 'Join the Waitlist →'}</button>
-            {isLive && <button onClick={() => handleNavigate('/app/content-studio?plan=starter')} className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button>}
+            {isLive && <button onClick={() => handleNavigate(p.tryLink || '/contact')} className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button>}
           </div>
           {/* Stats row */}
           <div className="reveal d4" style={{ display: 'flex', justifyContent: 'center', gap: 0, marginTop: 56, background: '#0e121d', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 50, padding: '16px 8px', maxWidth: 640, margin: '56px auto 0', flexWrap: 'wrap' }}>
@@ -266,7 +240,7 @@ const AIProductLanding: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <button onClick={() => handleNavigate(`/app/content-studio?plan=${pl.name.toLowerCase()}`)} className="btn-primary" style={{ width: '100%', fontSize: 14, padding: '13px 0', background: pl.popular ? `linear-gradient(135deg,${p.color}cc,${p.color})` : undefined }}>Get Started →</button>
+                <button onClick={() => handleNavigate(p.tryLink || '/contact')} className="btn-primary" style={{ width: '100%', fontSize: 14, padding: '13px 0', background: pl.popular ? `linear-gradient(135deg,${p.color}cc,${p.color})` : undefined }}>Get Started →</button>
               </div>
             ))}
           </div>

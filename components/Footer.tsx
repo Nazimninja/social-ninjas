@@ -83,7 +83,6 @@ const Footer: React.FC = () => {
             <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Growth Tools</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'AI Content Studio', path: '/app/content-studio', external: false },
                 { label: 'WhatsApp Link Gen', path: 'https://linkwa.in', external: true },
                 { label: 'US Take-Home Pay Calc', path: 'https://salary.socialninjas.in/salary-calculator/', external: true },
                 { label: 'Hourly ↔ Salary Conv', path: 'https://salary.socialninjas.in/', external: true },

@@ -16,21 +16,6 @@ function useReveal() {
 
 const products = [
   {
-    id: 'content-studio', badge: '🟢 Live Now', icon: '⚡', name: 'AI Content Studio',
-    tagline: 'Your whole week of content — written in 60 seconds.',
-    desc: 'Tell the AI about your brand once. Every week it looks up what\'s trending in your niche, then writes your captions, Reel scripts, carousel slides, and hashtags. All platform-specific. All ready to copy and post.',
-    color: '#4281f5',
-    tryLink: '/app/content-studio?plan=trial',
-    learnLink: '/content-studio',
-    stats: [['150+','Brands Using It'], ['2.4M+','Posts Generated'], ['7','Platforms'], ['60s','Per Generate']],
-    features: ['Researches live trends before writing — every time','Word-for-word scripts for Reels and YouTube Shorts','Captions written specifically for each platform','Carousel slide copy — paste straight into Canva','Real hashtag research — never generic or repeated','Thread writer for Twitter/X and Threads','Posting checklist with the best time to post'],
-    plans: [
-      { name: 'Starter', price: '₹2,999', note: '15 posts/mo · 2 platforms' },
-      { name: 'Growth',  price: '₹5,499', note: '25 posts/mo · 4 platforms', popular: true },
-      { name: 'Pro',     price: '₹8,999', note: 'Unlimited posts · All 7 platforms' },
-    ],
-  },
-  {
     id: 'fit-ninja', badge: '🟢 v2.0 Live', icon: '🥷', name: 'Fit Ninja',
     tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
     desc: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
@@ -89,8 +74,8 @@ export const AIProducts: React.FC = () => {
       
       <SEO
         title="AI Products & SaaS Suite | Social Ninja's"
-        description="Explore AI Content Studio, Fit Ninja, AI Sales Agent, Ad Copy Generator, and Reporting Assistant built by Social Ninja's."
-        keywords="AI content generator India, AI marketing tools, Fit Ninja, Social Ninja's AI"
+        description="Explore Fit Ninja, AI Sales Agent, Ad Copy Generator, and Reporting Assistant built by Social Ninja's."
+        keywords="Fit Ninja, AI marketing tools, Social Ninja's AI"
       />
 
       {/* HERO */}
@@ -109,9 +94,9 @@ export const AIProducts: React.FC = () => {
             We're building a suite of AI tools that handle repetitive marketing and health workflows — so you can focus on scaling your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
-            <Link to="/app/content-studio?plan=trial" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
-              ⚡ Try Content Studio Free
-            </Link>
+            <a href="https://fit.socialninjas.in" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
+              🥷 Launch Fit Ninja
+            </a>
             <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-8 py-3.5 rounded-full hover:border-neutral-700 transition-all text-sm">
               Join Waitlist for New Tools →
             </Link>

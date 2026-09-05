@@ -123,27 +123,6 @@ const Tools: React.FC = () => {
             </a>
           ))}
         </div>
-
-        {/* Content Studio promo */}
-        <div className="mt-12">
-          <SpotlightCard className="p-8 sm:p-10 bg-gradient-to-br from-[#1F4B99]/20 via-[#0e121d] to-[#0e121d] border border-[#1F4B99]/25 relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1F4B99]/50 to-transparent" />
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <div className="text-xs font-bold text-[#3ba213] uppercase tracking-widest">AI-Powered</div>
-                <h3 className="text-2xl font-black text-white">Content Studio</h3>
-                <p className="text-sm text-neutral-400 max-w-md">
-                  Generate Instagram captions, ad copy, blog posts, email sequences, and more — powered by Social Ninja's AI engine.
-                </p>
-              </div>
-              <a href="/app/content-studio" className="flex-shrink-0">
-                <button className="px-7 py-3.5 bg-[#1F4B99] hover:bg-[#2558b5] text-white font-bold text-sm rounded-xl transition-colors duration-200 whitespace-nowrap flex items-center gap-2 cursor-pointer border-none">
-                  Launch Content Studio <ArrowRight size={16} />
-                </button>
-              </a>
-            </div>
-          </SpotlightCard>
-        </div>
       </section>
     </div>
   );
