@@ -93,6 +93,7 @@ export const Admin: React.FC = () => {
   // ── Database Data ───────────────────────────────────────────────────
   const [leads, setLeads] = useState<any[]>([]);
   const [fitClients, setFitClients] = useState<any[]>([]);
+  const [fitFilter, setFitFilter] = useState<'all' | 'paid' | 'unpaid' | 'active' | 'inactive'>('all');
   const [posts, setPosts] = useState<any[]>([]);
   const [scripts, setScripts] = useState<any[]>([]);
   const [queueItems, setQueueItems] = useState<any[]>([]);
@@ -298,6 +299,9 @@ export const Admin: React.FC = () => {
   const followupsToday = leads.filter(l => (l.next_follow_up || l.nextFollowUp || '').startsWith(todayStr));
   const wonLeadsCount = leads.filter(l => (l.status || '').toUpperCase() === 'WON').length;
   const premiumFitCount = fitClients.filter(f => f.plan_status === 'premium').length;
+  const unpaidFitCount = fitClients.filter(f => f.plan_status !== 'premium').length;
+  const activeFitCount = fitClients.filter(f => f.is_active === true).length;
+  const inactiveFitCount = fitClients.length - activeFitCount;
 
   const currentXpromo = XPROMO[doy() % 4];
   const allowedTabs = ROLES[userRole]?.tabs || ROLES.founder.tabs;
@@ -310,11 +314,21 @@ export const Admin: React.FC = () => {
     (l.company || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredFitClients = fitClients.filter(f =>
-    (f.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (f.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (f.assessment_data?.goal || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredFitClients = fitClients.filter(f => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = 
+      (f.name || '').toLowerCase().includes(term) ||
+      (f.email || '').toLowerCase().includes(term) ||
+      (f.assessment_data?.goal || '').toLowerCase().includes(term) ||
+      (f.physiological?.goal || '').toLowerCase().includes(term);
+    if (!matchesSearch) return false;
+
+    if (fitFilter === 'paid') return f.plan_status === 'premium';
+    if (fitFilter === 'unpaid') return f.plan_status !== 'premium';
+    if (fitFilter === 'active') return f.is_active === true;
+    if (fitFilter === 'inactive') return f.is_active !== true;
+    return true;
+  });
 
   const filteredBlogs = blogs.filter(b =>
     (b.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -785,23 +799,80 @@ export const Admin: React.FC = () => {
                 </h2>
                 <p className="text-xs text-slate-400">Live synchronized database from fit.socialninjas.in</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-bold text-slate-400">Total: {fitClients.length}</span>
                 <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/30">
-                  {premiumFitCount} Paid Subscribers
+                  {premiumFitCount} PRO PASS Active
+                </span>
+                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/30">
+                  {activeFitCount} Actively Using
                 </span>
               </div>
+            </div>
+
+            {/* Interactive Filter Pills */}
+            <div className="flex items-center gap-2 flex-wrap pt-1">
+              <button
+                onClick={() => setFitFilter('all')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  fitFilter === 'all'
+                    ? 'bg-white text-slate-950 shadow-md'
+                    : 'bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 border border-white/[0.08]'
+                }`}
+              >
+                All Members ({fitClients.length})
+              </button>
+              <button
+                onClick={() => setFitFilter('paid')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                  fitFilter === 'paid'
+                    ? 'bg-amber-500 text-slate-950 shadow-md'
+                    : 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                }`}
+              >
+                ⚡ PRO PASS / Paid ({premiumFitCount})
+              </button>
+              <button
+                onClick={() => setFitFilter('unpaid')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                  fitFilter === 'unpaid'
+                    ? 'bg-sky-500 text-slate-950 shadow-md'
+                    : 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                }`}
+              >
+                ⏳ Free / Unpaid ({unpaidFitCount})
+              </button>
+              <button
+                onClick={() => setFitFilter('active')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                  fitFilter === 'active'
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Actively Using ({activeFitCount})
+              </button>
+              <button
+                onClick={() => setFitFilter('inactive')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  fitFilter === 'inactive'
+                    ? 'bg-slate-700 text-white shadow-md'
+                    : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 border border-white/[0.06]'
+                }`}
+              >
+                ⚪ Inactive ({inactiveFitCount})
+              </button>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-white/[0.08] text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                    <th className="pb-3 pr-4">Member</th>
-                    <th className="pb-3 pr-4">Fitness Goal</th>
+                    <th className="pb-3 pr-4">Athlete / Member</th>
+                    <th className="pb-3 pr-4">Physiological Profile & Goal</th>
                     <th className="pb-3 pr-4">Plan Status</th>
-                    <th className="pb-3 pr-4">Daily Targets</th>
-                    <th className="pb-3 pr-4">Joined</th>
+                    <th className="pb-3 pr-4">Metabolic Blueprint</th>
+                    <th className="pb-3 pr-4">Activity Status</th>
                     <th className="pb-3 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -809,57 +880,103 @@ export const Admin: React.FC = () => {
                   {filteredFitClients.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500 italic">
-                        No Fit Ninja profiles found.
+                        No members match the selected filter.
                       </td>
                     </tr>
                   ) : (
-                    filteredFitClients.map(fit => (
-                      <tr key={fit.id} className="hover:bg-white/[0.02] transition-colors">
-                        <td className="py-4 pr-4">
-                          <div className="font-bold text-white text-sm">{fit.name || 'Anonymous User'}</div>
-                          <div className="text-slate-400 text-[11px]">{fit.email}</div>
-                        </td>
-                        <td className="py-4 pr-4 font-semibold text-slate-300 capitalize">
-                          {fit.assessment_data?.goal?.replace('_', ' ') || 'General Fitness'}
-                        </td>
-                        <td className="py-4 pr-4">
-                          <span className={`px-2.5 py-0.5 text-[10px] font-extrabold rounded-full uppercase border ${
-                            fit.plan_status === 'premium' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-slate-800 text-slate-400 border-slate-700'
-                          }`}>
-                            {fit.plan_status || 'free'}
-                          </span>
-                        </td>
-                        <td className="py-4 pr-4 text-slate-300">
-                          {fit.generated_plan ? (
-                            <span className="font-bold text-emerald-400">{fit.generated_plan.kcal} kcal · {fit.generated_plan.protein}g protein</span>
-                          ) : (
-                            <span className="text-slate-600 italic">Not generated</span>
-                          )}
-                        </td>
-                        <td className="py-4 pr-4 text-slate-400">
-                          {fmtDate(fit.created_at)}
-                        </td>
-                        <td className="py-4 text-right">
-                          <div className="flex gap-1.5 justify-end">
-                            <button
-                              onClick={() => setViewFitClientDetails(fit)}
-                              className="bg-sky-500/10 hover:bg-sky-600 text-sky-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-colors"
-                            >
-                              Details
-                            </button>
-                            <button
-                              onClick={() => {
-                                setManageFitStatus(fit);
-                                setNewFitStatus(fit.plan_status || 'free');
-                              }}
-                              className="bg-amber-500/10 hover:bg-amber-600 text-amber-400 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-colors"
-                            >
-                              Manage
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                    filteredFitClients.map(fit => {
+                      const isPaid = fit.plan_status === 'premium';
+                      const phys = fit.physiological || fit.assessment_data || {};
+                      const bp = fit.generated_plan || {};
+
+                      return (
+                        <tr key={fit.id} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-4 pr-4">
+                            <div className="flex items-center gap-3">
+                              {fit.avatar ? (
+                                <img src={fit.avatar} alt="" className="w-9 h-9 rounded-full object-cover border border-white/20" />
+                              ) : (
+                                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center font-black text-slate-950 text-sm shadow-md">
+                                  {(fit.name || 'N').charAt(0).toUpperCase()}
+                                </div>
+                              )}
+                              <div>
+                                <div className="font-bold text-white text-sm flex items-center gap-2">
+                                  {fit.name || 'Athlete'}
+                                  {isPaid && (
+                                    <span className="text-[9px] bg-amber-500 text-slate-950 px-1.5 py-0.2 rounded font-black tracking-wider uppercase">
+                                      PRO
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-slate-400 text-[11px] font-mono">{fit.email}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-4 pr-4">
+                            <div className="font-bold text-white capitalize text-xs">
+                              {phys.goal || fit.assessment_data?.goal?.replace('_', ' ') || 'General Fitness'}
+                            </div>
+                            <div className="text-slate-400 text-[11px]">
+                              {phys.gender && phys.gender !== 'Not specified' ? `${phys.gender} · ` : ''}
+                              {phys.age && phys.age !== '—' ? `${phys.age}y · ` : ''}
+                              {phys.weight && phys.weight !== '—' ? `${phys.weight}kg` : ''}
+                            </div>
+                          </td>
+                          <td className="py-4 pr-4">
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-black rounded-full uppercase tracking-wider border ${
+                              isPaid 
+                                ? 'bg-amber-500/10 text-amber-400 border-amber-500/40 shadow-sm shadow-amber-500/10' 
+                                : 'bg-slate-800/80 text-slate-400 border-slate-700'
+                            }`}>
+                              {isPaid && <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>}
+                              {isPaid ? 'PRO PASS' : 'FREE'}
+                            </span>
+                          </td>
+                          <td className="py-4 pr-4">
+                            {bp.kcal ? (
+                              <div className="space-y-0.5">
+                                <div className="font-bold text-emerald-400">{bp.kcal} kcal/day</div>
+                                <div className="text-[11px] text-slate-400">
+                                  <span className="text-sky-400 font-semibold">{bp.protein}g protein</span>
+                                  {bp.creatine && bp.creatine !== '—' && <span className="text-amber-400 font-semibold"> · {bp.creatine} creatine</span>}
+                                </div>
+                              </div>
+                            ) : (
+                              <span className="text-slate-600 italic">Blueprint pending</span>
+                            )}
+                          </td>
+                          <td className="py-4 pr-4">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-2 h-2 rounded-full ${fit.is_active ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}`}></span>
+                              <span className={`font-semibold text-xs ${fit.is_active ? 'text-emerald-300' : 'text-slate-400'}`}>
+                                {fit.active_label || fmtDate(fit.last_active_at || fit.created_at)}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-slate-500">Joined {fmtDate(fit.created_at)}</div>
+                          </td>
+                          <td className="py-4 text-right">
+                            <div className="flex gap-1.5 justify-end">
+                              <button
+                                onClick={() => setViewFitClientDetails(fit)}
+                                className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-sky-500/20 active:scale-95"
+                              >
+                                Blueprint
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setManageFitStatus(fit);
+                                  setNewFitStatus(fit.plan_status || 'free');
+                                }}
+                                className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-amber-500/20 active:scale-95"
+                              >
+                                Manage
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
@@ -1800,34 +1917,188 @@ export const Admin: React.FC = () => {
       )}
 
       {/* FIT NINJA FULL DETAILS MODAL */}
-      {viewFitClientDetails && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl text-xs">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Dumbbell size={18} className="text-amber-400" /> {viewFitClientDetails.name || 'Anonymous User'}
-              </h3>
-              <button onClick={() => setViewFitClientDetails(null)} className="text-slate-400 hover:text-white"><X size={16} /></button>
-            </div>
-            <div className="grid grid-cols-2 gap-4 bg-[#121929] p-4 rounded-xl border border-white/[0.06]">
-              <div><span className="text-slate-400">Email:</span> <b className="text-white">{viewFitClientDetails.email}</b></div>
-              <div><span className="text-slate-400">Goal:</span> <b className="text-white capitalize">{viewFitClientDetails.assessment_data?.goal || 'General Fitness'}</b></div>
-              <div><span className="text-slate-400">Daily Energy:</span> <b className="text-emerald-400">{viewFitClientDetails.generated_plan?.kcal || '—'} kcal</b></div>
-              <div><span className="text-slate-400">Protein Target:</span> <b className="text-amber-400">{viewFitClientDetails.generated_plan?.protein || '—'}g</b></div>
-              <div><span className="text-slate-400">Carbohydrates:</span> <b className="text-sky-400">{viewFitClientDetails.generated_plan?.carbs || '—'}g</b></div>
-              <div><span className="text-slate-400">Fats:</span> <b className="text-rose-400">{viewFitClientDetails.generated_plan?.fats || '—'}g</b></div>
-            </div>
-            {viewFitClientDetails.assessment_data && (
-              <div className="space-y-2">
-                <h4 className="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Onboarding Assessment Responses</h4>
-                <div className="bg-[#121929] p-4 rounded-xl border border-white/[0.06] font-mono text-[11px] text-slate-300 max-h-60 overflow-y-auto whitespace-pre-wrap">
-                  {JSON.stringify(viewFitClientDetails.assessment_data, null, 2)}
+      {viewFitClientDetails && (() => {
+        const fit = viewFitClientDetails;
+        const isPaid = fit.plan_status === 'premium';
+        const phys = fit.physiological || fit.assessment_data || {};
+        const bp = fit.generated_plan || {};
+
+        return (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-[#0b0f19] border border-white/[0.12] rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 space-y-5 shadow-2xl text-xs text-white">
+              
+              {/* Athlete Header */}
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="relative">
+                    {fit.avatar ? (
+                      <img src={fit.avatar} alt="" className="w-12 h-12 rounded-full object-cover border-2 border-white/20 shadow-md" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sky-400 to-indigo-600 flex items-center justify-center font-black text-slate-950 text-lg shadow-md border-2 border-white/20">
+                        {(fit.name || 'N').charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-[#0b0f19] ${
+                      fit.is_active ? 'bg-emerald-400' : 'bg-slate-500'
+                    }`}></span>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-white">{fit.name || 'Athlete'}</h3>
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded tracking-wider uppercase border ${
+                        isPaid 
+                          ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm' 
+                          : 'bg-slate-800 text-slate-400 border-slate-700'
+                      }`}>
+                        {isPaid ? 'PRO PASS' : 'FREE TIER'}
+                      </span>
+                    </div>
+                    <div className="text-slate-400 text-[11px] mt-0.5">
+                      <span>{fit.email}</span> • <span className="text-emerald-400 font-semibold">{fit.active_label || 'Active Protocol'}</span>
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setViewFitClientDetails(null)} 
+                  className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+
+              {/* Physiological Identity Card */}
+              <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-3">
+                <div className="text-[10.5px] font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                  <Dumbbell size={13} className="text-amber-400" /> Physiological Identity
+                </div>
+                
+                <div className="space-y-2.5">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Full Name / Nickname</span>
+                    <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white">
+                      {fit.name || 'Athlete'}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Biological Sex</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-slate-200 capitalize">
+                        {phys.gender || 'Male'}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Age (Yrs)</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
+                        {phys.age || 25}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Bodyweight (KG)</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
+                        {phys.weight || 70} kg
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Height (CM)</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
+                        {phys.height || 175} cm
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Primary Goal</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-amber-300 capitalize">
+                        {phys.goal || 'Hypertrophy & Mass'}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Goal WT (KG)</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
+                        {phys.goal_weight || 72} kg
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
+
+              {/* Active Metabolic & Ergogenic Blueprint */}
+              <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-3">
+                <div className="text-[10.5px] font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-sky-400" /> Active Metabolic &amp; Ergogenic Blueprint
+                </div>
+                <div className="grid grid-cols-5 gap-1.5 text-center">
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-white">{bp.kcal || 2944}</div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">Kcal/Day</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-sky-400">{bp.protein || 140}g</div>
+                    <div className="text-[8px] font-extrabold text-sky-400 mt-1 uppercase">Protein</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-amber-400">{bp.creatine || '5g'}</div>
+                    <div className="text-[8px] font-extrabold text-amber-400 mt-1 uppercase">Creatine</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-slate-300">{bp.bmr || 1673.75}</div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">BMR Kcal</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-emerald-400">{bp.bmi || 22.9}</div>
+                    <div className="text-[8px] font-extrabold text-emerald-400 mt-1 uppercase">BMI</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Telemetry & Account Information */}
+              <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-2">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Account Telemetry</div>
+                <div className="grid grid-cols-2 gap-3 text-[11px]">
+                  <div><span className="text-slate-500">Last Seen:</span> <b className="text-emerald-400">{fit.active_label || fmtDate(fit.last_active_at)}</b></div>
+                  <div><span className="text-slate-500">Joined:</span> <b className="text-slate-300">{fmtDate(fit.created_at)}</b></div>
+                  <div className="col-span-2 text-slate-500 font-mono text-[10px]">ID: {fit.id}</div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 justify-end pt-1">
+                <button
+                  onClick={async () => {
+                    const nextStatus = isPaid ? 'free' : 'premium';
+                    await fetch(getApiUrl('/api/fit-clients'), {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: fit.id, plan_status: nextStatus })
+                    });
+                    setViewFitClientDetails({ ...fit, plan_status: nextStatus });
+                    await loadAllData();
+                  }}
+                  className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                    isPaid
+                      ? 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                      : 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-md shadow-amber-500/20'
+                  }`}
+                >
+                  {isPaid ? 'Downgrade to Free Tier' : '⚡ Upgrade to PRO PASS Active'}
+                </button>
+                <button
+                  onClick={() => setViewFitClientDetails(null)}
+                  className="px-4 py-2.5 bg-white/[0.08] hover:bg-white/[0.14] text-white rounded-xl text-xs font-bold transition-colors"
+                >
+                  Close Blueprint
+                </button>
+              </div>
+
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ADD TEAM MEMBER MODAL */}
       {showAddMember && (
