@@ -150,7 +150,7 @@ export const Admin: React.FC = () => {
       const [
         leadsRes, fitRes, postsRes, scriptsRes, queueRes, mentionsRes, teamRes, blogsRes
       ] = await Promise.all([
-        supabase.from('leads').select('*').order('created_at', { ascending: false }),
+        fetch(getApiUrl('/api/data?resource=leads')).then(r => r.json()).catch(() => supabase.from('leads').select('*').order('created_at', { ascending: false })),
         fetch(getApiUrl('/api/fit-clients')).then(r => r.json()).catch(() => []),
         supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
         supabase.from('scripts').select('*').order('created_at', { ascending: false }),
@@ -160,7 +160,8 @@ export const Admin: React.FC = () => {
         fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.json()).catch(() => [])
       ]);
 
-      if (leadsRes.data) setLeads(leadsRes.data);
+      if (Array.isArray(leadsRes)) setLeads(leadsRes);
+      else if (leadsRes?.data) setLeads(leadsRes.data);
       if (Array.isArray(fitRes)) setFitClients(fitRes);
       if (postsRes.data) setPosts(postsRes.data);
       if (scriptsRes.data) setScripts(scriptsRes.data);
@@ -193,10 +194,18 @@ export const Admin: React.FC = () => {
       status: (leadForm.status || 'NEW LEAD').toUpperCase(),
       created_at: leadForm.created_at || new Date().toISOString()
     };
-    if (leadForm.id) {
-      await supabase.from('leads').update(payload).eq('id', leadForm.id);
-    } else {
-      await supabase.from('leads').insert([payload]);
+    try {
+      await fetch(getApiUrl('/api/data?resource=leads'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (_) {
+      if (leadForm.id) {
+        await supabase.from('leads').update(payload).eq('id', leadForm.id);
+      } else {
+        await supabase.from('leads').insert([payload]);
+      }
     }
     setShowAddLead(false);
     await loadAllData();
@@ -204,7 +213,11 @@ export const Admin: React.FC = () => {
 
   const handleDeleteLead = async (id: string) => {
     if (!window.confirm('Delete this lead from pipeline?')) return;
-    await supabase.from('leads').delete().eq('id', id);
+    try {
+      await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { method: 'DELETE' });
+    } catch (_) {
+      await supabase.from('leads').delete().eq('id', id);
+    }
     setLeads(prev => prev.filter(l => l.id !== id));
   };
 
