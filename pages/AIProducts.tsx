@@ -20,9 +20,9 @@ const products = [
     tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
     desc: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
     color: '#f59e0b',
-    tryLink: 'https://fit.socialninjas.in',
-    learnLink: 'https://fit.socialninjas.in',
-    stats: [['1,324+','Animated Exercises'], ['4.9★','User Rating'], ['100%','Offline PWA Ready'], ['₹299/mo','Starting Price']],
+    tryLink: 'https://fit.socialninjas.in/app?mode=signup',
+    learnLink: '/ai-products/fit-ninja',
+    stats: [['1,324+','Animated Exercises'], ['4.9★','User Rating'], ['100%','Offline PWA Ready'], ['₹399/mo','Starting Price']],
     features: [
       '1,324+ searchable exercises with animated demos & equipment filters',
       'Guided workout execution player with live rest timers and wake-lock',
@@ -32,7 +32,7 @@ const products = [
       '100% offline-capable PWA for seamless gym use on iPhone & Android'
     ],
     plans: [
-      { name: 'Fit Ninja Pro', price: '₹299/mo', note: 'Full 1,324+ Exercises, Workouts & AI Nutrition' },
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Workouts & AI Nutrition' },
     ],
   },
   {
@@ -40,7 +40,7 @@ const products = [
     tagline: 'Never miss a lead again. Even at 3am.',
     desc: 'An AI that replies to every new lead in under 1 second — any time of day or night. It answers their questions, figures out if they\'re a good fit, and books them straight into your calendar.',
     color: '#9b8ef0',
-    tryLink: '/contact',
+    tryLink: '/contact?product=ai-sales-agent',
     learnLink: '/ai-products/ai-sales-agent',
     stats: [['0.8s','Avg Reply Time'], ['24/7','Never Offline'], ['3×','More Conversions'], ['7–10','Days to Launch']],
     features: ['Responds to leads instantly — before your competitors','Qualifies each lead with smart questions','Books meetings directly into your calendar','Sends follow-up emails and SMS automatically','Logs everything to your CRM — no manual work','Full weekly report of all conversations'],
@@ -50,7 +50,7 @@ const products = [
     tagline: 'High-converting ad copy in seconds, not days.',
     desc: 'Stop spending hours writing Facebook and Google ads. Describe what you\'re selling, and the AI writes multiple versions of your headline, body copy, and CTA — all based on proven frameworks.',
     color: '#2fcf8e',
-    tryLink: '/contact',
+    tryLink: '/contact?product=ad-copy-generator',
     learnLink: '/ai-products/ad-copy-generator',
     stats: [['Meta+Google','Both Platforms'], ['∞','Copy Variations'], ['A/B','Test Ready'], ['Seconds','Not Days']],
     features: ['Headlines and body copy for Meta and Google ads','Multiple variations ready to A/B test','Hooks based on psychology frameworks that convert','CTA options tuned to your campaign goal','Keeps your brand voice consistent across all ads'],
@@ -60,7 +60,7 @@ const products = [
     tagline: 'Know exactly what\'s working — without the spreadsheets.',
     desc: 'Connect your ad accounts and every week the AI sends you a plain-English summary of what worked, what didn\'t, and what to do about it. No more spending Mondays building reports.',
     color: '#e8b86d',
-    tryLink: '/contact',
+    tryLink: '/contact?product=reporting-assistant',
     learnLink: '/ai-products/reporting-assistant',
     stats: [['Weekly','Auto Reports'], ['Meta+Google','Data Connected'], ['Plain English','No Jargon'], ['1-Click','PDF Export']],
     features: ['Automatic weekly performance summaries','Written in plain English — no marketing jargon','Spots problems before they cost you more money','Compares your performance to industry benchmarks','Export as PDF to share with your team or clients'],
@@ -94,7 +94,7 @@ export const AIProducts: React.FC = () => {
             We're building a suite of AI tools that handle repetitive marketing and health workflows — so you can focus on scaling your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
-            <a href="https://fit.socialninjas.in" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
+            <a href="https://fit.socialninjas.in/app?mode=app" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
               🥷 Launch Fit Ninja
             </a>
             <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-8 py-3.5 rounded-full hover:border-neutral-700 transition-all text-sm">

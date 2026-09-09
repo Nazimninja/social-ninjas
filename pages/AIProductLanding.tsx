@@ -4,6 +4,37 @@ import { ArrowLeft, CheckCircle2, ArrowRight, Star } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const productsData: Record<string, any> = {
+  'fit-ninja': {
+    name: 'Fit Ninja', icon: '🥷', color: '#38bdf8', badge: '🟢 v2.0 Live',
+    tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
+    hero: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
+    tryLink: 'https://fit.socialninjas.in/app?mode=signup',
+    exploreLink: 'https://fit.socialninjas.in/#exercises',
+    problem: 'Most workout apps are passive digital notebooks or generic static PDFs that freeze in gym basements. Athletes lose momentum guessing weights, resting too long between sets, and struggling with mismatched nutrition targets.',
+    solution: 'Fit Ninja is a 100% offline-first PWA built for athletes. It locks your screen awake, auto-calculates progressive overload (+2.5 kg micro-bumps), plays looping 60fps video form guides, and aligns macros with your daily caloric surplus or deficit.',
+    steps: [
+      { n: '01', t: 'Select Your Training Goal', d: 'Choose between Lean Hypertrophy, Targeted Fat Loss Deficit, or Athletic Conditioning across gym or calisthenics.' },
+      { n: '02', t: 'Execute Guided Sets', d: 'Open the live player. Smart rest timers and Screen Wake Lock keep your phone alive and your tempo dialed in.' },
+      { n: '03', t: 'Auto Progressive Overload', d: 'Hit your reps and Fit Ninja automatically calculates your next target weight without guesswork.' },
+      { n: '04', t: 'Dial In Precision Macros', d: 'Get instant customized calorie and protein targets across Veg, Non-Veg, and Vegan nutrition protocols.' },
+    ],
+    features: [
+      '1,324+ searchable exercises with 60fps looping video demos',
+      'Live guided workout player with smart rest timers and Screen Wake Lock',
+      'Front and back anatomical muscle fatigue heatmaps',
+      'Greyskull LP, linear progression & 1RM strength algorithms',
+      'Personalized sports nutrition engine (Veg, Non-Veg, Vegan, Keto)',
+      '100% offline-ready PWA for iPhone and Android'
+    ],
+    reviews: [
+      { name: 'Sameer Khan', role: 'Competitive Lifter · Mumbai', text: 'The smart rest timer and auto weight bump completely changed my sessions. No more looking at the clock or losing focus between heavy sets.', stars: 5 },
+      { name: 'Dr. Priya Sharma', role: 'Endurance Athlete · Bengaluru', text: 'Finally a fitness app that works seamlessly in our basement gym without internet signal. The macro calculator for vegetarian diets is spot on.', stars: 5 },
+    ],
+    stats: [['1,324+','HD Video Demos'],['100%','Offline Ready'],['4.9★','User Rating'],['₹399/mo','Starting Price']],
+    plans: [
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Live Player & Macro Engine', popular: true }
+    ],
+  },
   'ai-sales-agent': {
     name: 'AI Sales Agent', icon: '🤖', color: '#9b8ef0', badge: '🔜 Coming Soon',
     tagline: 'Your 24/7 sales team. Never misses a lead.',
@@ -76,6 +107,11 @@ const AIProductLanding: React.FC = () => {
   const p = id ? productsData[id] : null;
 
   const handleNavigate = (path: string) => {
+    if (!path) return;
+    if (path.startsWith('http')) {
+      window.open(path, '_blank', 'noopener,noreferrer');
+      return;
+    }
     if (path.startsWith('/#/')) {
       navigate(path.substring(2));
     } else {
@@ -125,8 +161,14 @@ const AIProductLanding: React.FC = () => {
           <div className="reveal d1" style={{ fontSize: 'clamp(16px,2.2vw,24px)', fontWeight: 400, color: p.color, marginBottom: 20 }}>{p.tagline}</div>
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.6vw,17px)', fontWeight: 300, color: '#94a3b8', lineHeight: 1.72, maxWidth: 600, margin: '0 auto 40px' }}>{p.hero}</p>
           <div className="reveal d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 32px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>{isLive ? '⚡ Try Free — No Card Needed' : 'Join the Waitlist →'}</button>
-            {isLive && <button onClick={() => handleNavigate(p.tryLink || '/contact')} className="btn-ghost" style={{ fontSize: 15 }}>See Pricing</button>}
+            <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 32px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>
+              {isLive ? (id === 'fit-ninja' ? '⚡ Launch Fit Ninja Pro →' : '⚡ Try Free — No Card Needed') : 'Join the Waitlist →'}
+            </button>
+            {isLive && (
+              <button onClick={() => handleNavigate(p.exploreLink || p.tryLink || '/contact')} className="btn-ghost" style={{ fontSize: 15 }}>
+                {id === 'fit-ninja' ? 'Browse 1,324+ Demos' : 'See Pricing'}
+              </button>
+            )}
           </div>
           {/* Stats row */}
           <div className="reveal d4" style={{ display: 'flex', justifyContent: 'center', gap: 0, marginTop: 56, background: '#0e121d', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 50, padding: '16px 8px', maxWidth: 640, margin: '56px auto 0', flexWrap: 'wrap' }}>
@@ -253,14 +295,14 @@ const AIProductLanding: React.FC = () => {
         <div className="reveal" style={{ background: '#0e121d', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 28, padding: '80px 48px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent,${p.color}50,transparent)` }} />
           <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px,4vw,50px)', fontWeight: 700, letterSpacing: '-2px', marginBottom: 14, color: '#ffffff', lineHeight: 1.06 }}>
-            {isLive ? 'Try it free. See it work.' : 'Be first in line.'}
+            {id === 'fit-ninja' ? 'Ready to Transform Your Physique?' : (isLive ? 'Try it free. See it work.' : 'Be first in line.')}
           </h2>
           <p style={{ fontSize: 16, fontWeight: 300, color: '#717171', marginBottom: 32, maxWidth: 460, margin: '0 auto 32px' }}>
-            {isLive ? 'Get 3 complete posts written for your brand right now. No credit card, no commitment. Just see what it can do.' : 'Join the waitlist and be the first to try it when it launches.'}
+            {id === 'fit-ninja' ? 'Join thousands of athletes using Fit Ninja Pro for automated progressive overload, smart rest timers, and precision macro planning.' : (isLive ? 'Get 3 complete posts written for your brand right now. No credit card, no commitment. Just see what it can do.' : 'Join the waitlist and be the first to try it when it launches.')}
           </p>
-          <a href={p.tryLink}><button className="btn-primary" style={{ fontSize: 15, padding: '15px 40px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>
-            {isLive ? '⚡ Try 3 Posts Free' : 'Join Waitlist →'}
-          </button></a>
+          <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 40px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>
+            {id === 'fit-ninja' ? '⚡ Start Your Transformation →' : (isLive ? '⚡ Try 3 Posts Free' : 'Join Waitlist →')}
+          </button>
         </div>
       </div>
 
