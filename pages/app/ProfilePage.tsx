@@ -5,10 +5,12 @@ import { formatSplitName } from '../../data/workoutPlanAI';
 import Icon from '../../components/app/Icon';
 import { Section, Row, Switch, Segmented } from '../../components/app/ui';
 import WeeklyCheckinModal from '../../components/app/WeeklyCheckinModal';
+import CloudSyncModal from '../../components/app/CloudSyncModal';
+import { getPrefilledPaymentLink, RAZORPAY_PAYMENT_LINK } from '../../lib/payment';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { state, dispatch } = useFitNinja();
+  const { state, dispatch, userEmail, lastSynced } = useFitNinja();
   const { user, activePlan, badges, points, streak, workouts } = state;
 
   // Local state for edits
@@ -25,11 +27,27 @@ export default function ProfilePage() {
   const [weightUnit, setWeightUnit] = useState<'kg' | 'lb'>(user.unit === 'imperial' ? 'lb' : 'kg');
   const [bodyGender, setBodyGender] = useState<'male' | 'female'>((user.gender as any) === 'female' ? 'female' : 'male');
 
-  // Check-in modal
+  // Modals
   const [showCheckin, setShowCheckin] = useState(false);
-
-  // Badges modal or accordion
   const [showBadges, setShowBadges] = useState(false);
+  const [showCloudSync, setShowCloudSync] = useState(false);
+
+  const cleanEmail = (userEmail || '').toLowerCase().trim();
+  const isPaidMember = Boolean(
+    (user as any).paid ||
+    cleanEmail.endsWith('@socialninjas.in') ||
+    [
+      'nazim.socialninja@gmail.com',
+      'nazimpasha906@gmail.com',
+      'nazim@socialninjas.in',
+      'admin@socialninjas.in',
+      'support@socialninjas.in',
+      'fit@socialninjas.in',
+      'saqlainsharief161@gmail.com',
+      'saqlainnisha0928@gmail.com',
+      'highonnfitness@gmail.com'
+    ].includes(cleanEmail)
+  );
 
   const unlockedCount = badges.filter(b => b.unlocked).length;
   const level = Math.floor(points / 500) + 1;
@@ -100,6 +118,50 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* ── Cross-Device Cloud Sync Card ── */}
+      <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0f1d35] to-[#0a1222] border border-[#1d3356] space-y-3 shadow-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#38bdf8]/20 border border-[#38bdf8]/30 flex items-center justify-center text-lg">
+              ☁️
+            </div>
+            <div>
+              <p className="text-xs font-bold text-white tracking-tight">Cross-Device Cloud Vault</p>
+              <p className="text-[11px] text-[#71829d]">
+                {userEmail ? (
+                  <span className="text-[#38bdf8] font-medium truncate inline-block max-w-[190px] align-bottom">
+                    {userEmail}
+                  </span>
+                ) : (
+                  'No email linked · Tap to backup'
+                )}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowCloudSync(true)}
+            className="py-1.5 px-3 rounded-xl bg-[#38bdf8]/15 hover:bg-[#38bdf8]/25 border border-[#38bdf8]/30 text-xs font-bold text-[#38bdf8] active:scale-95 transition-all"
+          >
+            {userEmail ? 'Sync / Switch' : 'Link Email'}
+          </button>
+        </div>
+
+        {userEmail ? (
+          <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[10px] text-[#71829d]">
+            <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Auto-sync active across phones & laptops
+            </span>
+            {lastSynced && <span>Updated {lastSynced}</span>}
+          </div>
+        ) : (
+          <div className="flex items-center gap-1.5 pt-2 border-t border-white/5 text-[10px] text-amber-300">
+            <span>⚠️</span>
+            Attach your email so you can switch phones or log in from a laptop without losing logs.
+          </div>
+        )}
+      </div>
+
       {/* ── Section 1: Athlete Profile ── */}
       <Section title="Athlete Profile">
         <Row
@@ -168,6 +230,22 @@ export default function ProfilePage() {
           subtitle="Calibrate weight, photos & progressive overload"
           accessory="chevron"
           onClick={() => setShowCheckin(true)}
+        />
+
+        <Row
+          icon="flame"
+          iconTint="var(--orange)"
+          title="Fit Ninja Pro Pass"
+          subtitle={isPaidMember ? "Unlimited Pro Access Active" : "Unlock Custom Coaching, Library & AI Protocols"}
+          value={isPaidMember ? "Active ✓" : "Unlock Pass"}
+          accessory="chevron"
+          onClick={() => {
+            if (isPaidMember) {
+              alert("⚡ Fit Ninja Pro Pass is Active for " + (cleanEmail || user.name) + "! All features are unlocked.");
+            } else {
+              window.open(getPrefilledPaymentLink(user.name, userEmail, ''), '_blank');
+            }
+          }}
         />
       </Section>
 
@@ -359,6 +437,9 @@ export default function ProfilePage() {
 
       {/* Weekly Checkin Modal */}
       <WeeklyCheckinModal isOpen={showCheckin} onClose={() => setShowCheckin(false)} />
+
+      {/* Cross-Device Cloud Sync Modal */}
+      <CloudSyncModal isOpen={showCloudSync} onClose={() => setShowCloudSync(false)} />
     </div>
   );
 }

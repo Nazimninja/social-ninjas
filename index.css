@@ -1189,6 +1189,12 @@ html, body {
   box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.2), 0 8px 28px rgba(245, 158, 11, 0.5);
 }
 
+@media (min-width: 1024px) {
+  #tabbar {
+    display: none !important;
+  }
+}
+
 /* ── 12-Month Contribution Heatmap (Training Calendar) ── */
 .hm-wrap {
   overflow-x: auto;
