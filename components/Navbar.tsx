@@ -6,6 +6,7 @@ import Logo from './Logo';
 const TEXT_PRIMARY = '#FFFFFF';
 const TEXT_MUTED   = '#888888';
 const BLUE         = '#1F4B99';
+const BLUE_ACCENT  = '#3B82F6';
 const BLUE_DEEP    = '#153880';
 const BORDER       = 'rgba(255, 255, 255, 0.08)';
 
@@ -59,14 +60,14 @@ const Navbar: React.FC = () => {
         }}>
 
           {/* Logo */}
-          <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <Logo size={40} />
+          <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+            <Logo size={42} />
             <div style={{
               fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px',
+              fontSize: 16.5, fontWeight: 800, letterSpacing: '-0.3px',
               color: TEXT_PRIMARY, lineHeight: 1,
             }}>
-              Social<span style={{ color: BLUE }}>Ninja's</span>
+              Social<span style={{ color: BLUE_ACCENT }}>Ninja's</span>
             </div>
           </Link>
 
@@ -147,14 +148,14 @@ const Navbar: React.FC = () => {
           padding: '0 20px', height: 60, borderBottom: `1px solid ${BORDER}`,
           flexShrink: 0,
         }}>
-          <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <Logo size={38} />
+          <Link to="/" onClick={close} style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+            <Logo size={40} />
             <div style={{
               fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              fontSize: 15, fontWeight: 700, letterSpacing: '-0.3px',
+              fontSize: 16.5, fontWeight: 800, letterSpacing: '-0.3px',
               color: TEXT_PRIMARY,
             }}>
-              Social<span style={{ color: BLUE }}>Ninja's</span>
+              Social<span style={{ color: BLUE_ACCENT }}>Ninja's</span>
             </div>
           </Link>
 

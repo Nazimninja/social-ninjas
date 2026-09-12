@@ -16,7 +16,20 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
-    plugins: [react()],
+    plugins: [
+      react(),
+      {
+        name: 'spa-fallback-fix',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (req.url && (req.url === '/app' || req.url.startsWith('/app/') || req.url.startsWith('/app?'))) {
+              req.url = '/index.html';
+            }
+            next();
+          });
+        },
+      },
+    ],
 
     resolve: {
       alias: {

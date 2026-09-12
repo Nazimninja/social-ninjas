@@ -33,6 +33,9 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Admin = lazy(() => import('./pages/Admin'));
 
+// Fit Ninja workout app
+const FitNinjaApp = lazy(() => import('./pages/app/AppLayout'));
+
 const ChatBot = lazy(() => import('./components/ChatBot'));
 const WhatsAppWidget = lazy(() => import('./components/WhatsAppWidget'));
 
@@ -99,6 +102,10 @@ const AnimatedRoutes: React.FC = () => {
 
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
         <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+
+        {/* Fit Ninja workout app — no Navbar/Footer (handled by AppLayout) */}
+        <Route path="/app/*" element={<FitNinjaApp />} />
+
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -109,6 +116,7 @@ const AnimatedRoutes: React.FC = () => {
 const MainLayout: React.FC = () => {
   const location = useLocation();
   const hidePublicChrome = location.pathname.startsWith('/promo') || 
+                           location.pathname === '/app' ||
                            location.pathname.startsWith('/app/') || 
                            location.pathname.startsWith('/admin');
 

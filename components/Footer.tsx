@@ -21,11 +21,11 @@ const Footer: React.FC = () => {
 
           {/* Brand column */}
           <div>
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', marginBottom: 20 }}>
-              <Logo size={60} />
+            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', marginBottom: 20 }}>
+              <Logo size={52} />
               <div>
-                <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: '#FFFFFF', lineHeight: 1.1 }}>
-                  Social<span style={{ color: '#1F4B99' }}>Ninja's</span>.
+                <div style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 18, fontWeight: 800, letterSpacing: '-0.5px', color: '#FFFFFF', lineHeight: 1.1 }}>
+                  Social<span style={{ color: '#3B82F6' }}>Ninja's</span>.
                 </div>
                 <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#666666', marginTop: 2 }}>
                   AI Agency

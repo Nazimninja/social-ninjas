@@ -35,3 +35,4 @@ dist-landing/
 
 # Vercel generated
 .env.local
+screenshots/

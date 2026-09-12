@@ -138,10 +138,10 @@ const Home: React.FC = () => {
       />
 
       {/* ── 1. HERO SECTION WITH AURORA & METEORS ──────────────── */}
-      <AuroraBackground className="min-h-screen pt-28 pb-16 relative overflow-hidden">
+      <AuroraBackground className="min-h-screen pt-20 sm:pt-24 pb-16 relative overflow-hidden">
         <MeteorsBackground number={24} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-4 sm:pt-6 pb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* Left Column — Text & CTAs */}

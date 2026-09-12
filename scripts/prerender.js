@@ -19,7 +19,7 @@ const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 const NAV_HTML = `
 <nav style="position:fixed;top:0;width:100%;z-index:50;height:60px;background:rgba(7,9,14,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;">
   <div style="max-width:1120px;margin:0 auto;padding:0 28px;width:100%;display:flex;align-items:center;justify-content:space-between;font-family:system-ui,sans-serif;">
-    <div style="font-size:16px;font-weight:700;color:#f0f0f0;letter-spacing:-0.3px;"><a href="/" style="color:#ffffff;text-decoration:none;">Social<span style="color:#1F4B99;">Ninja's</span></a></div>
+    <div style="font-size:16px;font-weight:700;color:#f0f0f0;letter-spacing:-0.3px;"><a href="/" style="color:#ffffff;text-decoration:none;">Social<span style="color:#3B82F6;">Ninja's</span></a></div>
     <div style="display:flex;align-items:center;gap:32px;">
       <a href="/services" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">Services</a>
       <a href="/ai-products" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">AI Products</a>
@@ -35,7 +35,7 @@ const FOOTER_HTML = `
 <footer style="background:#04060a;border-top:1px solid rgba(255,255,255,0.06);padding:60px 0;margin-top:auto;width:100%;font-family:system-ui,sans-serif;">
   <div style="max-width:1120px;margin:0 auto;padding:0 28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;">
     <div style="max-width:280px;">
-      <div style="font-size:16px;font-weight:700;color:#f0f0f0;margin-bottom:16px;">Social<span style="color:#1F4B99;">Ninja's</span></div>
+      <div style="font-size:16px;font-weight:700;color:#f0f0f0;margin-bottom:16px;">Social<span style="color:#3B82F6;">Ninja's</span></div>
       <p style="font-size:13.5px;color:#707080;line-height:1.6;">Automated growth systems and premium performance marketing partnerships for digital brands.</p>
     </div>
     <div style="display:flex;gap:60px;">
