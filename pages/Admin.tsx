@@ -225,6 +225,17 @@ export const Admin: React.FC = () => {
     setLeads(prev => prev.filter(l => l.id !== id));
   };
 
+  const handleDeleteScript = async (id: string, topic?: string) => {
+    if (!window.confirm(`Delete script "${topic || 'this script'}" after use?`)) return;
+    try {
+      await fetch(getApiUrl(`/api/data?resource=scripts&id=${id}`), { method: 'DELETE' }).catch(() => {});
+      await supabase.from('scripts').delete().eq('id', id);
+      setScripts(prev => prev.filter(s => s.id !== id));
+    } catch (e) {
+      console.error('Failed to delete script:', e);
+    }
+  };
+
   const handleSaveFitStatus = async () => {
     if (!manageFitStatus) return;
     try {
@@ -1238,7 +1249,16 @@ export const Admin: React.FC = () => {
                         <span className="text-[9px] font-extrabold px-2.5 py-0.5 rounded-full border" style={{ backgroundColor: `${pc(sc.profile)}15`, color: pc(sc.profile), borderColor: `${pc(sc.profile)}30` }}>
                           {pl(sc.profile)}
                         </span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">{sc.status || 'Ready'}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] uppercase font-bold text-slate-400">{sc.status || 'Ready'}</span>
+                          <button
+                            onClick={() => handleDeleteScript(sc.id, sc.topic)}
+                            className="p-1 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
+                            title="Delete script after use"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
                       </div>
                       <h3 className="font-bold text-white text-sm">{sc.topic}</h3>
                       <p className="text-xs text-sky-400 font-semibold">🎬 {sc.yt_title}</p>
@@ -1254,12 +1274,21 @@ export const Admin: React.FC = () => {
                       >
                         {openScriptId === sc.id ? 'Hide' : 'Full Script'}
                       </button>
-                      <button
-                        onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
-                        className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
-                      >
-                        {copiedText === sc.id ? '✅ Copied' : 'Copy Caption'}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
+                          className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
+                        >
+                          {copiedText === sc.id ? '✅ Copied' : 'Copy Caption'}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteScript(sc.id, sc.topic)}
+                          className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-white/[0.06] hover:border-rose-500/30 transition-all flex items-center justify-center"
+                          title="Delete script after use"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </div>
 
                     {openScriptId === sc.id && (

@@ -211,5 +211,18 @@ export default async function handler(req, res) {
     }
   }
 
+  // ── SCRIPTS (Supabase CRM) ──────────────────────────────────
+  if (resource === 'scripts') {
+    if (req.method === 'GET') {
+      const rows = await crmGet('scripts', { order: 'created_at.desc' });
+      return res.json(rows || []);
+    }
+    if (req.method === 'DELETE') {
+      if (!id) return res.status(400).json({ error: 'id required' });
+      await crmDelete('scripts', 'id', id);
+      return res.json({ success: true });
+    }
+  }
+
   return res.status(404).json({ error: 'Unknown resource' });
 }
