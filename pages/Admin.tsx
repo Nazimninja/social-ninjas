@@ -165,7 +165,10 @@ export const Admin: React.FC = () => {
       else if (leadsRes?.data) setLeads(leadsRes.data);
       if (Array.isArray(fitRes)) setFitClients(fitRes);
       if (postsRes.data) setPosts(postsRes.data);
-      if (scriptsRes.data) setScripts(scriptsRes.data);
+      if (scriptsRes.data) {
+        // Filter only real content scripts, excluding Fit Ninja internal app sync data
+        setScripts(scriptsRes.data.filter((s: any) => !s.profile?.startsWith('fitninja_') && s.hook));
+      }
       if (queueRes.data) setQueueItems(queueRes.data);
       if (mentionsRes.data) setMentions(mentionsRes.data);
       if (teamRes.data) setTeamMembers(teamRes.data);
