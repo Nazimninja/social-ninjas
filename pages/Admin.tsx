@@ -14,7 +14,7 @@ import { getApiUrl } from '../services/api';
 
 // ── Multi-Brand Ecosystem Configuration ──────────────────────────────
 const PROFILES = [
-  { id: 'nazim_ninja', label: 'Nazim Pasha (Personal Profile)', color: '#38bdf8', tag: 'Personal Founder' },
+  { id: 'nazim_ninja', label: 'Nazim Ninja', color: '#38bdf8', tag: 'Personal Founder' },
   { id: 'socialninja', label: 'Social Ninjas', color: '#f97316', tag: 'Agency HQ' },
   { id: '9thgear_', label: '9th Gear', color: '#fbbf24', tag: 'Supercar Media' },
   { id: 'vicevault.gg', label: 'Vice Vault', color: '#f43f5e', tag: 'Gaming Hub' },
@@ -76,8 +76,8 @@ const LEAD_STATUS_CONFIG: Record<string, { label: string, color: string, bg: str
   'LOST': { label: 'Nurture Later', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
 };
 
-const pc = (id: string) => PROFILES.find(p => p.id === id)?.color || '#38bdf8';
-const pl = (id: string) => PROFILES.find(p => p.id === id)?.label || id;
+const pc = (id: string) => PROFILES.find(p => p.id === id || p.label === id || p.id.toLowerCase() === id?.toLowerCase() || p.label.toLowerCase() === id?.toLowerCase())?.color || '#38bdf8';
+const pl = (id: string) => PROFILES.find(p => p.id === id || p.label === id || p.id.toLowerCase() === id?.toLowerCase() || p.label.toLowerCase() === id?.toLowerCase())?.label || id;
 const todayKey = () => new Date().toDateString();
 const fmtDate = (d?: string | null) => d ? new Date(d).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
 const doy = () => Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
