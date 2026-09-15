@@ -6,33 +6,34 @@ import SEO from '../components/SEO';
 const productsData: Record<string, any> = {
   'fit-ninja': {
     name: 'Fit Ninja', icon: '🥷', color: '#38bdf8', badge: '🟢 v2.0 Live',
-    tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
-    hero: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
+    tagline: '5,300+ Animated Exercises, Custom AI Workout & Diet Plans.',
+    hero: 'The ultimate gym workout and body transformation companion. Features 5,300+ animated video exercise demos, guided set player with full-screen rest timers, smart automatic weight progression, interactive muscle recovery heatmaps, and personalized AI meal plans.',
     tryLink: 'https://fit.socialninjas.in/app?mode=signup',
-    exploreLink: 'https://fit.socialninjas.in/#exercises',
-    problem: 'Most workout apps are passive digital notebooks or generic static PDFs that freeze in gym basements. Athletes lose momentum guessing weights, resting too long between sets, and struggling with mismatched nutrition targets.',
-    solution: 'Fit Ninja is a 100% offline-first PWA built for athletes. It locks your screen awake, auto-calculates progressive overload (+2.5 kg micro-bumps), plays looping 60fps video form guides, and aligns macros with your daily caloric surplus or deficit.',
+    exploreLink: 'https://fit.socialninjas.in/#library',
+    problem: 'Most workout apps are passive digital notebooks or complicated spreadsheets full of robotic jargon that freeze in gym basements. Lifters lose momentum guessing weights, resting too long between sets, and struggling with mismatched nutrition targets.',
+    solution: 'Fit Ninja is a 100% offline-first PWA built for the gym. It keeps your screen awake, tells you when to lift heavier, plays looping 60fps video form guides, and generates custom meal plans with clear protein targets.',
     steps: [
-      { n: '01', t: 'Select Your Training Goal', d: 'Choose between Lean Hypertrophy, Targeted Fat Loss Deficit, or Athletic Conditioning across gym or calisthenics.' },
-      { n: '02', t: 'Execute Guided Sets', d: 'Open the live player. Smart rest timers and Screen Wake Lock keep your phone alive and your tempo dialed in.' },
-      { n: '03', t: 'Auto Progressive Overload', d: 'Hit your reps and Fit Ninja automatically calculates your next target weight without guesswork.' },
-      { n: '04', t: 'Dial In Precision Macros', d: 'Get instant customized calorie and protein targets across Veg, Non-Veg, and Vegan nutrition protocols.' },
+      { n: '01', t: 'Select Your Fitness Goal', d: 'Choose muscle building, fat loss, or strength toning across gym machines, free weights, or home workouts.' },
+      { n: '02', t: 'Execute Guided Sets', d: 'Open the live player. Full-screen rest timers and Screen Wake Lock keep your phone alive and your focus dialed in without accidental mis-touches.' },
+      { n: '03', t: 'Automatic Weight Progression', d: 'Hit your reps and Fit Ninja tells you exactly when you are ready to add +1 kg to +2.5 kg next time without math.' },
+      { n: '04', t: 'Custom Diet & Protein Targets', d: 'Get daily calorie and protein targets tailored for your body across Indian Veg, Non-Veg, Vegan, and Keto diets.' },
     ],
     features: [
-      '1,324+ searchable exercises with 60fps looping video demos',
-      'Live guided workout player with smart rest timers and Screen Wake Lock',
-      'Front and back anatomical muscle fatigue heatmaps',
-      'Greyskull LP, linear progression & 1RM strength algorithms',
-      'Personalized sports nutrition engine (Veg, Non-Veg, Vegan, Keto)',
-      '100% offline-ready PWA for iPhone and Android'
+      '5,300+ searchable exercises with 60fps looping video demos',
+      'Full-screen rest timer with sound alerts and Screen Wake Lock',
+      'Personalized AI workout & diet generator updated anytime',
+      'Smart "Lift Heavier" recommendations based on your logs',
+      'Front and back muscle recovery heatmaps',
+      'Practical food logging with kitchen scale accuracy tips',
+      '100% offline basement mode + cloud backup via email'
     ],
     reviews: [
-      { name: 'Sameer Khan', role: 'Competitive Lifter · Mumbai', text: 'The smart rest timer and auto weight bump completely changed my sessions. No more looking at the clock or losing focus between heavy sets.', stars: 5 },
+      { name: 'Sameer Khan', role: 'Competitive Lifter · Mumbai', text: 'The full-screen rest timer and auto weight bump completely changed my sessions. No more looking at the clock or losing focus between heavy sets.', stars: 5 },
       { name: 'Dr. Priya Sharma', role: 'Endurance Athlete · Bengaluru', text: 'Finally a fitness app that works seamlessly in our basement gym without internet signal. The macro calculator for vegetarian diets is spot on.', stars: 5 },
     ],
-    stats: [['1,324+','HD Video Demos'],['100%','Offline Ready'],['4.9★','User Rating'],['₹399/mo','Starting Price']],
+    stats: [['5,300+','HD Video Demos'],['100%','Offline Ready'],['4.9★','User Rating'],['₹399/mo','Pro Access']],
     plans: [
-      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Live Player & Macro Engine', popular: true }
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 5,300+ Exercises, AI Plans, Live Player & Cloud Sync', popular: true }
     ],
   },
   'ai-sales-agent': {
