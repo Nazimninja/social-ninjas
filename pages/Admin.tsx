@@ -6,7 +6,7 @@ import {
   Share2, Video, Eye, Users, RefreshCw, Send, 
   CheckSquare, Copy, ArrowUpRight, Flame, Layers,
   TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star,
-  ExternalLink, ArrowRight, ShieldCheck, Check
+  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { supabase } from './supabase';
@@ -67,13 +67,79 @@ const XPROMO = [
   { label: 'Vice Vault ➔ 9th Gear', sub: "Direct gaming fans to IRL automotive content @9thgear_.", color: '#f43f5e' },
 ];
 
+export interface PipelineStageConfig {
+  id: string;
+  label: string;
+  color: string;
+  bg: string;
+  border: string;
+}
+
+export const PIPELINE_STAGES: PipelineStageConfig[] = [
+  { id: 'New Inbound', label: 'New Inbound', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30' },
+  { id: 'In Dialogue', label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
+  { id: 'Call Scheduled', label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
+  { id: 'Proposal Sent', label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
+  { id: 'Closed Deal', label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  { id: 'Nurture Later', label: 'Nurture Later', color: 'text-pink-400', bg: 'bg-pink-500/10', border: 'border-pink-500/30' },
+  { id: 'Lost', label: 'Lost', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
+];
+
+export const normalizeLeadStatus = (rawStatus?: string | null): string => {
+  if (!rawStatus) return 'New Inbound';
+  const s = rawStatus.trim().toLowerCase();
+  if (s === 'new lead' || s === 'new inbound' || s === 'new' || s === 'inbound') return 'New Inbound';
+  if (s === 'in dialogue' || s === 'contacted' || s === 'dialogue') return 'In Dialogue';
+  if (s === 'call scheduled' || s === 'demo scheduled' || s === 'call' || s === 'meeting') return 'Call Scheduled';
+  if (s === 'proposal sent' || s === 'proposal') return 'Proposal Sent';
+  if (s === 'closed deal' || s === 'won' || s === 'closed' || s === 'closed deal 🎉' || s === 'paid pro member') return 'Closed Deal';
+  if (s === 'nurture later' || s === 'nurture') return 'Nurture Later';
+  if (s === 'lost') return 'Lost';
+  return rawStatus;
+};
+
 const LEAD_STATUS_CONFIG: Record<string, { label: string, color: string, bg: string, border: string }> = {
+  'New Inbound': { label: 'New Inbound', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30' },
+  'In Dialogue': { label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
+  'Call Scheduled': { label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
+  'Proposal Sent': { label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
+  'Closed Deal': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'Nurture Later': { label: 'Nurture Later', color: 'text-pink-400', bg: 'bg-pink-500/10', border: 'border-pink-500/30' },
+  'Lost': { label: 'Lost', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
+  
+  // Legacy mappings for backwards compatibility
   'NEW LEAD': { label: 'New Inbound', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30' },
   'CONTACTED': { label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
   'DEMO SCHEDULED': { label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  'PROPOSAL SENT': { label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
   'WON': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
-  'LOST': { label: 'Nurture Later', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
+  'PAID PRO MEMBER': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+};
+
+export interface ParsedLeadNotes {
+  icpScore: string | null;
+  signal: string | null;
+  reasoning: string | null;
+  suggestedOpener: string | null;
+  rawRemaining: string | null;
+}
+
+export const parseLeadNotes = (notesText?: string | null): ParsedLeadNotes => {
+  if (!notesText) {
+    return { icpScore: null, signal: null, reasoning: null, suggestedOpener: null, rawRemaining: null };
+  }
+  const icpMatch = notesText.match(/\[ICP Score:\s*([^\]]+)\]/i);
+  const icpScore = icpMatch ? icpMatch[1].trim() : null;
+  const signalMatch = notesText.match(/\[Signal:\s*([^\]]+)\]/i);
+  const signal = signalMatch ? signalMatch[1].trim() : null;
+  let suggestedOpener: string | null = null;
+  const openerMatch = notesText.match(/Suggested Opener:\s*([\s\S]+?)$/i);
+  if (openerMatch) suggestedOpener = openerMatch[1].trim();
+  let reasoning: string | null = null;
+  const reasoningMatch = notesText.match(/Reasoning:\s*([\s\S]+?)(?=\n\s*Suggested Opener:|$)/i);
+  if (reasoningMatch) reasoning = reasoningMatch[1].trim();
+  let rawRemaining: string | null = null;
+  if (!icpScore && !signal && !suggestedOpener && !reasoning) rawRemaining = notesText;
+  return { icpScore, signal, reasoning, suggestedOpener, rawRemaining };
 };
 
 const pc = (id: string) => PROFILES.find(p => p.id === id || p.label === id || p.id.toLowerCase() === id?.toLowerCase() || p.label.toLowerCase() === id?.toLowerCase())?.color || '#38bdf8';
@@ -110,6 +176,16 @@ export const Admin: React.FC = () => {
   const [newFitStatus, setNewFitStatus] = useState<string>('free');
   const [openScriptId, setOpenScriptId] = useState<string | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  // ── Lead Detail & Pipeline States ───────────────────────────────────
+  const [selectedLead, setSelectedLead] = useState<any | null>(null);
+  const [editedOpener, setEditedOpener] = useState<string>('');
+  const [copiedOpener, setCopiedOpener] = useState<boolean>(false);
+  const [savedOpenerFeedback, setSavedOpenerFeedback] = useState<boolean>(false);
+  const [selectedPipelineStage, setSelectedPipelineStage] = useState<string | null>(null);
+  const [leadFollowUpFilter, setLeadFollowUpFilter] = useState<'all' | 'scheduled' | 'overdue'>('all');
+  const [detailFollowUpDate, setDetailFollowUpDate] = useState<string>('');
+  const [detailFollowUpNotes, setDetailFollowUpNotes] = useState<string>('');
 
   // ── Scheduler ───────────────────────────────────────────────────────
   const [scheduleLeadId, setScheduleLeadId] = useState<string>('');
@@ -223,6 +299,84 @@ export const Admin: React.FC = () => {
       await supabase.from('leads').delete().eq('id', id);
     }
     setLeads(prev => prev.filter(l => l.id !== id));
+    if (selectedLead && selectedLead.id === id) {
+      setSelectedLead(null);
+    }
+  };
+
+  const handleOpenLeadDetail = (lead: any) => {
+    setSelectedLead(lead);
+    const parsed = parseLeadNotes(lead.notes);
+    setEditedOpener(parsed.suggestedOpener || '');
+    setCopiedOpener(false);
+    setSavedOpenerFeedback(false);
+    setDetailFollowUpDate(lead.next_follow_up ? lead.next_follow_up.split('T')[0] : '');
+    setDetailFollowUpNotes(lead.follow_up_notes || '');
+  };
+
+  const handleUpdateLeadStatus = async (leadId: string, newStatus: string, e?: React.MouseEvent | React.ChangeEvent) => {
+    if (e) e.stopPropagation();
+    // Optimistic update of local state immediately
+    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
+    setSelectedLead((prev: any) => prev && prev.id === leadId ? { ...prev, status: newStatus } : prev);
+    
+    try {
+      const { error } = await supabase.from('leads').update({ status: newStatus }).eq('id', leadId);
+      if (error) {
+        await fetch(getApiUrl('/api/data?resource=leads'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: leadId, status: newStatus })
+        }).catch(() => {});
+      }
+    } catch (err) {
+      console.error('Failed to update lead status:', err);
+    }
+  };
+
+  const handleCopyOpener = () => {
+    if (!editedOpener) return;
+    navigator.clipboard.writeText(editedOpener).catch(() => {});
+    setCopiedOpener(true);
+    setTimeout(() => setCopiedOpener(false), 2200);
+  };
+
+  const handleSaveOpener = async (leadId: string) => {
+    if (!selectedLead) return;
+    // Reconstruct notes with edited opener
+    const currentNotes = selectedLead.notes || '';
+    let newNotes = currentNotes;
+    if (/Suggested Opener:\s*[\s\S]+?$/i.test(currentNotes)) {
+      newNotes = currentNotes.replace(/Suggested Opener:\s*[\s\S]+?$/i, `Suggested Opener:\n${editedOpener}`);
+    } else {
+      newNotes = currentNotes ? `${currentNotes}\n\nSuggested Opener:\n${editedOpener}` : `Suggested Opener:\n${editedOpener}`;
+    }
+
+    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, notes: newNotes } : l));
+    setSelectedLead((prev: any) => prev ? { ...prev, notes: newNotes } : null);
+
+    try {
+      await supabase.from('leads').update({ notes: newNotes }).eq('id', leadId);
+      setSavedOpenerFeedback(true);
+      setTimeout(() => setSavedOpenerFeedback(false), 2000);
+    } catch (err) {
+      console.error('Failed to save opener:', err);
+    }
+  };
+
+  const handleSaveDetailFollowUp = async (leadId: string) => {
+    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, next_follow_up: detailFollowUpDate || null, follow_up_notes: detailFollowUpNotes || null } : l));
+    setSelectedLead((prev: any) => prev ? { ...prev, next_follow_up: detailFollowUpDate || null, follow_up_notes: detailFollowUpNotes || null } : null);
+
+    try {
+      await supabase.from('leads').update({
+        next_follow_up: detailFollowUpDate || null,
+        follow_up_notes: detailFollowUpNotes || null
+      }).eq('id', leadId);
+      alert('Follow-up scheduled successfully!');
+    } catch (err) {
+      console.error('Failed to save follow-up:', err);
+    }
   };
 
   const handleDeleteScript = async (id: string, topic?: string) => {
@@ -255,6 +409,10 @@ export const Admin: React.FC = () => {
 
   const handleScheduleSubmit = async () => {
     if (!scheduleLeadId) return alert('Select a lead to schedule');
+    setLeads(prev => prev.map(l => l.id === scheduleLeadId ? { ...l, next_follow_up: scheduleDate, follow_up_notes: scheduleNotes || 'Scheduled Discovery Session' } : l));
+    if (selectedLead && selectedLead.id === scheduleLeadId) {
+      setSelectedLead((prev: any) => prev ? { ...prev, next_follow_up: scheduleDate, follow_up_notes: scheduleNotes || 'Scheduled Discovery Session' } : null);
+    }
     await supabase.from('leads').update({
       next_follow_up: scheduleDate,
       follow_up_notes: scheduleNotes || 'Scheduled Discovery Session'
@@ -311,7 +469,7 @@ export const Admin: React.FC = () => {
 
   const todayStr = new Date().toISOString().split('T')[0];
   const followupsToday = leads.filter(l => (l.next_follow_up || l.nextFollowUp || '').startsWith(todayStr));
-  const wonLeadsCount = leads.filter(l => (l.status || '').toUpperCase() === 'WON').length;
+  const wonLeadsCount = leads.filter(l => normalizeLeadStatus(l.status) === 'Closed Deal').length;
   const premiumFitCount = fitClients.filter(f => f.plan_status === 'premium').length;
   const unpaidFitCount = fitClients.filter(f => f.plan_status !== 'premium').length;
   const activeFitCount = fitClients.filter(f => f.is_active === true).length;
@@ -321,12 +479,27 @@ export const Admin: React.FC = () => {
   const allowedTabs = ROLES[userRole]?.tabs || ROLES.founder.tabs;
   const visibleTabs = ALL_TABS.filter(t => allowedTabs.includes(t.id));
 
-  // Search filtering
-  const filteredLeads = leads.filter(l => 
-    (l.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (l.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (l.company || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Search, Stage & Follow-up filtering for Leads
+  const filteredLeads = leads.filter(l => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = 
+      (l.name || '').toLowerCase().includes(term) ||
+      (l.email || '').toLowerCase().includes(term) ||
+      (l.company || '').toLowerCase().includes(term) ||
+      (l.message || '').toLowerCase().includes(term) ||
+      (l.source || '').toLowerCase().includes(term);
+
+    const matchesStage = selectedPipelineStage ? normalizeLeadStatus(l.status) === selectedPipelineStage : true;
+
+    let matchesFollowUp = true;
+    if (leadFollowUpFilter === 'scheduled') {
+      matchesFollowUp = !!l.next_follow_up;
+    } else if (leadFollowUpFilter === 'overdue') {
+      matchesFollowUp = !!l.next_follow_up && new Date(l.next_follow_up) < new Date(new Date().setHours(0,0,0,0));
+    }
+
+    return matchesSearch && matchesStage && matchesFollowUp;
+  });
 
   const filteredFitClients = fitClients.filter(f => {
     const term = searchTerm.toLowerCase();
@@ -707,17 +880,73 @@ export const Admin: React.FC = () => {
             </div>
 
             {/* Pipeline Stage Counters */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-              {Object.keys(LEAD_STATUS_CONFIG).map(st => {
-                const conf = LEAD_STATUS_CONFIG[st];
-                const count = leads.filter(l => (l.status || '').toUpperCase() === st).length;
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+              {PIPELINE_STAGES.map(stage => {
+                const count = leads.filter(l => normalizeLeadStatus(l.status) === stage.id).length;
+                const isSelected = selectedPipelineStage === stage.id;
                 return (
-                  <div key={st} className={`p-3.5 rounded-xl border text-center ${conf.bg} ${conf.border}`}>
-                    <div className={`text-xl font-black ${conf.color}`}>{count}</div>
-                    <div className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{conf.label}</div>
-                  </div>
+                  <button
+                    key={stage.id}
+                    type="button"
+                    onClick={() => setSelectedPipelineStage(isSelected ? null : stage.id)}
+                    className={`p-3.5 rounded-xl border text-center transition-all duration-200 cursor-pointer ${stage.bg} ${stage.border} ${
+                      isSelected ? 'ring-2 ring-white/50 scale-[1.02] shadow-lg' : 'hover:opacity-90 hover:scale-[1.01]'
+                    }`}
+                    title={`Filter by ${stage.label}`}
+                  >
+                    <div className={`text-xl font-black ${stage.color}`}>{count}</div>
+                    <div className="text-[9px] font-bold text-slate-400 uppercase mt-0.5 tracking-wider">{stage.label}</div>
+                    {isSelected && <div className="text-[8px] text-white font-semibold mt-1">● Active Filter</div>}
+                  </button>
                 );
               })}
+            </div>
+
+            {/* Sub-header Filter Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-[#121929] border border-white/[0.05] rounded-xl p-3 text-xs">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-slate-400 font-medium">Filter by Follow-up:</span>
+                <button
+                  type="button"
+                  onClick={() => setLeadFollowUpFilter('all')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${
+                    leadFollowUpFilter === 'all' ? 'bg-sky-500 text-white shadow-sm' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  All ({leads.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeadFollowUpFilter('scheduled')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${
+                    leadFollowUpFilter === 'scheduled' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  📅 Scheduled ({leads.filter(l => l.next_follow_up).length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLeadFollowUpFilter('overdue')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors ${
+                    leadFollowUpFilter === 'overdue' ? 'bg-rose-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  ⚠️ Overdue ({leads.filter(l => l.next_follow_up && new Date(l.next_follow_up) < new Date(new Date().setHours(0,0,0,0))).length})
+                </button>
+              </div>
+
+              {selectedPipelineStage && (
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400 text-[11px]">Filtered by stage: <b className="text-white">{selectedPipelineStage}</b></span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPipelineStage(null)}
+                    className="text-[10px] font-extrabold text-slate-400 hover:text-rose-400 underline cursor-pointer"
+                  >
+                    Clear stage filter
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Leads Table */}
@@ -737,56 +966,124 @@ export const Admin: React.FC = () => {
                   {filteredLeads.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-500 italic">
-                        No leads found in pipeline. Click "+ Add Lead" to record a new prospect.
+                        {leads.length === 0
+                          ? 'No leads found in pipeline. Click "+ Add Lead" to record a new prospect.'
+                          : 'No leads match the active filters.'}
                       </td>
                     </tr>
                   ) : (
                     filteredLeads.map(lead => {
-                      const st = (lead.status || 'NEW LEAD').toUpperCase();
-                      const conf = LEAD_STATUS_CONFIG[st] || LEAD_STATUS_CONFIG['NEW LEAD'];
+                      const currentStatus = normalizeLeadStatus(lead.status);
+                      const conf = LEAD_STATUS_CONFIG[currentStatus] || LEAD_STATUS_CONFIG['New Inbound'];
+                      const parsed = parseLeadNotes(lead.notes);
+                      const isPlaceholderEmail = (lead.email || '').includes('@instagram.lead') || (lead.email || '').includes('@reddit.lead');
+
                       return (
-                        <tr key={lead.id} className="hover:bg-white/[0.02] transition-colors">
+                        <tr
+                          key={lead.id}
+                          onClick={() => handleOpenLeadDetail(lead)}
+                          className="hover:bg-white/[0.04] cursor-pointer transition-colors group"
+                          title="Click to view prospect details & suggested opener"
+                        >
                           <td className="py-4 pr-4">
-                            <div className="font-bold text-white text-sm">{lead.name || 'Anonymous'}</div>
-                            <div className="text-slate-400 text-[11px]">{lead.email} · {lead.phone || 'No phone'}</div>
+                            <div className="flex items-center gap-2">
+                              <div className="font-bold text-white text-sm group-hover:text-sky-300 transition-colors">
+                                {lead.name || 'Anonymous'}
+                              </div>
+                              {parsed.icpScore && (
+                                <span className="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                                  ICP {parsed.icpScore}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-slate-400 text-[11px] mt-0.5 flex items-center gap-1.5 flex-wrap">
+                              <span>{lead.email}</span>
+                              {isPlaceholderEmail && (
+                                <span className="text-[9px] text-slate-500 italic">(system placeholder)</span>
+                              )}
+                              {lead.phone && <span>· {lead.phone}</span>}
+                            </div>
                           </td>
                           <td className="py-4 pr-4">
                             <div className="font-semibold text-slate-200">{lead.company || lead.website || 'Direct Prospect'}</div>
-                            <div className="text-[11px] text-slate-500">{lead.source || 'Website Inbound'}</div>
+                            <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
+                              <span className="capitalize">{lead.source || 'Website Inbound'}</span>
+                              {lead.website && (
+                                <a
+                                  href={lead.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={e => e.stopPropagation()}
+                                  className="text-sky-400 hover:text-sky-300 inline-flex items-center ml-1"
+                                  title="Open profile link"
+                                >
+                                  <ExternalLink size={11} />
+                                </a>
+                              )}
+                            </div>
                           </td>
-                          <td className="py-4 pr-4">
-                            <span className={`px-2.5 py-0.5 text-[10px] font-extrabold rounded-full border uppercase ${conf.bg} ${conf.color} ${conf.border}`}>
-                              {conf.label}
-                            </span>
+                          <td className="py-4 pr-4" onClick={e => e.stopPropagation()}>
+                            <div className="relative inline-block">
+                              <select
+                                value={currentStatus}
+                                onChange={(e) => handleUpdateLeadStatus(lead.id, e.target.value, e)}
+                                className={`appearance-none cursor-pointer pl-3 pr-7 py-1 text-[10px] font-extrabold rounded-full border uppercase tracking-wider transition-all focus:outline-none focus:ring-1 focus:ring-white/30 shadow-sm ${conf.bg} ${conf.color} ${conf.border}`}
+                              >
+                                {PIPELINE_STAGES.map(stage => (
+                                  <option key={stage.id} value={stage.id} className="bg-[#0e1424] text-white py-1">
+                                    {stage.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <ChevronDown size={11} className={`absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${conf.color} opacity-75`} />
+                            </div>
                           </td>
-                          <td className="py-4 pr-4">
+                          <td className="py-4 pr-4" onClick={e => e.stopPropagation()}>
                             {lead.next_follow_up ? (
-                              <div className="text-amber-400 font-bold">
-                                📅 {fmtDate(lead.next_follow_up)}
-                                <div className="text-[10px] text-slate-500 font-normal truncate max-w-[140px]">{lead.follow_up_notes || 'Scheduled call'}</div>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <div className="text-amber-400 font-bold text-xs">
+                                  📅 {fmtDate(lead.next_follow_up)}
+                                  {lead.follow_up_notes && (
+                                    <div className="text-[10px] text-slate-400 font-normal truncate max-w-[140px]" title={lead.follow_up_notes}>
+                                      {lead.follow_up_notes}
+                                    </div>
+                                  )}
+                                </div>
+                                {new Date(lead.next_follow_up) < new Date(new Date().setHours(0,0,0,0)) && (
+                                  <span className="px-1.5 py-0.5 text-[8px] font-black uppercase rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                                    Overdue
+                                  </span>
+                                )}
                               </div>
                             ) : (
-                              <span className="text-slate-600 italic">Not scheduled</span>
+                              <span className="text-slate-600 italic text-xs">Not scheduled</span>
                             )}
                           </td>
-                          <td className="py-4 pr-4 text-slate-400">
+                          <td className="py-4 pr-4 text-slate-400 text-xs">
                             {fmtDate(lead.created_at)}
                           </td>
-                          <td className="py-4 text-right">
-                            <div className="flex gap-1.5 justify-end">
+                          <td className="py-4 text-right" onClick={e => e.stopPropagation()}>
+                            <div className="flex gap-1.5 justify-end items-center">
+                              <button
+                                onClick={() => handleOpenLeadDetail(lead)}
+                                className="p-2 bg-sky-500/10 hover:bg-sky-600 text-sky-400 hover:text-white rounded-lg transition-colors text-xs font-bold cursor-pointer"
+                                title="View Lead Details & Opener"
+                              >
+                                <Eye size={14} />
+                              </button>
                               <button
                                 onClick={() => {
                                   setScheduleLeadId(lead.id);
                                   setShowScheduleModal(true);
                                 }}
-                                className="p-2 bg-purple-500/10 hover:bg-purple-600 text-purple-300 hover:text-white rounded-lg transition-colors text-xs font-bold"
+                                className="p-2 bg-purple-500/10 hover:bg-purple-600 text-purple-300 hover:text-white rounded-lg transition-colors text-xs font-bold cursor-pointer"
                                 title="Schedule Call"
                               >
                                 <CalendarIcon size={14} />
                               </button>
                               <button
                                 onClick={() => handleDeleteLead(lead.id)}
-                                className="p-2 bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white rounded-lg transition-colors text-xs"
+                                className="p-2 bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white rounded-lg transition-colors text-xs cursor-pointer"
                                 title="Delete Lead"
                               >
                                 <Trash2 size={14} />
@@ -1916,6 +2213,292 @@ export const Admin: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* LEAD DETAIL MODAL */}
+      {selectedLead && (() => {
+        const lead = selectedLead;
+        const currentStatus = normalizeLeadStatus(lead.status);
+        const conf = LEAD_STATUS_CONFIG[currentStatus] || LEAD_STATUS_CONFIG['New Inbound'];
+        const parsed = parseLeadNotes(lead.notes);
+        const isPlaceholderEmail = (lead.email || '').includes('@instagram.lead') || (lead.email || '').includes('@reddit.lead');
+
+        return (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+            <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              
+              {/* Header */}
+              <div className="p-5 border-b border-white/[0.08] flex items-start justify-between gap-4 bg-[#121929]/70">
+                <div className="space-y-1 min-w-0">
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h3 className="text-lg font-black text-white truncate">
+                      {lead.name || 'Anonymous Prospect'}
+                    </h3>
+                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.1]">
+                      {lead.source || 'Inbound'}
+                    </span>
+                    {parsed.icpScore && (
+                      <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1 shadow-sm">
+                        <Sparkles size={11} /> ICP Score: {parsed.icpScore}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-400 font-medium truncate">
+                    {lead.company || lead.website || 'Prospect Profile'}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setSelectedLead(null)}
+                  className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors cursor-pointer"
+                  title="Close Detail View"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 overflow-y-auto space-y-5 text-xs">
+                
+                {/* Status Selector Banner */}
+                <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
+                      Current Stage:
+                    </span>
+                    <span className={`px-2.5 py-0.5 text-[10px] font-extrabold rounded-full border uppercase ${conf.bg} ${conf.color} ${conf.border}`}>
+                      {conf.label}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <label className="text-[10px] font-bold text-slate-400">Move to:</label>
+                    <select
+                      value={currentStatus}
+                      onChange={(e) => handleUpdateLeadStatus(lead.id, e.target.value)}
+                      className="bg-[#070b14] border border-white/[0.15] text-white rounded-lg px-3 py-1.5 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer"
+                    >
+                      {PIPELINE_STAGES.map(s => (
+                        <option key={s.id} value={s.id}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Contact & Source Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] space-y-1.5">
+                    <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Globe size={12} className="text-sky-400" /> Source Profile / URL
+                    </div>
+                    {lead.website ? (
+                      <a
+                        href={lead.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-400 hover:text-sky-300 font-semibold break-all flex items-center gap-1 text-xs hover:underline"
+                      >
+                        <span className="truncate">{lead.website}</span>
+                        <ExternalLink size={12} className="shrink-0" />
+                      </a>
+                    ) : (
+                      <span className="text-slate-500 italic">No link available</span>
+                    )}
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] space-y-1.5">
+                    <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Mail size={12} className="text-indigo-400" /> Contact Email
+                    </div>
+                    <div className="text-slate-200 font-medium break-all">{lead.email || 'None on file'}</div>
+                    {isPlaceholderEmail && (
+                      <div className="text-[9px] text-amber-400/90 font-medium bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 inline-block">
+                        System placeholder · DM directly on platform
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bio / Inquiry Description */}
+                {lead.message && (
+                  <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.05] space-y-1.5">
+                    <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <MessageSquare size={12} className="text-emerald-400" /> Bio / Profile Description
+                    </div>
+                    <p className="text-slate-300 whitespace-pre-wrap leading-relaxed italic bg-[#070b14]/50 p-2.5 rounded-lg border border-white/[0.03]">
+                      "{lead.message}"
+                    </p>
+                  </div>
+                )}
+
+                {/* AI Intelligence Breakdown (Signal & Reasoning) */}
+                {(parsed.signal || parsed.reasoning) && (
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-[#131b2e] to-[#0e1424] border border-sky-500/20 space-y-3 shadow-md">
+                    <div className="flex items-center justify-between">
+                      <div className="text-[10px] font-black text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <Sparkles size={13} /> AI Intelligence & Qualification Signal
+                      </div>
+                      {parsed.signal && (
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/30">
+                          {parsed.signal}
+                        </span>
+                      )}
+                    </div>
+
+                    {parsed.reasoning && (
+                      <div className="space-y-1">
+                        <div className="text-[10px] font-bold text-slate-400 uppercase">Analysis:</div>
+                        <p className="text-slate-200 leading-relaxed text-xs">
+                          {parsed.reasoning}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Suggested Opener (Editable + Copy Button) */}
+                <div className="p-4 rounded-xl bg-[#121929] border border-amber-500/30 space-y-2.5 shadow-md">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[10px] font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Send size={12} /> Suggested DM Opener (Editable)
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {savedOpenerFeedback && (
+                        <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                          <Check size={12} /> Saved to notes!
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={handleCopyOpener}
+                        disabled={!editedOpener}
+                        className={`px-3 py-1 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition-all shadow-md cursor-pointer ${
+                          copiedOpener
+                            ? 'bg-emerald-600 text-white shadow-emerald-600/30'
+                            : 'bg-brand-primary hover:opacity-90 text-white shadow-brand-primary/20'
+                        }`}
+                      >
+                        {copiedOpener ? (
+                          <>
+                            <Check size={13} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={13} /> Copy Opener
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <textarea
+                    value={editedOpener}
+                    onChange={(e) => setEditedOpener(e.target.value)}
+                    rows={3}
+                    placeholder="Enter or edit outreach DM opener..."
+                    className="w-full bg-[#070b14] border border-white/[0.1] rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500/50 leading-relaxed font-sans"
+                  />
+
+                  <div className="flex items-center justify-between pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleSaveOpener(lead.id)}
+                      className="text-[10px] font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
+                    >
+                      💾 Save changes to notes
+                    </button>
+
+                    {lead.website && (
+                      <a
+                        href={lead.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 hover:underline"
+                      >
+                        Open Profile to Send DM →
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Follow-up Scheduler Section */}
+                <div className="p-4 rounded-xl bg-[#121929] border border-white/[0.06] space-y-3">
+                  <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <CalendarIcon size={12} className="text-purple-400" /> Schedule Next Follow-Up Call
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[9px] font-bold text-slate-400 block mb-1">CALL DATE</label>
+                      <input
+                        type="date"
+                        value={detailFollowUpDate}
+                        onChange={(e) => setDetailFollowUpDate(e.target.value)}
+                        className="w-full bg-[#070b14] border border-white/[0.08] rounded-xl p-2.5 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[9px] font-bold text-slate-400 block mb-1">AGENDA / CALL NOTES</label>
+                      <input
+                        type="text"
+                        value={detailFollowUpNotes}
+                        onChange={(e) => setDetailFollowUpNotes(e.target.value)}
+                        placeholder="e.g. 15-min growth audit review"
+                        className="w-full bg-[#070b14] border border-white/[0.08] rounded-xl p-2.5 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-1">
+                    {lead.next_follow_up && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDetailFollowUpDate('');
+                          setDetailFollowUpNotes('');
+                          handleUpdateLeadFollowUp(lead.id, null, null);
+                        }}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-rose-400 bg-white/[0.04] hover:bg-white/[0.08] transition-colors cursor-pointer"
+                      >
+                        Clear Date
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleSaveDetailFollowUp(lead.id)}
+                      className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md shadow-purple-600/20 transition-colors cursor-pointer"
+                    >
+                      Save Follow-Up
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Footer */}
+              <div className="p-4 border-t border-white/[0.08] bg-[#121929]/70 flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteLead(lead.id)}
+                  className="px-3 py-1.5 rounded-xl text-xs font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-600 transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Trash2 size={13} /> Delete Lead
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedLead(null)}
+                  className="px-4 py-1.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
 
       {/* FIT NINJA MANAGE MODAL */}
       {manageFitStatus && (
