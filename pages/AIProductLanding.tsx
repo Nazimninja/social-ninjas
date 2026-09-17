@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, ArrowRight, Star } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ArrowRight, Star, Search, Zap, Bot, Target, BarChart3 } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const productsData: Record<string, any> = {
   'fit-ninja': {
-    name: 'Fit Ninja', icon: '🥷', color: '#38bdf8', badge: '🟢 v2.0 Live',
-    tagline: '5,300+ Animated Exercises, Custom AI Workout & Diet Plans.',
-    hero: 'The ultimate gym workout and body transformation companion. Features 5,300+ animated video exercise demos, guided set player with full-screen rest timers, smart automatic weight progression, interactive muscle recovery heatmaps, and personalized AI meal plans.',
+    name: 'Fit Ninja', icon: Zap, color: '#38bdf8', badge: 'v2.0 Live', isLive: true,
+    tagline: '5,300+ Animated Exercises, Custom Workout & Diet Plans.',
+    hero: 'The ultimate gym workout and body transformation companion. Features 5,300+ animated video exercise demos, guided set player with full-screen rest timers, smart automatic weight progression, interactive muscle recovery heatmaps, and personalized custom meal plans.',
     tryLink: 'https://fit.socialninjas.in/app?mode=signup',
     exploreLink: 'https://fit.socialninjas.in/#library',
     problem: 'Most workout apps are passive digital notebooks or complicated spreadsheets full of robotic jargon that freeze in gym basements. Lifters lose momentum guessing weights, resting too long between sets, and struggling with mismatched nutrition targets.',
@@ -21,7 +21,7 @@ const productsData: Record<string, any> = {
     features: [
       '5,300+ searchable exercises with 60fps looping video demos',
       'Full-screen rest timer with sound alerts and Screen Wake Lock',
-      'Personalized AI workout & diet generator updated anytime',
+      'Personalized custom workout & diet generator updated anytime',
       'Smart "Lift Heavier" recommendations based on your logs',
       'Front and back muscle recovery heatmaps',
       'Practical food logging with kitchen scale accuracy tips',
@@ -33,11 +33,11 @@ const productsData: Record<string, any> = {
     ],
     stats: [['5,300+','HD Video Demos'],['100%','Offline Ready'],['4.9★','User Rating'],['₹399/mo','Pro Access']],
     plans: [
-      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 5,300+ Exercises, AI Plans, Live Player & Cloud Sync', popular: true }
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 5,300+ Exercises, Custom Plans, Live Player & Cloud Sync', popular: true }
     ],
   },
   'ai-sales-agent': {
-    name: 'AI Sales Agent', icon: '🤖', color: '#9b8ef0', badge: '🔜 Coming Soon',
+    name: 'AI Sales Agent', icon: Bot, color: '#9b8ef0', badge: 'Coming Soon', isLive: false,
     tagline: 'Your 24/7 sales team. Never misses a lead.',
     hero: 'Every time someone fills in a form, sends a DM, or clicks a button on your website — they expect a reply fast. The research is clear: if you reply within 5 minutes, you\'re 9× more likely to convert them. If you wait an hour, most are already gone.',
     tryLink: '/contact',
@@ -57,7 +57,7 @@ const productsData: Record<string, any> = {
     stats: [['0.8s','Avg Reply Time'],['24/7','Always Online'],['3×','Conversion Lift'],['7-10','Days to Deploy']],
   },
   'ad-copy-generator': {
-    name: 'AI Ad Copy Generator', icon: '🎯', color: '#2fcf8e', badge: '🔜 Coming Soon',
+    name: 'AI Ad Copy Generator', icon: Target, color: '#2fcf8e', badge: 'Coming Soon', isLive: false,
     tagline: 'High-converting ad copy. Seconds, not days.',
     hero: 'Writing ad copy is one of the most valuable skills in marketing — and one of the hardest. A single headline change can double your click-through rate. Most businesses either guess or spend hours testing. We built AI to do it faster.',
     tryLink: '/contact',
@@ -73,7 +73,7 @@ const productsData: Record<string, any> = {
     stats: [['Meta+Google','Both platforms'],['∞','Unlimited variations'],['A/B Ready','Test from day one'],['Seconds','Not days']],
   },
   'reporting-assistant': {
-    name: 'AI Reporting Assistant', icon: '📊', color: '#e8b86d', badge: '🔜 Coming Soon',
+    name: 'AI Reporting Assistant', icon: BarChart3, color: '#e8b86d', badge: 'Coming Soon', isLive: false,
     tagline: 'Know what\'s working. Skip the spreadsheets.',
     hero: 'Every Monday, someone on your team (or you) spends hours pulling numbers from Meta, Google, and whatever else you\'re running — trying to make sense of it all. That time should be spent improving campaigns, not building reports.',
     tryLink: '/contact',
@@ -122,7 +122,7 @@ const AIProductLanding: React.FC = () => {
 
   if (!p) return (
     <div style={{ minHeight: '100vh', background: '#07090e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#ffffff', gap: 20 }}>
-      <div style={{ fontSize: 48 }}>🔍</div>
+      <Search size={44} color="#94a3b8" />
       <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: "'Bricolage Grotesque',system-ui" }}>Product not found</h1>
       <Link to="/ai-products"><button className="btn-primary">See All Products</button></Link>
     </div>
@@ -152,18 +152,28 @@ const AIProductLanding: React.FC = () => {
         
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px', position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <Link to="/ai-products" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#94a3b8', textDecoration: 'none', fontSize: 13, marginBottom: 36, fontWeight: 400 }}>
-            <ArrowLeft size={14} /> Back to AI Products
+            <ArrowLeft size={14} /> {id === 'fit-ninja' ? 'Back to Products' : 'Back to AI Products'}
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 24 }}>
-            <div style={{ width: 52, height: 52, borderRadius: 16, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>{p.icon}</div>
-            <div style={{ fontSize: 12, fontWeight: 700, padding: '5px 14px', borderRadius: 50, background: isLive ? 'rgba(47,207,142,0.12)' : '#f0f0f0', border: isLive ? '1px solid rgba(47,207,142,0.25)' : '1px solid #e5e5e5', color: isLive ? '#2fcf8e' : '#717171' }}>{p.badge}</div>
+            {(() => {
+              const IconComp = p.icon;
+              return (
+                <div style={{ width: 52, height: 52, borderRadius: 16, background: `${p.color}14`, border: `1px solid ${p.color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <IconComp size={24} style={{ color: p.color }} />
+                </div>
+              );
+            })()}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, padding: '5px 14px', borderRadius: 50, background: isLive ? 'rgba(47,207,142,0.12)' : 'rgba(255,255,255,0.06)', border: isLive ? '1px solid rgba(47,207,142,0.25)' : '1px solid rgba(255,255,255,0.1)', color: isLive ? '#2fcf8e' : '#94a3b8' }}>
+              {isLive && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#2fcf8e' }} />}
+              {p.badge}
+            </div>
           </div>
           <h1 className="reveal" style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(38px,6vw,80px)', fontWeight: 700, letterSpacing: '-3px', lineHeight: 0.97, marginBottom: 16, color: '#ffffff' }}>{p.name}</h1>
           <div className="reveal d1" style={{ fontSize: 'clamp(16px,2.2vw,24px)', fontWeight: 400, color: p.color, marginBottom: 20 }}>{p.tagline}</div>
           <p className="reveal d2" style={{ fontSize: 'clamp(14px,1.6vw,17px)', fontWeight: 300, color: '#94a3b8', lineHeight: 1.72, maxWidth: 600, margin: '0 auto 40px' }}>{p.hero}</p>
           <div className="reveal d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 32px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>
-              {isLive ? (id === 'fit-ninja' ? '⚡ Launch Fit Ninja Pro →' : '⚡ Try Free — No Card Needed') : 'Join the Waitlist →'}
+              {isLive ? (id === 'fit-ninja' ? 'Launch Fit Ninja Pro →' : 'Try Free — No Card Needed') : 'Join the Waitlist →'}
             </button>
             {isLive && (
               <button onClick={() => handleNavigate(p.exploreLink || p.tryLink || '/contact')} className="btn-ghost" style={{ fontSize: 15 }}>
@@ -302,7 +312,7 @@ const AIProductLanding: React.FC = () => {
             {id === 'fit-ninja' ? 'Join thousands of athletes using Fit Ninja Pro for automated progressive overload, smart rest timers, and precision macro planning.' : (isLive ? 'Get 3 complete posts written for your brand right now. No credit card, no commitment. Just see what it can do.' : 'Join the waitlist and be the first to try it when it launches.')}
           </p>
           <button onClick={() => handleNavigate(p.tryLink)} className="btn-primary" style={{ fontSize: 15, padding: '15px 40px', background: `linear-gradient(135deg,${p.color}cc,${p.color})` }}>
-            {id === 'fit-ninja' ? '⚡ Start Your Transformation →' : (isLive ? '⚡ Try 3 Posts Free' : 'Join Waitlist →')}
+            {id === 'fit-ninja' ? 'Start Your Transformation →' : (isLive ? 'Try 3 Posts Free' : 'Join Waitlist →')}
           </button>
         </div>
       </div>

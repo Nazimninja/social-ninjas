@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import {
   useFitNinja,
   type WeeklyCheckin,
@@ -408,7 +409,7 @@ export default function WeeklyCheckinModal({ isOpen, onClose }: WeeklyCheckinMod
             disabled={isSubmitting}
             className="w-full py-3.5 bg-white hover:bg-slate-100 text-black font-black text-sm rounded-2xl shadow-2xl transition-transform active:scale-98 flex items-center justify-center gap-2"
           >
-            <span>✨</span>
+            <Sparkles size={16} />
             <span>{isSubmitting ? 'Analyzing & Adapting Plan…' : 'Save Check-in & Adapt Plan'}</span>
           </button>
         </form>

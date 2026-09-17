@@ -69,11 +69,11 @@ const SERVICES = [
 
 const DEMO_CHAT = [
   { from: 'lead', text: 'Hi! I run a fitness brand and need more qualified leads.' },
-  { from: 'ai',   text: 'Hi there! Great timing 🎯 — we specialise in scaling fitness & e-commerce brands. What is your current monthly ad budget?' },
+  { from: 'ai',   text: 'Hi there! Great timing — we specialise in scaling fitness & e-commerce brands. What is your current monthly ad budget?' },
   { from: 'lead', text: 'Around ₹80,000 per month.' },
   { from: 'ai',   text: 'Perfect. At that budget we typically generate 180–220 qualified leads/month with a target CPL of ₹360–450. Can I schedule a 15-min audit call for you?' },
   { from: 'lead', text: 'Yes, tomorrow works!' },
-  { from: 'ai',   text: 'Done! I have booked your call and synced your details directly into our CRM calendar. 📅' },
+  { from: 'ai',   text: 'Done! I have booked your call and synced your details directly into our CRM calendar.' },
 ];
 
 /* ─── HOME COMPONENT ─────────────────────────────────────── */

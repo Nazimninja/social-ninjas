@@ -222,7 +222,7 @@ const marketingPagesContent = {
           <div style="max-width:540px;">
             <span style="color:#2fcf8e;font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Active Product</span>
             <h3 style="font-size:26px;color:#ffffff;margin:8px 0 16px;">Fit Ninja</h3>
-            <p style="color:#a0a0b0;font-size:15px;line-height:1.65;margin-bottom:20px;">Deploy personalized AI fitness and diet coaching. Delivers tailored daily macros, exercise plans, and motivational guidelines via instant messaging.</p>
+            <p style="color:#a0a0b0;font-size:15px;line-height:1.65;margin-bottom:20px;">Deploy personalized fitness and diet coaching. Delivers tailored daily macros, exercise plans, and motivational guidelines via instant messaging.</p>
             <a href="/contact" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;background:rgba(255,255,255,0.05);">Request Trial Access</a>
           </div>
         </div>
@@ -232,7 +232,7 @@ const marketingPagesContent = {
   'contact': `
     <main style="max-width:680px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;text-align:center;">
       <h1 style="font-size:40px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Book a Strategy Session</h1>
-      <p style="font-size:17.5px;color:#a0a0b0;margin-bottom:36px;line-height:1.6;">Let's audit your sales funnel. Schedule a 30-minute growth roadmap consultation with our Bangalore team.</p>
+      <p style="font-size:17.5px;color:#a0a0b0;margin-bottom:36px;line-height:1.6;">Let's audit your sales funnel. Schedule a 30-minute growth roadmap consultation with our global strategy team.</p>
       
       <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;text-align:left;margin-bottom:40px;">
         <h3 style="font-size:20px;color:#ffffff;margin-bottom:20px;">Contact Details</h3>
@@ -332,16 +332,16 @@ function prerenderRoute(route, metadata, contentBodyHtml) {
 // Dynamic routes list helper for index loop
 const routes = {
   'services': {
-    title: "Digital Growth & Marketing Services | Social Ninja's Agency Bangalore",
-    description: "Explore our premium growth services in Bangalore & worldwide - AI Lead Automation, Performance Marketing, Creative Studio, Web & SEO, and Growth Consulting."
+    title: "Digital Growth & Marketing Services | Social Ninja's Agency",
+    description: "Explore our premium growth services worldwide - AI Lead Automation, Performance Marketing, Creative Studio, Web & SEO, and Growth Consulting."
   },
   'about': {
-    title: "About Social Ninja's | Top AI Automation & Marketing Agency in Bangalore",
+    title: "About Social Ninja's | Global AI Automation & Performance Marketing Agency",
     description: "Meet the team building premium AI products and revenue growth systems for modern brands worldwide."
   },
   'ai-products': {
-    title: "AI Products & SaaS Suite | Social Ninja's — Fit Ninja & More",
-    description: "Explore our suite of AI products: Fit Ninja delivers personalized AI fitness coaching, AI sales agents, and more."
+    title: "Products & SaaS Suite | Social Ninja's — Fit Ninja & More",
+    description: "Explore our suite of SaaS products: Fit Ninja delivers personalized fitness coaching, alongside AI sales agents, and more."
   },
   'case-studies': {
     title: "Case Studies | Real Growth Results | Social Ninja's",
@@ -352,8 +352,8 @@ const routes = {
     description: "Expert performance marketing advice, AI agency guides, and B2B growth systems from the Social Ninja's team."
   },
   'contact': {
-    title: "Book a Strategy Session | Social Ninja's Bangalore Marketing Agency",
-    description: "Schedule a free 30-minute growth blueprint session with our Bangalore & global marketing team."
+    title: "Book a Strategy Session | Social Ninja's Global Growth Agency",
+    description: "Schedule a free 30-minute growth blueprint session with our global marketing team."
   },
   'privacy': {
     title: "Privacy Policy | Social Ninja's",

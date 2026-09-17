@@ -124,7 +124,7 @@ const LeadAutomation: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
                         <button onClick={scrollToDemo} className="w-full sm:w-auto">
                             <Button className="w-full sm:w-auto py-4 px-10 text-lg rounded-full shadow-[0_4px_24px_rgba(31,75,153,0.15)] hover:shadow-[0_8px_32px_rgba(31,75,153,0.25)]">
-                                👉 Book a Free Demo
+                                Book a Free Demo →
                             </Button>
                         </button>
                         <button onClick={(e) => { e.preventDefault(); document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }) }} className="text-sm font-bold text-neutral-600 hover:text-neutral-900 transition-colors underline underline-offset-4">
@@ -146,7 +146,7 @@ const LeadAutomation: React.FC = () => {
                                 </div>
                                 <div className="space-y-3 text-sm">
                                     <div className="bg-brand-primary/10 text-brand-primary p-3 rounded-tr-lg rounded-bl-lg rounded-br-lg rounded-tl-none self-start w-[85%]">
-                                        👋 Hi there! Looking to automate your sales process?
+                                        Hi there! Looking to automate your sales process?
                                     </div>
                                     <div className="bg-neutral-100 text-neutral-900 p-3 rounded-tl-lg rounded-bl-lg rounded-br-lg rounded-tr-none self-end ml-auto w-[75%]">
                                         Yes, I need help managing my leads.
@@ -215,8 +215,9 @@ const LeadAutomation: React.FC = () => {
                         </div>
                     </div>
  
-                    <p className="mt-12 text-xl font-bold text-neutral-900 bg-amber-500/10 inline-block px-6 py-3 rounded-lg border border-amber-500/20">
-                        ⚠️ You're paying for ads. <span className="text-red-600">Missing leads = Wasting money.</span>
+                    <p className="mt-12 text-xl font-bold text-neutral-900 bg-amber-500/10 inline-flex items-center gap-2.5 px-6 py-3 rounded-lg border border-amber-500/20">
+                        <AlertCircle className="text-amber-500 shrink-0" size={22} />
+                        <span>You're paying for ads. <span className="text-red-600">Missing leads = Wasting money.</span></span>
                     </p>
                 </div>
             </section>
@@ -290,8 +291,9 @@ const LeadAutomation: React.FC = () => {
                                 "Immigration, Tax, & Legal",
                                 "Home Service Providers"
                             ].map((item, i) => (
-                                <span key={i} className="px-6 py-3 rounded-full bg-white border border-neutral-200 text-neutral-900 font-bold text-sm md:text-base shadow-lg cursor-default hover:border-brand-primary/50 transition-colors animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
-                                    ✅ {item}
+                                <span key={i} className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-neutral-200 text-neutral-900 font-bold text-sm md:text-base shadow-lg cursor-default hover:border-brand-primary/50 transition-colors animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                                    <span>{item}</span>
                                 </span>
                             ))}
                         </div>
@@ -414,7 +416,7 @@ const LeadAutomation: React.FC = () => {
                                 </div>
 
                                 <Button type="submit" disabled={formStatus === 'submitting'} className="w-full py-4 text-lg font-bold rounded-xl mt-4">
-                                    {formStatus === 'submitting' ? 'Processing...' : '👉 Book a Free Demo'}
+                                    {formStatus === 'submitting' ? 'Processing...' : 'Book a Free Demo →'}
                                 </Button>
 
                                 <p className="text-center text-xs text-neutral-500 mt-4">
@@ -481,7 +483,7 @@ const LeadAutomation: React.FC = () => {
                     <p className="text-xl text-neutral-600 mb-10">Let AI handle enquiries instantly — so you don’t have to.</p>
                     <button onClick={scrollToDemo}>
                         <Button className="py-5 px-12 text-xl font-bold rounded-full shadow-[0_4px_24px_rgba(31,75,153,0.15)] hover:shadow-[0_8px_32px_rgba(31,75,153,0.25)] hover:scale-105 transition-transform">
-                            👉 Book a Free Demo
+                            Book a Free Demo →
                         </Button>
                     </button>
                     <div className="mt-12 text-sm text-neutral-600">

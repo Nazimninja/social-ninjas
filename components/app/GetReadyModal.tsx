@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Dumbbell } from 'lucide-react';
 import Icon from './Icon';
 
 export default function GetReadyModal({
@@ -87,9 +88,13 @@ export default function GetReadyModal({
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl font-black text-white tracking-tighter transition-all">
-              {count > 0 ? count : '🏋️'}
-            </span>
+            {count > 0 ? (
+              <span className="text-5xl font-black text-white tracking-tighter transition-all">
+                {count}
+              </span>
+            ) : (
+              <Dumbbell size={42} className="text-[#38bdf8] animate-pulse" />
+            )}
           </div>
         </div>
 

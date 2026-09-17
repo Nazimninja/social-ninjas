@@ -2,7 +2,7 @@ import { getApiUrl } from '../services/api';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { ArrowLeft, Clock, Tag, Share2, ArrowRight, Twitter, Linkedin } from 'lucide-react';
+import { ArrowLeft, Clock, Tag, Share2, ArrowRight, Twitter, Linkedin, Search } from 'lucide-react';
 import SEO from '../components/SEO';
 import AdSense from '../components/AdSense';
 import { POSTS, categoryColors } from '../data/blogPosts';
@@ -68,7 +68,9 @@ const BlogPost: React.FC = () => {
   if (!post) return (
     <div style={{ minHeight: '100vh', background: '#07090e', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
       <SEO title="Post Not Found | Social Ninja's Blog" description="This blog post could not be found." />
-      <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
+      <div style={{ marginBottom: 16 }}>
+        <Search size={44} color="#94a3b8" />
+      </div>
       <h1 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 32, fontWeight: 800, color: '#ffffff', marginBottom: 12 }}>Post Not Found</h1>
       <p style={{ color: '#a0a0b0', marginBottom: 28 }}>This post may have been moved or deleted.</p>
       <Link to="/blog"><button style={{ fontSize: 14, background: '#1F4B99', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 22px', cursor: 'pointer' }}>← Back to Blog</button></Link>
@@ -184,7 +186,7 @@ const BlogPost: React.FC = () => {
 
         {/* Author card */}
         <div style={{ marginTop: 56, padding: '24px', background: 'rgba(14,18,29,0.9)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18, display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#153880,#1F4B99)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🥷</div>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#153880,#1F4B99)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 800, color: '#ffffff', flexShrink: 0, border: '1px solid rgba(255,255,255,0.15)' }}>SN</div>
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginBottom: 3 }}>{post.author || "Social Ninja's Team"}</div>
             <div style={{ fontSize: 12.5, fontWeight: 400, color: '#808090', lineHeight: 1.6 }}>Performance marketing, AI automation, and content strategy for ambitious brands. <Link to="/about" style={{ color: '#4281f5', textDecoration: 'none' }}>About us →</Link></div>

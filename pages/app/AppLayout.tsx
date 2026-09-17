@@ -10,6 +10,7 @@ import ProfilePage from './ProfilePage';
 import LibraryPage from './LibraryPage';
 import Icon from '../../components/app/Icon';
 import GetReadyModal from '../../components/app/GetReadyModal';
+import Logo from '../../components/Logo';
 
 // ── Floating Dock Navigation (Matches User's Reference Screenshot) ─────────
 function FloatingDockNav() {
@@ -30,7 +31,7 @@ function FloatingDockNav() {
 
   return (
     <>
-      <nav id="tabbar" className="lg:hidden">
+      <nav id="tabbar">
         <button className={on('home') ? 'on' : ''} onClick={() => navigate('/app')}>
           <Icon name="house" />
           <span>Home</span>
@@ -79,7 +80,7 @@ function Sidebar() {
     <aside className="hidden lg:flex flex-col w-56 h-screen fixed left-0 top-0 bg-[#07090e] border-r border-[#172744] z-40 py-8 px-4">
       {/* Logo */}
       <div className="flex items-center gap-3 px-2 mb-10">
-        <span className="text-2xl">🥷</span>
+        <Logo size={32} />
         <div>
           <p className="text-white font-bold text-sm tracking-wide">Fit Ninja</p>
           <p className="text-[#9BA8B4] text-[10px] tracking-widest uppercase">by Social Ninjas</p>
@@ -130,7 +131,7 @@ function AppShell() {
 
       {/* Main content area */}
       <div className="lg:pl-56">
-        <div className="max-w-xl lg:max-w-2xl mx-auto px-4 pt-4 pb-28 lg:pb-12 min-h-screen">
+        <div className="max-w-lg mx-auto px-4 pt-4 pb-28 lg:pb-8 min-h-screen">
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/workout" element={<WorkoutPage />} />

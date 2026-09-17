@@ -9,7 +9,7 @@ const TOOLS = [
     id: 'fit-ninja',
     Icon: Dumbbell,
     title: 'Fit Ninja — Workout & Nutrition PWA',
-    desc: '1,324+ animated exercises, guided workout player, smart rest timers, muscle heatmaps, and AI macro nutrition engine.',
+    desc: '1,324+ animated exercises, guided workout player, smart rest timers, muscle heatmaps, and adaptive macro nutrition engine.',
     badge: 'Fitness OS',
     badgeColor: '#f59e0b',
     url: 'https://fit.socialninjas.in',

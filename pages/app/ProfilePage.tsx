@@ -107,13 +107,13 @@ export default function ProfilePage() {
           </button>
           <div>
             <h1 className="text-xl font-extrabold text-white tracking-tight">Settings & Profile</h1>
-            <p className="text-[11px] text-[#71829d]">Fit Ninja Intelligence Engine</p>
+            <p className="text-[11px] text-[#71829d]">Fit Ninja Coaching Engine</p>
           </div>
         </div>
 
         {/* Level badge */}
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#101c30] border border-[#1d3356]">
-          <span className="text-xs">🥷</span>
+          <span className="w-2 h-2 rounded-full bg-[#38bdf8]" />
           <span className="text-xs font-bold text-[#38bdf8]">Lvl {level}</span>
         </div>
       </div>
@@ -123,7 +123,9 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#38bdf8]/20 border border-[#38bdf8]/30 flex items-center justify-center text-lg">
-              ☁️
+              <svg className="w-5 h-5 text-[#38bdf8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
+              </svg>
             </div>
             <div>
               <p className="text-xs font-bold text-white tracking-tight">Cross-Device Cloud Vault</p>
@@ -156,8 +158,8 @@ export default function ProfilePage() {
           </div>
         ) : (
           <div className="flex items-center gap-1.5 pt-2 border-t border-white/5 text-[10px] text-amber-300">
-            <span>⚠️</span>
-            Attach your email so you can switch phones or log in from a laptop without losing logs.
+            <Icon name="bell" size={13} className="text-amber-300 shrink-0" />
+            <span>Attach your email so you can switch phones or log in from a laptop without losing logs.</span>
           </div>
         )}
       </div>
@@ -236,12 +238,12 @@ export default function ProfilePage() {
           icon="flame"
           iconTint="var(--orange)"
           title="Fit Ninja Pro Pass"
-          subtitle={isPaidMember ? "Unlimited Pro Access Active" : "Unlock Custom Coaching, Library & AI Protocols"}
+          subtitle={isPaidMember ? "Unlimited Pro Access Active" : "Unlock Custom Coaching, Library & Advanced Protocols"}
           value={isPaidMember ? "Active ✓" : "Unlock Pass"}
           accessory="chevron"
           onClick={() => {
             if (isPaidMember) {
-              alert("⚡ Fit Ninja Pro Pass is Active for " + (cleanEmail || user.name) + "! All features are unlocked.");
+              alert("Fit Ninja Pro Pass is Active for " + (cleanEmail || user.name) + "! All features are unlocked.");
             } else {
               window.open(getPrefilledPaymentLink(user.name, userEmail, ''), '_blank');
             }
@@ -383,7 +385,9 @@ export default function ProfilePage() {
                       : 'bg-white/[0.02] border-white/5 opacity-50'
                   }`}
                 >
-                  <p className="text-2xl mb-1">{b.icon}</p>
+                  <div className="flex justify-center mb-2 text-[#38bdf8]">
+                    <Icon name={b.icon && !/\p{Extended_Pictographic}/u.test(b.icon) ? b.icon : 'star'} size={24} />
+                  </div>
                   <p className="text-white text-xs font-bold">{b.name}</p>
                   <p className="text-[10px] text-[#71829d] mt-0.5">{b.description}</p>
                   {!b.unlocked && (

@@ -34,7 +34,7 @@ const About: React.FC = () => {
             <span className="text-[#1F4B99]">Not Vanity Campaigns.</span>
           </h1>
           <p className="text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
-            Social Ninja’s is an AI-powered performance marketing agency operating across India and Dubai. We fuse autonomous AI agents with high-margin media buying to build predictable growth engines.
+            Social Ninja’s is an AI-powered performance marketing agency operating globally across North America, the GCC, Europe, and Asia-Pacific. We fuse autonomous AI agents with high-margin media buying to build predictable growth engines.
           </p>
         </div>
       </AuroraBackground>

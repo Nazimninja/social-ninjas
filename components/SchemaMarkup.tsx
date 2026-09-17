@@ -43,7 +43,7 @@ export const SchemaMarkup = () => {
         ],
         "logo": "https://socialninjas.in/ninja-logo.png",
         "priceRange": "₹₹",
-        "description": "Social Ninja's is a premium performance marketing agency specializing in AI automation, paid media buying, and high-fidelity content production for brands in India and UAE.",
+        "description": "Social Ninja's is a premium performance marketing agency specializing in AI automation, paid media buying, and high-fidelity content production for brands worldwide.",
         "areaServed": ["IN", "AE", "US", "GB", "SA", "QA"],
         "founder": {
             "@type": "Person",

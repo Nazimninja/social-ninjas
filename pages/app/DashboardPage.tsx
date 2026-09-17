@@ -18,11 +18,15 @@ import {
   ChevronRight,
   Dumbbell,
   CheckCircle2,
+  Sparkles,
+  Utensils,
+  Camera,
 } from 'lucide-react';
 import WeeklyCheckinModal from '../../components/app/WeeklyCheckinModal';
 import BodyMap from '../../components/app/BodyMap';
 import Icon from '../../components/app/Icon';
 import GetReadyModal from '../../components/app/GetReadyModal';
+import Logo from '../../components/Logo';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -148,8 +152,8 @@ export default function DashboardPage() {
       <header className="flex items-center justify-between pt-1 pb-2">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1F4B99] via-[#153268] to-[#0a1426] border border-white/15 flex items-center justify-center text-xl font-black text-white shadow-lg overflow-hidden">
-              <span className="opacity-95">🥷</span>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1F4B99] via-[#153268] to-[#0a1426] border border-white/15 flex items-center justify-center text-lg font-black text-white shadow-lg overflow-hidden">
+              {user.name ? user.name.charAt(0).toUpperCase() : <Logo size={28} />}
             </div>
             <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#10b981] border-2 border-[#07090e] rounded-full" />
           </div>
@@ -312,7 +316,7 @@ export default function DashboardPage() {
           onClick={() => setShowNutritionModal(true)}
           className="bg-[#0e1726] hover:bg-[#15233a] border border-[#1c2c47] text-white font-bold py-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition-all active:scale-[0.98]"
         >
-          <span>🥗</span>
+          <Utensils size={14} className="text-emerald-400" />
           <span>Log Meal</span>
         </button>
 
@@ -320,7 +324,7 @@ export default function DashboardPage() {
           onClick={() => setShowCheckin(true)}
           className="bg-[#0e1726] hover:bg-[#15233a] border border-[#1c2c47] text-white font-bold py-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition-all active:scale-[0.98]"
         >
-          <span>🗓️</span>
+          <CalendarIcon size={14} className="text-sky-400" />
           <span>Schedule</span>
         </button>
       </section>
@@ -504,8 +508,8 @@ export default function DashboardPage() {
       {/* ── 7. WEEKEND PROTOCOL AUDIT (FROM USER SCREENSHOT) ── */}
       <section className="rounded-3xl bg-gradient-to-br from-[#0d2a22]/70 via-[#0b1322] to-[#0b1322] border border-[#14483b] p-5 shadow-2xl">
         <div className="mb-2">
-          <span className="bg-[#10b981]/20 border border-[#10b981]/30 text-[#10b981] text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1">
-            🌟 WEEKEND PROTOCOL AUDIT
+          <span className="bg-[#10b981]/20 border border-[#10b981]/30 text-[#10b981] text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
+            <Sparkles size={11} /> WEEKEND PROTOCOL AUDIT
           </span>
         </div>
         <h3 className="text-lg font-black text-white tracking-tight mb-1">
@@ -520,7 +524,8 @@ export default function DashboardPage() {
           onClick={() => setShowCheckin(true)}
           className="w-full bg-[#10b981] hover:bg-[#059669] text-black font-black py-3 rounded-2xl text-xs transition-all shadow-xl shadow-[#10b981]/25 flex items-center justify-center gap-2 active:scale-[0.99]"
         >
-          <span>📸 Complete Audit & Adapt Overload →</span>
+          <Camera size={14} />
+          <span>Complete Audit & Adapt Overload →</span>
         </button>
       </section>
 
@@ -602,7 +607,9 @@ export default function DashboardPage() {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-2xl">🥗</span>
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                    <Utensils size={18} />
+                  </div>
                   <div>
                     <h3 className="text-white font-bold text-base">Nutrition Blueprint</h3>
                     <p className="text-[11px] text-[#71829d]">Mifflin-St Jeor TDEE Calibrated</p>
@@ -665,7 +672,7 @@ export default function DashboardPage() {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-2xl">🥷</span>
+                  <Logo size={24} />
                   <div>
                     <h3 className="text-white font-bold text-base">Program Methodology</h3>
                     <p className="text-[11px] text-[#71829d]">{activePlan?.title || 'Fit Ninja Protocol'}</p>

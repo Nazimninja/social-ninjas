@@ -44,7 +44,8 @@ const Contact: React.FC = () => {
       <AuroraBackground className="pt-36 pb-16 border-b border-neutral-800/80">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
-            {productKey ? '⚡ EARLY ACCESS APPLICATION' : 'GET IN TOUCH'}
+            {productKey && <Sparkles size={13} />}
+            <span>{productKey ? 'EARLY ACCESS APPLICATION' : 'GET IN TOUCH'}</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
             {productKey ? (
@@ -96,9 +97,9 @@ const Contact: React.FC = () => {
                 <MapPin size={20} />
               </div>
               <h3 className="font-bold text-white text-base">Global Hubs</h3>
-              <p className="text-xs text-neutral-400">India & Dubai Operations</p>
+              <p className="text-xs text-neutral-400">Worldwide Operations</p>
               <div className="text-xs text-neutral-300 font-semibold pt-1">
-                Dubai • Bengaluru • Mumbai
+                US • UK • UAE • India • Global Remote
               </div>
             </SpotlightCard>
           </div>
@@ -164,15 +165,15 @@ const Contact: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Phone Number</label>
-                      <input type="tel" placeholder="+91..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                      <input type="tel" placeholder="+1 / +44 / +971 / +91..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
                     </div>
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Monthly Ad Budget</label>
                       <select className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]">
-                        <option>Under ₹50,000 / mo</option>
-                        <option>₹50,000 - ₹2,00,000 / mo</option>
-                        <option>₹2,00,000 - ₹10,00,000 / mo</option>
-                        <option>₹10,00,000+ / mo</option>
+                        <option>Under $1,000 / ₹50,000 / mo</option>
+                        <option>$1,000 - $3,000 / ₹50,000 - ₹2,50,000 / mo</option>
+                        <option>$3,000 - $10,000 / ₹2,50,000 - ₹8,00,000 / mo</option>
+                        <option>$10,000+ / ₹8,00,000+ / mo</option>
                       </select>
                     </div>
                   </div>

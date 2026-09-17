@@ -6,7 +6,7 @@ import {
   Share2, Video, Eye, Users, RefreshCw, Send, 
   CheckSquare, Copy, ArrowUpRight, Flame, Layers,
   TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star,
-  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe
+  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe, Instagram, List
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { supabase } from './supabase';
@@ -53,11 +53,11 @@ const TASK_TEMPLATE = [
   { id: 'film', block: 'content', label: 'Film & Batch 2 Short-Form Video Assets', brand: null, tab: 'queue' },
 ];
 
-const BLOCK_META: Record<string, { label: string, time: string, color: string, icon: string }> = {
-  morning: { label: 'Morning Launch Protocol', time: '30m', color: 'text-sky-400', icon: '⚡' },
-  engage: { label: 'Network Engagement', time: '20m', color: 'text-emerald-400', icon: '💬' },
-  outreach: { label: 'Revenue & Lead Pipeline', time: '25m', color: 'text-amber-400', icon: '🎯' },
-  content: { label: 'Media & SEO Engine', time: '45m', color: 'text-purple-400', icon: '🎬' },
+const BLOCK_META: Record<string, { label: string, time: string, color: string, icon: React.ComponentType<{ size?: number; className?: string }> }> = {
+  morning: { label: 'Morning Launch Protocol', time: '30m', color: 'text-sky-400', icon: Zap },
+  engage: { label: 'Network Engagement', time: '20m', color: 'text-emerald-400', icon: MessageSquare },
+  outreach: { label: 'Revenue & Lead Pipeline', time: '25m', color: 'text-amber-400', icon: Target },
+  content: { label: 'Media & SEO Engine', time: '45m', color: 'text-purple-400', icon: Video },
 };
 
 const XPROMO = [
@@ -80,7 +80,7 @@ export const PIPELINE_STAGES: PipelineStageConfig[] = [
   { id: 'In Dialogue', label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
   { id: 'Call Scheduled', label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
   { id: 'Proposal Sent', label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
-  { id: 'Closed Deal', label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  { id: 'Closed Deal', label: 'Closed Deal', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
   { id: 'Nurture Later', label: 'Nurture Later', color: 'text-pink-400', bg: 'bg-pink-500/10', border: 'border-pink-500/30' },
   { id: 'Lost', label: 'Lost', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
 ];
@@ -103,7 +103,7 @@ const LEAD_STATUS_CONFIG: Record<string, { label: string, color: string, bg: str
   'In Dialogue': { label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
   'Call Scheduled': { label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
   'Proposal Sent': { label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
-  'Closed Deal': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'Closed Deal': { label: 'Closed Deal', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
   'Nurture Later': { label: 'Nurture Later', color: 'text-pink-400', bg: 'bg-pink-500/10', border: 'border-pink-500/30' },
   'Lost': { label: 'Lost', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
   
@@ -111,8 +111,10 @@ const LEAD_STATUS_CONFIG: Record<string, { label: string, color: string, bg: str
   'NEW LEAD': { label: 'New Inbound', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30' },
   'CONTACTED': { label: 'In Dialogue', color: 'text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/30' },
   'DEMO SCHEDULED': { label: 'Call Scheduled', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  'WON': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
-  'PAID PRO MEMBER': { label: 'Closed Deal 🎉', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'PROPOSAL SENT': { label: 'Proposal Sent', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30' },
+  'WON': { label: 'Closed Deal', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'PAID PRO MEMBER': { label: 'Closed Deal', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  'LOST': { label: 'Nurture Later', color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
 };
 
 export interface ParsedLeadNotes {
@@ -739,7 +741,7 @@ export const Admin: React.FC = () => {
                   <div>
                     <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
                       <span>{completedTasksCount}/{totalTasks} Daily Directives Executed</span>
-                      {taskProgressPct === 100 && <span className="text-emerald-400 text-sm">🔥 100% COMPLETE</span>}
+                      {taskProgressPct === 100 && <span className="text-emerald-400 text-sm font-bold flex items-center gap-1"><CheckCircle2 size={15} /> 100% COMPLETE</span>}
                     </h2>
                     <p className="text-xs text-slate-400">
                       {new Date().toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
@@ -763,12 +765,13 @@ export const Admin: React.FC = () => {
                 const meta = BLOCK_META[block];
                 const blockTasks = TASK_TEMPLATE.filter(t => t.block === block);
                 const blockDoneCount = blockTasks.filter(t => doneTasks.includes(t.id)).length;
+                const BlockIcon = meta.icon;
 
                 return (
                   <div key={block} className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-5 shadow-xl space-y-3">
                     <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-base">{meta.icon}</span>
+                        <BlockIcon size={16} className={meta.color} />
                         <h3 className={`text-xs font-black uppercase tracking-wider ${meta.color}`}>
                           {meta.label}
                         </h3>
@@ -794,7 +797,7 @@ export const Admin: React.FC = () => {
                               <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-xs font-bold border transition-all ${
                                 isDone ? 'bg-emerald-500 border-emerald-400 text-white' : 'border-slate-700 bg-slate-900 text-transparent'
                               }`}>
-                                ✓
+                                <Check size={12} strokeWidth={3} />
                               </div>
                               <span className={`text-xs font-semibold ${isDone ? 'line-through text-slate-500' : 'text-slate-200'}`}>
                                 {t.label}
@@ -1040,9 +1043,10 @@ export const Admin: React.FC = () => {
                           </td>
                           <td className="py-4 pr-4" onClick={e => e.stopPropagation()}>
                             {lead.next_follow_up ? (
-                              <div className="flex items-center gap-1.5 flex-wrap">
-                                <div className="text-amber-400 font-bold text-xs">
-                                  📅 {fmtDate(lead.next_follow_up)}
+<div className="flex items-center gap-1.5 flex-wrap">
+                                <div className="text-amber-400 font-bold text-xs flex items-center gap-1">
+                                  <CalendarIcon size={12} className="shrink-0" />
+                                  <span>{fmtDate(lead.next_follow_up)}</span>
                                   {lead.follow_up_notes && (
                                     <div className="text-[10px] text-slate-400 font-normal truncate max-w-[140px]" title={lead.follow_up_notes}>
                                       {lead.follow_up_notes}
@@ -1141,7 +1145,7 @@ export const Admin: React.FC = () => {
                     : 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30'
                 }`}
               >
-                ⚡ PRO PASS / Paid ({premiumFitCount})
+                <Zap size={13} className="shrink-0" /> PRO PASS / Paid ({premiumFitCount})
               </button>
               <button
                 onClick={() => setFitFilter('unpaid')}
@@ -1151,7 +1155,7 @@ export const Admin: React.FC = () => {
                     : 'bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30'
                 }`}
               >
-                ⏳ Free / Unpaid ({unpaidFitCount})
+                <Clock size={13} className="shrink-0" /> Free / Unpaid ({unpaidFitCount})
               </button>
               <button
                 onClick={() => setFitFilter('active')}
@@ -1165,13 +1169,13 @@ export const Admin: React.FC = () => {
               </button>
               <button
                 onClick={() => setFitFilter('inactive')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                   fitFilter === 'inactive'
                     ? 'bg-slate-700 text-white shadow-md'
                     : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 border border-white/[0.06]'
                 }`}
               >
-                ⚪ Inactive ({inactiveFitCount})
+                <span className="w-2 h-2 rounded-full bg-slate-500 inline-block"></span> Inactive ({inactiveFitCount})
               </button>
             </div>
 
@@ -1334,27 +1338,30 @@ export const Admin: React.FC = () => {
                 <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block mb-2">Distribution Platform</label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { id: 'instagram', label: 'Instagram Reels', icon: '📸' },
-                    { id: 'youtube', label: 'YouTube Shorts', icon: '▶️' },
-                    { id: 'both', label: 'IG + YT Sync', icon: '📡' },
+                    { id: 'instagram', label: 'Instagram Reels', icon: Instagram },
+                    { id: 'youtube', label: 'YouTube Shorts', icon: Video },
+                    { id: 'both', label: 'IG + YT Sync', icon: Share2 },
                     ...((pubProfile === 'socialninja' || pubProfile === 'nazim_ninja') ? [
-                      { id: 'linkedin_carousel', label: 'LinkedIn Carousel', icon: '📑' },
-                      { id: 'linkedin_article', label: 'LinkedIn Article', icon: '📝' },
+                      { id: 'linkedin_carousel', label: 'LinkedIn Carousel', icon: Layers },
+                      { id: 'linkedin_article', label: 'LinkedIn Article', icon: FileText },
                     ] : []),
-                  ].map(pl => (
-                    <button
-                      key={pl.id}
-                      onClick={() => setPubPlatform(pl.id)}
-                      className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
-                        pubPlatform === pl.id
-                          ? 'border-sky-500 bg-sky-500/10 text-white shadow-md shadow-sky-500/20'
-                          : 'border-white/[0.06] bg-[#121929] text-slate-400 hover:border-white/[0.15]'
-                      }`}
-                    >
-                      <span>{pl.icon}</span>
-                      <span>{pl.label}</span>
-                    </button>
-                  ))}
+                  ].map(pl => {
+                    const PlIcon = pl.icon;
+                    return (
+                      <button
+                        key={pl.id}
+                        onClick={() => setPubPlatform(pl.id)}
+                        className={`p-3 rounded-xl border text-left font-bold text-xs flex items-center gap-2.5 transition-all ${
+                          pubPlatform === pl.id
+                            ? 'border-sky-500 bg-sky-500/10 text-white shadow-md shadow-sky-500/20'
+                            : 'border-white/[0.06] bg-[#121929] text-slate-400 hover:border-white/[0.15]'
+                        }`}
+                      >
+                        <PlIcon size={16} className={pubPlatform === pl.id ? 'text-sky-400' : 'text-slate-400'} />
+                        <span>{pl.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -1373,7 +1380,7 @@ export const Admin: React.FC = () => {
               {/* Schedule Mode Switcher */}
               <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.06] flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-bold text-white">📅 Future Slot Scheduling</div>
+                  <div className="text-xs font-bold text-white flex items-center gap-1.5"><CalendarIcon size={13} className="text-sky-400" /> Future Slot Scheduling</div>
                   <div className="text-[10px] text-slate-400">Automatically sync with calendar queue</div>
                 </div>
                 <input
@@ -1409,9 +1416,9 @@ export const Admin: React.FC = () => {
 
               <button
                 onClick={handlePublishPost}
-                className="w-full bg-gradient-to-r from-brand-primary via-orange-500 to-amber-500 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-brand-primary/25 hover:opacity-95 transition-opacity text-xs"
+                className="w-full bg-gradient-to-r from-brand-primary via-orange-500 to-amber-500 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-brand-primary/25 hover:opacity-95 transition-opacity text-xs flex items-center justify-center gap-2"
               >
-                {pubStatus === 'posting' ? '⏳ Dispatching...' : pubStatus === 'done' ? '✅ Logged to Queue!' : pubSchedMode ? '📅 Schedule Post Entry' : '📡 Dispatch to Publisher'}
+                {pubStatus === 'posting' ? 'Dispatching...' : pubStatus === 'done' ? 'Logged to Queue' : pubSchedMode ? 'Schedule Post Entry' : 'Dispatch to Publisher'}
               </button>
             </div>
 
@@ -1479,7 +1486,7 @@ export const Admin: React.FC = () => {
 
                         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                           <span className="text-[10px] font-bold text-slate-400 whitespace-nowrap">
-                            {p.scheduled_for ? `📅 ${new Date(p.scheduled_for).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}` : fmtDate(p.created_at)}
+                            {p.scheduled_for ? new Date(p.scheduled_for).toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) : fmtDate(p.created_at)}
                           </span>
                           {!isPub && (
                             <button
@@ -1497,7 +1504,7 @@ export const Admin: React.FC = () => {
                                       source: 'crm_fast_publisher_button'
                                     })
                                   });
-                                  alert('🚀 Dispatched! Check your Telegram group in ~30s.');
+                                  alert('Dispatched! Check your Telegram group in ~30s.');
                                   await loadAllData();
                                 } catch (e) {
                                   alert('Error: ' + (e as Error).message);
@@ -1505,7 +1512,7 @@ export const Admin: React.FC = () => {
                               }}
                               className="text-[9px] font-extrabold text-white bg-purple-600 hover:bg-purple-500 px-2 py-0.5 rounded shadow transition-all"
                             >
-                              🚀 Now
+                              Publish Now
                             </button>
                           )}
                         </div>
@@ -1558,9 +1565,9 @@ export const Admin: React.FC = () => {
                         </div>
                       </div>
                       <h3 className="font-bold text-white text-sm">{sc.topic}</h3>
-                      <p className="text-xs text-sky-400 font-semibold">🎬 {sc.yt_title}</p>
+                      <p className="text-xs text-sky-400 font-semibold flex items-center gap-1.5"><Video size={13} className="shrink-0" /> {sc.yt_title}</p>
                       <div className="p-2.5 rounded-xl bg-slate-900/80 border border-white/[0.05] text-xs text-slate-300">
-                        <span className="text-amber-400 font-bold">🪝 Hook: </span>{sc.hook}
+                        <span className="text-amber-400 font-bold">Hook: </span>{sc.hook}
                       </div>
                     </div>
 
@@ -1571,12 +1578,12 @@ export const Admin: React.FC = () => {
                       >
                         {openScriptId === sc.id ? 'Hide' : 'Full Script'}
                       </button>
-                      <div className="flex items-center gap-1.5">
+<div className="flex items-center gap-1.5">
                         <button
                           onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
                           className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
                         >
-                          {copiedText === sc.id ? '✅ Copied' : 'Copy Caption'}
+                          {copiedText === sc.id ? 'Copied' : 'Copy Caption'}
                         </button>
                         <button
                           onClick={() => handleDeleteScript(sc.id, sc.topic)}
@@ -1632,14 +1639,14 @@ export const Admin: React.FC = () => {
 
                     {m.suggested_reply && (
                       <div className="p-3 rounded-xl bg-slate-900/80 border border-white/[0.05] text-xs text-sky-300">
-                        <strong className="text-sky-400 block mb-1">🤖 Suggested Reply:</strong>
+                        <strong className="text-sky-400 block mb-1">Suggested Reply:</strong>
                         {m.suggested_reply}
                       </div>
                     )}
 
                     <div className="flex items-center justify-end gap-2 pt-2">
                       <button onClick={() => copyToClipboard(m.suggested_reply || m.body, m.id)} className="text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1.5 rounded-lg">
-                        {copiedText === m.id ? '✅ Copied' : 'Copy Reply'}
+                        {copiedText === m.id ? 'Copied' : 'Copy Reply'}
                       </button>
                       <button onClick={async () => {
                         await supabase.from('mentions').update({ dismissed: true }).eq('id', m.id);
@@ -1746,7 +1753,7 @@ export const Admin: React.FC = () => {
                           calView === 'table' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-white'
                         }`}
                       >
-                        <span>☰</span> List View
+                        <List size={13} /> List View
                       </button>
                     </div>
                   </div>
@@ -1787,7 +1794,7 @@ export const Admin: React.FC = () => {
                                 </h3>
 
                                 <div className="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 bg-black/20 p-2 rounded-lg border border-white/[0.04]">
-                                  <span className="text-slate-500">📄</span>
+                                  <FileText size={12} className="text-slate-500 shrink-0" />
                                   <span className="truncate">{p.file_name}</span>
                                 </div>
                               </div>
@@ -1814,7 +1821,7 @@ export const Admin: React.FC = () => {
                                             source: 'crm_calendar_trigger'
                                           })
                                         });
-                                        alert('🚀 Dispatched! Post will appear on LinkedIn in ~30s.');
+                                        alert('Dispatched! Post will appear on LinkedIn in ~30s.');
                                         await loadAllData();
                                       } catch (e) {
                                         alert('Trigger error: ' + (e as Error).message);
@@ -1822,7 +1829,7 @@ export const Admin: React.FC = () => {
                                     }}
                                     className="text-[11px] font-medium text-slate-200 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] hover:border-white/[0.2] px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5"
                                   >
-                                    <span>🚀</span> Publish Now
+                                    <Send size={12} className="text-slate-200" /> Publish Now
                                   </button>
                                 )}
                               </div>
@@ -1899,7 +1906,7 @@ export const Admin: React.FC = () => {
                                               source: 'crm_calendar_trigger'
                                             })
                                           });
-                                          alert('🚀 Dispatched to LinkedIn!');
+                                          alert('Dispatched to LinkedIn!');
                                           await loadAllData();
                                         } catch (e) {
                                           alert('Error: ' + (e as Error).message);
@@ -1967,8 +1974,8 @@ export const Admin: React.FC = () => {
                     <div key={l.id || idx} className="bg-[#101522] border border-white/[0.06] hover:border-purple-500/30 rounded-xl p-4 flex flex-col justify-between gap-3 transition-all">
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between">
-                          <span className="text-[11px] font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 rounded-md">
-                            📅 {fmtDate(l.next_follow_up)}
+                          <span className="text-[11px] font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 rounded-md flex items-center gap-1.5">
+                            <CalendarIcon size={11} /> {fmtDate(l.next_follow_up)}
                           </span>
                           <span className="text-[10px] font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
                             {l.status || 'PROSPECT'}
@@ -1982,14 +1989,14 @@ export const Admin: React.FC = () => {
 
                         {l.email && (
                           <div className="text-[11px] text-slate-400 flex items-center gap-1.5 truncate">
-                            <span>✉️</span>
+                            <Mail size={12} className="text-slate-400 shrink-0" />
                             <span className="truncate">{l.email}</span>
                           </div>
                         )}
 
                         {l.phone && (
                           <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                            <span>📞</span>
+                            <Phone size={12} className="text-slate-400 shrink-0" />
                             <span>{l.phone}</span>
                           </div>
                         )}
@@ -2008,18 +2015,18 @@ export const Admin: React.FC = () => {
                             else if (l.email) window.open(`mailto:${l.email}`);
                             else alert('No contact details available');
                           }}
-                          className="text-[11px] font-medium text-slate-300 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] px-3 py-1 rounded-lg transition-colors"
+                          className="text-[11px] font-medium text-slate-300 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5"
                         >
-                          📞 Connect
+                          <Phone size={11} /> Connect
                         </button>
                         <button
                           onClick={async () => {
                             await supabase.from('leads').update({ next_follow_up: null, follow_up_notes: 'Completed' }).eq('id', l.id);
                             await loadAllData();
                           }}
-                          className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 px-3 py-1 rounded-lg transition-colors"
+                          className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5"
                         >
-                          ✓ Mark Done
+                          <Check size={11} strokeWidth={2.5} /> Mark Done
                         </button>
                       </div>
                     </div>
@@ -2700,7 +2707,7 @@ export const Admin: React.FC = () => {
                       : 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-md shadow-amber-500/20'
                   }`}
                 >
-                  {isPaid ? 'Downgrade to Free Tier' : '⚡ Upgrade to PRO PASS Active'}
+                  {isPaid ? 'Downgrade to Free Tier' : 'Upgrade to PRO PASS Active'}
                 </button>
                 <button
                   onClick={() => setViewFitClientDetails(null)}

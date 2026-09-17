@@ -151,7 +151,7 @@ const Footer: React.FC = () => {
             </Link>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            {['Dubai', 'India'].map((city, i) => (
+            {['Global', 'US', 'UK', 'UAE', 'India'].map((city, i) => (
               <span key={city} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#333333' }} />}
                 <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#666666' }}>{city}</span>

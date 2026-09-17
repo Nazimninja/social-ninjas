@@ -7,8 +7,8 @@ import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
 
 const JOBS = [
-  { title: 'AI Automation Engineer', loc: 'Remote / Dubai', type: 'Full-Time', desc: 'Build autonomous WhatsApp & web AI lead qualifiers using LLM APIs, Webhooks, and PostgREST databases.' },
-  { title: 'Senior Meta Ads Strategist', loc: 'Remote / Bengaluru', type: 'Full-Time', desc: 'Manage margin-backed paid traffic campaigns with ₹10L+ monthly budgets across e-commerce & high-ticket niches.' },
+  { title: 'AI Automation Engineer', loc: 'Remote / Global', type: 'Full-Time', desc: 'Build autonomous WhatsApp & web AI lead qualifiers using LLM APIs, Webhooks, and PostgREST databases.' },
+  { title: 'Senior Meta Ads Strategist', loc: 'Remote / Global', type: 'Full-Time', desc: 'Manage margin-backed paid traffic campaigns with high-scale monthly budgets across e-commerce & high-ticket niches.' },
   { title: 'Creative Strategist & Motion Designer', loc: 'Remote', type: 'Full-Time', desc: 'Design high-converting short-form video ads and carousel assets based on conversion analytics.' }
 ];
 
@@ -30,7 +30,7 @@ const Careers: React.FC = () => {
             <span className="text-[#1F4B99]">AI Growth Engineering.</span>
           </h1>
           <p className="text-sm sm:text-base text-neutral-300 max-w-xl mx-auto leading-relaxed">
-            We are hiring elite media buyers, AI developers, and creative strategists across India & Dubai.
+            We are hiring elite media buyers, AI developers, and creative strategists worldwide.
           </p>
         </div>
       </AuroraBackground>

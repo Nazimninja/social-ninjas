@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, Bot, Target, BarChart3, Sparkles } from 'lucide-react';
 import SEO from '../components/SEO';
 
 function useReveal() {
@@ -16,9 +16,9 @@ function useReveal() {
 
 const products = [
   {
-    id: 'fit-ninja', badge: '🟢 v2.0 Live', icon: '🥷', name: 'Fit Ninja',
-    tagline: '1,324+ Animated Exercises, Guided Workouts & AI Macro Nutrition.',
-    desc: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and AI macro nutrition planning.',
+    id: 'fit-ninja', isLive: true, badge: 'v2.0 Live', icon: Zap, name: 'Fit Ninja',
+    tagline: '1,324+ Animated Exercises, Guided Workouts & Precision Macro Nutrition.',
+    desc: 'The ultimate gym workout and body transformation OS. Features 1,324+ animated exercise demos, guided set player with smart rest timers, Greyskull LP & linear progression algorithms, real-time anatomical muscle heatmaps, and precision macro nutrition planning.',
     color: '#f59e0b',
     tryLink: 'https://fit.socialninjas.in/app?mode=signup',
     learnLink: '/ai-products/fit-ninja',
@@ -28,15 +28,15 @@ const products = [
       'Guided workout execution player with live rest timers and wake-lock',
       'Anatomical muscle heatmap showing trained vs neglected muscle groups',
       'Greyskull LP, linear progression & 1RM strength tracking algorithms',
-      'AI Macro & Nutrition engine with custom high-protein & veg meal plans',
+      'Adaptive Macro & Nutrition engine with custom high-protein & veg meal plans',
       '100% offline-capable PWA for seamless gym use on iPhone & Android'
     ],
     plans: [
-      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Workouts & AI Nutrition' },
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Workouts & Precision Nutrition' },
     ],
   },
   {
-    id: 'ai-sales-agent', badge: '🔜 Coming Soon', icon: '🤖', name: 'AI Sales Agent',
+    id: 'ai-sales-agent', isLive: false, badge: 'Coming Soon', icon: Bot, name: 'AI Sales Agent',
     tagline: 'Never miss a lead again. Even at 3am.',
     desc: 'An AI that replies to every new lead in under 1 second — any time of day or night. It answers their questions, figures out if they\'re a good fit, and books them straight into your calendar.',
     color: '#9b8ef0',
@@ -46,7 +46,7 @@ const products = [
     features: ['Responds to leads instantly — before your competitors','Qualifies each lead with smart questions','Books meetings directly into your calendar','Sends follow-up emails and SMS automatically','Logs everything to your CRM — no manual work','Full weekly report of all conversations'],
   },
   {
-    id: 'ad-copy-generator', badge: '🔜 Coming Soon', icon: '🎯', name: 'AI Ad Copy Generator',
+    id: 'ad-copy-generator', isLive: false, badge: 'Coming Soon', icon: Target, name: 'AI Ad Copy Generator',
     tagline: 'High-converting ad copy in seconds, not days.',
     desc: 'Stop spending hours writing Facebook and Google ads. Describe what you\'re selling, and the AI writes multiple versions of your headline, body copy, and CTA — all based on proven frameworks.',
     color: '#2fcf8e',
@@ -56,7 +56,7 @@ const products = [
     features: ['Headlines and body copy for Meta and Google ads','Multiple variations ready to A/B test','Hooks based on psychology frameworks that convert','CTA options tuned to your campaign goal','Keeps your brand voice consistent across all ads'],
   },
   {
-    id: 'reporting-assistant', badge: '🔜 Coming Soon', icon: '📊', name: 'AI Reporting Assistant',
+    id: 'reporting-assistant', isLive: false, badge: 'Coming Soon', icon: BarChart3, name: 'AI Reporting Assistant',
     tagline: 'Know exactly what\'s working — without the spreadsheets.',
     desc: 'Connect your ad accounts and every week the AI sends you a plain-English summary of what worked, what didn\'t, and what to do about it. No more spending Mondays building reports.',
     color: '#e8b86d',
@@ -75,14 +75,15 @@ export const AIProducts: React.FC = () => {
       <SEO
         title="AI Products & SaaS Suite | Social Ninja's"
         description="Explore Fit Ninja, AI Sales Agent, Ad Copy Generator, and Reporting Assistant built by Social Ninja's."
-        keywords="Fit Ninja, AI marketing tools, Social Ninja's AI"
+        keywords="Fit Ninja, fitness app, workout tracker, AI marketing tools, Social Ninja's"
       />
 
       {/* HERO */}
       <div className="relative pt-36 pb-20 overflow-hidden border-b border-neutral-800/80">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
-            ✨ PREMIUM AI SAAS PRODUCTS
+            <Sparkles size={13} />
+            <span>PREMIUM AI SAAS PRODUCTS</span>
           </div>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight font-['Bricolage_Grotesque'] text-white">
             Tools that do the work <br />
@@ -95,7 +96,7 @@ export const AIProducts: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
             <a href="https://fit.socialninjas.in/app?mode=app" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-[#1F4B99]/25 transition-all text-sm">
-              🥷 Launch Fit Ninja
+              Launch Fit Ninja →
             </a>
             <Link to="/contact" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-8 py-3.5 rounded-full hover:border-neutral-700 transition-all text-sm">
               Join Waitlist for New Tools →
@@ -106,55 +107,58 @@ export const AIProducts: React.FC = () => {
 
       {/* PRODUCTS LIST */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-24">
-        {products.map((p, i) => (
-          <div key={p.id} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-[#0e121d] border border-neutral-800/80 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
-            <div className={`space-y-6 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-2xl shadow-inner">
-                  {p.icon}
-                </div>
-                <span className={`text-xs font-bold px-3 py-1 rounded-full border ${p.badge.includes('Live') ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-neutral-800 border-neutral-700 text-neutral-400'}`}>
-                  {p.badge}
-                </span>
-              </div>
-
-              <div>
-                <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-['Bricolage_Grotesque'] mb-2">
-                  {p.name}
-                </h2>
-                <p className="text-sm sm:text-base font-semibold" style={{ color: p.color }}>
-                  {p.tagline}
-                </p>
-              </div>
-
-              <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
-                {p.desc}
-              </p>
-
-              {/* Stats Bar */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {p.stats.map(([n, l]) => (
-                  <div key={l} className="bg-neutral-950/80 border border-neutral-800/80 rounded-2xl p-3 text-center space-y-1">
-                    <div className="text-base sm:text-lg font-bold font-['Bricolage_Grotesque']" style={{ color: p.color }}>
-                      {n}
-                    </div>
-                    <div className="text-[10px] text-neutral-400 leading-tight">
-                      {l}
-                    </div>
+        {products.map((p, i) => {
+          const IconComp = p.icon;
+          return (
+            <div key={p.id} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-[#0e121d] border border-neutral-800/80 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
+              <div className={`space-y-6 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shadow-inner">
+                    <IconComp size={22} style={{ color: p.color }} />
                   </div>
-                ))}
-              </div>
+                  <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full border ${p.isLive ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-neutral-800 border-neutral-700 text-neutral-400'}`}>
+                    {p.isLive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />}
+                    {p.badge}
+                  </span>
+                </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                {p.tryLink.startsWith('http') ? (
-                  <a href={p.tryLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
-                    {p.badge.includes('Live') ? '⚡ Open App →' : 'Join Waitlist →'}
-                  </a>
-                ) : (
-                  <Link to={p.tryLink} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
-                    {p.badge.includes('Live') ? '⚡ Try Free →' : 'Join Waitlist →'}
-                  </Link>
-                )}
+                <div>
+                  <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-['Bricolage_Grotesque'] mb-2">
+                    {p.name}
+                  </h2>
+                  <p className="text-sm sm:text-base font-semibold" style={{ color: p.color }}>
+                    {p.tagline}
+                  </p>
+                </div>
+
+                <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
+                  {p.desc}
+                </p>
+
+                {/* Stats Bar */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {p.stats.map(([n, l]) => (
+                    <div key={l} className="bg-neutral-950/80 border border-neutral-800/80 rounded-2xl p-3 text-center space-y-1">
+                      <div className="text-base sm:text-lg font-bold font-['Bricolage_Grotesque']" style={{ color: p.color }}>
+                        {n}
+                      </div>
+                      <div className="text-[10px] text-neutral-400 leading-tight">
+                        {l}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  {p.tryLink.startsWith('http') ? (
+                    <a href={p.tryLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
+                      {p.isLive ? 'Open App →' : 'Join Waitlist →'}
+                    </a>
+                  ) : (
+                    <Link to={p.tryLink} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-md">
+                      {p.isLive ? 'Try Free →' : 'Join Waitlist →'}
+                    </Link>
+                  )}
 
                 {p.learnLink.startsWith('http') ? (
                   <a href={p.learnLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold px-6 py-3 rounded-xl text-xs hover:border-neutral-700 transition-all">
@@ -222,7 +226,8 @@ export const AIProducts: React.FC = () => {
               )}
             </div>
           </div>
-        ))}
+        );
+      })}
       </div>
     </div>
   );

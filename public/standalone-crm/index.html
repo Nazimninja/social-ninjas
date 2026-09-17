@@ -199,7 +199,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
 
 <div id="login">
   <div class="lbox">
-    <div class="lico">🥷</div>
+    <div class="lico" style="font-weight:900;color:#ffffff;font-size:24px;letter-spacing:-1px;">SN</div>
     <h1>Command Center</h1>
     <p>Social Ninja's · Internal Operations</p>
     <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
@@ -218,19 +218,19 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
   <div class="nbrand"><div class="wm">Social<span>Ninja's</span>.</div><div class="tg">Command Center</div></div>
   <div style="flex:1;overflow-y:auto;padding:8px">
     <div class="nsec">Overview</div>
-    <div class="ni on" onclick="go('dash')" id="n-dash">📊 Dashboard</div>
+    <div class="ni on" onclick="go('dash')" id="n-dash">Dashboard</div>
     <div class="nsec">CRM & Clients</div>
-    <div class="ni" onclick="go('clients')" id="n-clients">👥 Clients & Leads</div>
-    <div class="ni" onclick="go('gen')" id="n-gen">⚡ Generate Content</div>
-    <div class="ni" onclick="go('hist')" id="n-hist">📅 Content History</div>
+    <div class="ni" onclick="go('clients')" id="n-clients">Clients & Leads</div>
+    <div class="ni" onclick="go('gen')" id="n-gen">Generate Content</div>
+    <div class="ni" onclick="go('hist')" id="n-hist">Content History</div>
     <div class="nsec">Marketing</div>
-    <div class="ni" onclick="go('blogs')" id="n-blogs">📝 Blog Posts</div>
-    <div class="ni" onclick="go('social')" id="n-social">✍️ Our Social Posts</div>
+    <div class="ni" onclick="go('blogs')" id="n-blogs">Blog Posts</div>
+    <div class="ni" onclick="go('social')" id="n-social">Our Social Posts</div>
     <div class="nsec">Admin</div>
-    <div class="ni" onclick="go('notes')" id="n-notes">📌 Notes & Tasks</div>
-    <div class="ni" onclick="go('settings')" id="n-settings">⚙️ Settings</div>
+    <div class="ni" onclick="go('notes')" id="n-notes">Notes & Tasks</div>
+    <div class="ni" onclick="go('settings')" id="n-settings">Settings</div>
   </div>
-  <div class="nfoot"><button class="lockbtn" onclick="lock()">🔒 Lock & Sign Out</button></div>
+  <div class="nfoot"><button class="lockbtn" onclick="lock()">Lock & Sign Out</button></div>
 </nav>
 
 <main>
@@ -248,10 +248,10 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
     <div class="card"><div class="ch"><div class="ct">Recent Signups</div><button class="btn bg xs" onclick="go('clients')">View All →</button></div><div id="d-recent"><div class="lc"><span class="spin"></span></div></div></div>
     <div class="card"><div class="ch"><div class="ct">Quick Actions</div></div>
       <div style="display:flex;flex-direction:column;gap:7px">
-        <button class="btn bp" onclick="go('blogs');setTimeout(openBlogEd,200)" style="justify-content:flex-start">📝 Write New Blog Post</button>
-        <button class="btn bg" onclick="go('clients')" style="justify-content:flex-start">👥 Manage Clients</button>
-        <a class="btn bg" href="https://socialninjas.in/#/admin" target="_blank" style="justify-content:flex-start">🔗 Site Admin Panel</a>
-        <a class="btn bg" href="https://socialninjas.in/blog" target="_blank" style="justify-content:flex-start">📰 Live Blog</a>
+        <button class="btn bp" onclick="go('blogs');setTimeout(openBlogEd,200)" style="justify-content:flex-start">Write New Blog Post</button>
+        <button class="btn bg" onclick="go('clients')" style="justify-content:flex-start">Manage Clients</button>
+        <a class="btn bg" href="https://socialninjas.in/#/admin" target="_blank" style="justify-content:flex-start">Site Admin Panel</a>
+        <a class="btn bg" href="https://socialninjas.in/blog" target="_blank" style="justify-content:flex-start">Live Blog</a>
       </div>
     </div>
   </div>
@@ -267,7 +267,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
 <!-- CLIENTS -->
 <div class="page" id="p-clients">
   <div class="ph"><div><div class="pht">Clients & Leads</div><div class="phs">Redis (server) + localStorage — merged & deduplicated</div></div><div style="display:flex;gap:8px"><button class="btn bg sm" onclick="loadClients()">↺ Refresh</button><button class="btn bp sm" onclick="openModal('m-add')">+ Add Client</button></div></div>
-  <div class="tabs"><div class="tab on" onclick="stab('cf','all')" id="cf-all">All</div><div class="tab" onclick="stab('cf','paid')" id="cf-paid">💎 Paid</div><div class="tab" onclick="stab('cf','trial')" id="cf-trial">🆓 Trial</div></div>
+  <div class="tabs"><div class="tab on" onclick="stab('cf','all')" id="cf-all">All</div><div class="tab" onclick="stab('cf','paid')" id="cf-paid">Paid</div><div class="tab" onclick="stab('cf','trial')" id="cf-trial">Trial</div></div>
   <div class="sw"><input id="csq" type="text" placeholder="Search name, email, niche, phone…" oninput="renderC()"></div>
   <div class="tw"><table><thead><tr><th>Brand / Niche</th><th>Contact</th><th>Plan</th><th>Platforms</th><th>Joined</th><th>Source</th><th></th></tr></thead><tbody id="ctb"><tr><td colspan="7"><div class="lc"><span class="spin"></span></div></td></tr></tbody></table></div>
 </div>
@@ -282,7 +282,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
     </div>
     <div class="card" style="margin-bottom:12px"><div class="ch"><div class="ct">Options</div></div>
       <div class="fr"><div class="fg"><label class="fl">Override Platforms</label><input class="fi" id="gen-plats" placeholder="Leave blank to use client platforms"></div><div class="fg"><label class="fl">Extra Instructions</label><input class="fi" id="gen-extra" placeholder="Focus on a launch…"></div></div>
-      <button class="btn bp" id="gen-btn" onclick="doGen()" style="width:100%;justify-content:center;padding:13px;font-size:14px">⚡ Generate Posts with Live Trend Research</button>
+      <button class="btn bp" id="gen-btn" onclick="doGen()" style="width:100%;justify-content:center;padding:13px;font-size:14px">Generate Posts with Live Trend Research</button>
     </div>
     <div id="gen-out"></div>
   </div>
@@ -291,51 +291,51 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
 <!-- HISTORY -->
 <div class="page" id="p-hist">
   <div class="ph"><div><div class="pht">Content History</div><div class="phs">All generated posts — Redis + localStorage fallback</div></div></div>
-  <div style="max-width:680px"><div class="fg" style="margin-bottom:15px"><select class="fi" id="hist-sel" onchange="loadHist()"><option value="">— Select a client —</option></select></div><div id="hist-out"><div class="empty"><span class="ei">📅</span><h3>Select a client above</h3></div></div></div>
+  <div style="max-width:680px"><div class="fg" style="margin-bottom:15px"><select class="fi" id="hist-sel" onchange="loadHist()"><option value="">— Select a client —</option></select></div><div id="hist-out"><div class="empty"><h3>Select a client above</h3></div></div></div>
 </div>
 
 <!-- BLOGS -->
 <div class="page" id="p-blogs">
   <div class="ph"><div><div class="pht">Blog Posts</div><div class="phs">Stored in Upstash Redis · live on socialninjas.in/blog</div></div><button class="btn bp sm" onclick="openBlogEd()">+ New Post</button></div>
-  <div class="info"><span>📡</span><span>Posts appear on <strong>socialninjas.in/blog</strong> immediately after saving. Create, edit, delete from here.</span></div>
+  <div class="info"><span>Posts appear on <strong>socialninjas.in/blog</strong> immediately after saving. Create, edit, delete from here.</span></div>
   <div id="blogs-list"><div class="lc"><span class="spin"></span></div></div>
 </div>
 
 <!-- OUR SOCIAL -->
 <div class="page" id="p-social">
   <div class="ph"><div><div class="pht">Our Social Posts</div><div class="phs">Social Ninja's own content calendar — stored locally</div></div><button class="btn bp sm" onclick="openModal('m-oc')">+ New Post</button></div>
-  <div class="tabs"><div class="tab on" onclick="stab('ocf','all')" id="ocf-all">All</div><div class="tab" onclick="stab('ocf','Instagram')" id="ocf-Instagram">📸 Instagram</div><div class="tab" onclick="stab('ocf','LinkedIn')" id="ocf-LinkedIn">💼 LinkedIn</div><div class="tab" onclick="stab('ocf','YouTube')" id="ocf-YouTube">▶️ YouTube</div><div class="tab" onclick="stab('ocf','Twitter/X')" id="ocf-Twitter/X">𝕏 Twitter/X</div></div>
-  <div id="oc-list"><div class="empty"><span class="ei">✍️</span><h3>No posts yet</h3><p>Add Social Ninja's own social posts here.</p></div></div>
+  <div class="tabs"><div class="tab on" onclick="stab('ocf','all')" id="ocf-all">All</div><div class="tab" onclick="stab('ocf','Instagram')" id="ocf-Instagram">Instagram</div><div class="tab" onclick="stab('ocf','LinkedIn')" id="ocf-LinkedIn">LinkedIn</div><div class="tab" onclick="stab('ocf','YouTube')" id="ocf-YouTube">YouTube</div><div class="tab" onclick="stab('ocf','Twitter/X')" id="ocf-Twitter/X">Twitter/X</div></div>
+  <div id="oc-list"><div class="empty"><h3>No posts yet</h3><p>Add Social Ninja's own social posts here.</p></div></div>
 </div>
 
 <!-- NOTES -->
 <div class="page" id="p-notes">
   <div class="ph"><div><div class="pht">Notes & Tasks</div><div class="phs">Internal to-dos — stored locally</div></div><button class="btn bp sm" onclick="openModal('m-note')">+ Add Note</button></div>
-  <div id="notes-list"><div class="empty"><span class="ei">📌</span><h3>No notes yet</h3></div></div>
+  <div id="notes-list"><div class="empty"><h3>No notes yet</h3></div></div>
 </div>
 
 <!-- SETTINGS -->
 <div class="page" id="p-settings">
   <div class="ph"><div class="pht">Settings</div></div>
   <div class="g2">
-    <div class="card"><div class="ch"><div class="ct">💳 Razorpay Payment Links</div></div>
+    <div class="card"><div class="ch"><div class="ct">Razorpay Payment Links</div></div>
       <div class="rz"><div><div class="rzn">Starter</div><div class="rzp">₹699 / month</div></div><a href="https://rzp.io/rzp/90qEc0D" target="_blank">Open ↗</a></div>
       <div class="rz"><div><div class="rzn">Growth</div><div class="rzp">₹1,299 / month</div></div><a href="https://rzp.io/rzp/YkQovO28" target="_blank">Open ↗</a></div>
       <div class="rz"><div><div class="rzn">Pro</div><div class="rzp">₹2,499 / month</div></div><a href="https://rzp.io/rzp/Kk2QqWB" target="_blank">Open ↗</a></div>
     </div>
-    <div class="card"><div class="ch"><div class="ct">🔗 Key Links</div></div>
+    <div class="card"><div class="ch"><div class="ct">Key Links</div></div>
       <div class="ql"><span>Main Website</span><a href="https://socialninjas.in" target="_blank">Open ↗</a></div>
       <div class="ql"><span>Site Admin Panel</span><a href="https://socialninjas.in/#/admin" target="_blank">Open ↗</a></div>
       <div class="ql"><span>Live Blog</span><a href="https://socialninjas.in/blog" target="_blank">Open ↗</a></div>
       <div class="ql"><span>ClickUp CRM</span><a href="https://app.clickup.com" target="_blank">Open ↗</a></div>
     </div>
-    <div class="card"><div class="ch"><div class="ct">🔑 Change Password</div></div>
+    <div class="card"><div class="ch"><div class="ct">Change Password</div></div>
       <div class="fg"><label class="fl">Current Password</label><input type="password" class="fi" id="cur-pw" placeholder="Current password"></div>
       <div class="fg"><label class="fl">New Password</label><input type="password" class="fi" id="new-pw" placeholder="Min 6 characters"></div>
       <button class="btn bp sm" onclick="changePw()">Update Password</button>
       <div id="pw-al" style="margin-top:10px"></div>
     </div>
-    <div class="card"><div class="ch"><div class="ct">🌐 API Reference</div></div>
+    <div class="card"><div class="ch"><div class="ct">API Reference</div></div>
       <div style="font-family:var(--mo);font-size:11.5px;color:var(--t2);line-height:2">
         <div><span style="color:var(--green)">GET</span>  /api/data?resource=clients</div>
         <div><span style="color:var(--amber)">POST</span> /api/data?resource=clients</div>
@@ -384,7 +384,7 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
 
 <div class="ov" id="m-note"><div class="modal msm"><div class="mh"><h3>Add Note / Task</h3><div class="mx" onclick="closeModal('m-note')">✕</div></div><div class="mb">
   <div class="fg"><label class="fl">Note *</label><textarea class="fi" id="note-t" style="min-height:90px" placeholder="Task, idea, or reminder…"></textarea></div>
-  <div class="fg"><label class="fl">Priority</label><select class="fi" id="note-p"><option value="normal">Normal</option><option value="high">🔴 High Priority</option><option value="low">Low</option></select></div>
+  <div class="fg"><label class="fl">Priority</label><select class="fi" id="note-p"><option value="normal">Normal</option><option value="high">High Priority</option><option value="low">Low</option></select></div>
   <div style="display:flex;justify-content:flex-end;gap:9px"><button class="btn bg" onclick="closeModal('m-note')">Cancel</button><button class="btn bp" onclick="saveNote()">Save</button></div>
 </div></div></div>
 
@@ -396,7 +396,7 @@ let _clients=[];
 // AUTH
 function login(){const pw=document.getElementById('pw').value.trim();if(pw===gpw()){sessionStorage.setItem('sn_crm','1');document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ham').style.display='flex';startup();}else{document.getElementById('lerr').style.display='block';document.getElementById('pw').value='';}}
 function lock(){sessionStorage.removeItem('sn_crm');location.reload();}
-function changePw(){const c=document.getElementById('cur-pw').value.trim(),n=document.getElementById('new-pw').value.trim(),al=document.getElementById('pw-al');if(c!==gpw()){al.innerHTML='<div class="ale">Current password wrong.</div>';return;}if(!n||n.length<6){al.innerHTML='<div class="ale">Need 6+ characters.</div>';return;}localStorage.setItem(PW_KEY,n);al.innerHTML='<div class="alo">✅ Updated!</div>';document.getElementById('cur-pw').value='';document.getElementById('new-pw').value='';}
+function changePw(){const c=document.getElementById('cur-pw').value.trim(),n=document.getElementById('new-pw').value.trim(),al=document.getElementById('pw-al');if(c!==gpw()){al.innerHTML='<div class="ale">Current password wrong.</div>';return;}if(!n||n.length<6){al.innerHTML='<div class="ale">Need 6+ characters.</div>';return;}localStorage.setItem(PW_KEY,n);al.innerHTML='<div class="alo">Updated!</div>';document.getElementById('cur-pw').value='';document.getElementById('new-pw').value='';}
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 if(sessionStorage.getItem('sn_crm')==='1'){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ham').style.display='flex';}
 
@@ -436,8 +436,8 @@ function renderC(){
   if(cf==='paid')list=list.filter(c=>c.plan&&c.plan!=='trial');
   if(cf==='trial')list=list.filter(c=>!c.plan||c.plan==='trial');
   if(q)list=list.filter(c=>`${c.brandName} ${c.email} ${c.niche} ${c.phone}`.toLowerCase().includes(q));
-  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><span class="ei">👥</span><h3>No clients found</h3></div></td></tr>';return;}
-  tb.innerHTML=list.map(c=>`<tr><td><b>${c.brandName||'—'}</b><div class="td2">${c.niche||'—'}</div></td><td>${c.email||'—'}<div class="td2">${c.phone||'—'}</div></td><td>${planBadge(c.plan)}</td><td style="font-size:12px;color:var(--t2)">${(c.platforms||[]).slice(0,3).join(', ')||'—'}</td><td style="font-size:12px;color:var(--t3)">${c.joinDate||'—'}</td><td><span class="badge ${c._src==='api'?'b-green':'b-amber'}" style="font-size:10px">${c._src==='api'?'☁️ synced':'📱 local'}</span></td><td><div style="display:flex;gap:5px"><button class="btn bg xs" onclick="viewClient('${c.id||c.email}')">View</button><button class="btn bp xs" onclick="syncC('${c.id||c.email}')">Sync ↑</button></div></td></tr>`).join('');
+  if(!list.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><h3>No clients found</h3></div></td></tr>';return;}
+  tb.innerHTML=list.map(c=>`<tr><td><b>${c.brandName||'—'}</b><div class="td2">${c.niche||'—'}</div></td><td>${c.email||'—'}<div class="td2">${c.phone||'—'}</div></td><td>${planBadge(c.plan)}</td><td style="font-size:12px;color:var(--t2)">${(c.platforms||[]).slice(0,3).join(', ')||'—'}</td><td style="font-size:12px;color:var(--t3)">${c.joinDate||'—'}</td><td><span class="badge ${c._src==='api'?'b-green':'b-amber'}" style="font-size:10px">${c._src==='api'?'Synced':'Local'}</span></td><td><div style="display:flex;gap:5px"><button class="btn bg xs" onclick="viewClient('${c.id||c.email}')">View</button><button class="btn bp xs" onclick="syncC('${c.id||c.email}')">Sync ↑</button></div></td></tr>`).join('');
 }
 async function viewClient(id){
   const c=_clients.find(x=>(x.id||x.email)===id);if(!c)return;
@@ -465,7 +465,7 @@ async function viewClient(id){
       <button class="btn bg sm" onclick="saveNote2('${c.id}')" style="margin-top:7px">Save Note</button>
     </div>
     <div style="font-size:15px;font-weight:800;color:var(--a2);margin-bottom:11px;letter-spacing:-.3px">Content History — ${hist.length} week${hist.length!==1?'s':''}</div>
-    ${hist.length?hist.map((w,wi)=>`<div class="hc"><div class="hch"><b>Week ${w.week||wi+1} — ${w.date||'—'}</b><span class="badge b-gray">${(w.posts||[]).length} posts</span></div><div class="hcb">${(w.posts||[]).map(p=>`<div class="gp"><div class="gpp">${p.platform||''} ${p.format?'· '+p.format:''}</div><div class="gpt">${p.title||'Untitled'}</div><div class="gpc">${(p.caption||p.script||'').substring(0,300)}</div></div>`).join('')}</div></div>`).join(''):'<div class="empty" style="padding:20px"><span class="ei">📭</span><p>No content generated yet.</p></div>'}
+    ${hist.length?hist.map((w,wi)=>`<div class="hc"><div class="hch"><b>Week ${w.week||wi+1} — ${w.date||'—'}</b><span class="badge b-gray">${(w.posts||[]).length} posts</span></div><div class="hcb">${(w.posts||[]).map(p=>`<div class="gp"><div class="gpp">${p.platform||''} ${p.format?'· '+p.format:''}</div><div class="gpt">${p.title||'Untitled'}</div><div class="gpc">${(p.caption||p.script||'').substring(0,300)}</div></div>`).join('')}</div></div>`).join(''):'<div class="empty" style="padding:20px"><p>No content generated yet.</p></div>'}
   `;
   openModal('m-client');
 }
@@ -476,7 +476,7 @@ async function saveClient(){
   if(!b||!e){al.innerHTML='<div class="ale">Brand name and email required.</div>';return;}
   const pl=document.getElementById('ac-pl').value,pn={trial:'Free Trial',starter:'Starter',growth:'Growth',pro:'Pro'};
   const cl={id:'crm_'+Date.now(),brandName:b,email:e,phone:document.getElementById('ac-ph').value,niche:document.getElementById('ac-n').value,platforms:document.getElementById('ac-plats').value.split(',').map(s=>s.trim()).filter(Boolean),plan:pl,planName:pn[pl]||pl,adminNotes:document.getElementById('ac-no').value,joinDate:new Date().toLocaleDateString('en-GB'),source:'manual'};
-  try{await fetch(`${API}/api/data?resource=clients`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cl)});al.innerHTML='<div class="alo">✅ Saved!</div>';_clients.unshift({...cl,_src:'api'});setTimeout(()=>{closeModal('m-add');renderC();['ac-b','ac-e','ac-ph','ac-n','ac-plats','ac-no'].forEach(i=>document.getElementById(i).value='');al.innerHTML='';},1200);}
+  try{await fetch(`${API}/api/data?resource=clients`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cl)});al.innerHTML='<div class="alo">Saved!</div>';_clients.unshift({...cl,_src:'api'});setTimeout(()=>{closeModal('m-add');renderC();['ac-b','ac-e','ac-ph','ac-n','ac-plats','ac-no'].forEach(i=>document.getElementById(i).value='');al.innerHTML='';},1200);}
   catch{al.innerHTML='<div class="ale">Failed — check connection.</div>';}
 }
 
@@ -508,7 +508,7 @@ async function doGen(){
   const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const btn=document.getElementById('gen-btn'),out=document.getElementById('gen-out');
   btn.innerHTML='<span class="spin"></span> Researching trends…';btn.disabled=true;
-  out.innerHTML=`<div class="card" style="margin-top:12px;text-align:center;padding:28px"><div style="font-size:32px;margin-bottom:12px;animation:pulse 1.5s infinite">⚡</div><div style="font-size:16px;font-weight:800;margin-bottom:6px">Researching live trends…</div><div style="color:var(--t2);font-size:13px" id="gp-msg">Finding what's trending in ${c.niche||'your niche'} right now…</div></div>`;
+  out.innerHTML=`<div class="card" style="margin-top:12px;text-align:center;padding:28px"><div style="font-size:16px;font-weight:800;margin-bottom:6px">Researching live trends…</div><div style="color:var(--t2);font-size:13px" id="gp-msg">Finding what's trending in ${c.niche||'your niche'} right now…</div></div>`;
   const msgs=['Searching '+platforms.join(', ')+' trends…','Analysing algorithms and formats…','Writing platform-native content…','Adding hashtags and posting tips…'];
   let mi=0;const mt=setInterval(()=>{mi=(mi+1)%msgs.length;const el=document.getElementById('gp-msg');if(el)el.textContent=msgs[mi];},2500);
   try{
@@ -520,21 +520,21 @@ async function doGen(){
     const raw=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').trim();
     const s=raw.indexOf('{'),e=raw.lastIndexOf('}');if(s===-1||e===-1)throw new Error('Invalid JSON');
     const parsed=JSON.parse(raw.slice(s,e+1));if(!parsed.posts?.length)throw new Error('No posts returned');
-    out.innerHTML=`<div class="card" style="margin-top:12px;margin-bottom:10px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">🔍 Live Trends Found</div><div style="display:flex;gap:7px;flex-wrap:wrap">${(parsed.trends||[]).map(t=>`<span class="badge b-gray" style="padding:4px 11px">${t.name} · <span style="color:var(--t3)">${t.platform||''}</span></span>`).join('')}</div></div>${parsed.posts.map(p=>`<div class="card" style="margin-bottom:10px;border-left:3px solid var(--accent)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:15px;font-weight:800;letter-spacing:-.3px">${p.title||'Post'}</div><span class="badge b-blue">${p.platform} · ${p.format||'Post'}</span></div><div style="margin-bottom:9px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">${p.platform==='YouTube'?'🔎 Video Title & Description':'📝 Caption'}</div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:9px;padding:10px;font-size:13px;color:var(--t2);line-height:1.7;white-space:pre-wrap">${p.caption||''}</div></div>${p.script&&p.script!=='null'?`<div style="margin-bottom:9px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">🎬 ${p.platform==='YouTube'?'Video Script':'Reel / Video Script'}</div><div style="background:var(--s3);border:1px solid var(--bd);border-radius:9px;padding:10px;font-size:12px;color:var(--t2);line-height:1.8;font-family:var(--mo);white-space:pre-wrap">${p.script}</div></div>`:''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px">${(p.hashtags||[]).map(h=>`<span style="font-size:11px;color:var(--a2);font-family:var(--mo)">#${h.replace('#','')}</span>`).join(' ')}</div>${p.engagement_tip?`<div style="font-size:12px;color:var(--amber)">💡 ${p.engagement_tip}</div>`:''}</div>`).join('')}`;
-  }catch(err){clearInterval(mt);out.innerHTML=`<div class="card" style="margin-top:12px;border-color:rgba(239,68,68,.25)"><div style="color:var(--red);font-weight:700;margin-bottom:6px">❌ Generation failed</div><div style="color:var(--t3);font-size:13px">${err.message}</div></div>`;}
-  btn.innerHTML='⚡ Generate Posts with Live Trend Research';btn.disabled=false;
+    out.innerHTML=`<div class="card" style="margin-top:12px;margin-bottom:10px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Live Trends Found</div><div style="display:flex;gap:7px;flex-wrap:wrap">${(parsed.trends||[]).map(t=>`<span class="badge b-gray" style="padding:4px 11px">${t.name} · <span style="color:var(--t3)">${t.platform||''}</span></span>`).join('')}</div></div>${parsed.posts.map(p=>`<div class="card" style="margin-bottom:10px;border-left:3px solid var(--accent)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:15px;font-weight:800;letter-spacing:-.3px">${p.title||'Post'}</div><span class="badge b-blue">${p.platform} · ${p.format||'Post'}</span></div><div style="margin-bottom:9px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">${p.platform==='YouTube'?'Video Title & Description':'Caption'}</div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:9px;padding:10px;font-size:13px;color:var(--t2);line-height:1.7;white-space:pre-wrap">${p.caption||''}</div></div>${p.script&&p.script!=='null'?`<div style="margin-bottom:9px"><div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">${p.platform==='YouTube'?'Video Script':'Reel / Video Script'}</div><div style="background:var(--s3);border:1px solid var(--bd);border-radius:9px;padding:10px;font-size:12px;color:var(--t2);line-height:1.8;font-family:var(--mo);white-space:pre-wrap">${p.script}</div></div>`:''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px">${(p.hashtags||[]).map(h=>`<span style="font-size:11px;color:var(--a2);font-family:var(--mo)">#${h.replace('#','')}</span>`).join(' ')}</div>${p.engagement_tip?`<div style="font-size:12px;color:var(--amber)">Tip: ${p.engagement_tip}</div>`:''}</div>`).join('')}`;
+  }catch(err){clearInterval(mt);out.innerHTML=`<div class="card" style="margin-top:12px;border-color:rgba(239,68,68,.25)"><div style="color:var(--red);font-weight:700;margin-bottom:6px">Generation failed</div><div style="color:var(--t3);font-size:13px">${err.message}</div></div>`;}
+  btn.innerHTML='Generate Posts with Live Trend Research';btn.disabled=false;
 }
 
 // HISTORY
 async function initHist(){if(!_clients.length)await loadClients();const sel=document.getElementById('hist-sel');sel.innerHTML='<option value="">— Select a client —</option>'+_clients.map(c=>`<option value="${c.id}">${c.brandName||c.email}</option>`).join('');}
 async function loadHist(){
   const id=document.getElementById('hist-sel').value,out=document.getElementById('hist-out');
-  if(!id){out.innerHTML='<div class="empty"><span class="ei">📅</span><h3>Select a client above</h3></div>';return;}
+  if(!id){out.innerHTML='<div class="empty"><h3>Select a client above</h3></div>';return;}
   out.innerHTML='<div class="lc"><span class="spin"></span></div>';
   let hist=[];
   try{const r=await fetch(`${API}/api/data?resource=history&clientId=${id}`);if(r.ok)hist=await r.json();}catch{}
-  if(!hist.length){try{const raw=localStorage.getItem(`snstudio_hist_${id}`);if(raw)hist=JSON.parse(raw);}catch{}}
-  if(!hist.length){out.innerHTML='<div class="empty"><span class="ei">📭</span><h3>No history yet</h3><p>This client has not generated content yet.</p></div>';return;}
+  if(!hist.length&&c.id){try{const raw=localStorage.getItem(`snstudio_hist_${id}`);if(raw)hist=JSON.parse(raw);}catch{}}
+  if(!hist.length){out.innerHTML='<div class="empty"><h3>No history yet</h3><p>This client has not generated content yet.</p></div>';return;}
   out.innerHTML=hist.map((w,wi)=>`<div class="hc" style="margin-bottom:12px"><div class="hch"><b>Week ${w.week||wi+1} — ${w.date||'—'}</b><span class="badge b-gray">${(w.posts||[]).length} posts</span></div><div class="hcb">${(w.posts||[]).map(p=>`<div class="gp"><div class="gpp">${p.platform||''} ${p.format?'· '+p.format:''}</div><div class="gpt">${p.title||'Untitled'}</div><div class="gpc">${(p.caption||p.script||'').substring(0,400)}</div></div>`).join('')}</div></div>`).join('');
 }
 
@@ -546,9 +546,9 @@ async function loadBlogs(){
   try{
     const r=await fetch(`${API}/api/data?resource=blogs`);if(!r.ok)throw new Error('API '+r.status);
     const blogs=await r.json();
-    if(!blogs.length){el.innerHTML='<div class="empty"><span class="ei">📝</span><h3>No posts yet</h3><p>Create your first post above.</p></div>';return;}
+    if(!blogs.length){el.innerHTML='<div class="empty"><h3>No posts yet</h3><p>Create your first post above.</p></div>';return;}
     el.innerHTML=blogs.map(b=>`<div class="pc" style="display:flex;gap:13px;align-items:flex-start"><div style="flex:1"><h4>${b.title}</h4><p>${b.excerpt||''}</p><div class="pcm"><span class="badge b-green">${b.category||'General'}</span><span style="font-size:11px;color:var(--t3)">${b.readTime||''}</span><span style="font-size:11px;color:var(--t3)">${b.publishedAt?new Date(b.publishedAt).toLocaleDateString('en-GB'):''}</span><a href="${API}/blog/${b.id}" target="_blank" style="font-size:11px;color:var(--a2);font-weight:600">View live ↗</a></div></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn bg xs" onclick="editBlog('${b.id}')">Edit</button><button class="btn br xs" onclick="delBlog('${b.id}')">Delete</button></div></div>`).join('');
-  }catch(e){el.innerHTML=`<div class="empty"><span class="ei">⚠️</span><h3>Cannot reach API</h3><p>${e.message}</p></div>`;}
+  }catch(e){el.innerHTML=`<div class="empty"><h3>Cannot reach API</h3><p>${e.message}</p></div>`;}
 }
 function openBlogEd(data){_eid=data?.id||null;document.getElementById('blog-mt').textContent=_eid?'Edit Blog Post':'New Blog Post';['blog-t','blog-ex','blog-body'].forEach(id=>document.getElementById(id).value='');document.getElementById('blog-rt').value='5 min read';if(data){document.getElementById('blog-t').value=data.title||'';document.getElementById('blog-ex').value=data.excerpt||'';document.getElementById('blog-body').value=data.content||'';document.getElementById('blog-rt').value=data.readTime||'5 min read';if(data.category)document.getElementById('blog-cat').value=data.category;}openModal('m-blog');}
 async function editBlog(id){try{const r=await fetch(`${API}/api/data?resource=blogs&id=${id}`);const b=await r.json();openBlogEd(b);}catch{alert('Could not load post.');}}
@@ -559,7 +559,7 @@ async function saveBlog(){
   try{
     const r=await fetch(`${API}/api/data?resource=blogs`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:_eid||undefined,title,excerpt:document.getElementById('blog-ex').value,content:document.getElementById('blog-body').value,category:document.getElementById('blog-cat').value,readTime:document.getElementById('blog-rt').value,author:"Social Ninja's Team",publishedAt:new Date().toISOString()})});
     if(!r.ok)throw new Error('API '+r.status);
-    al.innerHTML='<div class="alo">✅ Published!</div>';
+    al.innerHTML='<div class="alo">Published!</div>';
     setTimeout(()=>{closeModal('m-blog');loadBlogs();al.innerHTML='';_eid=null;},1200);
   }catch(e){al.innerHTML=`<div class="ale">Failed: ${e.message}</div>`;}
   btn.innerHTML='Publish Post →';btn.disabled=false;
@@ -570,14 +570,14 @@ async function delBlog(id){if(!confirm('Delete permanently?'))return;await fetch
 const gOC=()=>{try{return JSON.parse(localStorage.getItem('sn_crm_oc')||'[]');}catch{return [];}};
 const sOC=a=>localStorage.setItem('sn_crm_oc',JSON.stringify(a));
 const SC={draft:'b-amber',scheduled:'b-blue',posted:'b-green'};
-function renderOC(){const ocf=_ts['ocf']||'all';let p=gOC();if(ocf!=='all')p=p.filter(x=>x.platform===ocf);const el=document.getElementById('oc-list');if(!p.length){el.innerHTML='<div class="empty"><span class="ei">✍️</span><h3>No posts yet</h3></div>';return;}el.innerHTML=p.map((x,i)=>`<div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:9px;margin-bottom:7px"><h4>${x.title||'Untitled'}</h4><div style="display:flex;gap:5px;flex-shrink:0"><span class="badge ${SC[x.status]||'b-amber'}">${x.status||'draft'}</span><button class="btn br xs" onclick="delOC(${i})" style="padding:2px 7px">✕</button></div></div><p>${(x.caption||'').substring(0,200)}</p><div class="pcm"><span class="badge b-blue">${x.platform||'—'}</span>${x.date?`<span style="font-size:11px;color:var(--t3)">📅 ${x.date}</span>`:''}</div></div>`).join('');}
+function renderOC(){const ocf=_ts['ocf']||'all';let p=gOC();if(ocf!=='all')p=p.filter(x=>x.platform===ocf);const el=document.getElementById('oc-list');if(!p.length){el.innerHTML='<div class="empty"><h3>No posts yet</h3></div>';return;}el.innerHTML=p.map((x,i)=>`<div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:9px;margin-bottom:7px"><h4>${x.title||'Untitled'}</h4><div style="display:flex;gap:5px;flex-shrink:0"><span class="badge ${SC[x.status]||'b-amber'}">${x.status||'draft'}</span><button class="btn br xs" onclick="delOC(${i})" style="padding:2px 7px">✕</button></div></div><p>${(x.caption||'').substring(0,200)}</p><div class="pcm"><span class="badge b-blue">${x.platform||'—'}</span>${x.date?`<span style="font-size:11px;color:var(--t3)">${x.date}</span>`:''}</div></div>`).join('');}
 function saveOC(){const t=document.getElementById('oc-t').value.trim();if(!t){alert('Title required.');return;}sOC([{platform:document.getElementById('oc-p').value,title:t,caption:document.getElementById('oc-c').value,hashtags:document.getElementById('oc-h').value,status:document.getElementById('oc-s').value,date:document.getElementById('oc-d').value,createdAt:new Date().toISOString()},...gOC()]);closeModal('m-oc');renderOC();['oc-t','oc-c','oc-h'].forEach(id=>document.getElementById(id).value='');}
 function delOC(i){if(!confirm('Delete?'))return;const a=gOC();a.splice(i,1);sOC(a);renderOC();}
 
 // NOTES
 const gN=()=>{try{return JSON.parse(localStorage.getItem('sn_crm_notes')||'[]');}catch{return [];}};
 const sN=a=>localStorage.setItem('sn_crm_notes',JSON.stringify(a));
-function renderNotes(){const n=gN(),el=document.getElementById('notes-list');if(!n.length){el.innerHTML='<div class="empty"><span class="ei">📌</span><h3>No notes yet</h3></div>';return;}el.innerHTML=n.map((x,i)=>`<div class="nc${x.done?' done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleN(${i})"><div style="flex:1"><div class="nct">${x.text}</div><div class="ncm">${x.priority==='high'?'🔴 High · ':''}${x.date||''}</div></div><button class="btn br xs" onclick="delNote(${i})" style="padding:2px 7px;flex-shrink:0">✕</button></div>`).join('');}
+function renderNotes(){const n=gN(),el=document.getElementById('notes-list');if(!n.length){el.innerHTML='<div class="empty"><h3>No notes yet</h3></div>';return;}el.innerHTML=n.map((x,i)=>`<div class="nc${x.done?' done':''}"><input type="checkbox" ${x.done?'checked':''} onchange="toggleN(${i})"><div style="flex:1"><div class="nct">${x.text}</div><div class="ncm">${x.priority==='high'?'High · ':''}${x.date||''}</div></div><button class="btn br xs" onclick="delNote(${i})" style="padding:2px 7px;flex-shrink:0">✕</button></div>`).join('');}
 function saveNote(){const t=document.getElementById('note-t').value.trim();if(!t){alert('Note cannot be empty.');return;}sN([{text:t,done:false,priority:document.getElementById('note-p').value,date:new Date().toLocaleDateString('en-GB'),id:Date.now()},...gN()]);closeModal('m-note');renderNotes();document.getElementById('note-t').value='';}
 function toggleN(i){const n=gN();n[i].done=!n[i].done;sN(n);renderNotes();}
 function delNote(i){if(!confirm('Delete?'))return;const n=gN();n.splice(i,1);sN(n);renderNotes();}
