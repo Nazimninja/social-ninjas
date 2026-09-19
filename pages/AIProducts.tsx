@@ -22,9 +22,9 @@ const products = [
     color: '#f59e0b',
     tryLink: 'https://fit.socialninjas.in/app?mode=signup',
     learnLink: '/ai-products/fit-ninja',
-    stats: [['1,324+','Animated Exercises'], ['4.9★','User Rating'], ['100%','Offline PWA Ready'], ['₹399/mo','Starting Price']],
+    stats: [['5,300+','Animated Exercises'], ['4.9★','User Rating'], ['100%','Offline PWA Ready'], ['₹399/mo','Monthly Subscription']],
     features: [
-      '1,324+ searchable exercises with animated demos & equipment filters',
+      '5,300+ searchable exercises with animated demos & equipment filters',
       'Guided workout execution player with live rest timers and wake-lock',
       'Anatomical muscle heatmap showing trained vs neglected muscle groups',
       'Greyskull LP, linear progression & 1RM strength tracking algorithms',
@@ -32,7 +32,7 @@ const products = [
       '100% offline-capable PWA for seamless gym use on iPhone & Android'
     ],
     plans: [
-      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 1,324+ Exercises, Workouts & Precision Nutrition' },
+      { name: 'Fit Ninja Pro', price: '₹399/mo', note: 'Full 5,300+ Exercises, Workouts & Precision Nutrition' },
     ],
   },
   {
