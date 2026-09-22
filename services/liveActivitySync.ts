@@ -28,43 +28,128 @@ class AcousticSynth {
   }
 
   /**
-   * Resonant countdown ping at 3, 2, 1 seconds.
-   * Dual-harmonic sine with gentle exponential fade (sounds like a luxury acoustic bell).
+   * Subtle countdown tick for the final 5 seconds (5, 4, 3, 2, 1).
+   * Soft, warm wooden tick that gently rises in pitch without being intrusive or loud.
    */
-  playWarningPing(pitch: number = 880) {
+  playCountdownTick(secondsRemaining: number) {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
       const now = ctx.currentTime;
 
-      // Fundamental frequency
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(pitch, now);
-      gain1.gain.setValueAtTime(0.14, now);
-      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      // Gentle pitch ascent from 5s to 1s
+      const pitches: Record<number, number> = {
+        5: 587.33, // D5
+        4: 659.25, // E5
+        3: 739.99, // F#5
+        2: 830.61, // G#5
+        1: 932.33, // A#5
+      };
+      const pitch = pitches[secondsRemaining] || 750;
 
-      // Warm octave harmonic
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(pitch * 2, now);
-      gain2.gain.setValueAtTime(0.05, now);
-      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
 
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(pitch, now);
 
-      osc1.start(now);
-      osc1.stop(now + 0.19);
-      osc2.start(now);
-      osc2.stop(now + 0.15);
+      // Very soft, discreet volume and swift exponential fade (60ms)
+      gain.gain.setValueAtTime(0.07, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.075);
     } catch {
       // Audio autoplay policy fallback
     }
+  }
+
+  /**
+   * Workout Start: Uplifting, clean two-tone chime (E5 -> B5)
+   */
+  playWorkoutStarted() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      [
+        { freq: 659.25, delay: 0.00, vol: 0.10, dur: 0.20 }, // E5
+        { freq: 987.77, delay: 0.09, vol: 0.12, dur: 0.35 }, // B5
+      ].forEach(note => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const t = now + note.delay;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(note.freq, t);
+
+        gain.gain.setValueAtTime(note.vol, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + note.dur);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + note.dur + 0.01);
+      });
+    } catch {}
+  }
+
+  /**
+   * Set Completed (Checkmark Tap): Satisfying, tactile micro-click
+   */
+  playSetCompleted() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.04);
+
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.055);
+    } catch {}
+  }
+
+  /**
+   * Button tap / add set / add exercise: Subtle discreet tap
+   */
+  playTap() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520, now);
+
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.04);
+    } catch {}
   }
 
   /**
@@ -77,10 +162,10 @@ class AcousticSynth {
       const now = ctx.currentTime;
 
       const chord = [
-        { freq: 880.00, delay: 0.00, vol: 0.16 }, // A5
-        { freq: 1108.73, delay: 0.06, vol: 0.16 }, // C#6
-        { freq: 1318.51, delay: 0.12, vol: 0.18 }, // E6
-        { freq: 1760.00, delay: 0.18, vol: 0.22 }, // A6
+        { freq: 880.00, delay: 0.00, vol: 0.14 }, // A5
+        { freq: 1108.73, delay: 0.06, vol: 0.14 }, // C#6
+        { freq: 1318.51, delay: 0.12, vol: 0.16 }, // E6
+        { freq: 1760.00, delay: 0.18, vol: 0.18 }, // A6
       ];
 
       chord.forEach(note => {
@@ -103,6 +188,42 @@ class AcousticSynth {
     } catch {
       // Ignore audio policy errors
     }
+  }
+
+  /**
+   * Workout Completed: Warm accomplishment triad (G5 - B5 - D6 - G6)
+   */
+  playWorkoutCompleted() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      const chord = [
+        { freq: 783.99, delay: 0.00, vol: 0.12 }, // G5
+        { freq: 987.77, delay: 0.08, vol: 0.13 }, // B5
+        { freq: 1174.66, delay: 0.16, vol: 0.15 }, // D6
+        { freq: 1567.98, delay: 0.24, vol: 0.18 }, // G6
+      ];
+
+      chord.forEach(note => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const t = now + note.delay;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(note.freq, t);
+
+        gain.gain.setValueAtTime(note.vol, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + 0.56);
+      });
+    } catch {}
   }
 }
 

@@ -81,9 +81,9 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
         const msRemaining = currentRest.endTimestamp - Date.now();
         const secsRemaining = Math.max(0, Math.ceil(msRemaining / 1000));
 
-        // Sound cues at 3, 2, 1
-        if (secsRemaining === 3 || secsRemaining === 2 || secsRemaining === 1) {
-          soundSynth.playWarningPing(800 + (3 - secsRemaining) * 120);
+        // Subtle acoustic countdown ticks at 5, 4, 3, 2, 1 seconds
+        if (secsRemaining <= 5 && secsRemaining >= 1) {
+          soundSynth.playCountdownTick(secsRemaining);
         }
 
         if (secsRemaining <= 0) {
@@ -148,6 +148,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     setElapsedSeconds(0);
     setRestTimer(null);
     promptNotifications();
+    soundSynth.playWorkoutStarted();
 
     const firstExercise = initialExercises[0]?.name || 'Warm-up';
     updateLockScreenMediaSession({
@@ -171,6 +172,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Add set to exercise
   const addSet = useCallback((exId: string) => {
+    soundSynth.playTap();
     setExercises(prev =>
       prev.map(ex => {
         if (ex.id !== exId) return ex;
@@ -188,6 +190,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Add exercise to workout
   const addExercise = useCallback((exercise: WorkoutExercise & { restSeconds?: number }) => {
+    soundSynth.playTap();
     setExercises(prev => [...prev, exercise]);
   }, []);
 
@@ -245,6 +248,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     });
 
     if (completed) {
+      soundSynth.playSetCompleted();
       const now = Date.now();
       const duration = restSecs || 90;
       setRestTimer({
@@ -337,6 +341,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     updateLockScreenMediaSession(null);
     pipIsland.closePiP().catch(() => {});
 
+    soundSynth.playWorkoutCompleted();
     return savedWorkout;
   }, [exercises, workoutName, elapsedSeconds, planDayIndex, dispatch]);
 
