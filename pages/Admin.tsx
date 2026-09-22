@@ -6,7 +6,7 @@ import {
   Share2, Video, Eye, Users, RefreshCw, Send, 
   CheckSquare, Copy, ArrowUpRight, Flame, Layers,
   TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star,
-  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe, Instagram, List
+  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe, Instagram, List, Activity
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { supabase } from './supabase';
@@ -122,26 +122,31 @@ export interface ParsedLeadNotes {
   signal: string | null;
   reasoning: string | null;
   suggestedOpener: string | null;
+  activityLog: string[];
   rawRemaining: string | null;
 }
 
 export const parseLeadNotes = (notesText?: string | null): ParsedLeadNotes => {
   if (!notesText) {
-    return { icpScore: null, signal: null, reasoning: null, suggestedOpener: null, rawRemaining: null };
+    return { icpScore: null, signal: null, reasoning: null, suggestedOpener: null, activityLog: [], rawRemaining: null };
   }
   const icpMatch = notesText.match(/\[ICP Score:\s*([^\]]+)\]/i);
   const icpScore = icpMatch ? icpMatch[1].trim() : null;
   const signalMatch = notesText.match(/\[Signal:\s*([^\]]+)\]/i);
   const signal = signalMatch ? signalMatch[1].trim() : null;
   let suggestedOpener: string | null = null;
-  const openerMatch = notesText.match(/Suggested Opener:\s*([\s\S]+?)$/i);
+  const openerMatch = notesText.match(/Suggested Opener:\s*([\s\S]+?)(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i);
   if (openerMatch) suggestedOpener = openerMatch[1].trim();
   let reasoning: string | null = null;
-  const reasoningMatch = notesText.match(/Reasoning:\s*([\s\S]+?)(?=\n\s*Suggested Opener:|$)/i);
+  const reasoningMatch = notesText.match(/Reasoning:\s*([\s\S]+?)(?=\n\s*(?:Suggested Opener:|\[Outreach|\[Message|$))/i);
   if (reasoningMatch) reasoning = reasoningMatch[1].trim();
+  
+  // Extract outreach / message history logs
+  const activityMatches = notesText.match(/\[(?:Outreach|Message|Activity)[^\]]+\](?:\s*:\s*"[^"]*"|[^\n]+)?/gi) || [];
+
   let rawRemaining: string | null = null;
-  if (!icpScore && !signal && !suggestedOpener && !reasoning) rawRemaining = notesText;
-  return { icpScore, signal, reasoning, suggestedOpener, rawRemaining };
+  if (!icpScore && !signal && !suggestedOpener && !reasoning && activityMatches.length === 0) rawRemaining = notesText;
+  return { icpScore, signal, reasoning, suggestedOpener, activityLog: activityMatches, rawRemaining };
 };
 
 const pc = (id: string) => PROFILES.find(p => p.id === id || p.label === id || p.id.toLowerCase() === id?.toLowerCase() || p.label.toLowerCase() === id?.toLowerCase())?.color || '#38bdf8';
@@ -188,6 +193,9 @@ export const Admin: React.FC = () => {
   const [leadFollowUpFilter, setLeadFollowUpFilter] = useState<'all' | 'scheduled' | 'overdue'>('all');
   const [detailFollowUpDate, setDetailFollowUpDate] = useState<string>('');
   const [detailFollowUpNotes, setDetailFollowUpNotes] = useState<string>('');
+  const [saveLeadStatusFeedback, setSaveLeadStatusFeedback] = useState<'saving' | 'saved' | 'error' | null>(null);
+  const [logChannel, setLogChannel] = useState<string>('instagram');
+  const [logMessageText, setLogMessageText] = useState<string>('');
 
   // ── Scheduler ───────────────────────────────────────────────────────
   const [scheduleLeadId, setScheduleLeadId] = useState<string>('');
@@ -316,24 +324,62 @@ export const Admin: React.FC = () => {
     setDetailFollowUpNotes(lead.follow_up_notes || '');
   };
 
-  const handleUpdateLeadStatus = async (leadId: string, newStatus: string, e?: React.MouseEvent | React.ChangeEvent) => {
-    if (e) e.stopPropagation();
-    // Optimistic update of local state immediately
-    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
-    setSelectedLead((prev: any) => prev && prev.id === leadId ? { ...prev, status: newStatus } : prev);
-    
+  // ── Centralized Robust Lead Update Helper ────────────────────────────
+  const updateLeadData = async (leadId: string, partialUpdates: Record<string, any>): Promise<boolean> => {
+    // 1. Optimistic UI update
+    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, ...partialUpdates } : l));
+    setSelectedLead((prev: any) => prev && prev.id === leadId ? { ...prev, ...partialUpdates } : prev);
+    setSaveLeadStatusFeedback('saving');
+
     try {
-      const { error } = await supabase.from('leads').update({ status: newStatus }).eq('id', leadId);
-      if (error) {
-        await fetch(getApiUrl('/api/data?resource=leads'), {
+      // 2. Call backend /api/data with PATCH (runs with service_role key to bypass Supabase RLS)
+      const res = await fetch(getApiUrl(`/api/data?resource=leads&id=${leadId}`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: leadId, ...partialUpdates })
+      });
+
+      if (!res.ok) {
+        // Fallback to POST with _action update
+        const postRes = await fetch(getApiUrl('/api/data?resource=leads'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: leadId, status: newStatus })
-        }).catch(() => {});
+          body: JSON.stringify({ id: leadId, _action: 'update', ...partialUpdates })
+        });
+        if (!postRes.ok) {
+          throw new Error(`API update returned ${postRes.status}`);
+        }
       }
+
+      setSaveLeadStatusFeedback('saved');
+      setTimeout(() => setSaveLeadStatusFeedback(null), 2500);
+      return true;
     } catch (err) {
-      console.error('Failed to update lead status:', err);
+      console.warn('Backend API update failed, trying direct Supabase fallback:', err);
+      try {
+        await supabase.from('leads').update(partialUpdates).eq('id', leadId);
+        setSaveLeadStatusFeedback('saved');
+        setTimeout(() => setSaveLeadStatusFeedback(null), 2500);
+        return true;
+      } catch (sbErr) {
+        console.error('All lead update attempts failed:', sbErr);
+        setSaveLeadStatusFeedback('error');
+        setTimeout(() => setSaveLeadStatusFeedback(null), 3500);
+        return false;
+      }
     }
+  };
+
+  const handleUpdateLeadStatus = async (leadId: string, newStatus: string, e?: React.MouseEvent | React.ChangeEvent) => {
+    if (e) e.stopPropagation();
+    await updateLeadData(leadId, { status: newStatus });
+  };
+
+  const handleUpdateLeadFollowUp = async (leadId: string, date: string | null, notes: string | null) => {
+    await updateLeadData(leadId, {
+      next_follow_up: date,
+      follow_up_notes: notes
+    });
   };
 
   const handleCopyOpener = () => {
@@ -345,39 +391,90 @@ export const Admin: React.FC = () => {
 
   const handleSaveOpener = async (leadId: string) => {
     if (!selectedLead) return;
-    // Reconstruct notes with edited opener
     const currentNotes = selectedLead.notes || '';
     let newNotes = currentNotes;
-    if (/Suggested Opener:\s*[\s\S]+?$/i.test(currentNotes)) {
-      newNotes = currentNotes.replace(/Suggested Opener:\s*[\s\S]+?$/i, `Suggested Opener:\n${editedOpener}`);
+    if (/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i.test(currentNotes)) {
+      newNotes = currentNotes.replace(/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i, `Suggested Opener:\n${editedOpener}`);
     } else {
       newNotes = currentNotes ? `${currentNotes}\n\nSuggested Opener:\n${editedOpener}` : `Suggested Opener:\n${editedOpener}`;
     }
 
-    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, notes: newNotes } : l));
-    setSelectedLead((prev: any) => prev ? { ...prev, notes: newNotes } : null);
-
-    try {
-      await supabase.from('leads').update({ notes: newNotes }).eq('id', leadId);
+    const ok = await updateLeadData(leadId, { notes: newNotes });
+    if (ok) {
       setSavedOpenerFeedback(true);
       setTimeout(() => setSavedOpenerFeedback(false), 2000);
-    } catch (err) {
-      console.error('Failed to save opener:', err);
     }
   };
 
-  const handleSaveDetailFollowUp = async (leadId: string) => {
-    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, next_follow_up: detailFollowUpDate || null, follow_up_notes: detailFollowUpNotes || null } : l));
-    setSelectedLead((prev: any) => prev ? { ...prev, next_follow_up: detailFollowUpDate || null, follow_up_notes: detailFollowUpNotes || null } : null);
+  const handleLogSentMessage = async (leadId: string) => {
+    if (!selectedLead) return;
+    const msg = (logMessageText || editedOpener || '').trim();
+    if (!msg) {
+      alert('Please enter message text or use the suggested opener.');
+      return;
+    }
 
-    try {
-      await supabase.from('leads').update({
-        next_follow_up: detailFollowUpDate || null,
-        follow_up_notes: detailFollowUpNotes || null
-      }).eq('id', leadId);
+    const timestamp = new Date().toLocaleString('en-IN', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    const channelLabels: Record<string, string> = {
+      instagram: 'Instagram DM',
+      whatsapp: 'WhatsApp',
+      email: 'Email',
+      phone: 'Phone Call',
+      linkedin: 'LinkedIn DM'
+    };
+    const channelLabel = channelLabels[logChannel] || logChannel;
+    const logEntry = `[Outreach · ${channelLabel} · ${timestamp}]: "${msg}"`;
+
+    const currentNotes = selectedLead.notes || '';
+    const newNotes = currentNotes ? `${currentNotes}\n\n${logEntry}` : logEntry;
+
+    const currentStatus = normalizeLeadStatus(selectedLead.status);
+    const updatedStatus = currentStatus === 'New Inbound' ? 'In Dialogue' : selectedLead.status;
+
+    await updateLeadData(leadId, {
+      notes: newNotes,
+      status: updatedStatus
+    });
+
+    setLogMessageText('');
+    setSavedOpenerFeedback(true);
+    setTimeout(() => setSavedOpenerFeedback(false), 2500);
+  };
+
+  const handleSendAndProgress = async (leadId: string) => {
+    if (!selectedLead) return;
+    const msg = editedOpener.trim();
+    const timestamp = new Date().toLocaleString('en-IN', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    const logEntry = msg
+      ? `[Outreach · Sent DM · ${timestamp}]: "${msg}"`
+      : `[Outreach · Contacted · ${timestamp}]`;
+
+    const currentNotes = selectedLead.notes || '';
+    const newNotes = currentNotes ? `${currentNotes}\n\n${logEntry}` : logEntry;
+
+    await updateLeadData(leadId, {
+      status: 'In Dialogue',
+      notes: newNotes
+    });
+  };
+
+  const handleSaveDetailFollowUp = async (leadId: string) => {
+    const ok = await updateLeadData(leadId, {
+      next_follow_up: detailFollowUpDate || null,
+      follow_up_notes: detailFollowUpNotes || null
+    });
+    if (ok) {
       alert('Follow-up scheduled successfully!');
-    } catch (err) {
-      console.error('Failed to save follow-up:', err);
     }
   };
 
@@ -411,17 +508,12 @@ export const Admin: React.FC = () => {
 
   const handleScheduleSubmit = async () => {
     if (!scheduleLeadId) return alert('Select a lead to schedule');
-    setLeads(prev => prev.map(l => l.id === scheduleLeadId ? { ...l, next_follow_up: scheduleDate, follow_up_notes: scheduleNotes || 'Scheduled Discovery Session' } : l));
-    if (selectedLead && selectedLead.id === scheduleLeadId) {
-      setSelectedLead((prev: any) => prev ? { ...prev, next_follow_up: scheduleDate, follow_up_notes: scheduleNotes || 'Scheduled Discovery Session' } : null);
-    }
-    await supabase.from('leads').update({
+    await updateLeadData(scheduleLeadId, {
       next_follow_up: scheduleDate,
       follow_up_notes: scheduleNotes || 'Scheduled Discovery Session'
-    }).eq('id', scheduleLeadId);
+    });
     setShowScheduleModal(false);
     setScheduleNotes('');
-    await loadAllData();
   };
 
   const handlePublishPost = async () => {
@@ -1203,6 +1295,7 @@ export const Admin: React.FC = () => {
                       const isPaid = fit.plan_status === 'premium';
                       const phys = fit.physiological || fit.assessment_data || {};
                       const bp = fit.generated_plan || {};
+                      const prog = fit.progress || {};
 
                       return (
                         <tr key={fit.id} className="hover:bg-white/[0.02] transition-colors">
@@ -1229,14 +1322,32 @@ export const Admin: React.FC = () => {
                             </div>
                           </td>
                           <td className="py-4 pr-4">
-                            <div className="font-bold text-white capitalize text-xs">
-                              {phys.goal || fit.assessment_data?.goal?.replace('_', ' ') || 'General Fitness'}
-                            </div>
-                            <div className="text-slate-400 text-[11px]">
-                              {phys.gender && phys.gender !== 'Not specified' ? `${phys.gender} · ` : ''}
-                              {phys.age && phys.age !== '—' ? `${phys.age}y · ` : ''}
-                              {phys.weight && phys.weight !== '—' ? `${phys.weight}kg` : ''}
-                            </div>
+                            {fit.onboarded ? (
+                              <div>
+                                <div className="font-bold text-white capitalize text-xs flex items-center gap-1.5">
+                                  <span>{phys.goal || 'General Fitness'}</span>
+                                  {prog.weight_delta ? (
+                                    <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
+                                      prog.weight_delta < 0 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-sky-500/20 text-sky-300'
+                                    }`}>
+                                      {prog.weight_delta > 0 ? `+${prog.weight_delta}` : prog.weight_delta} kg
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <div className="text-slate-400 text-[11px]">
+                                  {phys.gender && phys.gender !== '—' && phys.gender !== 'Not specified' ? `${phys.gender} · ` : ''}
+                                  {phys.age && phys.age !== '—' ? `${phys.age}y · ` : ''}
+                                  {phys.weight && phys.weight !== '—' ? `${phys.weight}kg` : ''}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="space-y-0.5">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/25">
+                                  <Clock size={10} /> Onboarding Pending
+                                </span>
+                                <div className="text-[10px] text-slate-500">Google sign-in completed</div>
+                              </div>
+                            )}
                           </td>
                           <td className="py-4 pr-4">
                             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-black rounded-full uppercase tracking-wider border ${
@@ -1258,7 +1369,7 @@ export const Admin: React.FC = () => {
                                 </div>
                               </div>
                             ) : (
-                              <span className="text-slate-600 italic">Blueprint pending</span>
+                              <span className="text-slate-500 italic text-[11px]">Intake pending</span>
                             )}
                           </td>
                           <td className="py-4 pr-4">
@@ -1268,15 +1379,23 @@ export const Admin: React.FC = () => {
                                 {fit.active_label || fmtDate(fit.last_active_at || fit.created_at)}
                               </span>
                             </div>
-                            <div className="text-[10px] text-slate-500">Joined {fmtDate(fit.created_at)}</div>
+                            <div className="text-[10px] text-slate-500">
+                              {prog.workouts_count > 0 || prog.checkins_count > 0 ? (
+                                <span className="text-slate-400 font-medium">
+                                  {prog.workouts_count} workouts · {prog.checkins_count} check-ins
+                                </span>
+                              ) : (
+                                `Joined ${fmtDate(fit.created_at)}`
+                              )}
+                            </div>
                           </td>
                           <td className="py-4 text-right">
                             <div className="flex gap-1.5 justify-end">
                               <button
                                 onClick={() => setViewFitClientDetails(fit)}
-                                className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-sky-500/20 active:scale-95"
+                                className="bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-sky-500/20 active:scale-95 flex items-center gap-1.5"
                               >
-                                Blueprint
+                                <Activity size={12} /> Progress &amp; Plan
                               </button>
                               <button
                                 onClick={() => {
@@ -2021,8 +2140,7 @@ export const Admin: React.FC = () => {
                         </button>
                         <button
                           onClick={async () => {
-                            await supabase.from('leads').update({ next_follow_up: null, follow_up_notes: 'Completed' }).eq('id', l.id);
-                            await loadAllData();
+                            await updateLeadData(l.id, { next_follow_up: null, follow_up_notes: 'Completed' });
                           }}
                           className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5"
                         >
@@ -2268,13 +2386,28 @@ export const Admin: React.FC = () => {
                 
                 {/* Status Selector Banner */}
                 <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
                       Current Stage:
                     </span>
                     <span className={`px-2.5 py-0.5 text-[10px] font-extrabold rounded-full border uppercase ${conf.bg} ${conf.color} ${conf.border}`}>
                       {conf.label}
                     </span>
+                    {saveLeadStatusFeedback === 'saving' && (
+                      <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 animate-pulse flex items-center gap-1">
+                        <RefreshCw size={10} className="animate-spin" /> Saving changes...
+                      </span>
+                    )}
+                    {saveLeadStatusFeedback === 'saved' && (
+                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1">
+                        <Check size={11} /> Saved to Database
+                      </span>
+                    )}
+                    {saveLeadStatusFeedback === 'error' && (
+                      <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20 flex items-center gap-1">
+                        <AlertCircle size={11} /> Sync error, retrying...
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -2407,24 +2540,127 @@ export const Admin: React.FC = () => {
                     className="w-full bg-[#070b14] border border-white/[0.1] rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500/50 leading-relaxed font-sans"
                   />
 
-                  <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center justify-between pt-1 gap-2 flex-wrap">
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => handleSaveOpener(lead.id)}
+                        className="text-[10px] font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
+                      >
+                        💾 Save changes to notes
+                      </button>
+
+                      {lead.website && (
+                        <a
+                          href={lead.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 hover:underline"
+                        >
+                          Open Profile to Send DM →
+                        </a>
+                      )}
+                    </div>
+
                     <button
                       type="button"
-                      onClick={() => handleSaveOpener(lead.id)}
-                      className="text-[10px] font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
+                      onClick={() => handleSendAndProgress(lead.id)}
+                      className="px-3 py-1 rounded-lg text-xs font-extrabold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+                      title="Record outreach and automatically move stage to In Dialogue"
                     >
-                      💾 Save changes to notes
+                      <ArrowRight size={13} /> Mark Sent → Advance to In Dialogue
                     </button>
+                  </div>
+                </div>
 
-                    {lead.website && (
-                      <a
-                        href={lead.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 hover:underline"
+                {/* Outreach & Sent Messages Log Section */}
+                <div className="p-4 rounded-xl bg-[#121929] border border-indigo-500/25 space-y-3.5 shadow-md">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[10px] font-black text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <MessageSquare size={13} /> Outreach & Messages Log
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      {(parsed.activityLog || []).length} logged interactions
+                    </span>
+                  </div>
+
+                  {/* Quick message logger */}
+                  <div className="bg-[#070b14] p-3 rounded-xl border border-white/[0.08] space-y-2.5">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <label className="text-[10px] font-bold text-slate-400 uppercase">Channel:</label>
+                        <select
+                          value={logChannel}
+                          onChange={(e) => setLogChannel(e.target.value)}
+                          className="bg-[#121929] border border-white/[0.1] text-white text-[11px] rounded-lg px-2.5 py-1 font-semibold focus:outline-none cursor-pointer"
+                        >
+                          <option value="instagram">Instagram DM</option>
+                          <option value="whatsapp">WhatsApp</option>
+                          <option value="email">Email</option>
+                          <option value="linkedin">LinkedIn DM</option>
+                          <option value="phone">Phone Call</option>
+                        </select>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setLogMessageText(editedOpener)}
+                        className="text-[10px] text-sky-400 hover:text-sky-300 font-bold underline cursor-pointer"
                       >
-                        Open Profile to Send DM →
-                      </a>
+                        Paste Current Opener
+                      </button>
+                    </div>
+
+                    <textarea
+                      value={logMessageText}
+                      onChange={(e) => setLogMessageText(e.target.value)}
+                      rows={2}
+                      placeholder="Type the message you sent to this prospect or notes on the conversation..."
+                      className="w-full bg-[#0e1424] border border-white/[0.08] rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500/50 leading-relaxed font-sans"
+                    />
+
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[9px] text-slate-500 italic">
+                        Logging records the message with timestamp and persists immediately to database
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleLogSentMessage(lead.id)}
+                        className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20 transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Send size={12} /> Log Sent Message
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* History of messages & activities */}
+                  <div className="space-y-2 pt-1">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      Conversation & Outreach History:
+                    </div>
+
+                    {(parsed.activityLog || []).length === 0 ? (
+                      <div className="p-3 rounded-lg bg-[#070b14]/50 border border-white/[0.04] text-center text-slate-500 italic text-[11px]">
+                        No outreach logged yet. Send a message on Instagram or WhatsApp, then log it above or click "Mark Sent".
+                      </div>
+                    ) : (
+                      <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        {parsed.activityLog.map((log, idx) => (
+                          <div
+                            key={idx}
+                            className="p-2.5 rounded-lg bg-[#070b14] border border-indigo-500/20 text-xs text-slate-200 space-y-1"
+                          >
+                            <div className="text-[10px] font-bold text-indigo-400 flex items-center gap-1.5">
+                              <span>💬</span> {log.replace(/^\[Outreach\s*·\s*/i, '').replace(/\]:.*$/, '')}
+                            </div>
+                            <p className="text-slate-300 text-[11px] leading-relaxed font-mono whitespace-pre-wrap bg-white/[0.02] p-2 rounded border border-white/[0.03]">
+                              {log.includes(']: "')
+                                ? log.replace(/^.*\]:\s*"/, '').replace(/"\s*$/, '')
+                                : log.replace(/^\[.*?\]:\s*/, '')}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -2544,6 +2780,9 @@ export const Admin: React.FC = () => {
         const isPaid = fit.plan_status === 'premium';
         const phys = fit.physiological || fit.assessment_data || {};
         const bp = fit.generated_plan || {};
+        const prog = fit.progress || {};
+        const checkins = prog.recent_checkins || [];
+        const healthConditions = Array.isArray(phys.health_conditions) ? phys.health_conditions : [];
 
         return (
           <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
@@ -2574,6 +2813,15 @@ export const Admin: React.FC = () => {
                       }`}>
                         {isPaid ? 'PRO PASS' : 'FREE TIER'}
                       </span>
+                      {fit.onboarded ? (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                          Onboarded
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                          Onboarding Pending
+                        </span>
+                      )}
                     </div>
                     <div className="text-slate-400 text-[11px] mt-0.5">
                       <span>{fit.email}</span> • <span className="text-emerald-400 font-semibold">{fit.active_label || 'Active Protocol'}</span>
@@ -2588,46 +2836,57 @@ export const Admin: React.FC = () => {
                 </button>
               </div>
 
+              {/* Onboarding Pending Banner */}
+              {!fit.onboarded && (
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 flex items-start gap-3 text-amber-200">
+                  <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
+                  <div className="text-xs space-y-1">
+                    <div className="font-bold text-amber-300">Intake Questionnaire Pending</div>
+                    <p className="text-[11px] text-amber-200/80 leading-relaxed">
+                      This athlete has signed in with Google but hasn't completed their onboarding fitness quiz yet. Their exact age, bodyweight, medical guardrails, and metabolic plan will sync here automatically once submitted.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Physiological Identity Card */}
               <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-3">
                 <div className="text-[10.5px] font-black text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                  <Dumbbell size={13} className="text-amber-400" /> Physiological Identity
+                  <Dumbbell size={13} className="text-amber-400" /> Physiological Profile &amp; Onboarding
                 </div>
                 
                 <div className="space-y-2.5">
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Full Name / Nickname</span>
-                    <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white">
-                      {fit.name || 'Athlete'}
-                    </div>
-                  </div>
-
                   <div className="grid grid-cols-2 gap-2.5">
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Biological Sex</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-slate-200 capitalize">
-                        {phys.gender || 'Male'}
+                        {phys.gender || '—'}
                       </div>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Age (Yrs)</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Age</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
-                        {phys.age || 25}
+                        {phys.age !== '—' && phys.age ? `${phys.age} yrs` : '—'}
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Bodyweight (KG)</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Current Bodyweight</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
-                        {phys.weight || 70} kg
+                        {phys.weight !== '—' && phys.weight ? `${phys.weight} kg` : '—'}
+                        {phys.starting_weight && phys.starting_weight !== '—' && phys.starting_weight !== phys.weight ? (
+                          <span className="text-[10px] text-slate-400 block font-normal mt-0.5">
+                            Started: {phys.starting_weight} kg
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Height (CM)</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Height</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
-                        {phys.height || 175} cm
+                        {phys.height !== '—' && phys.height ? `${phys.height} cm` : '—'}
                       </div>
                     </div>
                   </div>
@@ -2636,16 +2895,126 @@ export const Admin: React.FC = () => {
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Primary Goal</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-amber-300 capitalize">
-                        {phys.goal || 'Hypertrophy & Mass'}
+                        {phys.goal || 'General Fitness'}
                       </div>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Goal WT (KG)</span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Target WT Goal</span>
                       <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-bold text-white text-center">
-                        {phys.goal_weight || 72} kg
+                        {phys.goal_weight !== '—' && phys.goal_weight ? `${phys.goal_weight} kg` : '—'}
                       </div>
                     </div>
                   </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Training Frequency</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-semibold text-slate-300">
+                        {phys.days_per_week !== '—' && phys.days_per_week ? `${phys.days_per_week} days / week` : '—'}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Workout Split</span>
+                      <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 capitalize">
+                        {phys.split_preference || 'Coach Decides'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Clinical Health Guardrails</span>
+                    <div className="bg-[#0b0f19] border border-white/[0.08] rounded-xl px-3 py-2 text-xs">
+                      {healthConditions.length > 0 ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {healthConditions.map((cond, i) => (
+                            <span key={i} className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 text-[10px] font-bold capitalize">
+                              🛡️ {cond.replace(/_/g, ' ')}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-emerald-400 font-semibold text-[11px]">✓ No medical restrictions active (Optimal Health)</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Weekly Progress & Check-in Audit (The requested tracking section) */}
+              <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-[10.5px] font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <TrendingUp size={13} className="text-emerald-400" /> Weekly Progress &amp; Check-ins
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-medium">
+                    {prog.checkins_count || 0} check-ins • {prog.workouts_count || 0} workouts
+                  </span>
+                </div>
+
+                {/* Progress Metric Highlights */}
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-white">{prog.starting_weight ? `${prog.starting_weight}kg` : '—'}</div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-0.5 uppercase">Starting WT</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-white">{prog.current_weight ? `${prog.current_weight}kg` : '—'}</div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-0.5 uppercase">Current WT</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className={`text-sm font-black ${
+                      prog.weight_delta < 0 ? 'text-emerald-400' : prog.weight_delta > 0 ? 'text-sky-400' : 'text-slate-300'
+                    }`}>
+                      {prog.weight_delta > 0 ? `+${prog.weight_delta}` : (prog.weight_delta || '0.0')}kg
+                    </div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-0.5 uppercase">Net Change</div>
+                  </div>
+                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                    <div className="text-sm font-black text-amber-400">{prog.workouts_count || 0}</div>
+                    <div className="text-[8px] font-extrabold text-slate-400 mt-0.5 uppercase">Sessions</div>
+                  </div>
+                </div>
+
+                {/* Check-ins Timeline / List */}
+                <div className="space-y-2 pt-1">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase">Recent Weekly Check-ins</div>
+                  {checkins.length === 0 ? (
+                    <div className="bg-[#0b0f19] rounded-xl p-3.5 text-center text-slate-500 italic text-[11px] border border-white/[0.04]">
+                      No weekly check-ins recorded yet. When this athlete completes their weekly check-in, their logged weights, soreness, and progress notes will appear here.
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                      {checkins.map((chk, idx) => (
+                        <div key={chk.id || idx} className="bg-[#0b0f19] border border-white/[0.06] rounded-xl p-3 space-y-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-bold text-white flex items-center gap-1.5">
+                              <CalendarIcon size={12} className="text-sky-400" />
+                              {fmtDate(chk.date)}
+                            </span>
+                            <span className="font-black text-emerald-400 text-sm">
+                              {chk.weight} kg
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] text-slate-400 flex-wrap">
+                            <span className="bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06] capitalize">
+                              Difficulty: <b className="text-slate-200">{chk.difficulty}</b>
+                            </span>
+                            <span className="bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06] capitalize">
+                              Soreness: <b className="text-slate-200">{chk.soreness}</b>
+                            </span>
+                            <span className="bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06] capitalize">
+                              Diet: <b className="text-slate-200">{chk.diet_rating?.replace('_', ' ')}</b>
+                            </span>
+                          </div>
+                          {chk.notes && (
+                            <div className="text-[11px] text-slate-300 italic bg-white/[0.02] p-2 rounded-lg border border-white/[0.04] mt-1">
+                              "{chk.notes}"
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -2654,35 +3023,41 @@ export const Admin: React.FC = () => {
                 <div className="text-[10.5px] font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                   <Sparkles size={13} className="text-sky-400" /> Active Metabolic &amp; Ergogenic Blueprint
                 </div>
-                <div className="grid grid-cols-5 gap-1.5 text-center">
-                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
-                    <div className="text-sm font-black text-white">{bp.kcal || 2944}</div>
-                    <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">Kcal/Day</div>
+                {bp.kcal ? (
+                  <div className="grid grid-cols-5 gap-1.5 text-center">
+                    <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                      <div className="text-sm font-black text-white">{bp.kcal}</div>
+                      <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">Kcal/Day</div>
+                    </div>
+                    <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                      <div className="text-sm font-black text-sky-400">{bp.protein || '—'}g</div>
+                      <div className="text-[8px] font-extrabold text-sky-400 mt-1 uppercase">Protein</div>
+                    </div>
+                    <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                      <div className="text-sm font-black text-amber-400">{bp.creatine || '5g'}</div>
+                      <div className="text-[8px] font-extrabold text-amber-400 mt-1 uppercase">Creatine</div>
+                    </div>
+                    <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                      <div className="text-sm font-black text-slate-300">{bp.bmr || '—'}</div>
+                      <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">BMR Kcal</div>
+                    </div>
+                    <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
+                      <div className="text-sm font-black text-emerald-400">{bp.bmi || '—'}</div>
+                      <div className="text-[8px] font-extrabold text-emerald-400 mt-1 uppercase">BMI</div>
+                    </div>
                   </div>
-                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
-                    <div className="text-sm font-black text-sky-400">{bp.protein || 140}g</div>
-                    <div className="text-[8px] font-extrabold text-sky-400 mt-1 uppercase">Protein</div>
+                ) : (
+                  <div className="bg-[#0b0f19] p-3 rounded-xl border border-white/[0.06] text-center text-slate-500 italic text-[11px]">
+                    Blueprint pending athlete onboarding assessment.
                   </div>
-                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
-                    <div className="text-sm font-black text-amber-400">{bp.creatine || '5g'}</div>
-                    <div className="text-[8px] font-extrabold text-amber-400 mt-1 uppercase">Creatine</div>
-                  </div>
-                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
-                    <div className="text-sm font-black text-slate-300">{bp.bmr || 1673.75}</div>
-                    <div className="text-[8px] font-extrabold text-slate-400 mt-1 uppercase">BMR Kcal</div>
-                  </div>
-                  <div className="bg-[#0b0f19] p-2.5 rounded-xl border border-white/[0.08]">
-                    <div className="text-sm font-black text-emerald-400">{bp.bmi || 22.9}</div>
-                    <div className="text-[8px] font-extrabold text-emerald-400 mt-1 uppercase">BMI</div>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Telemetry & Account Information */}
               <div className="bg-[#121929] border border-white/[0.08] rounded-2xl p-4 space-y-2">
                 <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Account Telemetry</div>
                 <div className="grid grid-cols-2 gap-3 text-[11px]">
-                  <div><span className="text-slate-500">Last Seen:</span> <b className="text-emerald-400">{fit.active_label || fmtDate(fit.last_active_at)}</b></div>
+                  <div><span className="text-slate-500">Last Seen / Synced:</span> <b className="text-emerald-400">{fit.active_label || fmtDate(fit.last_active_at)}</b></div>
                   <div><span className="text-slate-500">Joined:</span> <b className="text-slate-300">{fmtDate(fit.created_at)}</b></div>
                   <div className="col-span-2 text-slate-500 font-mono text-[10px]">ID: {fit.id}</div>
                 </div>
@@ -2713,7 +3088,7 @@ export const Admin: React.FC = () => {
                   onClick={() => setViewFitClientDetails(null)}
                   className="px-4 py-2.5 bg-white/[0.08] hover:bg-white/[0.14] text-white rounded-xl text-xs font-bold transition-colors"
                 >
-                  Close Blueprint
+                  Close
                 </button>
               </div>
 

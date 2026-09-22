@@ -73,6 +73,8 @@ ALTER TABLE public.content_studio_clients ENABLE ROW LEVEL SECURITY;
 
 -- Clean up any existing policies
 DROP POLICY IF EXISTS "Allow public lead creation" ON public.leads;
+DROP POLICY IF EXISTS "Allow public lead read" ON public.leads;
+DROP POLICY IF EXISTS "Allow public lead update" ON public.leads;
 DROP POLICY IF EXISTS "Allow public client registration" ON public.content_studio_clients;
 DROP POLICY IF EXISTS "Allow public client update" ON public.content_studio_clients;
 
@@ -82,6 +84,21 @@ CREATE POLICY "Allow public lead creation"
   ON public.leads
   FOR INSERT
   TO anon, authenticated
+  WITH CHECK (true);
+
+-- Allow reading leads in CRM
+CREATE POLICY "Allow public lead read"
+  ON public.leads
+  FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+-- Allow updating lead status, notes, follow-ups
+CREATE POLICY "Allow public lead update"
+  ON public.leads
+  FOR UPDATE
+  TO anon, authenticated
+  USING (true)
   WITH CHECK (true);
 
 -- CONTENT STUDIO CLIENTS TABLE POLICIES:

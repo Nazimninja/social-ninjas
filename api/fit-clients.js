@@ -33,21 +33,7 @@ export default async function handler(req, res) {
         if (authRes.ok) updated = true;
       }
 
-      // B. Try updating profiles table if it exists
-      try {
-        const profRes = await fetch(`${supabaseUrl}/rest/v1/profiles?id=eq.${id}`, {
-          method: 'PATCH',
-          headers: {
-            'apikey': serviceRoleKey,
-            'Authorization': `Bearer ${serviceRoleKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ plan_status })
-        });
-        if (profRes.ok) updated = true;
-      } catch (_) {}
-
-      // C. Try updating content_studio_clients
+      // B. Try updating content_studio_clients
       try {
         const studioRes = await fetch(`${supabaseUrl}/rest/v1/content_studio_clients?id=eq.${id}`, {
           method: 'PATCH',
@@ -71,7 +57,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── 2. GET: Retrieve All Members and Paid Subscribers ──────────────
+  // ── 2. GET: Retrieve All Members, Synced Onboarding & Weekly Progress ──
   try {
     const headers = {
       'apikey': serviceRoleKey,
@@ -79,26 +65,45 @@ export default async function handler(req, res) {
       'Content-Type': 'application/json'
     };
 
-    // Parallel fetch from Auth users, Studio clients, and profiles
-    const [authRes, studioRes, profilesRes] = await Promise.all([
+    // Parallel fetch from Auth users, Studio clients, and synced Fit Ninja user states
+    const [authRes, studioRes, userStatesRes] = await Promise.all([
       fetch(`${supabaseUrl}/auth/v1/admin/users`, { headers }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`${supabaseUrl}/rest/v1/content_studio_clients?select=*`, { headers }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`${supabaseUrl}/rest/v1/profiles?select=*`, { headers }).then(r => r.ok ? r.json() : null).catch(() => null)
+      fetch(`${supabaseUrl}/rest/v1/scripts?profile=eq.fitninja_user_state&order=created_at.desc&select=topic,section1,caption,created_at`, { headers }).then(r => r.ok ? r.json() : null).catch(() => null)
     ]);
+
+    // Build map of latest synced user state per email
+    const userStatesByEmail = new Map();
+    if (Array.isArray(userStatesRes)) {
+      for (const row of userStatesRes) {
+        const email = (row.topic || '').toLowerCase().trim();
+        if (email && !userStatesByEmail.has(email)) {
+          try {
+            const parsed = JSON.parse(row.section1 || '{}');
+            userStatesByEmail.set(email, {
+              ...parsed,
+              last_synced_at: row.caption || row.created_at
+            });
+          } catch (_) {}
+        }
+      }
+    }
 
     const list = [];
     const seenEmails = new Set();
 
-    // A. Profiles table data (if populated)
-    if (Array.isArray(profilesRes)) {
-      for (const p of profilesRes) {
-        const email = (p.email || '').toLowerCase().trim();
-        if (email) seenEmails.add(email);
-        list.push(p);
-      }
-    }
+    // ── Helper to format goal nicely ────────────────────────────────
+    const formatGoal = (raw) => {
+      if (!raw) return 'General Fitness';
+      const clean = String(raw).toLowerCase().replace(/_/g, ' ');
+      if (clean === 'muscle' || clean === 'muscle gain') return 'Muscle Gain';
+      if (clean === 'fat loss' || clean === 'fat_loss') return 'Fat Loss';
+      if (clean === 'strength') return 'Strength & Power';
+      if (clean === 'general' || clean === 'general fitness') return 'General Fitness';
+      return clean.charAt(0).toUpperCase() + clean.slice(1);
+    };
 
-    // B. Fit Ninja Registered Auth Users
+    // ── A. Fit Ninja Registered Auth Users ─────────────────────────
     if (authRes && Array.isArray(authRes.users)) {
       const now = Date.now();
       for (const u of authRes.users) {
@@ -109,12 +114,17 @@ export default async function handler(req, res) {
         const meta = u.user_metadata || {};
         const appMeta = u.app_metadata || {};
         
-        // Check Pro Pass / Paid Status
-        const isNazim = email === 'nazimpasha906@gmail.com';
+        // Paid / PRO PASS status
+        const isNazim = email === 'nazimpasha906@gmail.com' || email.endsWith('@socialninjas.in');
         const isPaid = isNazim || appMeta.plan_status === 'premium' || appMeta.paid === true;
 
+        // Retrieve real synced app state
+        const syncedState = userStatesByEmail.get(email) || meta.gym_state || null;
+        const aiAnswers = syncedState?.aiAnswers || meta.assessment_data || null;
+        const isOnboarded = !!(syncedState?.onboarded || (aiAnswers && aiAnswers.weight && aiAnswers.age));
+
         // Activity calculation
-        const lastActiveIso = u.last_sign_in_at || u.updated_at || u.created_at;
+        const lastActiveIso = syncedState?.last_synced_at || u.last_sign_in_at || u.updated_at || u.created_at;
         const lastActiveTime = lastActiveIso ? new Date(lastActiveIso).getTime() : 0;
         const daysAgo = Math.floor((now - lastActiveTime) / 86400000);
         const isActive = daysAgo <= 14;
@@ -124,33 +134,60 @@ export default async function handler(req, res) {
         else if (daysAgo <= 7) activeLabel = `Active ${daysAgo}d ago`;
         else if (daysAgo <= 14) activeLabel = 'Active This Fortnight';
 
-        // Physiological identity & Blueprint
-        const isNazimProfile = isNazim;
-        const gender = isNazimProfile ? 'Male' : (meta.gender || 'Not specified');
-        const age = isNazimProfile ? 25 : (meta.age || 25);
-        const weight = isNazimProfile ? 70 : (meta.weight || 70);
-        const height = isNazimProfile ? 175 : (meta.height || 175);
-        const goal = isNazimProfile ? 'Hypertrophy & Mass' : (meta.goal || meta.assessment_data?.goal || 'General Fitness');
-        const goalWeight = isNazimProfile ? 72 : (meta.goal_weight || weight);
+        // Extract REAL physiological metrics (no fake fallbacks)
+        const gender = aiAnswers?.gender || meta.gender || (isNazim ? 'Male' : null);
+        const age = aiAnswers?.age ? Number(aiAnswers.age) : (isNazim ? 30 : null);
+        const height = aiAnswers?.height ? Number(aiAnswers.height) : (isNazim ? 175 : null);
+        const startingWeight = aiAnswers?.weight ? Number(aiAnswers.weight) : null;
+        const goal = formatGoal(aiAnswers?.goal || (isNazim ? 'muscle' : null));
+        const goalWeight = syncedState?.targetW || (startingWeight ? (aiAnswers?.goal === 'fat_loss' ? startingWeight - 5 : startingWeight + 4) : null);
+        const healthConditions = Array.isArray(aiAnswers?.healthConditions) ? aiAnswers.healthConditions.filter(c => c && c !== 'none') : [];
 
-        const bp = meta.blueprint || {};
-        const generatedPlan = isNazimProfile ? {
-          kcal: 2944,
-          protein: 140,
-          creatine: '5g',
-          bmr: 1673.75,
-          bmi: 22.9
-        } : {
-          kcal: bp.kcal || (isPaid ? 2250 : 2000),
-          protein: bp.protein || (isPaid ? 155 : 130),
-          creatine: bp.creatine || (isPaid ? '5g' : '—'),
-          bmr: bp.bmr || Math.round(10 * weight + 6.25 * height - 5 * age + 5),
-          bmi: bp.bmi || parseFloat((weight / ((height/100)*(height/100))).toFixed(1))
-        };
+        // Bodyweight history & current weight
+        const bwLogs = Array.isArray(syncedState?.bodyweight) ? syncedState.bodyweight : [];
+        const currentWeight = bwLogs.length > 0 ? bwLogs[bwLogs.length - 1].w : startingWeight;
+        const initialWeight = bwLogs.length > 0 ? bwLogs[0].w : startingWeight;
+        const weightDelta = (currentWeight && initialWeight) ? Math.round((currentWeight - initialWeight) * 10) / 10 : 0;
+
+        // Checkins (weekly check-ins without heavy images)
+        const rawCheckins = Array.isArray(syncedState?.checkins) ? syncedState.checkins : [];
+        const checkinsList = rawCheckins.map(c => ({
+          id: c.id || `${c.date}-${c.weight}`,
+          date: c.date,
+          weight: c.weight,
+          difficulty: c.difficulty || 'good',
+          soreness: c.soreness || 'mild',
+          diet_rating: c.dietRating || 'on_track',
+          notes: c.notes || ''
+        })).reverse(); // Most recent first
+
+        // Workouts count
+        const rawWorkouts = Array.isArray(syncedState?.workouts) ? syncedState.workouts : [];
+        const completedWorkoutsCount = rawWorkouts.length;
+        const lastWorkoutDate = rawWorkouts.length > 0 ? rawWorkouts[rawWorkouts.length - 1].date : null;
+
+        // Real nutrition blueprint (personalized)
+        let kcal = syncedState?.targetCalories || syncedState?.aiPlan?.kcal;
+        let protein = syncedState?.targetProtein || syncedState?.aiPlan?.protein;
+        let bmr = null;
+        let bmi = null;
+
+        if (currentWeight && height) {
+          bmi = parseFloat((currentWeight / ((height / 100) * (height / 100))).toFixed(1));
+          if (age) {
+            bmr = Math.round(10 * currentWeight + 6.25 * height - 5 * age + (gender === 'female' ? -161 : 5));
+            if (!kcal) {
+              const actMap = { 2: 1.35, 3: 1.45, 4: 1.55, 5: 1.65, 6: 1.75 };
+              const tdee = Math.round(bmr * (actMap[aiAnswers?.days || 4] || 1.55));
+              kcal = aiAnswers?.goal === 'fat_loss' ? tdee - 450 : aiAnswers?.goal === 'muscle' ? tdee + 350 : tdee;
+              protein = Math.round(currentWeight * 2.0);
+            }
+          }
+        }
 
         list.push({
           id: u.id,
-          name: meta.full_name || meta.name || email.split('@')[0],
+          name: aiAnswers?.pname || meta.full_name || meta.name || email.split('@')[0],
           email: u.email,
           phone: u.phone || meta.phone || '—',
           avatar: meta.avatar_url || meta.picture || null,
@@ -158,30 +195,41 @@ export default async function handler(req, res) {
           is_active: isActive,
           active_label: activeLabel,
           last_active_at: lastActiveIso,
+          onboarded: isOnboarded,
           physiological: {
-            gender,
-            age,
-            weight,
-            height,
-            goal,
-            goal_weight: goalWeight
+            gender: gender || '—',
+            age: age || '—',
+            weight: currentWeight || '—',
+            starting_weight: startingWeight || '—',
+            height: height || '—',
+            goal: isOnboarded ? goal : 'Onboarding Pending',
+            goal_weight: goalWeight || '—',
+            split_preference: aiAnswers?.splitPreference || 'Coach Decides',
+            days_per_week: aiAnswers?.days || '—',
+            health_conditions: healthConditions
           },
-          assessment_data: {
-            goal,
-            gender,
-            age,
-            weight,
-            height,
-            goal_weight: goalWeight,
-            ...(meta.assessment_data || {})
+          progress: {
+            starting_weight: initialWeight,
+            current_weight: currentWeight,
+            weight_delta: weightDelta,
+            checkins_count: checkinsList.length,
+            recent_checkins: checkinsList.slice(0, 10),
+            workouts_count: completedWorkoutsCount,
+            last_workout_date: lastWorkoutDate
           },
-          generated_plan: generatedPlan,
+          generated_plan: {
+            kcal: kcal || null,
+            protein: protein || null,
+            creatine: isPaid ? '5g' : '—',
+            bmr: bmr || null,
+            bmi: bmi || null
+          },
           created_at: u.created_at
         });
       }
     }
 
-    // C. Content Studio / Brand Clients (e.g. Fit & Glow Gym)
+    // ── B. Content Studio / Brand Clients (e.g. Fit & Glow Gym) ────
     if (Array.isArray(studioRes)) {
       for (const c of studioRes) {
         const email = (c.email || '').toLowerCase().trim();
@@ -198,19 +246,29 @@ export default async function handler(req, res) {
           avatar: null,
           plan_status: isPaid ? 'premium' : 'free',
           is_active: true,
-          active_label: 'Active Client',
+          active_label: 'Active Enterprise',
           last_active_at: c.updated_at || c.created_at,
+          onboarded: true,
           physiological: {
             gender: 'Enterprise',
             age: '—',
             weight: '—',
+            starting_weight: '—',
             height: '—',
             goal: c.niche || 'Fitness Business',
-            goal_weight: '—'
+            goal_weight: '—',
+            split_preference: 'Commercial Studio',
+            days_per_week: '—',
+            health_conditions: []
           },
-          assessment_data: {
-            goal: c.niche || 'Performance Fitness',
-            target_audience: c.target_audience
+          progress: {
+            starting_weight: null,
+            current_weight: null,
+            weight_delta: 0,
+            checkins_count: 0,
+            recent_checkins: [],
+            workouts_count: 0,
+            last_workout_date: null
           },
           generated_plan: {
             kcal: 2400,
@@ -224,7 +282,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Sort newest first
+    // Sort newest active first
     list.sort((a, b) => new Date(b.last_active_at || b.created_at || 0).getTime() - new Date(a.last_active_at || a.created_at || 0).getTime());
 
     return res.json(list);

@@ -172,6 +172,103 @@ app.all('/api/data', async (req, res) => {
         }
     }
 
+    // LEADS (Supabase CRM)
+    if (resource === 'leads') {
+        const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
+        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+
+        if (req.method === 'GET') {
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/leads?select=*&order=created_at.desc`, {
+                    headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                });
+                if (!r.ok) return res.status(r.status).json({ error: 'Supabase error' });
+                const rows = await r.json();
+                return res.json(rows || []);
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error fetching leads' });
+            }
+        }
+
+        if (req.method === 'PATCH' || (req.method === 'POST' && (req.body?._action === 'update' || (id || req.body?.id && !req.body?.name)))) {
+            const targetId = id || req.body?.id;
+            if (!targetId) return res.status(400).json({ error: 'id required for update' });
+            const allowedFields = ['status', 'notes', 'next_follow_up', 'follow_up_notes', 'message', 'company', 'website', 'phone', 'email', 'name', 'source'];
+            const updates = {};
+            for (const f of allowedFields) {
+                if (req.body && req.body[f] !== undefined) updates[f] = req.body[f];
+            }
+            if (req.body?.nextFollowUp !== undefined && updates.next_follow_up === undefined) updates.next_follow_up = req.body.nextFollowUp;
+            if (req.body?.followUpNotes !== undefined && updates.follow_up_notes === undefined) updates.follow_up_notes = req.body.followUpNotes;
+
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/leads?id=eq.${targetId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': CRM_KEY,
+                        'Authorization': `Bearer ${CRM_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify(updates)
+                });
+                if (!r.ok) return res.status(r.status).json({ error: await r.text() });
+                const updated = await r.json();
+                return res.json({ success: true, updated: updated[0] || true });
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error updating lead' });
+            }
+        }
+
+        if (req.method === 'POST') {
+            const body = req.body || {};
+            const leadRow = {
+                id: body.id || `lead_${Date.now()}`,
+                name: body.name || 'Anonymous Prospect',
+                email: body.email || 'lead@socialninjas.in',
+                phone: body.phone || null,
+                company: body.company || null,
+                website: body.website || null,
+                message: body.message || null,
+                source: body.source || 'main-contact-page',
+                status: body.status || 'New Inbound',
+                next_follow_up: body.nextFollowUp || body.next_follow_up || null,
+                follow_up_notes: body.followUpNotes || body.follow_up_notes || null,
+                notes: body.notes || null
+            };
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/leads?on_conflict=id`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': CRM_KEY,
+                        'Authorization': `Bearer ${CRM_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify(leadRow)
+                });
+                if (!r.ok) return res.status(r.status).json({ error: await r.text() });
+                return res.status(201).json({ success: true, lead: leadRow });
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error saving lead' });
+            }
+        }
+
+        if (req.method === 'DELETE') {
+            if (!id) return res.status(400).json({ error: 'id required' });
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/leads?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                });
+                if (!r.ok) return res.status(r.status).json({ error: await r.text() });
+                return res.json({ success: true });
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error deleting lead' });
+            }
+        }
+    }
+
     return res.status(404).json({ error: 'Unknown resource' });
 });
 

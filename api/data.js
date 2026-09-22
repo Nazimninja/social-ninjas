@@ -6,8 +6,8 @@ const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
 // ── Supabase CRM helpers ──────────────────────────────────────────────
-const CRM_URL = process.env.SUPABASE_CRM_URL;
-const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY;
+const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
+const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
 
 async function crmGet(table, options = {}) {
   if (!CRM_URL || !CRM_KEY) return null;
@@ -41,6 +41,25 @@ async function crmUpsert(table, body, conflictCol = 'id') {
     if (!r.ok) { console.error('crmUpsert error:', await r.text()); return false; }
     return true;
   } catch(e) { console.error('crmUpsert exception:', e); return false; }
+}
+
+async function crmPatch(table, colName = 'id', val, updates) {
+  if (!CRM_URL || !CRM_KEY) return false;
+  try {
+    const r = await fetch(`${CRM_URL}/rest/v1/${table}?${colName}=eq.${val}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': CRM_KEY,
+        'Authorization': `Bearer ${CRM_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(updates)
+    });
+    if (!r.ok) { console.error('crmPatch error:', await r.text()); return false; }
+    const data = await r.json();
+    return data && data.length > 0 ? data[0] : true;
+  } catch(e) { console.error('crmPatch exception:', e); return false; }
 }
 
 async function crmDelete(table, colName = 'id', val) {
@@ -185,28 +204,64 @@ export default async function handler(req, res) {
       const rows = await crmGet('leads', { order: 'created_at.desc' });
       return res.json(rows || []);
     }
+    if (req.method === 'PATCH') {
+      const targetId = id || req.body?.id;
+      if (!targetId) return res.status(400).json({ error: 'id required for PATCH' });
+      
+      const allowedFields = ['status', 'notes', 'next_follow_up', 'follow_up_notes', 'message', 'company', 'website', 'phone', 'email', 'name', 'source'];
+      const updates = {};
+      for (const f of allowedFields) {
+        if (req.body && req.body[f] !== undefined) updates[f] = req.body[f];
+      }
+      if (req.body && req.body.nextFollowUp !== undefined && updates.next_follow_up === undefined) updates.next_follow_up = req.body.nextFollowUp;
+      if (req.body && req.body.followUpNotes !== undefined && updates.follow_up_notes === undefined) updates.follow_up_notes = req.body.followUpNotes;
+
+      const result = await crmPatch('leads', 'id', targetId, updates);
+      if (!result) return res.status(500).json({ error: 'Failed to update lead' });
+      return res.json({ success: true, updated: result });
+    }
     if (req.method === 'POST') {
-      const body = req.body;
+      const body = req.body || {};
+      const targetId = id || body.id;
+
+      // Partial update scenario (e.g. updating status, notes, or follow up)
+      if (targetId && (body._action === 'update' || !body.name)) {
+        const allowedFields = ['status', 'notes', 'next_follow_up', 'follow_up_notes', 'message', 'company', 'website', 'phone', 'email', 'name', 'source'];
+        const updates = {};
+        for (const f of allowedFields) {
+          if (body[f] !== undefined) updates[f] = body[f];
+        }
+        if (body.nextFollowUp !== undefined && updates.next_follow_up === undefined) updates.next_follow_up = body.nextFollowUp;
+        if (body.followUpNotes !== undefined && updates.follow_up_notes === undefined) updates.follow_up_notes = body.followUpNotes;
+
+        const result = await crmPatch('leads', 'id', targetId, updates);
+        if (!result) return res.status(500).json({ error: 'Failed to update lead' });
+        return res.json({ success: true, updated: result });
+      }
+
+      // Complete lead creation/upsert
       const leadRow = {
         id: body.id || `lead_${Date.now()}`,
-        name: body.name,
-        email: body.email,
+        name: body.name || 'Anonymous Prospect',
+        email: body.email || 'lead@socialninjas.in',
         phone: body.phone || null,
         company: body.company || null,
         website: body.website || null,
         message: body.message || null,
         source: body.source || 'main-contact-page',
-        status: body.status || 'new',
+        status: body.status || 'New Inbound',
         next_follow_up: body.nextFollowUp || body.next_follow_up || null,
         follow_up_notes: body.followUpNotes || body.follow_up_notes || null,
         notes: body.notes || null
       };
-      await crmUpsert('leads', leadRow, 'id');
-      return res.status(201).json({ success: true });
+      const ok = await crmUpsert('leads', leadRow, 'id');
+      if (!ok) return res.status(500).json({ error: 'Failed to save lead' });
+      return res.status(201).json({ success: true, lead: leadRow });
     }
     if (req.method === 'DELETE') {
       if (!id) return res.status(400).json({ error: 'id required' });
-      await crmDelete('leads', 'id', id);
+      const ok = await crmDelete('leads', 'id', id);
+      if (!ok) return res.status(500).json({ error: 'Failed to delete lead' });
       return res.json({ success: true });
     }
   }
