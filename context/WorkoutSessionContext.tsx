@@ -8,7 +8,6 @@ import {
   requestNotificationPermission,
   setMediaSessionCallbacks,
 } from '../services/liveActivitySync';
-import { nativeLiveActivity } from '../services/nativeLiveActivityBridge';
 import { pipIsland } from '../services/pictureInPictureIsland';
 
 export interface ActiveRestTimer {
@@ -91,7 +90,6 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
           // Timer finished!
           soundSynth.playRestFinished();
           sendRestFinishedNotification(currentRest.nextExerciseName, currentRest.nextExerciseTarget);
-          nativeLiveActivity.endRestActivity();
           setRestTimer(null);
           pipIsland.updateState({
             isResting: false,
@@ -262,18 +260,6 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
         nextMuscleGroup: nextMuscle,
       });
 
-      nativeLiveActivity.startRestActivity({
-        workoutTitle: workoutName || 'Workout Routine',
-        currentExercise: currentExName,
-        currentSetIndex: setIdx + 1,
-        totalSets: totalSetsInCurrentEx,
-        nextExercise: nextExName,
-        nextExerciseTarget: nextTarget,
-        nextMuscleGroup: nextMuscle,
-        restDurationSeconds: duration,
-        restEndTime: now + duration * 1000,
-      });
-
       // Haptic bump
       if (typeof window !== 'undefined' && 'vibrate' in navigator) {
         navigator.vibrate(60);
@@ -281,14 +267,12 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     } else {
       // If unchecked, cancel rest timer if it matches this set
       setRestTimer(null);
-      nativeLiveActivity.endRestActivity();
     }
-  }, [workoutName]);
+  }, []);
 
   // Skip rest early
   const skipRest = useCallback(() => {
     setRestTimer(null);
-    nativeLiveActivity.endRestActivity();
     updateLockScreenMediaSession({
       workoutName: workoutName || 'Workout',
       currentExercise: exercises[0]?.name || 'Exercise',
@@ -303,7 +287,6 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
       const newTotal = prev.totalSeconds + delta;
       const newEnd = prev.endTimestamp + delta * 1000;
       const newRemaining = Math.max(0, Math.ceil((newEnd - Date.now()) / 1000));
-      nativeLiveActivity.extendRestActivity(newRemaining, newEnd);
       return {
         ...prev,
         totalSeconds: newTotal,
@@ -351,7 +334,6 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     setExercises([]);
     setElapsedSeconds(0);
     setRestTimer(null);
-    nativeLiveActivity.endRestActivity();
     updateLockScreenMediaSession(null);
     pipIsland.closePiP().catch(() => {});
 
@@ -364,7 +346,6 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     setExercises([]);
     setElapsedSeconds(0);
     setRestTimer(null);
-    nativeLiveActivity.endRestActivity();
     updateLockScreenMediaSession(null);
     pipIsland.closePiP().catch(() => {});
   }, []);
