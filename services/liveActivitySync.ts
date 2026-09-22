@@ -12,6 +12,39 @@
 // Acoustic synthesizer producing warm, luxury gym chimes (no harsh electronic buzzers)
 class AcousticSynth {
   private ctx: AudioContext | null = null;
+  public isUnlocked: boolean = false;
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      const unlock = () => {
+        this.unlockAudio();
+      };
+      window.addEventListener('touchstart', unlock, { passive: true });
+      window.addEventListener('touchend', unlock, { passive: true });
+      window.addEventListener('click', unlock, { passive: true });
+    }
+  }
+
+  public async unlockAudio(): Promise<boolean> {
+    if (typeof window === 'undefined') return false;
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return false;
+      if (ctx.state === 'suspended') {
+        await ctx.resume();
+      }
+      // Play 1-frame silent buffer to permanently unlock iOS audio pipeline
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+      this.isUnlocked = true;
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   private getContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
@@ -29,15 +62,15 @@ class AcousticSynth {
 
   /**
    * Subtle countdown tick for the final 5 seconds (5, 4, 3, 2, 1).
-   * Soft, warm wooden tick that gently rises in pitch without being intrusive or loud.
+   * Soft, warm wooden tick with gentle harmonic overtone that rises in pitch.
    */
   playCountdownTick(secondsRemaining: number) {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       const now = ctx.currentTime;
 
-      // Gentle pitch ascent from 5s to 1s
       const pitches: Record<number, number> = {
         5: 587.33, // D5
         4: 659.25, // E5
@@ -47,24 +80,35 @@ class AcousticSynth {
       };
       const pitch = pitches[secondsRemaining] || 750;
 
+      // Primary warm tone
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-
-      osc.type = 'sine';
+      osc.type = 'triangle'; // triangle gives warmth & punch on phone speakers
       osc.frequency.setValueAtTime(pitch, now);
 
-      // Very soft, discreet volume and swift exponential fade (60ms)
-      gain.gain.setValueAtTime(0.07, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
 
       osc.start(now);
-      osc.stop(now + 0.075);
-    } catch {
-      // Audio autoplay policy fallback
-    }
+      osc.stop(now + 0.095);
+
+      // Subtle harmonic sparkle
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(pitch * 2, now);
+      gain2.gain.setValueAtTime(0.08, now);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+
+      osc2.start(now);
+      osc2.stop(now + 0.065);
+    } catch {}
   }
 
   /**
@@ -74,11 +118,12 @@ class AcousticSynth {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       const now = ctx.currentTime;
 
       [
-        { freq: 659.25, delay: 0.00, vol: 0.10, dur: 0.20 }, // E5
-        { freq: 987.77, delay: 0.09, vol: 0.12, dur: 0.35 }, // B5
+        { freq: 659.25, delay: 0.00, vol: 0.32, dur: 0.28 }, // E5
+        { freq: 987.77, delay: 0.12, vol: 0.36, dur: 0.45 }, // B5
       ].forEach(note => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -106,16 +151,44 @@ class AcousticSynth {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       const now = ctx.currentTime;
 
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(450, now);
-      osc.frequency.exponentialRampToValueAtTime(880, now + 0.04);
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(960, now + 0.05);
 
-      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.075);
+    } catch {}
+  }
+
+  /**
+   * Button tap / add set / add exercise: Subtle discreet tap
+   */
+  playTap() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(560, now);
+
+      gain.gain.setValueAtTime(0.20, now);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
 
       osc.connect(gain);
@@ -127,45 +200,20 @@ class AcousticSynth {
   }
 
   /**
-   * Button tap / add set / add exercise: Subtle discreet tap
-   */
-  playTap() {
-    try {
-      const ctx = this.getContext();
-      if (!ctx) return;
-      const now = ctx.currentTime;
-
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(520, now);
-
-      gain.gain.setValueAtTime(0.04, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start(now);
-      osc.stop(now + 0.04);
-    } catch {}
-  }
-
-  /**
    * Rest completion fanfare: Apple Watch-style A-Major resonant chord (A5 - C#6 - E6 - A6)
    */
   playRestFinished() {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       const now = ctx.currentTime;
 
       const chord = [
-        { freq: 880.00, delay: 0.00, vol: 0.14 }, // A5
-        { freq: 1108.73, delay: 0.06, vol: 0.14 }, // C#6
-        { freq: 1318.51, delay: 0.12, vol: 0.16 }, // E6
-        { freq: 1760.00, delay: 0.18, vol: 0.18 }, // A6
+        { freq: 880.00, delay: 0.00, vol: 0.30 }, // A5
+        { freq: 1108.73, delay: 0.07, vol: 0.32 }, // C#6
+        { freq: 1318.51, delay: 0.14, vol: 0.34 }, // E6
+        { freq: 1760.00, delay: 0.21, vol: 0.36 }, // A6
       ];
 
       chord.forEach(note => {
@@ -177,17 +225,15 @@ class AcousticSynth {
         osc.frequency.setValueAtTime(note.freq, startTime);
 
         gain.gain.setValueAtTime(note.vol, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.45);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.50);
 
         osc.connect(gain);
         gain.connect(ctx.destination);
 
         osc.start(startTime);
-        osc.stop(startTime + 0.46);
+        osc.stop(startTime + 0.51);
       });
-    } catch {
-      // Ignore audio policy errors
-    }
+    } catch {}
   }
 
   /**
@@ -197,13 +243,14 @@ class AcousticSynth {
     try {
       const ctx = this.getContext();
       if (!ctx) return;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       const now = ctx.currentTime;
 
       const chord = [
-        { freq: 783.99, delay: 0.00, vol: 0.12 }, // G5
-        { freq: 987.77, delay: 0.08, vol: 0.13 }, // B5
-        { freq: 1174.66, delay: 0.16, vol: 0.15 }, // D6
-        { freq: 1567.98, delay: 0.24, vol: 0.18 }, // G6
+        { freq: 783.99, delay: 0.00, vol: 0.28 }, // G5
+        { freq: 987.77, delay: 0.08, vol: 0.30 }, // B5
+        { freq: 1174.66, delay: 0.16, vol: 0.32 }, // D6
+        { freq: 1567.98, delay: 0.24, vol: 0.36 }, // G6
       ];
 
       chord.forEach(note => {
@@ -215,15 +262,30 @@ class AcousticSynth {
         osc.frequency.setValueAtTime(note.freq, t);
 
         gain.gain.setValueAtTime(note.vol, t);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.60);
 
         osc.connect(gain);
         gain.connect(ctx.destination);
 
         osc.start(t);
-        osc.stop(t + 0.56);
+        osc.stop(t + 0.61);
       });
     } catch {}
+  }
+
+  /**
+   * Quick Test Sequence: Plays 2 wooden ticks followed by the completion chord.
+   * Gives instant verification on mobile devices that audio is unlocked and working.
+   */
+  playTestChimeSequence() {
+    this.unlockAudio();
+    this.playCountdownTick(2);
+    setTimeout(() => {
+      this.playCountdownTick(1);
+    }, 400);
+    setTimeout(() => {
+      this.playRestFinished();
+    }, 850);
   }
 }
 

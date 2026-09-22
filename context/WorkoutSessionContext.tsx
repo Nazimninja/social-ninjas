@@ -41,6 +41,7 @@ interface WorkoutSessionContextType {
   cancelWorkout: () => void;
   togglePiPIsland: () => Promise<boolean>;
   isPiPSupported: boolean;
+  triggerDemoRest: (seconds?: number) => void;
 }
 
 const WorkoutSessionContext = createContext<WorkoutSessionContextType | null>(null);
@@ -175,6 +176,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     initialExercises: (WorkoutExercise & { restSeconds?: number })[],
     dayIdx?: number
   ) => {
+    soundSynth.unlockAudio();
     setIsActive(true);
     setWorkoutName(name);
     setPlanDayIndex(dayIdx);
@@ -206,6 +208,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Add set to exercise
   const addSet = useCallback((exId: string) => {
+    soundSynth.unlockAudio();
     soundSynth.playTap();
     setExercises(prev =>
       prev.map(ex => {
@@ -224,6 +227,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Add exercise to workout
   const addExercise = useCallback((exercise: WorkoutExercise & { restSeconds?: number }) => {
+    soundSynth.unlockAudio();
     soundSynth.playTap();
     setExercises(prev => [...prev, exercise]);
   }, []);
@@ -235,6 +239,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Complete a set and auto-trigger Dynamic Island rest timer + next exercise detection
   const completeSet = useCallback((exId: string, setIdx: number, completed: boolean, restSecs = 90) => {
+    soundSynth.unlockAudio();
     let currentExName = '';
     let nextExName = '';
     let nextTarget = '';
@@ -310,6 +315,8 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Skip rest early
   const skipRest = useCallback(() => {
+    soundSynth.unlockAudio();
+    soundSynth.playTap();
     setRestTimer(null);
     updateLockScreenMediaSession({
       workoutName: workoutName || 'Workout',
@@ -320,6 +327,8 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
 
   // Add more time (+30s or +60s)
   const addRestSeconds = useCallback((delta: number) => {
+    soundSynth.unlockAudio();
+    soundSynth.playTap();
     setRestTimer(prev => {
       if (!prev) return null;
       const newTotal = prev.totalSeconds + delta;
@@ -331,6 +340,53 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
         endTimestamp: newEnd,
         remainingSeconds: newRemaining,
       };
+    });
+  }, []);
+
+  // Trigger interactive 6-second demo rest session with Dynamic Island
+  const triggerDemoRest = useCallback((seconds = 6) => {
+    soundSynth.unlockAudio();
+    soundSynth.playWorkoutStarted();
+    setIsActive(true);
+    setWorkoutName('Chest & Triceps (Demo)');
+    setElapsedSeconds(420);
+    setExercises([
+      {
+        id: 'demo-ex-1',
+        name: 'Barbell Bench Press',
+        muscleGroup: 'Chest',
+        restSeconds: seconds,
+        sets: [
+          { id: 's1', reps: 10, weightKg: 80, completed: true },
+          { id: 's2', reps: 8, weightKg: 85, completed: false },
+          { id: 's3', reps: 6, weightKg: 90, completed: false },
+        ],
+      },
+      {
+        id: 'demo-ex-2',
+        name: 'Incline Dumbbell Press',
+        muscleGroup: 'Upper Chest',
+        restSeconds: 60,
+        sets: [
+          { id: 's4', reps: 10, weightKg: 26, completed: false },
+          { id: 's5', reps: 10, weightKg: 26, completed: false },
+          { id: 's6', reps: 8, weightKg: 28, completed: false },
+        ],
+      },
+    ]);
+
+    const now = Date.now();
+    setRestTimer({
+      active: true,
+      totalSeconds: seconds,
+      remainingSeconds: seconds,
+      endTimestamp: now + seconds * 1000,
+      currentExerciseName: 'Barbell Bench Press',
+      currentSetIndex: 1,
+      totalSetsInExercise: 3,
+      nextExerciseName: 'Incline Dumbbell Press',
+      nextExerciseTarget: '3 sets • 10 reps @ 26kg',
+      nextMuscleGroup: 'Upper Chest',
     });
   }, []);
 
@@ -433,6 +489,7 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
         cancelWorkout,
         togglePiPIsland,
         isPiPSupported: pipIsland.isSupported(),
+        triggerDemoRest,
       }}
     >
       {children}

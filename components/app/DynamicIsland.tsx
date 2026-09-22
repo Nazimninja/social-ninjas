@@ -63,7 +63,10 @@ export default function DynamicIsland() {
   };
 
   return (
-    <div className="fixed top-2.5 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+    <div
+      className="fixed left-0 right-0 z-[100] flex justify-center pointer-events-none px-4 transition-all"
+      style={{ top: 'calc(env(safe-area-inset-top, 0px) + 8px)' }}
+    >
       <motion.div
         layout
         transition={{ type: 'spring', stiffness: 480, damping: 34 }}

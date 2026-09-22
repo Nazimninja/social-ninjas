@@ -19,7 +19,8 @@ import {
 } from '../../data/exerciseDatabase';
 import { formatSplitName } from '../../data/workoutPlanAI';
 import Logo from '../../components/Logo';
-import { ClipboardList, Dumbbell, Calendar, Flame, Coffee, Timer } from 'lucide-react';
+import { ClipboardList, Dumbbell, Calendar, Flame, Coffee, Timer, Volume2, Sparkles, Plus, FastForward, Play, CheckCircle2 } from 'lucide-react';
+import { soundSynth } from '../../services/liveActivitySync';
 
 function genId() {
   return Math.random().toString(36).slice(2, 10);
@@ -166,6 +167,94 @@ function ExercisePicker({
   );
 }
 
+// ── Rest Companion & Audio Controls Bar ────────────────────────────────────
+function StudioAudioAndIslandBar({
+  onTriggerDemo,
+  isActiveSession,
+}: {
+  onTriggerDemo?: () => void;
+  isActiveSession?: boolean;
+}) {
+  const [isPlayingTest, setIsPlayingTest] = useState(false);
+  const [tested, setTested] = useState(false);
+
+  const handleTestChimes = () => {
+    setIsPlayingTest(true);
+    setTested(true);
+    soundSynth.playTestChimeSequence();
+    setTimeout(() => {
+      setIsPlayingTest(false);
+    }, 1800);
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-[#0d1629] via-[#090e1a] to-[#05070c] border border-blue-500/35 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+      {/* Specular accent glow */}
+      <div className="absolute top-0 right-0 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+
+      <div className="flex items-center justify-between gap-2 mb-2.5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+            <Volume2 size={16} />
+          </div>
+          <div>
+            <h3 className="text-white font-bold text-xs flex items-center gap-1.5">
+              <span>Rest Companion & Audio</span>
+              <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                PWA Active
+              </span>
+            </h3>
+            <p className="text-[11px] text-[#9BA8B4]">
+              Acoustic ticks at 5s, resonant rest chords & dynamic island Up Next.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <button
+          onClick={handleTestChimes}
+          disabled={isPlayingTest}
+          className={`flex-1 min-w-[170px] py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 ${
+            isPlayingTest
+              ? 'bg-emerald-600 text-white animate-pulse'
+              : tested
+              ? 'bg-blue-600/30 hover:bg-blue-600/40 text-blue-200 border border-blue-500/40'
+              : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30'
+          }`}
+        >
+          <Volume2 size={14} className={isPlayingTest ? 'animate-bounce' : ''} />
+          <span>
+            {isPlayingTest
+              ? 'Playing Chimes (5s Tick + Chord)...'
+              : tested
+              ? 'Test Chimes Again ✓'
+              : '🔊 Test Audio Chimes'}
+          </span>
+        </button>
+
+        {!isActiveSession && onTriggerDemo && (
+          <button
+            onClick={onTriggerDemo}
+            className="py-2.5 px-3 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 text-white flex items-center justify-center gap-1.5 transition-all border border-white/10 active:scale-95 shadow-sm"
+          >
+            <Sparkles size={13} className="text-amber-300" />
+            <span>👀 6s Dynamic Island Demo</span>
+          </button>
+        )}
+      </div>
+
+      {/* Helpful iOS & Device Tip */}
+      <div className="mt-2.5 pt-2 border-t border-white/5 flex items-start gap-1.5 text-[10px] text-[#9BA8B4] leading-relaxed">
+        <span className="text-blue-400 font-bold shrink-0">💡 iPhone Note:</span>
+        <span>
+          If you don't hear sound, ensure your <strong>physical silent switch</strong> on the left side of your iPhone is switched <strong>OFF</strong> (no orange showing) and media volume is up.
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // ── Active Workout View ───────────────────────────────────────────────────
 function ActiveWorkout({
   workoutName,
@@ -178,6 +267,9 @@ function ActiveWorkout({
   onFinish,
   onCancel,
   elapsed,
+  restTimer,
+  onSkipRest,
+  onAddRestSeconds,
 }: {
   workoutName: string;
   exercises: (WorkoutExercise & { restSeconds?: number })[];
@@ -189,6 +281,9 @@ function ActiveWorkout({
   onFinish: () => void;
   onCancel: () => void;
   elapsed: number;
+  restTimer?: any;
+  onSkipRest?: () => void;
+  onAddRestSeconds?: (s: number) => void;
 }) {
   const m = Math.floor(elapsed / 60);
   const s = elapsed % 60;
@@ -227,6 +322,60 @@ function ActiveWorkout({
           </button>
         </div>
       </div>
+
+      {/* Active Rest Interval Inline Card */}
+      {restTimer && restTimer.active && (
+        <div className="bg-gradient-to-r from-blue-950/60 via-slate-900/80 to-blue-900/50 border border-blue-500/40 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500" />
+              </span>
+              <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">
+                Resting • 🔊 Subtle Chimes on at 5s
+              </span>
+            </div>
+            <span className="font-mono text-xl font-black text-white">
+              {Math.floor(restTimer.remainingSeconds / 60)}:{(restTimer.remainingSeconds % 60).toString().padStart(2, '0')}
+            </span>
+          </div>
+
+          {restTimer.nextExerciseName && (
+            <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 mb-3 flex items-center justify-between">
+              <div>
+                <span className="text-[9px] uppercase font-bold text-blue-400 tracking-wider">UP NEXT</span>
+                <p className="text-xs font-bold text-white">{restTimer.nextExerciseName}</p>
+                <p className="text-[10px] text-white/70">{restTimer.nextExerciseTarget}</p>
+              </div>
+              {restTimer.nextMuscleGroup && (
+                <span className="text-[9px] bg-blue-500/20 text-blue-200 border border-blue-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                  {restTimer.nextMuscleGroup}
+                </span>
+              )}
+            </div>
+          )}
+
+          <div className="flex gap-2">
+            {onAddRestSeconds && (
+              <button
+                onClick={() => onAddRestSeconds(30)}
+                className="flex-1 py-2 bg-white/10 hover:bg-white/15 active:scale-95 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1 border border-white/10 transition-colors"
+              >
+                <Plus size={13} /> +30s
+              </button>
+            )}
+            {onSkipRest && (
+              <button
+                onClick={onSkipRest}
+                className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 shadow-md shadow-blue-600/30 transition-colors"
+              >
+                <FastForward size={13} /> Skip Rest
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Exercises Cards */}
       {exercises.map((ex, exIndex) => (
@@ -466,6 +615,10 @@ export default function WorkoutPage() {
     deleteExercise,
     finishWorkout,
     cancelWorkout,
+    restTimer,
+    skipRest,
+    addRestSeconds,
+    triggerDemoRest,
   } = useWorkoutSession();
 
   const [tab, setTab] = useState<'today' | 'schedule' | 'history'>('today');
@@ -532,6 +685,12 @@ export default function WorkoutPage() {
 
   return (
     <div className="pb-4 space-y-4">
+      {/* Rest Companion & Audio Controls */}
+      <StudioAudioAndIslandBar
+        onTriggerDemo={() => triggerDemoRest(6)}
+        isActiveSession={isActive}
+      />
+
       {/* Top Tab Switcher */}
       {!isActive && (
         <div className="flex gap-1 bg-white/5 rounded-xl p-1">
@@ -670,6 +829,9 @@ export default function WorkoutPage() {
           onFinish={handleFinishWorkout}
           onCancel={handleCancelWorkout}
           elapsed={elapsed}
+          restTimer={restTimer}
+          onSkipRest={skipRest}
+          onAddRestSeconds={addRestSeconds}
         />
       )}
 
