@@ -215,9 +215,36 @@ export function setMediaSessionCallbacks(cbs: MediaSessionActionCallbacks) {
   registeredCallbacks = cbs;
 }
 
-// Ensure a tiny silent loop keeps MediaSession active on mobile lock screens
+// Ensure a continuous audio stream keeps MediaSession active on mobile lock screens
 function initSilentAudio() {
   if (typeof window === 'undefined' || silentAudioElement) return;
+
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (AudioCtx) {
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime); // Inaudible carrier
+      const dest = ctx.createMediaStreamDestination();
+      osc.connect(gain);
+      gain.connect(dest);
+      osc.start();
+
+      silentAudioElement = document.createElement('audio');
+      silentAudioElement.srcObject = dest.stream;
+      silentAudioElement.setAttribute('playsinline', 'true');
+      silentAudioElement.setAttribute('autoplay', 'true');
+      silentAudioElement.style.display = 'none';
+      document.body.appendChild(silentAudioElement);
+      silentAudioElement.play().catch(() => {});
+      return;
+    }
+  } catch {
+    // Fallback below
+  }
+
+  // 1-second valid silent PCM WAV fallback
   const silentWav = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
   silentAudioElement = new Audio(silentWav);
   silentAudioElement.loop = true;
