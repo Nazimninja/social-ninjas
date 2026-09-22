@@ -9,6 +9,7 @@ import {
   type PlannedDay,
   type PlannedExercise,
 } from '../../context/FitNinjaContext';
+import { useWorkoutSession } from '../../context/WorkoutSessionContext';
 import {
   fetchAllExercises,
   searchExercises,
@@ -173,6 +174,7 @@ function ActiveWorkout({
   onUpdateSet,
   onAddSet,
   onDeleteExercise,
+  onCompleteSet,
   onFinish,
   onCancel,
   elapsed,
@@ -183,18 +185,16 @@ function ActiveWorkout({
   onUpdateSet: (exId: string, setIdx: number, field: keyof WorkoutSet, val: any) => void;
   onAddSet: (exId: string) => void;
   onDeleteExercise: (exId: string) => void;
+  onCompleteSet: (exId: string, setIdx: number, completed: boolean, restSecs: number) => void;
   onFinish: () => void;
   onCancel: () => void;
   elapsed: number;
 }) {
-  const [restTimer, setRestTimer] = useState<{ active: boolean; seconds: number }>({ active: false, seconds: 90 });
-
   const m = Math.floor(elapsed / 60);
   const s = elapsed % 60;
 
   function handleSetComplete(exId: string, setIdx: number, completed: boolean, restSecs: number) {
-    onUpdateSet(exId, setIdx, 'completed', completed);
-    if (completed) setRestTimer({ active: true, seconds: restSecs });
+    onCompleteSet(exId, setIdx, completed, restSecs);
   }
 
   const completedSetsCount = exercises.reduce((acc, ex) => acc + ex.sets.filter(st => st.completed).length, 0);
@@ -308,9 +308,6 @@ function ActiveWorkout({
         + Add Extra Exercise to Today's Routine
       </button>
 
-      {restTimer.active && (
-        <RestTimer seconds={restTimer.seconds} onDone={() => setRestTimer(r => ({ ...r, active: false }))} />
-      )}
     </div>
   );
 }
@@ -453,27 +450,26 @@ function WorkoutHistoryView() {
 
 // ── Main Workout Page Component ───────────────────────────────────────────
 export default function WorkoutPage() {
-  const { state, dispatch, todaysPlan } = useFitNinja();
-  const { activePlan, user } = state;
+  const { state, todaysPlan } = useFitNinja();
+  const { user } = state;
+
+  const {
+    isActive,
+    workoutName,
+    exercises,
+    elapsedSeconds: elapsed,
+    startWorkout,
+    completeSet,
+    updateSet,
+    addSet,
+    addExercise,
+    deleteExercise,
+    finishWorkout,
+    cancelWorkout,
+  } = useWorkoutSession();
 
   const [tab, setTab] = useState<'today' | 'schedule' | 'history'>('today');
-  const [isActive, setIsActive] = useState(false);
-  const [workoutName, setWorkoutName] = useState('');
-  const [exercises, setExercises] = useState<(WorkoutExercise & { restSeconds?: number })[]>([]);
   const [showPicker, setShowPicker] = useState(false);
-  const [elapsed, setElapsed] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (isActive) {
-      timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isActive]);
 
   // Load a planned day into active workout tracker
   function startPlannedWorkout(day: PlannedDay) {
@@ -496,19 +492,13 @@ export default function WorkoutPage() {
       };
     });
 
-    setWorkoutName(`${day.focus} (${day.dayName})`);
-    setExercises(loadedExercises);
-    setElapsed(0);
-    setIsActive(true);
+    startWorkout(`${day.focus} (${day.dayName})`, loadedExercises);
     setTab('today');
   }
 
   // Fallback / blank session
   function startFreeWorkout() {
-    setWorkoutName(`Custom Workout — ${format(new Date(), 'MMM d')}`);
-    setExercises([]);
-    setElapsed(0);
-    setIsActive(true);
+    startWorkout(`Custom Workout — ${format(new Date(), 'MMM d')}`, []);
   }
 
   function addCustomExercise(template: ExerciseRecord) {
@@ -524,74 +514,19 @@ export default function WorkoutPage() {
         { id: genId(), reps: repNum, weightKg: 0, completed: false },
       ],
     };
-    setExercises(prev => [...prev, newEx]);
+    addExercise(newEx);
   }
 
-  function updateSet(exId: string, setIdx: number, field: keyof WorkoutSet, val: any) {
-    setExercises(prev =>
-      prev.map(ex => {
-        if (ex.id !== exId) return ex;
-        const sets = ex.sets.map((s, i) => (i === setIdx ? { ...s, [field]: val } : s));
-        return { ...ex, sets };
-      })
-    );
+  function handleFinishWorkout() {
+    const saved = finishWorkout();
+    if (saved) {
+      setTab('history');
+    }
   }
 
-  function addSet(exId: string) {
-    setExercises(prev =>
-      prev.map(ex => {
-        if (ex.id !== exId) return ex;
-        const last = ex.sets[ex.sets.length - 1];
-        return {
-          ...ex,
-          sets: [
-            ...ex.sets,
-            { id: genId(), reps: last?.reps ?? 10, weightKg: last?.weightKg ?? 0, completed: false },
-          ],
-        };
-      })
-    );
-  }
-
-  function deleteExercise(exId: string) {
-    setExercises(prev => prev.filter(e => e.id !== exId));
-  }
-
-  function finishWorkout() {
-    if (exercises.length === 0) return;
-
-    const totalVolumeKg = exercises.reduce(
-      (sum, ex) =>
-        sum +
-        ex.sets.filter(s => s.completed).reduce((s2, s) => s2 + s.reps * s.weightKg, 0),
-      0
-    );
-
-    const pts = Math.max(25, Math.round(totalVolumeKg / 10));
-
-    const completedWorkout: Workout = {
-      id: genId(),
-      name: workoutName || `Workout ${format(new Date(), 'MMM d')}`,
-      date: new Date().toISOString(),
-      durationSeconds: elapsed,
-      exercises,
-      totalVolumeKg,
-      pointsEarned: pts,
-    };
-
-    dispatch({ type: 'ADD_WORKOUT', payload: completedWorkout });
-    dispatch({ type: 'ADD_POINTS', payload: pts });
-    setIsActive(false);
-    setExercises([]);
-    setElapsed(0);
-    setTab('history');
-  }
-
-  function cancelWorkout() {
+  function handleCancelWorkout() {
     if (confirm('Cancel this active workout? Progress will not be saved.')) {
-      setIsActive(false);
-      setExercises([]);
-      setElapsed(0);
+      cancelWorkout();
     }
   }
 
@@ -731,8 +666,9 @@ export default function WorkoutPage() {
           onUpdateSet={updateSet}
           onAddSet={addSet}
           onDeleteExercise={deleteExercise}
-          onFinish={finishWorkout}
-          onCancel={cancelWorkout}
+          onCompleteSet={completeSet}
+          onFinish={handleFinishWorkout}
+          onCancel={handleCancelWorkout}
           elapsed={elapsed}
         />
       )}

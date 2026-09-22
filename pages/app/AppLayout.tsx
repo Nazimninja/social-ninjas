@@ -117,6 +117,9 @@ function Sidebar() {
   );
 }
 
+import DynamicIsland from '../../components/app/DynamicIsland';
+import { WorkoutSessionProvider } from '../../context/WorkoutSessionContext';
+
 // ── Inner app with access to FitNinja context ─────────────────────────────
 function AppShell() {
   const { state } = useFitNinja();
@@ -126,7 +129,10 @@ function AppShell() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-white">
+    <div className="min-h-screen bg-[#07090e] text-white relative">
+      {/* Floating Dynamic Island at top of all pages */}
+      <DynamicIsland />
+
       <Sidebar />
 
       {/* Main content area */}
@@ -148,11 +154,13 @@ function AppShell() {
   );
 }
 
-// ── Root export — wraps everything with FitNinjaProvider ──────────────────
+// ── Root export — wraps everything with FitNinjaProvider & WorkoutSessionProvider ──
 export default function AppLayout() {
   return (
     <FitNinjaProvider>
-      <AppShell />
+      <WorkoutSessionProvider>
+        <AppShell />
+      </WorkoutSessionProvider>
     </FitNinjaProvider>
   );
 }
