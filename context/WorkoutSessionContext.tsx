@@ -64,13 +64,47 @@ export function WorkoutSessionProvider({ children }: { children: React.ReactNode
     requestNotificationPermission().catch(() => {});
   }, []);
 
+  const wakeLockRef = useRef<any>(null);
+
+  // Keep phone screen awake during active workout (supported on iOS 16.4+ PWA & Android)
+  const requestWakeLock = useCallback(async () => {
+    if (typeof window !== 'undefined' && 'wakeLock' in navigator) {
+      try {
+        wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+      } catch {
+        // Ignored if device is low battery or wake lock unavailable
+      }
+    }
+  }, []);
+
+  const releaseWakeLock = useCallback(() => {
+    if (wakeLockRef.current) {
+      wakeLockRef.current.release().catch(() => {});
+      wakeLockRef.current = null;
+    }
+  }, []);
+
+  // Re-acquire wake lock if user switches back to the app
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible' && isActive) {
+        requestWakeLock();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [isActive, requestWakeLock]);
+
   // 1. Elapsed Workout Time & Rest Countdown Master Loop
   useEffect(() => {
     if (!isActive) {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
       updateLockScreenMediaSession(null);
+      releaseWakeLock();
       return;
     }
+
+    requestWakeLock();
 
     timerIntervalRef.current = setInterval(() => {
       setElapsedSeconds(prev => prev + 1);
