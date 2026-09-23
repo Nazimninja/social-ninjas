@@ -399,8 +399,18 @@ export const Admin: React.FC = () => {
       setTimeout(() => setSaveLeadStatusFeedback(null), 2500);
       return true;
     } catch (err) {
-      console.warn('Backend API update failed, trying direct Supabase fallback:', err);
+      console.warn('Backend API update failed, trying fallback:', err);
       try {
+        const postRes = await fetch(getApiUrl('/api/data?resource=leads'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: leadId, _action: 'update', ...partialUpdates })
+        });
+        if (postRes.ok) {
+          setSaveLeadStatusFeedback('saved');
+          setTimeout(() => setSaveLeadStatusFeedback(null), 2500);
+          return true;
+        }
         await supabase.from('leads').update(partialUpdates).eq('id', leadId);
         setSaveLeadStatusFeedback('saved');
         setTimeout(() => setSaveLeadStatusFeedback(null), 2500);
