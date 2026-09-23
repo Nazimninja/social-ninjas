@@ -269,6 +269,73 @@ app.all('/api/data', async (req, res) => {
         }
     }
 
+    // SCRIPTS (Supabase CRM)
+    if (resource === 'scripts') {
+        const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
+        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+
+        if (req.method === 'GET') {
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/scripts?select=*&order=created_at.desc`, {
+                    headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                });
+                if (!r.ok) return res.status(r.status).json({ error: 'Supabase error' });
+                const rows = await r.json();
+                return res.json(rows || []);
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error fetching scripts' });
+            }
+        }
+
+        if (req.method === 'POST') {
+            const body = req.body || {};
+            const scriptRow = {
+                id: body.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `sc_${Date.now()}`),
+                profile: body.profile || body.brand || 'Social Ninjas',
+                topic: body.topic || 'Untitled Script',
+                yt_title: body.yt_title || body.ytTitle || body.title || '',
+                hook: body.hook || '',
+                section1: body.section1 || '',
+                section2: body.section2 || '',
+                section3: body.section3 || '',
+                cta: body.cta || '',
+                caption: body.caption || '',
+                status: body.status || 'ready',
+                created_at: body.created_at || new Date().toISOString()
+            };
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/scripts?on_conflict=id`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': CRM_KEY,
+                        'Authorization': `Bearer ${CRM_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify(scriptRow)
+                });
+                if (!r.ok) return res.status(r.status).json({ error: await r.text() });
+                return res.status(201).json({ success: true, script: scriptRow });
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error saving script' });
+            }
+        }
+
+        if (req.method === 'DELETE') {
+            if (!id) return res.status(400).json({ error: 'id required' });
+            try {
+                const r = await fetch(`${CRM_URL}/rest/v1/scripts?id=eq.${id}`, {
+                    method: 'DELETE',
+                    headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                });
+                if (!r.ok) return res.status(r.status).json({ error: await r.text() });
+                return res.json({ success: true });
+            } catch (e) {
+                return res.status(500).json({ error: (e && e.message) || 'Error deleting script' });
+            }
+        }
+    }
+
     return res.status(404).json({ error: 'Unknown resource' });
 });
 

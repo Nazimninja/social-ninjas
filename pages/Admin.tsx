@@ -227,6 +227,7 @@ export const Admin: React.FC = () => {
   const [pubSchedTime, setPubSchedTime] = useState<string>('10:00');
   const [pubStatus, setPubStatus] = useState<string | null>(null);
   const [pubFilter, setPubFilter] = useState<string>('all');
+  const [scriptFilter, setScriptFilter] = useState<string>('all');
   const [calFilter, setCalFilter] = useState<string>('all');
   const [calView, setCalView] = useState<'grid' | 'table'>('grid');
 
@@ -240,7 +241,7 @@ export const Admin: React.FC = () => {
         fetch(getApiUrl('/api/data?resource=leads')).then(r => r.json()).catch(() => supabase.from('leads').select('*').order('created_at', { ascending: false })),
         fetch(getApiUrl('/api/fit-clients')).then(r => r.json()).catch(() => []),
         supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
-        supabase.from('scripts').select('*').order('created_at', { ascending: false }),
+        fetch(getApiUrl('/api/data?resource=scripts')).then(r => r.json()).catch(() => supabase.from('scripts').select('*').order('created_at', { ascending: false })),
         supabase.from('scheduled_posts').select('*').order('created_at', { ascending: false }),
         supabase.from('mentions').select('*').eq('dismissed', false).order('created_at', { ascending: false }),
         supabase.from('team_members').select('*').order('created_at', { ascending: false }),
@@ -251,9 +252,11 @@ export const Admin: React.FC = () => {
       else if (leadsRes?.data) setLeads(leadsRes.data);
       if (Array.isArray(fitRes)) setFitClients(fitRes);
       if (postsRes.data) setPosts(postsRes.data);
-      if (scriptsRes.data) {
+      
+      const rawScripts = Array.isArray(scriptsRes) ? scriptsRes : (scriptsRes?.data || []);
+      if (Array.isArray(rawScripts)) {
         // Filter only real content scripts, excluding Fit Ninja internal app sync data
-        setScripts(scriptsRes.data.filter((s: any) => !s.profile?.startsWith('fitninja_') && s.hook));
+        setScripts(rawScripts.filter((s: any) => !s.profile?.startsWith('fitninja_') && (s.hook || s.topic)));
       }
       if (queueRes.data) setQueueItems(queueRes.data);
       if (mentionsRes.data) setMentions(mentionsRes.data);
@@ -1645,89 +1648,178 @@ export const Admin: React.FC = () => {
         )}
 
         {/* 6. VIRAL SCRIPT VAULT */}
-        {activeTab === 'scripts' && (
-          <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
-              <div>
-                <h2 className="text-lg font-black text-white flex items-center gap-2">
-                  <FileText size={18} className="text-purple-400" /> Viral Short-Form Video Script Vault
-                </h2>
-                <p className="text-xs text-slate-400">Pre-hooked scripts and captions for YouTube Shorts & Instagram Reels</p>
-              </div>
-              <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-xl border border-purple-500/30">
-                {scripts.length} Scripts Ready
-              </span>
-            </div>
+        {activeTab === 'scripts' && (() => {
+          const filteredScripts = scriptFilter === 'all'
+            ? scripts
+            : scripts.filter(sc => {
+                const p = (sc.profile || '').toLowerCase();
+                const f = scriptFilter.toLowerCase();
+                const profileObj = PROFILES.find(pr => pr.id.toLowerCase() === f || pr.label.toLowerCase() === f);
+                return p === f || (profileObj && (p === profileObj.id.toLowerCase() || p === profileObj.label.toLowerCase()));
+              });
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {scripts.length === 0 ? (
-                <div className="col-span-full py-12 text-center text-slate-500 italic">
-                  No scripts in vault. New automated scripts will populate automatically from research flows.
+          return (
+            <div className="bg-[#0e1424] border border-white/[0.08] rounded-2xl p-6 shadow-2xl space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/[0.06] pb-4 gap-4">
+                <div>
+                  <h2 className="text-lg font-black text-white flex items-center gap-2">
+                    <FileText size={18} className="text-purple-400" /> Viral Short-Form Video Script Vault
+                  </h2>
+                  <p className="text-xs text-slate-400">Pre-hooked scripts and captions for YouTube Shorts & Instagram Reels</p>
                 </div>
-              ) : (
-                scripts.map(sc => (
-                  <div key={sc.id} className="bg-[#121929] border border-white/[0.06] rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-white/[0.15] transition-all">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-extrabold px-2.5 py-0.5 rounded-full border" style={{ backgroundColor: `${pc(sc.profile)}15`, color: pc(sc.profile), borderColor: `${pc(sc.profile)}30` }}>
-                          {pl(sc.profile)}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] uppercase font-bold text-slate-400">{sc.status || 'Ready'}</span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => loadAllData()}
+                    className="p-2 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 rounded-xl border border-white/[0.06] transition-all flex items-center gap-1.5 text-xs font-semibold"
+                    title="Reload scripts from database"
+                  >
+                    <RefreshCw size={13} className={refreshing ? 'animate-spin text-purple-400' : ''} />
+                    <span>Sync Vault</span>
+                  </button>
+                  <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-xl border border-purple-500/30">
+                    {filteredScripts.length} Scripts Ready
+                  </span>
+                </div>
+              </div>
+
+              {/* Brand Filter Pills */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                <button
+                  onClick={() => setScriptFilter('all')}
+                  className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition-all ${
+                    scriptFilter === 'all'
+                      ? 'bg-purple-600/20 text-purple-300 border-purple-500/40'
+                      : 'bg-[#121929] text-slate-400 border-white/[0.06] hover:text-white hover:border-white/[0.12]'
+                  }`}
+                >
+                  All Brands ({scripts.length})
+                </button>
+                {PROFILES.map(p => {
+                  const count = scripts.filter(sc => {
+                    const sp = (sc.profile || '').toLowerCase();
+                    return sp === p.id.toLowerCase() || sp === p.label.toLowerCase();
+                  }).length;
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => setScriptFilter(p.id)}
+                      className={`text-xs font-bold px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                        scriptFilter === p.id
+                          ? 'bg-white/[0.08] text-white border-white/[0.25]'
+                          : 'bg-[#121929] text-slate-400 border-white/[0.06] hover:text-white hover:border-white/[0.12]'
+                      }`}
+                    >
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
+                      <span>{p.label}</span>
+                      <span className="text-[10px] opacity-60">({count})</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredScripts.length === 0 ? (
+                  <div className="col-span-full py-12 text-center text-slate-500 italic">
+                    {scripts.length === 0
+                      ? 'No scripts in vault. New automated scripts will populate automatically from research flows.'
+                      : 'No scripts found for this brand filter.'}
+                  </div>
+                ) : (
+                  filteredScripts.map(sc => (
+                    <div key={sc.id} className="bg-[#121929] border border-white/[0.06] rounded-2xl p-5 space-y-3 flex flex-col justify-between hover:border-white/[0.15] transition-all">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-extrabold px-2.5 py-0.5 rounded-full border" style={{ backgroundColor: `${pc(sc.profile)}15`, color: pc(sc.profile), borderColor: `${pc(sc.profile)}30` }}>
+                            {pl(sc.profile)}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] uppercase font-bold text-slate-400">{sc.status || 'Ready'}</span>
+                            <button
+                              onClick={() => handleDeleteScript(sc.id, sc.topic)}
+                              className="p-1 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
+                              title="Delete script after use"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+                        <h3 className="font-bold text-white text-sm">{sc.topic}</h3>
+                        {sc.yt_title && (
+                          <p className="text-xs text-sky-400 font-semibold flex items-center gap-1.5"><Video size={13} className="shrink-0" /> {sc.yt_title}</p>
+                        )}
+                        {sc.hook && (
+                          <div className="p-2.5 rounded-xl bg-slate-900/80 border border-white/[0.05] text-xs text-slate-300">
+                            <span className="text-amber-400 font-bold">Hook: </span>{sc.hook}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
+                        <button
+                          onClick={() => setOpenScriptId(openScriptId === sc.id ? null : sc.id)}
+                          className="text-xs font-bold text-slate-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg"
+                        >
+                          {openScriptId === sc.id ? 'Hide' : 'Full Script'}
+                        </button>
+                        <div className="flex items-center gap-1.5">
+                          {sc.hook && (
+                            <button
+                              onClick={() => copyToClipboard(sc.hook, `hook-${sc.id}`)}
+                              className="text-xs font-bold text-amber-300 hover:text-amber-200 bg-amber-500/10 px-2.5 py-1.5 rounded-lg border border-amber-500/20"
+                              title="Copy only the hook"
+                            >
+                              {copiedText === `hook-${sc.id}` ? 'Copied' : 'Hook'}
+                            </button>
+                          )}
+                          <button
+                            onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
+                            className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
+                          >
+                            {copiedText === sc.id ? 'Copied' : 'Caption'}
+                          </button>
+                          <button
+                            onClick={() => {
+                              const targetProfile = PROFILES.find(p => p.id.toLowerCase() === (sc.profile || '').toLowerCase() || p.label.toLowerCase() === (sc.profile || '').toLowerCase())?.id || 'socialninja';
+                              setPubProfile(targetProfile);
+                              setPubTopic(sc.yt_title || sc.topic);
+                              setActiveTab('publish');
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-purple-400 hover:bg-purple-500/10 rounded-lg border border-white/[0.06] hover:border-purple-500/30 transition-all flex items-center justify-center"
+                            title="Send to Fast Publisher"
+                          >
+                            <Share2 size={13} />
+                          </button>
                           <button
                             onClick={() => handleDeleteScript(sc.id, sc.topic)}
-                            className="p-1 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
+                            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-white/[0.06] hover:border-rose-500/30 transition-all flex items-center justify-center"
                             title="Delete script after use"
                           >
                             <Trash2 size={13} />
                           </button>
                         </div>
                       </div>
-                      <h3 className="font-bold text-white text-sm">{sc.topic}</h3>
-                      <p className="text-xs text-sky-400 font-semibold flex items-center gap-1.5"><Video size={13} className="shrink-0" /> {sc.yt_title}</p>
-                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-white/[0.05] text-xs text-slate-300">
-                        <span className="text-amber-400 font-bold">Hook: </span>{sc.hook}
-                      </div>
-                    </div>
 
-                    <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => setOpenScriptId(openScriptId === sc.id ? null : sc.id)}
-                        className="text-xs font-bold text-slate-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg"
-                      >
-                        {openScriptId === sc.id ? 'Hide' : 'Full Script'}
-                      </button>
-<div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => copyToClipboard(sc.caption || sc.hook, sc.id)}
-                          className="text-xs font-bold text-brand-primary hover:opacity-90 bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20"
-                        >
-                          {copiedText === sc.id ? 'Copied' : 'Copy Caption'}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteScript(sc.id, sc.topic)}
-                          className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-white/[0.06] hover:border-rose-500/30 transition-all flex items-center justify-center"
-                          title="Delete script after use"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
+                      {openScriptId === sc.id && (
+                        <div className="mt-3 pt-3 border-t border-white/[0.06] text-xs text-slate-300 space-y-2 max-h-60 overflow-y-auto">
+                          {sc.section1 && <div><strong className="text-slate-400">Section 1:</strong> {sc.section1}</div>}
+                          {sc.section2 && <div><strong className="text-slate-400">Section 2:</strong> {sc.section2}</div>}
+                          {sc.section3 && <div><strong className="text-slate-400">Section 3:</strong> {sc.section3}</div>}
+                          {sc.cta && <div><strong className="text-slate-400">CTA:</strong> {sc.cta}</div>}
+                          {sc.caption && (
+                            <div className="pt-2 border-t border-white/[0.04]">
+                              <strong className="text-slate-400 block mb-1">Full Caption:</strong>
+                              <p className="whitespace-pre-line text-slate-400 text-[11px] bg-slate-950/60 p-2.5 rounded-lg border border-white/[0.04]">{sc.caption}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-
-                    {openScriptId === sc.id && (
-                      <div className="mt-3 pt-3 border-t border-white/[0.06] text-xs text-slate-300 space-y-2 max-h-60 overflow-y-auto">
-                        <div><strong className="text-slate-400">Section 1:</strong> {sc.section1 || '—'}</div>
-                        <div><strong className="text-slate-400">Section 2:</strong> {sc.section2 || '—'}</div>
-                        <div><strong className="text-slate-400">Section 3:</strong> {sc.section3 || '—'}</div>
-                        <div><strong className="text-slate-400">CTA:</strong> {sc.cta || '—'}</div>
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* 7. BRAND RADAR MONITOR */}
         {activeTab === 'monitor' && (

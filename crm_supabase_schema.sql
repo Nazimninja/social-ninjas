@@ -111,9 +111,44 @@ CREATE POLICY "Allow public client registration"
 
 -- Allow updating client details during onboarding
 CREATE POLICY "Allow public client update"
-  ON public.content_studio_clients
+ON public.content_studio_clients
+FOR UPDATE
+TO anon, authenticated
+USING (true)
+WITH CHECK (true);
+
+-- ====================
+-- 4. SCRIPTS TABLE POLICIES (Viral Script Vault)
+-- ====================
+GRANT ALL ON public.scripts TO anon, authenticated;
+ALTER TABLE public.scripts ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public script read" ON public.scripts;
+CREATE POLICY "Allow public script read"
+  ON public.scripts
+  FOR SELECT
+  TO anon, authenticated
+  USING (true);
+
+DROP POLICY IF EXISTS "Allow public script insert" ON public.scripts;
+CREATE POLICY "Allow public script insert"
+  ON public.scripts
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public script update" ON public.scripts;
+CREATE POLICY "Allow public script update"
+  ON public.scripts
   FOR UPDATE
   TO anon, authenticated
   USING (true)
   WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public script delete" ON public.scripts;
+CREATE POLICY "Allow public script delete"
+  ON public.scripts
+  FOR DELETE
+  TO anon, authenticated
+  USING (true);
 

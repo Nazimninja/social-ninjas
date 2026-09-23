@@ -272,6 +272,26 @@ export default async function handler(req, res) {
       const rows = await crmGet('scripts', { order: 'created_at.desc' });
       return res.json(rows || []);
     }
+    if (req.method === 'POST') {
+      const body = req.body || {};
+      const scriptRow = {
+        id: body.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `sc_${Date.now()}`),
+        profile: body.profile || body.brand || 'Social Ninjas',
+        topic: body.topic || 'Untitled Script',
+        yt_title: body.yt_title || body.ytTitle || body.title || '',
+        hook: body.hook || '',
+        section1: body.section1 || '',
+        section2: body.section2 || '',
+        section3: body.section3 || '',
+        cta: body.cta || '',
+        caption: body.caption || '',
+        status: body.status || 'ready',
+        created_at: body.created_at || new Date().toISOString()
+      };
+      const ok = await crmUpsert('scripts', scriptRow, 'id');
+      if (!ok) return res.status(500).json({ error: 'Failed to save script' });
+      return res.status(201).json({ success: true, script: scriptRow });
+    }
     if (req.method === 'DELETE') {
       if (!id) return res.status(400).json({ error: 'id required' });
       await crmDelete('scripts', 'id', id);
