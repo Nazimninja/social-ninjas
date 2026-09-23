@@ -222,21 +222,88 @@ app.all('/api/data', async (req, res) => {
 
         if (req.method === 'POST') {
             const body = req.body || {};
-            const leadRow = {
-                id: body.id || `lead_${Date.now()}`,
-                name: body.name || 'Anonymous Prospect',
-                email: body.email || 'lead@socialninjas.in',
-                phone: body.phone || null,
-                company: body.company || null,
-                website: body.website || null,
-                message: body.message || null,
-                source: body.source || 'main-contact-page',
-                status: body.status || 'New Inbound',
-                next_follow_up: body.nextFollowUp || body.next_follow_up || null,
-                follow_up_notes: body.followUpNotes || body.follow_up_notes || null,
-                notes: body.notes || null
-            };
             try {
+                // Check for existing lead by website, email, or name
+                let existingLead = null;
+                if (body.website) {
+                    const r = await fetch(`${CRM_URL}/rest/v1/leads?website=eq.${encodeURIComponent(body.website)}&limit=1`, {
+                        headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                    });
+                    if (r.ok) {
+                        const rows = await r.json();
+                        if (rows && rows.length > 0) existingLead = rows[0];
+                    }
+                }
+                if (!existingLead && body.email && !body.email.includes('@instagram.lead') && !body.email.includes('@reddit.lead')) {
+                    const r = await fetch(`${CRM_URL}/rest/v1/leads?email=eq.${encodeURIComponent(body.email)}&limit=1`, {
+                        headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                    });
+                    if (r.ok) {
+                        const rows = await r.json();
+                        if (rows && rows.length > 0) existingLead = rows[0];
+                    }
+                }
+                if (!existingLead && body.name) {
+                    const r = await fetch(`${CRM_URL}/rest/v1/leads?name=eq.${encodeURIComponent(body.name)}&limit=1`, {
+                        headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+                    });
+                    if (r.ok) {
+                        const rows = await r.json();
+                        if (rows && rows.length > 0) existingLead = rows[0];
+                    }
+                }
+
+                if (existingLead) {
+                    // PRESERVE progressed status: do not overwrite touched/progressed status with 'New Inbound'
+                    const existingStatus = existingLead.status;
+                    const incomingStatus = body.status || 'New Inbound';
+                    const isProgressed = existingStatus && !['new inbound', 'new lead', 'new'].includes(existingStatus.toLowerCase());
+
+                    let mergedNotes = existingLead.notes || '';
+                    if (body.notes && (!mergedNotes || !mergedNotes.includes(body.notes))) {
+                        mergedNotes = mergedNotes ? `${mergedNotes}\n\n${body.notes}` : body.notes;
+                    }
+
+                    const updates = {
+                        status: isProgressed ? existingStatus : incomingStatus,
+                        notes: mergedNotes || body.notes || existingLead.notes,
+                        next_follow_up: existingLead.next_follow_up || body.nextFollowUp || body.next_follow_up || null,
+                        follow_up_notes: existingLead.follow_up_notes || body.followUpNotes || body.follow_up_notes || null,
+                        phone: body.phone || existingLead.phone,
+                        company: body.company || existingLead.company,
+                        message: body.message || existingLead.message,
+                    };
+
+                    const patchRes = await fetch(`${CRM_URL}/rest/v1/leads?id=eq.${existingLead.id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': CRM_KEY,
+                            'Authorization': `Bearer ${CRM_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        },
+                        body: JSON.stringify(updates)
+                    });
+                    if (!patchRes.ok) return res.status(patchRes.status).json({ error: await patchRes.text() });
+                    const updated = await patchRes.json();
+                    return res.json({ success: true, updated: updated[0] || true, deduped: true, id: existingLead.id });
+                }
+
+                const leadRow = {
+                    id: body.id || `lead_${Date.now()}`,
+                    name: body.name || 'Anonymous Prospect',
+                    email: body.email || 'lead@socialninjas.in',
+                    phone: body.phone || null,
+                    company: body.company || null,
+                    website: body.website || null,
+                    message: body.message || null,
+                    source: body.source || 'main-contact-page',
+                    status: body.status || 'New Inbound',
+                    next_follow_up: body.nextFollowUp || body.next_follow_up || null,
+                    follow_up_notes: body.followUpNotes || body.follow_up_notes || null,
+                    notes: body.notes || null
+                };
+
                 const r = await fetch(`${CRM_URL}/rest/v1/leads?on_conflict=id`, {
                     method: 'POST',
                     headers: {

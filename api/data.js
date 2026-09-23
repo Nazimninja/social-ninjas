@@ -239,7 +239,47 @@ export default async function handler(req, res) {
         return res.json({ success: true, updated: result });
       }
 
-      // Complete lead creation/upsert
+      // Complete lead creation/upsert with deduplication & status protection
+      let existingLead = null;
+      if (body.website) {
+        const rows = await crmGet('leads', { filter: `website=eq.${encodeURIComponent(body.website)}`, limit: 1 });
+        if (rows && rows.length > 0) existingLead = rows[0];
+      }
+      if (!existingLead && body.email && !body.email.includes('@instagram.lead') && !body.email.includes('@reddit.lead')) {
+        const rows = await crmGet('leads', { filter: `email=eq.${encodeURIComponent(body.email)}`, limit: 1 });
+        if (rows && rows.length > 0) existingLead = rows[0];
+      }
+      if (!existingLead && body.name) {
+        const rows = await crmGet('leads', { filter: `name=eq.${encodeURIComponent(body.name)}`, limit: 1 });
+        if (rows && rows.length > 0) existingLead = rows[0];
+      }
+
+      if (existingLead) {
+        // PRESERVE touched/progressed status: do not overwrite touched status with 'New Inbound' or 'NEW LEAD'
+        const existingStatus = existingLead.status;
+        const incomingStatus = body.status || 'New Inbound';
+        const isProgressed = existingStatus && !['new inbound', 'new lead', 'new'].includes(existingStatus.toLowerCase());
+
+        let mergedNotes = existingLead.notes || '';
+        if (body.notes && (!mergedNotes || !mergedNotes.includes(body.notes))) {
+          mergedNotes = mergedNotes ? `${mergedNotes}\n\n${body.notes}` : body.notes;
+        }
+
+        const updates = {
+          status: isProgressed ? existingStatus : incomingStatus,
+          notes: mergedNotes || body.notes || existingLead.notes,
+          next_follow_up: existingLead.next_follow_up || body.nextFollowUp || body.next_follow_up || null,
+          follow_up_notes: existingLead.follow_up_notes || body.followUpNotes || body.follow_up_notes || null,
+          phone: body.phone || existingLead.phone,
+          company: body.company || existingLead.company,
+          message: body.message || existingLead.message,
+        };
+
+        const result = await crmPatch('leads', 'id', existingLead.id, updates);
+        if (!result) return res.status(500).json({ error: 'Failed to update existing lead' });
+        return res.json({ success: true, updated: result, deduped: true, id: existingLead.id });
+      }
+
       const leadRow = {
         id: body.id || `lead_${Date.now()}`,
         name: body.name || 'Anonymous Prospect',

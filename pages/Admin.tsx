@@ -248,8 +248,34 @@ export const Admin: React.FC = () => {
         fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.json()).catch(() => [])
       ]);
 
-      if (Array.isArray(leadsRes)) setLeads(leadsRes);
-      else if (leadsRes?.data) setLeads(leadsRes.data);
+      const rawLeads = Array.isArray(leadsRes) ? leadsRes : (leadsRes?.data || []);
+      if (Array.isArray(rawLeads)) {
+        // Smart deduplication: group by website or clean email or company name
+        const dedupedMap = new Map<string, any>();
+        for (const l of rawLeads) {
+          const key = (l.website || (l.email && !l.email.includes('@instagram.lead') && !l.email.includes('@reddit.lead') ? l.email : '') || l.name || l.id).toLowerCase().trim();
+          if (!dedupedMap.has(key)) {
+            dedupedMap.set(key, { ...l });
+          } else {
+            const existing = dedupedMap.get(key);
+            const exStatus = normalizeLeadStatus(existing.status);
+            const currStatus = normalizeLeadStatus(l.status);
+            
+            // Prefer touched/progressed status over 'New Inbound'
+            if (exStatus === 'New Inbound' && currStatus !== 'New Inbound') {
+              existing.status = l.status;
+            }
+            if (!existing.next_follow_up && l.next_follow_up) {
+              existing.next_follow_up = l.next_follow_up;
+              existing.follow_up_notes = l.follow_up_notes;
+            }
+            if (l.notes && (!existing.notes || !existing.notes.includes(l.notes))) {
+              existing.notes = existing.notes ? `${existing.notes}\n\n${l.notes}` : l.notes;
+            }
+          }
+        }
+        setLeads(Array.from(dedupedMap.values()));
+      }
       if (Array.isArray(fitRes)) setFitClients(fitRes);
       if (postsRes.data) setPosts(postsRes.data);
       
@@ -330,8 +356,16 @@ export const Admin: React.FC = () => {
   // ── Centralized Robust Lead Update Helper ────────────────────────────
   const updateLeadData = async (leadId: string, partialUpdates: Record<string, any>): Promise<boolean> => {
     // 1. Optimistic UI update
-    setLeads(prev => prev.map(l => l.id === leadId ? { ...l, ...partialUpdates } : l));
-    setSelectedLead((prev: any) => prev && prev.id === leadId ? { ...prev, ...partialUpdates } : prev);
+    setLeads(prev => {
+      const target = prev.find(l => l.id === leadId);
+      return prev.map(l => {
+        const isMatch = l.id === leadId || 
+          (target?.website && l.website && target.website.toLowerCase() === l.website.toLowerCase()) ||
+          (target?.name && l.name && target.name.toLowerCase() === l.name.toLowerCase());
+        return isMatch ? { ...l, ...partialUpdates } : l;
+      });
+    });
+    setSelectedLead((prev: any) => prev && (prev.id === leadId || (prev.website && prev.website === selectedLead?.website)) ? { ...prev, ...partialUpdates } : prev);
     setSaveLeadStatusFeedback('saving');
 
     try {
