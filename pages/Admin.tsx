@@ -242,20 +242,35 @@ export const Admin: React.FC = () => {
   const loadAllData = useCallback(async () => {
     setRefreshing(true);
     try {
+      // 1. Parallel fetch with resilient direct Supabase fallbacks
       const [
         leadsRes, fitRes, postsRes, scriptsRes, queueRes, mentionsRes, teamRes, blogsRes
       ] = await Promise.all([
-        fetch(getApiUrl('/api/data?resource=leads')).then(r => r.json()).catch(() => supabase.from('leads').select('*').order('created_at', { ascending: false })),
-        fetch(getApiUrl('/api/fit-clients')).then(r => r.json()).catch(() => []),
+        fetch(getApiUrl('/api/data?resource=leads')).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(getApiUrl('/api/fit-clients')).then(r => r.ok ? r.json() : null).catch(() => null),
         supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
-        fetch(getApiUrl('/api/data?resource=scripts')).then(r => r.json()).catch(() => supabase.from('scripts').select('*').order('created_at', { ascending: false })),
+        fetch(getApiUrl('/api/data?resource=scripts')).then(r => r.ok ? r.json() : null).catch(() => null),
         supabase.from('scheduled_posts').select('*').order('created_at', { ascending: false }),
         supabase.from('mentions').select('*').eq('dismissed', false).order('created_at', { ascending: false }),
         supabase.from('team_members').select('*').order('created_at', { ascending: false }),
-        fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.json()).catch(() => [])
+        fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.ok ? r.json() : null).catch(() => null)
       ]);
 
-      const rawLeads = Array.isArray(leadsRes) ? leadsRes : (leadsRes?.data || []);
+      // Leads: API or direct Supabase fallback
+      let rawLeads: any[] = [];
+      if (Array.isArray(leadsRes)) {
+        rawLeads = leadsRes;
+      } else if (Array.isArray(leadsRes?.data)) {
+        rawLeads = leadsRes.data;
+      }
+
+      if (rawLeads.length === 0) {
+        try {
+          const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+          if (Array.isArray(data) && data.length > 0) rawLeads = data;
+        } catch (_) {}
+      }
+
       if (Array.isArray(rawLeads)) {
         // Smart deduplication: group by website or clean email or company name
         const dedupedMap = new Map<string, any>();
@@ -283,7 +298,18 @@ export const Admin: React.FC = () => {
         }
         setLeads(Array.from(dedupedMap.values()));
       }
-      if (Array.isArray(fitRes)) setFitClients(fitRes);
+
+      // Fit Ninja Members: API or direct Supabase fallback
+      let rawFit: any[] = [];
+      if (Array.isArray(fitRes)) {
+        rawFit = fitRes;
+      } else {
+        try {
+          const { data } = await supabase.from('content_studio_clients').select('*').order('created_at', { ascending: false });
+          if (Array.isArray(data)) rawFit = data;
+        } catch (_) {}
+      }
+      setFitClients(rawFit);
       if (postsRes.data) setPosts(postsRes.data);
       
       const rawScripts = Array.isArray(scriptsRes) ? scriptsRes : (scriptsRes?.data || []);
