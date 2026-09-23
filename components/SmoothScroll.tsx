@@ -7,6 +7,22 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
   const location = useLocation();
 
   useEffect(() => {
+    // Completely bypass Lenis on Admin CRM and Fit Ninja App so native mouse wheel,
+    // trackpad, modals, and tables scroll freely without event hijacking.
+    const isBypassed = location.pathname.startsWith('/admin') ||
+                       location.pathname === '/app' ||
+                       location.pathname.startsWith('/app/');
+
+    if (isBypassed) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
+      document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling');
+      document.documentElement.style.scrollBehavior = 'auto';
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -30,10 +46,12 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling');
+      document.documentElement.style.scrollBehavior = 'auto';
     };
-  }, []);
+  }, [location.pathname]);
 
-  // Update Lenis dimensions whenever route changes
+  // Update Lenis dimensions whenever route changes (on public pages)
   useEffect(() => {
     if (lenisRef.current) {
       const timer = setTimeout(() => {

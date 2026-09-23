@@ -464,8 +464,10 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+[data-lenis-prevent],
 .lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }
 .lenis.lenis-stopped {
   overflow: hidden;
@@ -659,8 +661,10 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+[data-lenis-prevent],
 .lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }
 .lenis.lenis-stopped {
   overflow: hidden;

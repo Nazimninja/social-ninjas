@@ -620,7 +620,7 @@ export const Admin: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#06080e] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-28">
+    <div data-lenis-prevent="true" className="min-h-screen bg-[#06080e] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-28">
       <SEO title="Social Ninja's | Agency Command Deck" description="Executive Operations Dashboard" />
 
       {/* ── TOP LUXURY EXECUTIVE HEADER ──────────────────────────────── */}
@@ -1571,7 +1571,7 @@ export const Admin: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+              <div data-lenis-prevent="true" className="space-y-2.5 max-h-[500px] overflow-y-auto overscroll-contain pr-1">
                 {posts.filter(p => {
                   if (pubFilter === 'scheduled') return p.status === 'Scheduled';
                   if (pubFilter === 'published') return p.status === 'published' || p.status === 'Published';
@@ -1800,7 +1800,7 @@ export const Admin: React.FC = () => {
                       </div>
 
                       {openScriptId === sc.id && (
-                        <div className="mt-3 pt-3 border-t border-white/[0.06] text-xs text-slate-300 space-y-2 max-h-60 overflow-y-auto">
+                        <div data-lenis-prevent="true" className="mt-3 pt-3 border-t border-white/[0.06] text-xs text-slate-300 space-y-2 max-h-60 overflow-y-auto overscroll-contain">
                           {sc.section1 && <div><strong className="text-slate-400">Section 1:</strong> {sc.section1}</div>}
                           {sc.section2 && <div><strong className="text-slate-400">Section 2:</strong> {sc.section2}</div>}
                           {sc.section3 && <div><strong className="text-slate-400">Section 3:</strong> {sc.section3}</div>}
@@ -2321,8 +2321,8 @@ export const Admin: React.FC = () => {
 
       {/* ADD LEAD MODAL */}
       {showAddLead && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+        <div data-lenis-prevent="true" className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div data-lenis-prevent="true" className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <UserPlus size={16} className="text-sky-400" /> Record Inbound Prospect Lead
@@ -2380,8 +2380,8 @@ export const Admin: React.FC = () => {
 
       {/* QUICK SCHEDULE MODAL */}
       {showScheduleModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div data-lenis-prevent="true" className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div data-lenis-prevent="true" className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <CalendarIcon size={16} className="text-purple-400" /> Schedule Discovery Call
@@ -2440,8 +2440,8 @@ export const Admin: React.FC = () => {
         const isPlaceholderEmail = (lead.email || '').includes('@instagram.lead') || (lead.email || '').includes('@reddit.lead');
 
         return (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-            <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div data-lenis-prevent="true" className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overscroll-contain">
+            <div data-lenis-prevent="true" className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
               
               {/* Header */}
               <div className="p-5 border-b border-white/[0.08] flex items-start justify-between gap-4 bg-[#121929]/70">
@@ -2474,7 +2474,7 @@ export const Admin: React.FC = () => {
               </div>
 
               {/* Body */}
-              <div className="p-5 overflow-y-auto space-y-5 text-xs">
+              <div data-lenis-prevent="true" className="p-5 overflow-y-auto space-y-5 text-xs overscroll-contain">
                 
                 {/* Status Selector Banner */}
                 <div className="p-3.5 rounded-xl bg-[#121929] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -2736,7 +2736,7 @@ export const Admin: React.FC = () => {
                         No outreach logged yet. Send a message on Instagram or WhatsApp, then log it above or click "Mark Sent".
                       </div>
                     ) : (
-                      <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                      <div data-lenis-prevent="true" className="space-y-2 max-h-48 overflow-y-auto overscroll-contain pr-1">
                         {parsed.activityLog.map((log, idx) => (
                           <div
                             key={idx}
@@ -2837,8 +2837,8 @@ export const Admin: React.FC = () => {
 
       {/* FIT NINJA MANAGE MODAL */}
       {manageFitStatus && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div data-lenis-prevent="true" className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
+          <div data-lenis-prevent="true" className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Dumbbell size={16} className="text-amber-400" /> Manage Member Access
@@ -2877,8 +2877,8 @@ export const Admin: React.FC = () => {
         const healthConditions = Array.isArray(phys.health_conditions) ? phys.health_conditions : [];
 
         return (
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-[#0b0f19] border border-white/[0.12] rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 space-y-5 shadow-2xl text-xs text-white">
+          <div data-lenis-prevent="true" className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
+            <div data-lenis-prevent="true" className="bg-[#0b0f19] border border-white/[0.12] rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto overscroll-contain p-6 space-y-5 shadow-2xl text-xs text-white">
               
               {/* Athlete Header */}
               <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
@@ -3075,7 +3075,7 @@ export const Admin: React.FC = () => {
                       No weekly check-ins recorded yet. When this athlete completes their weekly check-in, their logged weights, soreness, and progress notes will appear here.
                     </div>
                   ) : (
-                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    <div data-lenis-prevent="true" className="space-y-2 max-h-48 overflow-y-auto overscroll-contain pr-1">
                       {checkins.map((chk, idx) => (
                         <div key={chk.id || idx} className="bg-[#0b0f19] border border-white/[0.06] rounded-xl p-3 space-y-1.5">
                           <div className="flex items-center justify-between text-xs">
@@ -3191,8 +3191,8 @@ export const Admin: React.FC = () => {
 
       {/* ADD TEAM MEMBER MODAL */}
       {showAddMember && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div data-lenis-prevent="true" className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
+          <div data-lenis-prevent="true" className="bg-[#0e1424] border border-white/[0.1] rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <Users size={16} className="text-purple-400" /> Add Team Member
