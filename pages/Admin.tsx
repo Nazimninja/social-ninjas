@@ -135,10 +135,17 @@ export const parseLeadNotes = (notesText?: string | null): ParsedLeadNotes => {
   const signalMatch = notesText.match(/\[Signal:\s*([^\]]+)\]/i);
   const signal = signalMatch ? signalMatch[1].trim() : null;
   let suggestedOpener: string | null = null;
-  const openerMatch = notesText.match(/Suggested Opener:\s*([\s\S]+?)(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i);
-  if (openerMatch) suggestedOpener = openerMatch[1].trim();
+  // Strict parser: strictly captures ONLY the prospect DM message, stopping at any internal metadata
+  const openerMatch = notesText.match(/Suggested Opener:\s*([\s\S]+?)(?=\n\s*(?:\[ICP Score|Reasoning:|Suggested Opener:|\[Outreach|\[Message|\[Activity|$)|\s*$)/i);
+  if (openerMatch) {
+    let clean = openerMatch[1].trim();
+    clean = clean.split(/\n\s*\[ICP Score/i)[0].trim();
+    clean = clean.split(/\n\s*Reasoning:/i)[0].trim();
+    clean = clean.split(/\n\s*Suggested Opener:/i)[0].trim();
+    suggestedOpener = clean;
+  }
   let reasoning: string | null = null;
-  const reasoningMatch = notesText.match(/Reasoning:\s*([\s\S]+?)(?=\n\s*(?:Suggested Opener:|\[Outreach|\[Message|$))/i);
+  const reasoningMatch = notesText.match(/Reasoning:\s*([\s\S]+?)(?=\n\s*(?:Suggested Opener:|\[ICP Score|\[Outreach|\[Message|\[Activity|$))/i);
   if (reasoningMatch) reasoning = reasoningMatch[1].trim();
   
   // Extract outreach / message history logs
@@ -430,8 +437,8 @@ export const Admin: React.FC = () => {
     if (!selectedLead) return;
     const currentNotes = selectedLead.notes || '';
     let newNotes = currentNotes;
-    if (/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i.test(currentNotes)) {
-      newNotes = currentNotes.replace(/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[Outreach|\[Message|\[Activity|$)|\s*$)/i, `Suggested Opener:\n${editedOpener}`);
+    if (/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[ICP Score|Reasoning:|Suggested Opener:|\[Outreach|\[Message|\[Activity|$)|\s*$)/i.test(currentNotes)) {
+      newNotes = currentNotes.replace(/Suggested Opener:\s*[\s\S]+?(?=\n\s*(?:\[ICP Score|Reasoning:|Suggested Opener:|\[Outreach|\[Message|\[Activity|$)|\s*$)/i, `Suggested Opener:\n${editedOpener}`);
     } else {
       newNotes = currentNotes ? `${currentNotes}\n\nSuggested Opener:\n${editedOpener}` : `Suggested Opener:\n${editedOpener}`;
     }
