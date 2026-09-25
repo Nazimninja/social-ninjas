@@ -76,6 +76,7 @@ const SEO: React.FC<SEOProps> = ({
       "https://www.sortlist.com/agency/social-ninja-s",
       "https://www.crunchbase.com/organization/social-ninja-s",
       "https://www.designrush.com/agency/profile/social-ninjas",
+      "https://www.agencyspotter.com/social-ninja-s",
       "https://trustpilot.com/review/socialninjas.in"
     ],
     "knowsAbout": [
