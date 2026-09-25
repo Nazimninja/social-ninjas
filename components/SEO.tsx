@@ -57,16 +57,58 @@ const SEO: React.FC<SEOProps> = ({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Social Ninja's",
+    "alternateName": ["Social Ninjas", "Social Ninjas AI Growth Agency"],
     "url": "https://socialninjas.in",
     "logo": "https://socialninjas.in/ninja-logo.png",
     "description": defaultDescription,
+    "founder": {
+      "@type": "Person",
+      "name": "Nazim Pasha",
+      "jobTitle": "Founder & Technical Lead",
+      "email": "info@socialninjas.in"
+    },
     "sameAs": [
       "https://www.instagram.com/socialninjas.in",
-      "https://www.linkedin.com/company/social-ninjas"
+      "https://www.linkedin.com/company/social-ninjas",
+      "https://www.producthunt.com/@nazim_pasha",
+      "https://clutch.co/profile/social-ninjas-0",
+      "https://www.goodfirms.co/company/social-ninjas",
+      "https://trustpilot.com/review/socialninjas.in"
     ],
+    "knowsAbout": [
+      "AI Lead Automation",
+      "Performance Marketing",
+      "Meta Ads Management",
+      "Google Ads Management",
+      "WhatsApp Lead Generation & Chatbot Systems",
+      "Conversion Rate Optimization",
+      "Enterprise CRM Automation"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Social Ninja's Growth & Automation Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "AI Lead & WhatsApp Automation",
+            "description": "24/7 intelligent auto-reply chatbots and automated CRM calendar booking systems."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Performance Paid Media (Meta & Google Ads)",
+            "description": "High-ROAS paid advertising management focused on unit economics and qualified lead pipeline."
+          }
+        }
+      ]
+    },
     "contactPoint": {
       "@type": "ContactPoint",
-      "contactType": "customer support",
+      "contactType": "sales",
       "email": "info@socialninjas.in",
       "areaServed": ["IN", "AE", "US", "GB"],
       "availableLanguage": ["English", "Hindi"]
