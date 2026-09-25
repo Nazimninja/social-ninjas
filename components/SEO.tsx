@@ -73,6 +73,7 @@ const SEO: React.FC<SEOProps> = ({
       "https://www.producthunt.com/@nazim_pasha",
       "https://clutch.co/profile/social-ninjas-0",
       "https://www.goodfirms.co/company/social-ninjas",
+      "https://www.sortlist.com/agency/social-ninja-s",
       "https://trustpilot.com/review/socialninjas.in"
     ],
     "knowsAbout": [
