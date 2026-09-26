@@ -13,7 +13,7 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({
 }) => {
   return (
     <div className={`relative flex flex-col items-center justify-center bg-[#07090e] text-white transition-bg ${className}`}>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ contain: 'paint' }}>
         <div
           className={`
             [--white-gradient:repeat(linear-gradient(to_right,var(--static-page-bg,#07090e)_1px,transparent_1px),repeat(linear-gradient(to_bottom,var(--static-page-bg,#07090e)_1px,transparent_1px))]
@@ -28,15 +28,15 @@ export const AuroraBackground: React.FC<AuroraBackgroundProps> = ({
         {/* Strictly Logo Royal Blue (#1F4B99) and Logo Green (#3ba213) Orbs */}
         <div
           style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}
-          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-[#1F4B99]/30 via-[#1F4B99]/20 to-[#3ba213]/15 rounded-full blur-[90px] animate-aurora-slow pointer-events-none"
+          className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-gradient-to-br from-[#1F4B99]/30 via-[#1F4B99]/20 to-[#3ba213]/15 rounded-full blur-[48px] animate-aurora-slow pointer-events-none"
         />
         <div
           style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}
-          className="absolute top-1/3 -right-40 w-[650px] h-[650px] bg-gradient-to-tl from-[#1F4B99]/25 via-[#2b5ebf]/15 to-[#3ba213]/20 rounded-full blur-[90px] animate-aurora-reverse pointer-events-none"
+          className="absolute top-1/3 -right-40 w-[550px] h-[550px] bg-gradient-to-tl from-[#1F4B99]/25 via-[#2b5ebf]/15 to-[#3ba213]/20 rounded-full blur-[48px] animate-aurora-reverse pointer-events-none"
         />
         <div
           style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}
-          className="absolute -bottom-40 left-1/3 w-[550px] h-[550px] bg-gradient-to-tr from-[#3ba213]/15 via-[#1F4B99]/25 to-[#1F4B99]/15 rounded-full blur-[90px] animate-aurora-slow pointer-events-none"
+          className="absolute -bottom-40 left-1/3 w-[450px] h-[450px] bg-gradient-to-tr from-[#3ba213]/15 via-[#1F4B99]/25 to-[#1F4B99]/15 rounded-full blur-[48px] animate-aurora-slow pointer-events-none"
         />
       </div>
 

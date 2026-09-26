@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send, ArrowRight, ShieldCheck, Clock, Sparkles, Loader2, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
-import TiltCard from '../components/TiltCard';
 import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
 
@@ -87,8 +86,8 @@ const Contact: React.FC = () => {
               </div>
               <h3 className="font-bold text-white text-base">Phone & WhatsApp</h3>
               <p className="text-xs text-neutral-400">Instant response during business hours</p>
-              <a href="tel:+919876543210" className="text-xs font-bold text-[#3ba213] hover:underline block pt-1">
-                +91 98765 43210
+              <a href="tel:+918147757479" className="text-xs font-bold text-[#3ba213] hover:underline block pt-1">
+                +91 81477 57479
               </a>
             </SpotlightCard>
 
@@ -104,9 +103,9 @@ const Contact: React.FC = () => {
             </SpotlightCard>
           </div>
 
-          {/* Right Column — 3D Tilt Contact Form */}
+          {/* Right Column — Contact Form (Rock-Solid Flat, No Tilt) */}
           <div className="lg:col-span-2">
-            <TiltCard className="p-8 sm:p-10 bg-[#0e121d] border border-neutral-800 space-y-6">
+            <SpotlightCard className="p-8 sm:p-10 bg-[#0e121d] border border-neutral-800 space-y-6">
               <div className="border-b border-neutral-800 pb-4">
                 <h2 className="text-2xl font-bold text-white">
                   {productKey ? `Apply for Early Access: ${PRODUCT_NAMES[productKey]}` : 'Book Your Free Growth Audit'}
@@ -205,7 +204,7 @@ const Contact: React.FC = () => {
                   </div>
                 </form>
               )}
-            </TiltCard>
+            </SpotlightCard>
           </div>
 
         </div>

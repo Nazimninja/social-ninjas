@@ -43,7 +43,7 @@ const sections = [
   {
     icon: Mail,
     title: '8. Governing Law & Disputes',
-    content: `These Terms of Service are governed by the laws of Karnataka, India. Any disputes arising from service agreements shall first be addressed through good-faith negotiation. If resolution is not reached within 30 days, disputes will be resolved through binding arbitration in Bangalore, India. For any questions about these terms, contact us at hello@socialninjas.in.`,
+    content: `These Terms of Service are governed by the laws of Karnataka, India. Any disputes arising from service agreements shall first be addressed through good-faith negotiation. If resolution is not reached within 30 days, disputes will be resolved through binding arbitration in Bangalore, India. For any questions about these terms, contact us at info@socialninjas.in.`,
   },
 ];
 
@@ -87,7 +87,7 @@ const Terms: React.FC = () => {
         <div className="text-center py-4">
           <p className="text-xs text-neutral-600">
             Questions about our terms? Email us at{' '}
-            <a href="mailto:hello@socialninjas.in" className="text-[#4281f5] hover:underline">hello@socialninjas.in</a>
+            <a href="mailto:info@socialninjas.in" className="text-[#4281f5] hover:underline">info@socialninjas.in</a>
           </p>
         </div>
       </section>

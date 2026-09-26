@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Shield, Zap, Target, Award, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
-import TiltCard from '../components/TiltCard';
 import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
 import AnimatedNumber from '../components/AnimatedNumber';

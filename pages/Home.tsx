@@ -6,7 +6,6 @@ import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
 import MeteorsBackground from '../components/MeteorsBackground';
 import AuroraBackground from '../components/AuroraBackground';
-import TiltCard from '../components/TiltCard';
 import ShinyButton from '../components/ShinyButton';
 import AnimatedBeam from '../components/AnimatedBeam';
 import AnimatedNumber from '../components/AnimatedNumber';
@@ -186,9 +185,9 @@ const Home: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Column — 3D Tilt Chat Demo */}
+            {/* Right Column — Stable AI Chat Demo (No Tilt) */}
             <motion.div style={{ y: smoothY }}>
-              <TiltCard className="p-6 bg-[#0e121d]/90 backdrop-blur-xl border border-neutral-800 shadow-2xl">
+              <SpotlightCard className="p-6 bg-[#0e121d]/90 backdrop-blur-xl border border-neutral-800 shadow-2xl">
                 <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-4">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-xl bg-brand-primary/20 border border-brand-primary/30 flex items-center justify-center text-brand-primary">
@@ -226,7 +225,7 @@ const Home: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </TiltCard>
+              </SpotlightCard>
             </motion.div>
 
           </div>
@@ -317,7 +316,7 @@ const Home: React.FC = () => {
               </p>
             </div>
 
-            <TiltCard className="p-8 bg-[#0e121d] border border-neutral-800 space-y-6">
+            <SpotlightCard className="p-8 bg-[#0e121d] border border-neutral-800 space-y-6">
               <div>
                 <div className="flex justify-between items-center text-xs font-bold text-neutral-300 mb-2">
                   <span>Monthly Ad Budget</span>
@@ -345,7 +344,7 @@ const Home: React.FC = () => {
                   <div className="text-xl font-black text-brand-primary mt-1">₹{profit.toLocaleString('en-IN')}</div>
                 </div>
               </div>
-            </TiltCard>
+            </SpotlightCard>
 
           </div>
         </div>

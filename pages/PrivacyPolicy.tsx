@@ -28,7 +28,7 @@ const sections = [
   {
     icon: Bell,
     title: '5. Marketing Communications',
-    content: `If you opt in to our newsletter or marketing updates, you will receive performance marketing guides, AI automation playbooks, and agency insights. You may unsubscribe at any time by clicking "Unsubscribe" in any email or by contacting us directly at hello@socialninjas.in. We comply fully with CAN-SPAM and GDPR regulations.`,
+    content: `If you opt in to our newsletter or marketing updates, you will receive performance marketing guides, AI automation playbooks, and agency insights. You may unsubscribe at any time by clicking "Unsubscribe" in any email or by contacting us directly at info@socialninjas.in. We comply fully with CAN-SPAM and GDPR regulations.`,
   },
   {
     icon: Lock,
@@ -38,12 +38,12 @@ const sections = [
   {
     icon: UserCheck,
     title: '7. Your Rights',
-    content: `You have the right to access, correct, or request deletion of any personal information we hold about you. You may also request data portability or restrict processing of your data at any time. To exercise any of these rights, contact our Data Protection team at hello@socialninjas.in. We will respond to all requests within 30 days.`,
+    content: `You have the right to access, correct, or request deletion of any personal information we hold about you. You may also request data portability or restrict processing of your data at any time. To exercise any of these rights, contact our Data Protection team at info@socialninjas.in. We will respond to all requests within 30 days.`,
   },
   {
     icon: Mail,
     title: '8. Contact & Data Requests',
-    content: `For any privacy-related queries, data access requests, or to report a security concern, contact us at: hello@socialninjas.in. Our registered address is Bangalore, Karnataka, India. We take all privacy concerns seriously and will respond promptly to any inquiry or complaint.`,
+    content: `For any privacy-related queries, data access requests, or to report a security concern, contact us at: info@socialninjas.in. Our registered address is Bangalore, Karnataka, India. We take all privacy concerns seriously and will respond promptly to any inquiry or complaint.`,
   },
 ];
 
@@ -87,7 +87,7 @@ const PrivacyPolicy: React.FC = () => {
         <div className="text-center py-4">
           <p className="text-xs text-neutral-600">
             Questions? Email us at{' '}
-            <a href="mailto:hello@socialninjas.in" className="text-[#4281f5] hover:underline">hello@socialninjas.in</a>
+            <a href="mailto:info@socialninjas.in" className="text-[#4281f5] hover:underline">info@socialninjas.in</a>
           </p>
         </div>
       </section>

@@ -237,9 +237,9 @@ const marketingPagesContent = {
       <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;text-align:left;margin-bottom:40px;">
         <h3 style="font-size:20px;color:#ffffff;margin-bottom:20px;">Contact Details</h3>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Office:</strong> Social Ninja's Agency, Bangalore, Karnataka, India</p>
-        <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Email:</strong> team@socialninjas.in</p>
+        <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Email:</strong> info@socialninjas.in</p>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:24px;line-height:1.6;"><strong>Hours:</strong> Mon - Sat | 10:00 AM - 7:00 PM IST</p>
-        <a href="mailto:team@socialninjas.in" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Email Our Team</a>
+        <a href="mailto:info@socialninjas.in" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Email Our Team</a>
       </div>
     </main>
   `,
@@ -321,10 +321,14 @@ function prerenderRoute(route, metadata, contentBodyHtml) {
 
   // CRITICAL: Replace the empty React root div with rich static HTML body for SEO crawlers and AdSense reviewers
   const wrappedHtml = wrapInLayout(contentBodyHtml);
-  html = html.replace(
-    /<div id="root">[\s\S]*?<\/div>/i,
-    `<div id="root">${wrappedHtml}</div>`
-  );
+  if (html.includes('<div id="root"></div>')) {
+    html = html.replace('<div id="root"></div>', `<div id="root">${wrappedHtml}</div>`);
+  } else {
+    html = html.replace(
+      /<div id="root">[\s\S]*?<\/div>(?=\s*<script)/i,
+      `<div id="root">${wrappedHtml}</div>`
+    );
+  }
 
   fs.writeFileSync(path.join(targetDir, 'index.html'), html, 'utf8');
 }
