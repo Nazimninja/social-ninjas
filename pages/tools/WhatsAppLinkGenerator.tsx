@@ -1,5 +1,5 @@
 import React, { useState, useId } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   MessageSquare, 
   Copy, 
@@ -12,7 +12,8 @@ import {
   ShieldCheck, 
   Zap, 
   ChevronDown,
-  PhoneCall
+  PhoneCall,
+  Code
 } from 'lucide-react';
 import SEO from '../../components/SEO';
 import SpotlightCard from '../../components/SpotlightCard';
@@ -69,7 +70,20 @@ export const WhatsAppLinkGenerator: React.FC = () => {
   const [message, setMessage] = useState('');
   const [copied, setCopied] = useState(false);
   const [showQr, setShowQr] = useState(false);
+  const [showEmbed, setShowEmbed] = useState(false);
+  const [embedCopied, setEmbedCopied] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const location = useLocation();
+  const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
+
+  const embedSnippet = `<iframe src="https://socialninjas.in/tools/whatsapp-link-generator?embed=true" width="100%" height="700" frameborder="0" style="border-radius:16px;border:1px solid rgba(255,255,255,0.1);max-width:680px;width:100%;display:block;margin:0 auto;" title="Free WhatsApp Link Generator"></iframe>\n<p style="font-size:12px;color:#888888;text-align:center;margin-top:8px;">Free WhatsApp Link Generator powered by <a href="https://socialninjas.in/tools/whatsapp-link-generator" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline;">Social Ninja's</a></p>`;
+
+  const handleCopyEmbed = () => {
+    navigator.clipboard.writeText(embedSnippet);
+    setEmbedCopied(true);
+    setTimeout(() => setEmbedCopied(false), 2000);
+  };
 
   // Clean phone number: remove non-digits
   const cleanNumber = phoneNumber.replace(/[^0-9]/g, '');
@@ -91,6 +105,99 @@ export const WhatsAppLinkGenerator: React.FC = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (isEmbed) {
+    return (
+      <div className="bg-[#07090e] text-white p-4 min-h-screen flex flex-col justify-between box-sizing-border">
+        <SpotlightCard className="p-5 sm:p-7 bg-[#0e121d] border border-neutral-800/90 shadow-2xl rounded-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8] flex items-center gap-1.5">
+              <Zap size={13} /> Free WhatsApp Link Generator
+            </span>
+            <span className="text-[10px] text-neutral-400">100% Client-Side Private</span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            {/* Inputs (7 cols) */}
+            <div className="lg:col-span-7 space-y-3.5">
+              <div>
+                <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-1.5">
+                  Country &amp; Phone Number
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="w-full bg-[#121724] border border-neutral-800 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#38bdf8]"
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code}>{c.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    placeholder="9876543210"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="sm:col-span-2 w-full bg-[#121724] border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8] font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-1.5">
+                  Pre-filled Message (Optional)
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="Hello! I would like more details about..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full bg-[#121724] border border-neutral-800 rounded-xl p-2.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8] resize-none"
+                />
+              </div>
+            </div>
+
+            {/* Output (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col justify-between bg-[#121724] border border-neutral-800 rounded-xl p-4 space-y-3">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Generated Link</span>
+                <div className="bg-[#0b0e17] border border-neutral-800/80 rounded-lg p-2 break-all font-mono text-[11px] text-[#38bdf8] min-h-[42px] flex items-center select-all">
+                  {generatedUrl || <span className="text-neutral-500">Enter phone number...</span>}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={handleCopy}
+                  disabled={!generatedUrl}
+                  className="w-full flex items-center justify-center gap-1.5 bg-[#38bdf8] hover:bg-[#38bdf8]/90 disabled:opacity-40 text-[#07090e] font-bold py-2 px-3 rounded-lg text-xs transition-all"
+                >
+                  {copied ? <Check size={13} /> : <Copy size={13} />}
+                  <span>{copied ? 'Copied!' : 'Copy Link'}</span>
+                </button>
+                <a
+                  href={generatedUrl || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => !generatedUrl && e.preventDefault()}
+                  className={`w-full flex items-center justify-center gap-1.5 bg-[#1F4B99] hover:bg-[#1F4B99]/90 text-white font-bold py-2 px-3 rounded-lg text-xs transition-all ${!generatedUrl ? 'opacity-40 pointer-events-none' : ''}`}
+                >
+                  <ExternalLink size={13} />
+                  <span>Open in WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </SpotlightCard>
+
+        {/* Backlink Attribution Footer */}
+        <div className="text-center py-2.5 text-[11px] text-neutral-400">
+          Free WhatsApp Link Tool by <a href="https://socialninjas.in/tools/whatsapp-link-generator" target="_blank" rel="noopener" className="text-[#38bdf8] font-bold hover:underline">Social Ninja's</a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
@@ -232,7 +339,36 @@ export const WhatsAppLinkGenerator: React.FC = () => {
                     <QrCode size={15} className="text-[#38bdf8]" />
                     <span>{showQr ? 'Hide QR Code' : 'Generate Printable QR Code'}</span>
                   </button>
+                  <button
+                    onClick={() => setShowEmbed(!showEmbed)}
+                    className="w-full flex items-center justify-center gap-2 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all"
+                  >
+                    <Code size={15} className="text-[#38bdf8]" />
+                    <span>{showEmbed ? 'Hide Embed Code' : 'Embed This Tool On Your Website (Free)'}</span>
+                  </button>
                 </div>
+
+                {/* Embed Code Drawer */}
+                {showEmbed && (
+                  <div className="pt-4 border-t border-neutral-800 space-y-2.5 text-left animate-fade-in">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">Embed Code (HTML)</span>
+                      <button
+                        onClick={handleCopyEmbed}
+                        className="text-[11px] font-semibold text-[#38bdf8] hover:text-[#38bdf8]/80 flex items-center gap-1"
+                      >
+                        {embedCopied ? <Check size={12} className="text-[#22c55e]" /> : <Copy size={12} />}
+                        <span>{embedCopied ? 'Copied!' : 'Copy Code'}</span>
+                      </button>
+                    </div>
+                    <pre className="bg-[#0b0e17] border border-neutral-800 rounded-xl p-3 text-[10px] text-neutral-400 font-mono overflow-x-auto whitespace-pre-wrap select-all">
+                      {embedSnippet}
+                    </pre>
+                    <p className="text-[10px] text-neutral-500 leading-relaxed">
+                      Paste this iframe snippet into your WordPress, Webflow, Shopify, or static site.
+                    </p>
+                  </div>
+                )}
 
                 {/* QR Code Container */}
                 {showQr && generatedUrl && (

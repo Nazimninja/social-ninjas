@@ -161,7 +161,9 @@ const MainLayout: React.FC = () => {
     };
   }, []);
 
-  const hidePublicChrome = location.pathname.startsWith('/promo') || 
+  const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
+  const hidePublicChrome = isEmbed ||
+                           location.pathname.startsWith('/promo') || 
                            location.pathname === '/app' ||
                            location.pathname.startsWith('/app/') || 
                            location.pathname.startsWith('/admin');
