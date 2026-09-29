@@ -147,6 +147,9 @@ function extractBlogPostsFull() {
     const dateMatch = postSegment.match(/date:\s*['"`]([^'"`]+)['"`]/);
     const date = dateMatch ? dateMatch[1] : '';
 
+    const publishedAtMatch = postSegment.match(/publishedAt:\s*['"`]([^'"`]+)['"`]/);
+    const publishedAt = publishedAtMatch ? publishedAtMatch[1].substring(0, 10) : '';
+
     const readTimeMatch = postSegment.match(/readTime:\s*['"`]([^'"`]+)['"`]/);
     const readTime = readTimeMatch ? readTimeMatch[1] : '5 min';
     
@@ -165,6 +168,7 @@ function extractBlogPostsFull() {
       excerpt,
       category,
       date,
+      publishedAt,
       readTime,
       author: "Social Ninja's Team",
       content: content.trim()
@@ -278,6 +282,61 @@ const marketingPagesContent = {
       
       <h2 style="font-size:22px;color:#ffffff;margin-top:32px;margin-bottom:16px;">1. Acceptance of Terms</h2>
       <p style="color:#a0a0b0;margin-bottom:20px;">By accessing our site or using our automated business tools, you agree to comply with and be bound by these Terms and our Privacy Policy.</p>
+    </main>
+  `,
+  'tools': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Free Growth, Marketing &amp; Financial Utilities</h1>
+      <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://linkwa.in" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">WhatsApp Direct Chat Link Generator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Generate pre-filled instant WhatsApp chat links and QR codes for your ad campaigns, Instagram bios, and lead funnels.</p>
+          <a href="https://linkwa.in" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://salary.socialninjas.in/salary-calculator/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">US Take-Home Pay &amp; Tax Calculator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Calculate accurate net take-home pay after federal FICA, state, and local deductions across all 50 US states.</p>
+          <a href="https://salary.socialninjas.in/salary-calculator/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://salary.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">Hourly ↔ Annual Wage Converter</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Convert hourly rates to annual, monthly, bi-weekly, and weekly equivalents in real time.</p>
+          <a href="https://salary.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">US Mortgage &amp; Amortization Calculator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Estimate monthly PITI mortgage payments including principal, interest, taxes, and PMI with amortization schedule.</p>
+          <a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+        </div>
+      </div>
+    </main>
+  `,
+  'growth-systems': `
+    <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
+      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Autonomous Growth Systems Engineered for Scale</h1>
+      <p style="font-size:18px;color:#a0a0b0;margin-bottom:32px;line-height:1.6;">We replace manual sales follow-ups and uncalibrated ad spend with automated, unit-economic growth engines combining AI automation, paid ads, and content systems.</p>
+      <a href="/contact" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;text-decoration:none;">Schedule Strategy Audit →</a>
+    </main>
+  `,
+  'careers': `
+    <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
+      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Build the Future of AI Growth Engineering</h1>
+      <p style="font-size:18px;color:#a0a0b0;margin-bottom:40px;line-height:1.6;">We are hiring elite media buyers, AI developers, and creative strategists worldwide.</p>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:8px;">AI Automation Engineer</h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;">Remote / Global • Full-Time • Build autonomous WhatsApp &amp; web AI lead qualifiers using LLM APIs, Webhooks, and PostgREST databases.</p>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:8px;">Senior Meta Ads Strategist</h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;">Remote / Global • Full-Time • Manage margin-backed paid traffic campaigns with high-scale monthly budgets.</p>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:8px;">Creative Strategist &amp; Motion Designer</h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;">Remote • Full-Time • Design high-converting short-form video ads and carousel assets based on conversion analytics.</p>
+        </div>
+      </div>
     </main>
   `
 };
@@ -813,6 +872,18 @@ const routes = {
   'terms': {
     title: "Terms & Conditions | Social Ninja's",
     description: "Read the terms of service and conditions for using our website and products."
+  },
+  'tools': {
+    title: "Free Growth, Marketing & Financial Utilities | Social Ninja's",
+    description: "Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation."
+  },
+  'growth-systems': {
+    title: "Autonomous Growth Systems | Social Ninja's",
+    description: "Autonomous revenue engines combining AI automation, paid ads, and content systems."
+  },
+  'careers': {
+    title: "Careers | Social Ninja's",
+    description: "Join Social Ninja's team of AI engineers and growth strategists scaling revenue globally."
   }
 };
 
@@ -988,5 +1059,73 @@ blogPosts.forEach(post => {
     console.error(`✗ Failed to pre-render blog post: /blog/${post.id}`, err.message);
   }
 });
+
+// 5. Generate dynamic, clean sitemap.xml with verified URLs, accurate dates, and proper priorities
+function generateSitemap(posts) {
+  const publicSitemapPath = path.resolve(__dirname, '../public/sitemap.xml');
+  const distSitemapPath = path.resolve(DIST_PATH, 'sitemap.xml');
+
+  // Find latest blog post date for /blog
+  let latestPostDate = '2026-06-28';
+  posts.forEach(p => {
+    if (p.publishedAt && p.publishedAt > latestPostDate) {
+      latestPostDate = p.publishedAt;
+    }
+  });
+
+  const staticEntries = [
+    { loc: 'https://socialninjas.in/', lastmod: '2026-09-29', changefreq: 'weekly', priority: '1.0' },
+    { loc: 'https://socialninjas.in/services', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/paid-ads', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/content-production', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/email-whatsapp', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/social-media', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/ai-automation', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/web-seo', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/growth-consulting', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/about', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/ai-products', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/growth-systems', lastmod: '2026-07-27', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/case-studies', lastmod: '2026-09-05', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/contact', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/careers', lastmod: '2026-09-17', changefreq: 'monthly', priority: '0.6' },
+    { loc: 'https://socialninjas.in/blog', lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
+  ];
+
+  // Blog posts sorted descending by publishedAt
+  const sortedPosts = [...posts].sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''));
+  const blogEntries = sortedPosts.map(p => ({
+    loc: `https://socialninjas.in/blog/${p.id}`,
+    lastmod: p.publishedAt || '2026-06-28',
+    changefreq: 'monthly',
+    priority: '0.6'
+  }));
+
+  const legalEntries = [
+    { loc: 'https://socialninjas.in/privacy', lastmod: '2026-09-26', changefreq: 'yearly', priority: '0.4' },
+    { loc: 'https://socialninjas.in/terms', lastmod: '2026-09-26', changefreq: 'yearly', priority: '0.4' },
+  ];
+
+  const allEntries = [...staticEntries, ...blogEntries, ...legalEntries];
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+  xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n';
+  xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n\n';
+
+  allEntries.forEach(entry => {
+    xml += `  <url><loc>${entry.loc}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${entry.changefreq}</changefreq><priority>${entry.priority}</priority></url>\n`;
+  });
+
+  xml += '\n</urlset>\n';
+
+  fs.writeFileSync(publicSitemapPath, xml, 'utf8');
+  fs.writeFileSync(distSitemapPath, xml, 'utf8');
+  console.log(`✓ Generated sitemap.xml with ${allEntries.length} verified URLs (${posts.length} blog posts).`);
+}
+
+generateSitemap(blogPosts);
 
 console.log('SPA SEO static pre-rendering completed successfully with complete body tags and service pages!');
