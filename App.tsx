@@ -1,7 +1,7 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { AnimatePresence } from 'framer-motion';
@@ -142,12 +142,30 @@ const MainLayout: React.FC = () => {
   );
 };
 
+// Global self-referencing clean canonical tag manager (kills UTM / tracking parameter duplicate indexing sitewide)
+const CanonicalTag: React.FC = () => {
+  const location = useLocation();
+  const origin = typeof window !== 'undefined' && window.location.origin
+    ? window.location.origin
+    : 'https://socialninjas.in';
+  const cleanPath = location.pathname.length > 1 ? location.pathname.replace(/\/+$/, '') : location.pathname;
+  const canonicalUrl = `${origin}${cleanPath}`;
+
+  return (
+    <Helmet>
+      <link rel="canonical" href={canonicalUrl} />
+      <meta property="og:url" content={canonicalUrl} />
+    </Helmet>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <HelmetProvider>
       <Router>
         <SmoothScroll>
           <ScrollToTop />
+          <CanonicalTag />
           <MainLayout />
         </SmoothScroll>
       </Router>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FitNinjaProvider, useFitNinja } from '../../context/FitNinjaContext';
 import OnboardingPage from './OnboardingPage';
 import DashboardPage from './DashboardPage';
@@ -123,13 +124,37 @@ import { WorkoutSessionProvider } from '../../context/WorkoutSessionContext';
 // ── Inner app with access to FitNinja context ─────────────────────────────
 function AppShell() {
   const { state } = useFitNinja();
+  const location = useLocation();
+
+  const origin = typeof window !== 'undefined' && window.location.origin
+    ? window.location.origin
+    : 'https://fit.socialninjas.in';
+  const cleanPath = location.pathname.length > 1 ? location.pathname.replace(/\/+$/, '') : location.pathname;
+  const canonicalUrl = `${origin}${cleanPath}`;
 
   if (!state.user.setupDone) {
-    return <OnboardingPage />;
+    return (
+      <>
+        <Helmet>
+          <title>Fit Ninja | Setup Profile & Workout Splits</title>
+          <meta name="description" content="Personalize your athletic fitness training splits, rest timers, and progressive overload with Fit Ninja." />
+          <link rel="canonical" href={canonicalUrl} />
+          <meta property="og:url" content={canonicalUrl} />
+        </Helmet>
+        <OnboardingPage />
+      </>
+    );
   }
 
   return (
     <div className="min-h-screen bg-[#07090e] text-white relative">
+      <Helmet>
+        <title>Fit Ninja | Intelligent Athletic Training & Workout Tracking</title>
+        <meta name="description" content="Track workouts, progressive overload, rest timers, and exercise splits with Fit Ninja." />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
+      </Helmet>
+
       {/* Floating Dynamic Island at top of all pages */}
       <DynamicIsland />
 

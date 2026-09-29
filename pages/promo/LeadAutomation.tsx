@@ -78,6 +78,8 @@ const LeadAutomation: React.FC = () => {
             <Helmet>
                 <title>AI Lead Handling System | Social Ninja's Promo</title>
                 <meta name="description" content="Never miss a lead again. Automate lead handling with AI." />
+                <link rel="canonical" href="https://socialninjas.in/promo/ai-lead-handling" />
+                <meta property="og:url" content="https://socialninjas.in/promo/ai-lead-handling" />
             </Helmet>
 
             {/* --- NAVBAR (matches main site) --- */}
