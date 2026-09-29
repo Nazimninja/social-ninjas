@@ -64,6 +64,7 @@ const SEO: React.FC<SEOProps> = ({
     "@type": "ProfessionalService",
     "name": "Social Ninja's",
     "url": "https://socialninjas.in/",
+    "hasMap": "https://www.google.com/maps/place/Social+Ninja's/@21.0680074,82.7525294,17z/data=!3m1!4b1!4m6!3m5!1s0x2027c91d5288325f:0xbad4c06d3856e671!8m2!3d21.0680074!4d82.7525294!16s%2Fg%2F11zyznkfn_",
     "email": "info@socialninjas.in",
     "telephone": "+918147757479",
     "address": {
@@ -73,7 +74,11 @@ const SEO: React.FC<SEOProps> = ({
       "addressRegion": "Karnataka",
       "addressCountry": "IN"
     },
-    "priceRange": "₹₹"
+    "priceRange": "₹₹",
+    "sameAs": [
+      "https://www.linkedin.com/company/social-ninja-s",
+      "https://clutch.co/profile/social-ninjas-0"
+    ]
   } : null;
 
   const websiteSchema = {

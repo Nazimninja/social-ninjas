@@ -103,6 +103,14 @@ const Contact: React.FC = () => {
               <p className="text-[11px] text-neutral-500 pt-1">
                 Global Partner Hub: Business Bay, Dubai, UAE
               </p>
+              <a
+                href="https://www.google.com/maps/place/Social+Ninja's/@21.0680074,82.7525294,17z/data=!3m1!4b1!4m6!3m5!1s0x2027c91d5288325f:0xbad4c06d3856e671!8m2!3d21.0680074!4d82.7525294!16s%2Fg%2F11zyznkfn_"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-[#38bdf8] hover:underline inline-flex items-center gap-1 pt-1"
+              >
+                View on Google Maps →
+              </a>
             </SpotlightCard>
           </div>
 

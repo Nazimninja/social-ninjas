@@ -396,7 +396,8 @@ const marketingPagesContent = {
       <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;text-align:left;margin-bottom:40px;">
         <h3 style="font-size:20px;color:#ffffff;margin-bottom:20px;">Contact Details</h3>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:8px;line-height:1.6;"><strong>Office Headquarters:</strong> Social Ninja's Agency, Bangalore, Karnataka, India</p>
-        <p style="color:#707080;font-size:13.5px;margin-bottom:12px;line-height:1.6;"><strong>Global Partner Hub:</strong> Business Bay, Dubai, UAE</p>
+        <p style="color:#707080;font-size:13.5px;margin-bottom:8px;line-height:1.6;"><strong>Global Partner Hub:</strong> Business Bay, Dubai, UAE</p>
+        <p style="margin-bottom:12px;"><a href="https://www.google.com/maps/place/Social+Ninja's/@21.0680074,82.7525294,17z/data=!3m1!4b1!4m6!3m5!1s0x2027c91d5288325f:0xbad4c06d3856e671!8m2!3d21.0680074!4d82.7525294!16s%2Fg%2F11zyznkfn_" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;font-size:13.5px;font-weight:600;text-decoration:none;">View on Google Maps →</a></p>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Email:</strong> info@socialninjas.in</p>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:24px;line-height:1.6;"><strong>Hours:</strong> Mon - Sat | 10:00 AM - 7:00 PM IST</p>
         <a href="mailto:info@socialninjas.in" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Email Our Team</a>
@@ -1314,6 +1315,7 @@ const routes = {
         "@type": "ProfessionalService",
         "name": "Social Ninja's",
         "url": "https://socialninjas.in/",
+        "hasMap": "https://www.google.com/maps/place/Social+Ninja's/@21.0680074,82.7525294,17z/data=!3m1!4b1!4m6!3m5!1s0x2027c91d5288325f:0xbad4c06d3856e671!8m2!3d21.0680074!4d82.7525294!16s%2Fg%2F11zyznkfn_",
         "email": "info@socialninjas.in",
         "telephone": "+918147757479",
         "address": {
@@ -1323,7 +1325,11 @@ const routes = {
           "addressRegion": "Karnataka",
           "addressCountry": "IN"
         },
-        "priceRange": "₹₹"
+        "priceRange": "₹₹",
+        "sameAs": [
+          "https://www.linkedin.com/company/social-ninja-s",
+          "https://clutch.co/profile/social-ninjas-0"
+        ]
       }
     ]
   },
