@@ -132,8 +132,8 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#07090e] text-white font-sans selection:bg-brand-primary selection:text-white">
       <SEO
-        title="Social Ninja's | AI-Powered Performance Marketing & Growth Systems"
-        description="We build custom AI sales pipelines, run high-ROAS Meta & Google ads, and engineer automated content systems for scaling brands."
+        title="AI Performance Marketing Agency | Social Ninja's"
+        description="We build AI lead pipelines, run high-ROAS Meta & Google ads, and automate content for 150+ brands. Book a free strategy session."
       />
 
       {/* ── 1. HERO SECTION WITH AURORA & METEORS ──────────────── */}

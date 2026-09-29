@@ -18,20 +18,22 @@ const CaseStudies: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Case Studies | Real Results: $50M+ Revenue Generated via Paid Media"
-        description="See the proof. We don't hide behind vanity metrics. Explore how we drove 5x ROAS for E-commerce brands and 120% lead volume for B2B companies."
+        title="Case Studies | Real Client Growth Results"
+        description="Real growth results from Social Ninja's clients — ROAS, lead volume and revenue outcomes from AI automation and performance marketing."
       />
 
       {/* HERO */}
       <AuroraBackground className="pt-36 pb-20 border-b border-neutral-800/80">
         <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#38bdf8] text-xs font-bold uppercase tracking-wider">
             <Zap size={12} /> Proven Track Record
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
-            We let the <br />
-            <span className="text-[#1F4B99]">Data do the talking.</span>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer text-white">
+            Client Results & Case Studies
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
+            We let the data do the talking.
+          </p>
           <p className="text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
             No fluff. No vanity metrics. Just engineered growth systems that print revenue for our partners.
           </p>

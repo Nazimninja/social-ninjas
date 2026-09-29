@@ -22,20 +22,22 @@ const Blog: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Blog & Insights | Social Ninja's"
-        description="Read deep-dive performance marketing guides, AI automation strategies, and paid ads case studies."
+        title="Blog | AI Marketing & Performance Growth Insights"
+        description="Playbooks on AI sales automation, Meta ads, GEO and content systems from the Social Ninja's team. Practical growth insights, no fluff."
       />
 
       {/* HERO */}
       <AuroraBackground className="pt-36 pb-20 border-b border-neutral-800/80">
         <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#38bdf8] text-xs font-bold uppercase tracking-wider">
             INSIGHTS & CASE STUDIES
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
-            Performance Marketing <br />
-            <span className="text-[#1F4B99]">Playbooks & AI Guides.</span>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer text-white">
+            Insights by Social Ninja's
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
+            Performance Marketing Playbooks & AI Guides.
+          </p>
           <p className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed">
             Data-driven guides on paid media optimization, AI sales automation, and scaling unit economics — from the team building real growth systems.
           </p>

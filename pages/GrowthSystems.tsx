@@ -11,18 +11,18 @@ const GrowthSystems: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Growth Systems | Social Ninja's"
-        description="Autonomous revenue engines combining AI automation, paid ads, and content systems."
+        title="Autonomous AI Growth Systems | Social Ninja's"
+        description="See how Social Ninja's autonomous growth systems turn ad spend into booked calls — AI qualification, WhatsApp nurture and CRM sync in seconds."
       />
 
       <AuroraBackground className="pt-36 pb-20 border-b border-neutral-800/80">
         <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#38bdf8] text-xs font-bold uppercase tracking-wider">
             ENTERPRISE ARCHITECTURE
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
             Autonomous Growth Systems <br />
-            <span className="text-[#1F4B99]">Engineered for Scale.</span>
+            <span className="text-[#38bdf8]">Engineered for Scale.</span>
           </h1>
           <p className="text-sm sm:text-base text-neutral-300 max-w-xl mx-auto leading-relaxed">
             We replace manual sales follow-ups and uncalibrated ad spend with automated, unit-economic growth engines.

@@ -133,8 +133,8 @@ export const AIProducts: React.FC = () => {
     <div className="page-wrap bg-[#07090e] text-white min-h-screen font-sans selection:bg-[#38bdf8]/30">
       
       <SEO
-        title="AI Products & SaaS Suite | Social Ninja's"
-        description="Explore Fit Ninja athletic OS, AI Sales Agents, Ad Copy Engines, and Autonomous Reporting Intelligence built by Social Ninja's."
+        title="AI Products & SaaS | Fit Ninja by Social Ninja's"
+        description="Explore Social Ninja's AI product suite — including Fit Ninja, the AI fitness coach. Request trial access."
         keywords="Fit Ninja, fitness app, workout tracker, AI marketing tools, AI sales agent, Social Ninja's SaaS"
       />
 
@@ -146,9 +146,11 @@ export const AIProducts: React.FC = () => {
             <span>SAAS & AUTONOMOUS SYSTEMS</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-white">
-            Proprietary Software That <br />
-            <span className="text-[#38bdf8]">Drives Real Outcomes.</span>
+            Our AI Product Suite
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
+            Proprietary Software That Drives Real Outcomes.
+          </p>
           <p className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed">
             From our flagship athletic OS to autonomous sales and marketing agents — tools engineered for tangible execution and high-margin scale.
           </p>

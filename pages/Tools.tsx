@@ -48,8 +48,8 @@ const Tools: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
       <SEO
-        title="Free Growth, Marketing & Financial Utilities | Social Ninja's"
-        description="Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation."
+        title="Free Growth & Finance Tools | Social Ninja's"
+        description="Free tools from Social Ninja's: WhatsApp link generator, take-home pay calculator, hourly-to-salary converter and mortgage calculator."
         keywords="WhatsApp link generator, salary calculator, hourly to salary converter, mortgage calculator, growth utilities, Social Ninja's"
       />
 
@@ -61,9 +61,11 @@ const Tools: React.FC = () => {
             <span>GROWTH UTILITIES & SAAS SUITE</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-white">
-            High-Utility Tools for <br />
-            <span className="text-[#38bdf8]">Marketers & Modern Teams.</span>
+            Free Tools
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
+            High-Utility Tools for Marketers & Modern Teams.
+          </p>
           <p className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed">
             Free calculators, link generators, and financial utilities designed to streamline lead capture, unit economics, and campaign operations.
           </p>

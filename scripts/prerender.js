@@ -185,7 +185,7 @@ function extractBlogPostsFull() {
 const marketingPagesContent = {
   'services': `
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
-      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Everything Your Brand Needs To Scale Revenue &amp; Leads</h1>
+      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Digital Growth &amp; Marketing Services</h1>
       <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">We build automated lead generation engines and scale brands through profit-focused media buying, high-converting creatives, and AI integrations.</p>
       
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
@@ -291,7 +291,7 @@ const marketingPagesContent = {
   `,
   'tools': `
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
-      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Free Growth, Marketing &amp; Financial Utilities</h1>
+      <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Free Tools</h1>
       <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
@@ -441,7 +441,7 @@ const servicesPrerenderData = {
     cta: 'Build My Creative Strategy'
   },
   'email-whatsapp': {
-    title: "WhatsApp Marketing & Email Automation Services",
+    title: "WhatsApp & Email Marketing Automation | Social Ninja's",
     h1: "WhatsApp & Email Automation That Sells",
     tagline: "AI agents and automation sequences that qualify, nurture and close leads inside the apps your customers actually open.",
     description: "Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.",
@@ -485,10 +485,10 @@ const servicesPrerenderData = {
     cta: 'Automate My Revenue Funnels'
   },
   'social-media': {
-    title: "Social Media Management & Organic Growth | Social Ninja's",
-    h1: "Social Media Management",
+    title: "Social Media Management Services | Social Ninja's",
+    h1: "Social Media Management for Growth",
     tagline: "Consistent brand dominance and organic growth — without manual overhead.",
-    description: "End-to-end social media management for modern brands. Content strategy, daily posting, copywriting, trend research, and community engagement.",
+    description: "Done-for-you social media management: content calendars, creatives and community management that grow pipeline — not just followers.",
     hero: "Social media growth requires relentless consistency and algorithmic resonance. Finding time to research trending formats, write engaging copy, produce graphics, post daily, and reply to comments is nearly impossible while managing core business operations. We take over your social media presence end-to-end.",
     problem: "Sporadic posting fails to build momentum. Platform algorithms heavily favor active accounts that post high-retention content consistently. Posting generic updates once a week gets swallowed by the feed while your competitors capture market attention.",
     solution: "We manage your social media channels completely. Our team builds a custom monthly content calendar, writes platform-specific copy, creates carousels and reels, schedules posts at peak engagement windows, and engages with your community in real time.",
@@ -533,10 +533,10 @@ const servicesPrerenderData = {
     cta: 'Manage My Social Media'
   },
   'ai-automation': {
-    title: "AI & Lead Automation Agency | Social Ninja's",
-    h1: "AI & Lead Automation",
+    title: "AI Lead Generation Agency | AI Sales Automation",
+    h1: "AI Lead Generation & Sales Automation",
     tagline: "Your 24/7 sales and qualification engine — powered by AI.",
-    description: "Deploy autonomous conversational AI agents that reply to leads in under 1 second, qualify buyers, and book meetings 24/7 across WhatsApp, web, and CRM.",
+    description: "AI agents reply to Instagram & WhatsApp DMs in under a second — qualifying leads and booking calls 24/7. Automate your sales pipeline.",
     hero: "Most businesses lose qualified prospects simply because they respond too slowly. The average company takes 47 hours to follow up with an inbound inquiry. By then, the buyer has already purchased from a competitor. We deploy autonomous conversational AI agents that engage, qualify, and book meetings in under 1 second.",
     problem: "Your sales team cannot be online 24/7. Leads inquire late at night, on weekends, and during meetings. Every hour without an immediate response causes conversion rates to plummet.",
     solution: "We engineer and deploy custom AI sales agents trained on your specific product offerings, objection handling, and qualification criteria. The agent engages every inquiry instantly, answers questions conversationally, and books appointments directly into your calendar.",
@@ -581,10 +581,10 @@ const servicesPrerenderData = {
     cta: 'Set Up My AI Agent'
   },
   'web-seo': {
-    title: "Web Design & Technical SEO Agency | Social Ninja's",
-    h1: "Web Design & Technical SEO",
+    title: "SEO Services & High-Speed Websites | Social Ninja's",
+    h1: "SEO Services That Turn Searches Into Customers",
     tagline: "Sub-second load times, technical SEO dominance, and high-converting landing pages.",
-    description: "High-performance website development and technical SEO engineering. Sub-second load times, structured schema markup, and top Google rankings.",
+    description: "Rank higher and convert more with technical SEO, content systems and sub-second landing pages. SEO services built for revenue, not just traffic.",
     hero: "Your website should be an automated sales machine that ranks on Google and turns visitors into paying clients around the clock. If your site is slow, poorly indexed, or fails to convert traffic, revenue is leaking. We engineer sub-second websites and technical SEO architectures that dominate search results and maximize conversions.",
     problem: "Most agency websites look aesthetically pleasing but convert poorly. Slow loading times, bloated code, poor mobile responsiveness, missing schema markup, and weak search intent targeting prevent websites from ranking on page 1 of Google.",
     solution: "We conduct comprehensive audits across technical speed, keyword search intent, and user conversion funnels. We optimize Core Web Vitals, implement rich JSON-LD structured data, write keyword-rich content, and rebuild page architectures to maximize lead generation.",
@@ -847,28 +847,28 @@ function prerenderRoute(route, metadata, contentBodyHtml) {
 // Dynamic routes list helper for index loop
 const routes = {
   'services': {
-    title: "Digital Growth & Marketing Services | Social Ninja's Agency",
-    description: "Explore our premium growth services worldwide - AI Lead Automation, Paid Ads, Creative Studio, Email & WhatsApp Automation, and Technical SEO."
+    title: "Digital Marketing Services | AI, Ads, Content & SEO",
+    description: "Explore Social Ninja's growth services: AI sales automation, Meta & Google ads, content production, SEO and web systems engineered for revenue."
   },
   'about': {
-    title: "About Social Ninja's | Global AI Automation & Performance Marketing Agency",
-    description: "Meet the team building premium AI products and revenue growth systems for modern brands worldwide."
+    title: "About Us | AI Growth Agency for Global Brands",
+    description: "Social Ninja's is an AI-powered performance marketing agency founded in Bangalore in 2022, scaling 150+ brands across the US, UK, UAE and India."
   },
   'ai-products': {
-    title: "Products & SaaS Suite | Social Ninja's — Fit Ninja & More",
-    description: "Explore our suite of SaaS products: Fit Ninja delivers personalized fitness coaching, alongside AI sales agents, and more."
+    title: "AI Products & SaaS | Fit Ninja by Social Ninja's",
+    description: "Explore Social Ninja's AI product suite — including Fit Ninja, the AI fitness coach. Request trial access."
   },
   'case-studies': {
-    title: "Case Studies | Real Growth Results | Social Ninja's",
-    description: "See the proof. Real client results — 6.1x ROAS for D2C skincare, +134% B2B pipeline growth, 4.2M organic views for a food brand. No fluff, just data."
+    title: "Case Studies | Real Client Growth Results",
+    description: "Real growth results from Social Ninja's clients — ROAS, lead volume and revenue outcomes from AI automation and performance marketing."
   },
   'blog': {
-    title: "Digital Marketing & AI Agency Blog | Insights by Social Ninja's",
-    description: "Expert performance marketing advice, AI agency guides, and B2B growth systems from the Social Ninja's team."
+    title: "Blog | AI Marketing & Performance Growth Insights",
+    description: "Playbooks on AI sales automation, Meta ads, GEO and content systems from the Social Ninja's team. Practical growth insights, no fluff."
   },
   'contact': {
-    title: "Book a Strategy Session | Social Ninja's Global Growth Agency",
-    description: "Schedule a free 30-minute growth blueprint session with our global marketing team."
+    title: "Book a Free Growth Strategy Session | Social Ninja's",
+    description: "Book a 15-minute growth strategy session. We'll audit your funnels and outline an AI-powered action plan for your brand."
   },
   'privacy': {
     title: "Privacy Policy | Social Ninja's",
@@ -879,12 +879,12 @@ const routes = {
     description: "Read the terms of service and conditions for using our website and products."
   },
   'tools': {
-    title: "Free Growth, Marketing & Financial Utilities | Social Ninja's",
-    description: "Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation."
+    title: "Free Growth & Finance Tools | Social Ninja's",
+    description: "Free tools from Social Ninja's: WhatsApp link generator, take-home pay calculator, hourly-to-salary converter and mortgage calculator."
   },
   'growth-systems': {
-    title: "Autonomous Growth Systems | Social Ninja's",
-    description: "Autonomous revenue engines combining AI automation, paid ads, and content systems."
+    title: "Autonomous AI Growth Systems | Social Ninja's",
+    description: "See how Social Ninja's autonomous growth systems turn ad spend into booked calls — AI qualification, WhatsApp nurture and CRM sync in seconds."
   },
   'careers': {
     title: "Careers | Social Ninja's",
@@ -912,7 +912,7 @@ for (const [route, meta] of Object.entries(routes)) {
     if (route === 'case-studies') {
       pageHtml = `
         <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
-          <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Case Studies &amp; Growth Proof</h1>
+          <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Client Results &amp; Case Studies</h1>
           <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">Real growth results engineered by Social Ninja's using AI lead qualifiers, organic content, and profit-focused Meta &amp; Google media buys.</p>
           
           <div style="display:flex;flex-direction:column;gap:32px;">
@@ -948,7 +948,7 @@ for (const [route, meta] of Object.entries(routes)) {
 
       pageHtml = `
         <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
-          <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Digital Marketing &amp; AI Blog</h1>
+          <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Insights by Social Ninja's</h1>
           <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;line-height:1.6;">Performance marketing playbooks, outbound sales automations, and B2B scaling blueprints written by Social Ninja's.</p>
           ${postListHtml}
         </main>

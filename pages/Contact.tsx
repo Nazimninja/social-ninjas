@@ -35,24 +35,23 @@ const Contact: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Contact Us | Social Ninja's"
-        description="Get in touch with Social Ninja's. Schedule a free growth audit or reach out directly."
+        title="Book a Free Growth Strategy Session | Social Ninja's"
+        description="Book a 15-minute growth strategy session. We'll audit your funnels and outline an AI-powered action plan for your brand."
       />
 
       {/* HERO WITH AURORA BACKGROUND */}
       <AuroraBackground className="pt-36 pb-16 border-b border-neutral-800/80">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#4281f5] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#1F4B99]/30 text-[#38bdf8] text-xs font-bold uppercase tracking-wider">
             {productKey && <Sparkles size={13} />}
             <span>{productKey ? 'EARLY ACCESS APPLICATION' : 'GET IN TOUCH'}</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
-            {productKey ? (
-              <>Join the Waitlist for <br /><span className="text-[#1F4B99]">{PRODUCT_NAMES[productKey] || 'Our AI Tool'}</span></>
-            ) : (
-              <>Let’s Build Your <br /><span className="text-[#1F4B99]">AI Revenue Engine.</span></>
-            )}
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer text-white">
+            {productKey ? `Join the Waitlist for ${PRODUCT_NAMES[productKey] || 'Our AI Tool'}` : 'Book a Strategy Session'}
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
+            {productKey ? 'Exclusive Founder Access' : 'Let’s Build Your AI Revenue Engine.'}
+          </p>
           <p className="text-sm sm:text-base text-neutral-300 max-w-xl mx-auto leading-relaxed">
             {productKey ? (
               `Reserve your spot for priority deployment and early founder pricing as soon as ${PRODUCT_NAMES[productKey]} goes live.`

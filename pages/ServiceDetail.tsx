@@ -147,7 +147,7 @@ const contentProductionData: ServiceData = {
 
 const emailWhatsappData: ServiceData = {
   title: 'WhatsApp Marketing & Email Automation Services',
-  metaTitle: 'WhatsApp Marketing & Email Automation Services',
+  metaTitle: "WhatsApp & Email Marketing Automation | Social Ninja's",
   metaDescription: 'Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.',
   h1: 'WhatsApp & Email Automation That Sells',
   tagline: 'AI agents and automation sequences that qualify, nurture and close leads inside the apps your customers actually open.',
@@ -195,9 +195,9 @@ const emailWhatsappData: ServiceData = {
 
 const aiAutomationData: ServiceData = {
   title: 'AI & Lead Automation',
-  metaTitle: "AI & Lead Automation Agency | Social Ninja's",
-  metaDescription: 'Deploy autonomous conversational AI agents that reply to leads in under 1 second, qualify buyers, and book meetings 24/7 across WhatsApp, web, and CRM.',
-  h1: 'AI & Lead Automation',
+  metaTitle: 'AI Lead Generation Agency | AI Sales Automation',
+  metaDescription: 'AI agents reply to Instagram & WhatsApp DMs in under a second — qualifying leads and booking calls 24/7. Automate your sales pipeline.',
+  h1: 'AI Lead Generation & Sales Automation',
   tagline: 'Your 24/7 sales and qualification engine — powered by AI.',
   Icon: Bot,
   color: '#38bdf8',
@@ -247,9 +247,9 @@ const aiAutomationData: ServiceData = {
 
 const socialMediaData: ServiceData = {
   title: 'Social Media Management',
-  metaTitle: "Social Media Management & Organic Growth | Social Ninja's",
-  metaDescription: 'End-to-end social media management for modern brands. Content strategy, daily posting, copywriting, trend research, and community engagement.',
-  h1: 'Social Media Management',
+  metaTitle: "Social Media Management Services | Social Ninja's",
+  metaDescription: 'Done-for-you social media management: content calendars, creatives and community management that grow pipeline — not just followers.',
+  h1: 'Social Media Management for Growth',
   tagline: 'Consistent brand dominance and organic growth — without manual overhead.',
   Icon: Share2,
   color: '#38bdf8',
@@ -299,9 +299,9 @@ const socialMediaData: ServiceData = {
 
 const webSeoData: ServiceData = {
   title: 'Web Design & Technical SEO',
-  metaTitle: "Web Design & Technical SEO Agency | Social Ninja's",
-  metaDescription: 'High-performance website development and technical SEO engineering. Sub-second load times, structured schema markup, and top Google rankings.',
-  h1: 'Web Design & Technical SEO',
+  metaTitle: "SEO Services & High-Speed Websites | Social Ninja's",
+  metaDescription: 'Rank higher and convert more with technical SEO, content systems and sub-second landing pages. SEO services built for revenue, not just traffic.',
+  h1: 'SEO Services That Turn Searches Into Customers',
   tagline: 'Sub-second load times, technical SEO dominance, and high-converting landing pages.',
   Icon: Globe,
   color: '#38bdf8',

@@ -18,8 +18,8 @@ const About: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="About Us | Social Ninja's"
-        description="Learn about Social Ninja's — the AI performance marketing agency scaling revenue for brands globally."
+        title="About Us | AI Growth Agency for Global Brands"
+        description="Social Ninja's is an AI-powered performance marketing agency founded in Bangalore in 2022, scaling 150+ brands across the US, UK, UAE and India."
       />
 
       {/* HERO WITH AURORA BACKGROUND */}
@@ -29,9 +29,11 @@ const About: React.FC = () => {
             WHO WE ARE
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
-            We Build Revenue Systems, <br />
-            <span className="text-[#1F4B99]">Not Vanity Campaigns.</span>
+            About Social Ninja's
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-neutral-200 mt-2">
+            We Build Revenue Systems, <span className="text-[#1F4B99]">Not Vanity Campaigns.</span>
+          </p>
           <p className="text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
             Social Ninja’s is an AI-powered performance marketing agency operating globally across North America, the GCC, Europe, and Asia-Pacific. We fuse autonomous AI agents with high-margin media buying to build predictable growth engines.
           </p>

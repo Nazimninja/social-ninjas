@@ -20,8 +20,8 @@ const Services: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white">
       <SEO
-        title="Services | Social Ninja's"
-        description="AI automation, paid ads, content creation, social media management and SEO — everything your brand needs to grow."
+        title="Digital Marketing Services | AI, Ads, Content & SEO"
+        description="Explore Social Ninja's growth services: AI sales automation, Meta & Google ads, content production, SEO and web systems engineered for revenue."
       />
 
       {/* HERO WITH AURORA BACKGROUND */}
@@ -31,9 +31,11 @@ const Services: React.FC = () => {
             WHAT WE DO
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight animate-text-shimmer">
-            Everything Your Brand Needs <br />
-            <span className="text-[#1F4B99]">To Scale Revenue & Leads.</span>
+            Digital Growth & Marketing Services
           </h1>
+          <p className="text-xl sm:text-2xl font-bold text-neutral-200 mt-2">
+            Everything Your Brand Needs <span className="text-[#1F4B99]">To Scale Revenue & Leads.</span>
+          </p>
           <p className="text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto leading-relaxed">
             We build growth engines that keep working 24/7 — generating qualified leads, scaling ad returns, and driving predictable profit.
           </p>
