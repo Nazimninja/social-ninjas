@@ -81,3 +81,40 @@
 - **Local Development**: `npm run dev` (runs Vite + backend concurrently).
 - **Production Build**: `npm run build` (`vite build && node scripts/prerender.js && node scripts/copy-redirects.js`).
 - **Deployments**: Pushes to `main` branch trigger automated Cloudflare Pages builds. Always test `npm run build` cleanly before pushing.
+
+---
+
+## 6. SEO & Content Strategy (Audit Reference & Guardrails)
+
+### A. Keyword Reference (SERP Competition Matrix - Sept 2026)
+- **Services (Transactional / Commercial)**:
+  - `ai lead generation agency` (Competition: High, fragmented)
+  - `ai appointment setter` (Competition: Low–Med)
+  - `whatsapp automation agency` (Competition: Med)
+  - `generative engine optimization agency` (Competition: Low–Med)
+  - `instagram seo service` (Competition: Low–Med)
+  - `meta ads audit` (Competition: Low–Med)
+  - `roas improvement service` (Competition: Low)
+  - `performance marketing agency dubai` (Competition: High)
+  - `meta ads agency pricing india` (Competition: Med)
+- **Tools (Transactional) + Supporting Content**:
+  - `whatsapp link generator` (Competition: High — beatable with content depth & clean UX)
+  - `wa.me link generator` (Competition: Med)
+  - `how to create whatsapp link` (Competition: Med)
+  - `hourly to salary calculator` (Competition: Med–High)
+  - `$25 an hour is how much a year` (Competition: Med — plus $20, $30 variants)
+  - `take home pay calculator` (Competition: Very High — long game, state-specific variants)
+  - `mortgage payment calculator with taxes` (Competition: Long-tail only)
+
+### B. Explicitly DO NOT (Strict SEO Anti-Patterns)
+1. **DO NOT target head terms head-on**: Never target `mortgage calculator` or `take home pay calculator` head-on against Bankrate, NerdWallet, Zillow, or SmartAsset. Target long-tail questions, exact wage brackets ($20, $25, $30, $35/hr), and state tax variants.
+2. **DO NOT chase generic brand queries**: Do not attempt to rank for generic `social ninjas` keywords owned by unrelated legacy games/publishers. Defend exact agency brand + domain queries (`socialninjas.in`, `social ninja's agency`, `social ninjas bangalore`).
+3. **DO NOT publish keyword-less AI filler**: Every single blog post or page must target exactly one focus keyword, answer one distinct search intent, provide unique data or structured analysis, and conclude with a relevant service/tool CTA.
+4. **DO NOT buy backlinks or use link schemes**: Never purchase PBN links or directory blasts. One manual penalty wipes out domain equity. Build links via data studies, embeddable widgets, and genuine PR citations.
+5. **DO NOT let the site go stale**: Never allow a 3+ month publishing gap. Maintain a strict minimum cadence of 2 strategic posts per month.
+
+### C. Monthly Verification Protocol (15 Minutes)
+1. **Google Search Console → Performance**: Filter by `/tools/` and `/services/` to track clicks, impressions, and emerging queries.
+2. **Google Indexation Check**: Run `site:socialninjas.in` to ensure indexed page count grows steadily as tools and services ship.
+3. **Core Keyword Tracking**: Check rankings monthly for money keywords (`ai lead generation agency`, `whatsapp link generator`, `meta ads agency pricing india`, `generative engine optimization agency`) and log in a sheet.
+4. **Rich Results Validation**: Run the Google Rich Results Test on every new page before deployment to verify JSON-LD schema validity.
