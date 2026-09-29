@@ -62,11 +62,12 @@ const Footer: React.FC = () => {
             <h4 style={{ color: '#FFFFFF', fontWeight: 600, marginBottom: 22, fontSize: 13, letterSpacing: '-0.1px', fontFamily: "'Inter',system-ui" }}>Services</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 13 }}>
               {[
-                { label: 'Performance Marketing', path: '/services' },
-                { label: 'AI & Automation', path: '/growth-systems' },
-                { label: 'Creative Studio', path: '/services' },
-                { label: 'Social Media Management', path: '/services' },
-                { label: 'Web & SEO', path: '/services' },
+                { label: 'Paid Ads & Performance', path: '/services/paid-ads' },
+                { label: 'AI & Lead Automation', path: '/services/ai-automation' },
+                { label: 'Content & Creative Studio', path: '/services/content-production' },
+                { label: 'Email & WhatsApp Automation', path: '/services/email-whatsapp' },
+                { label: 'Social Media Management', path: '/services/social-media' },
+                { label: 'Web & Technical SEO', path: '/services/web-seo' },
               ].map(({ label, path }) => (
                 <li key={label}>
                   <Link to={path} style={{ color: '#888888', textDecoration: 'none', fontSize: 13, fontWeight: 400, transition: 'color .2s', display: 'block' }}
