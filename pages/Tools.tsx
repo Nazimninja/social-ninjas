@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowRight, Zap, MessageSquare, Clock, Home, DollarSign, Sparkles, Dumbbell, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Zap, MessageSquare, Clock, Home, DollarSign, Sparkles, Dumbbell, ExternalLink, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
@@ -44,13 +44,35 @@ const UTILITY_TOOLS = [
   },
 ];
 
+const TOOLS_FAQS = [
+  {
+    q: 'Is the WhatsApp link generator free?',
+    a: 'Yes — free forever, no signup required. You can generate custom WhatsApp direct-chat links and QR codes instantly.'
+  },
+  {
+    q: 'Are the salary and wage calculators accurate for all 50 US states?',
+    a: 'Yes. Our take-home pay and salary calculators calculate federal income tax, FICA (Social Security & Medicare), state taxes, and local deductions across all 50 US states.'
+  },
+  {
+    q: 'Do you store any personal, financial, or phone number data?',
+    a: 'No. All calculations and link generations run locally in your browser session. We do not store your numbers, salaries, or financial inputs.'
+  },
+  {
+    q: 'Can marketing teams use these tools for client campaigns?',
+    a: 'Yes. All Social Ninja\'s growth and financial utilities are 100% free to use for personal projects, client campaigns, and commercial workflows.'
+  }
+];
+
 const Tools: React.FC = () => {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
       <SEO
         title="Free Growth & Finance Tools | Social Ninja's"
         description="Free tools from Social Ninja's: WhatsApp link generator, take-home pay calculator, hourly-to-salary converter and mortgage calculator."
         keywords="WhatsApp link generator, salary calculator, hourly to salary converter, mortgage calculator, growth utilities, Social Ninja's"
+        faq={TOOLS_FAQS}
       />
 
       {/* HERO */}
@@ -206,6 +228,72 @@ const Tools: React.FC = () => {
                 </SpotlightCard>
               </a>
             ))}
+          </div>
+        </div>
+
+        {/* ── FREQUENTLY ASKED QUESTIONS SECTION (Strict 800px alignment) ── */}
+        <div style={{ maxWidth: 800, margin: '40px auto 0', width: '100%', boxSizing: 'border-box' }}>
+          <div style={{ textAlign: 'center', marginBottom: 36 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 999, background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.25)', color: '#38bdf8', fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 14 }}>
+              FREQUENTLY ASKED QUESTIONS
+            </div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff', margin: 0 }}>
+              Questions About Our Free Tools
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {TOOLS_FAQS.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div 
+                  key={idx}
+                  style={{
+                    background: '#0e121d',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: 16,
+                    overflow: 'hidden',
+                    transition: 'border-color 0.2s'
+                  }}
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    style={{
+                      width: '100%',
+                      padding: '20px 24px',
+                      background: 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 16,
+                      cursor: 'pointer',
+                      color: '#ffffff',
+                      fontSize: 15.5,
+                      fontWeight: 600,
+                      outline: 'none'
+                    }}
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown 
+                      size={18} 
+                      color="#38bdf8" 
+                      style={{ 
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+                        transition: 'transform 0.2s ease', 
+                        flexShrink: 0 
+                      }} 
+                    />
+                  </button>
+                  {isOpen && (
+                    <div style={{ padding: '0 24px 20px', fontSize: 14.5, color: '#94a3b8', lineHeight: 1.7, borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: 16 }}>
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 

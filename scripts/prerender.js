@@ -315,6 +315,31 @@ const marketingPagesContent = {
           <a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
       </div>
+
+      <div style="max-width:800px;margin:40px auto 0;width:100%;box-sizing:border-box;">
+        <div style="text-align:center;margin-bottom:32px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">FREQUENTLY ASKED QUESTIONS</span>
+          <h2 style="font-size:30px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:0;">Questions About Our Free Tools</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:17px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:10px;">Is the WhatsApp link generator free?</h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.7;margin:0;">Yes — free forever, no signup required. You can generate custom WhatsApp direct-chat links and QR codes instantly.</p>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:17px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:10px;">Are the salary and wage calculators accurate for all 50 US states?</h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.7;margin:0;">Yes. Our take-home pay and salary calculators calculate federal income tax, FICA (Social Security &amp; Medicare), state taxes, and local deductions across all 50 US states.</p>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:17px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:10px;">Do you store any personal, financial, or phone number data?</h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.7;margin:0;">No. All calculations and link generations run locally in your browser session. We do not store your numbers, salaries, or financial inputs.</p>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:17px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:10px;">Can marketing teams use these tools for client campaigns?</h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.7;margin:0;">Yes. All Social Ninja's growth and financial utilities are 100% free to use for personal projects, client campaigns, and commercial workflows.</p>
+          </div>
+        </div>
+      </div>
     </main>
   `,
   'growth-systems': `
@@ -868,7 +893,25 @@ const routes = {
   },
   'contact': {
     title: "Book a Free Growth Strategy Session | Social Ninja's",
-    description: "Book a 15-minute growth strategy session. We'll audit your funnels and outline an AI-powered action plan for your brand."
+    description: "Book a 15-minute growth strategy session. We'll audit your funnels and outline an AI-powered action plan for your brand.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Social Ninja's",
+        "url": "https://socialninjas.in/",
+        "email": "info@socialninjas.in",
+        "telephone": "+918147757479",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Social Ninja's Agency",
+          "addressLocality": "Bangalore",
+          "addressRegion": "Karnataka",
+          "addressCountry": "IN"
+        },
+        "priceRange": "₹₹"
+      }
+    ]
   },
   'privacy': {
     title: "Privacy Policy | Social Ninja's",
@@ -880,7 +923,47 @@ const routes = {
   },
   'tools': {
     title: "Free Growth & Finance Tools | Social Ninja's",
-    description: "Free tools from Social Ninja's: WhatsApp link generator, take-home pay calculator, hourly-to-salary converter and mortgage calculator."
+    description: "Free tools from Social Ninja's: WhatsApp link generator, take-home pay calculator, hourly-to-salary converter and mortgage calculator.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the WhatsApp link generator free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — free forever, no signup required. You can generate custom WhatsApp direct-chat links and QR codes instantly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are the salary and wage calculators accurate for all 50 US states?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Our take-home pay and salary calculators calculate federal income tax, FICA (Social Security & Medicare), state taxes, and local deductions across all 50 US states."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you store any personal, financial, or phone number data?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All calculations and link generations run locally in your browser session. We do not store your numbers, salaries, or financial inputs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can marketing teams use these tools for client campaigns?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. All Social Ninja's growth and financial utilities are 100% free to use for personal projects, client campaigns, and commercial workflows."
+            }
+          }
+        ]
+      }
+    ]
   },
   'growth-systems': {
     title: "Autonomous AI Growth Systems | Social Ninja's",
@@ -1055,11 +1138,37 @@ blogPosts.forEach(post => {
       </main>
     `;
 
+    const articleSchema = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "author": {
+        "@type": "Person",
+        "name": post.author || "Social Ninja's Team"
+      },
+      "datePublished": post.publishedAt ? post.publishedAt.substring(0, 10) : '2026-06-15',
+      "dateModified": post.publishedAt ? post.publishedAt.substring(0, 10) : '2026-06-15',
+      "publisher": {
+        "@type": "Organization",
+        "name": "Social Ninja's",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://socialninjas.in/logo.png"
+        }
+      },
+      "description": post.excerpt,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://socialninjas.in/blog/${post.id}`
+      }
+    };
+
     prerenderRoute(route, {
       title: `${post.title} | Social Ninja's Blog`,
-      description: post.excerpt
+      description: post.excerpt,
+      schemas: [articleSchema]
     }, articleHtml);
-    console.log(`✓ Pre-rendered: /${route} (Complete body written)`);
+    console.log(`✓ Pre-rendered: /${route} (Complete body & Article schema written)`);
   } catch (err) {
     console.error(`✗ Failed to pre-render blog post: /blog/${post.id}`, err.message);
   }

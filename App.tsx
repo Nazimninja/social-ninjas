@@ -6,7 +6,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/PageTransition';
-import SchemaMarkup from './components/SchemaMarkup';
 import SmoothScroll from './components/SmoothScroll';
 
 // Lazy Load Pages for Performance Optimization
@@ -123,7 +122,6 @@ const MainLayout: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-brand-dark font-sans text-white selection:bg-brand-primary selection:text-brand-dark">
       {!hidePublicChrome && <Navbar />}
-      <SchemaMarkup />
       <Suspense fallback={<LoadingFallback />}>
         <AnimatedRoutes />
       </Suspense>

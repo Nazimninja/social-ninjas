@@ -32,6 +32,7 @@ interface SEOProps {
     price?: string;
     providerName?: string;
   };
+  localBusiness?: boolean;
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -43,7 +44,8 @@ const SEO: React.FC<SEOProps> = ({
   article,
   faq,
   softwareApp,
-  service
+  service,
+  localBusiness
 }) => {
   const location = useLocation();
   const origin = typeof window !== 'undefined' && window.location.origin
@@ -51,81 +53,28 @@ const SEO: React.FC<SEOProps> = ({
     : 'https://socialninjas.in';
   const cleanPath = location.pathname.length > 1 ? location.pathname.replace(/\/+$/, '') : location.pathname;
   const canonicalUrl = `${origin}${cleanPath}`;
-  const siteTitle = "Social Ninja's | AI-Powered Performance Marketing & Growth Agency Worldwide";
-  const defaultDescription = "Social Ninja's combines AI automation, elite content production, and data-driven paid media to scale brands worldwide. From ₹2,999/month — try free.";
+  const siteTitle = "AI Performance Marketing Agency | Social Ninja's";
+  const defaultDescription = "We build AI lead pipelines, run high-ROAS Meta & Google ads, and automate content for 150+ brands. Book a free strategy session.";
   const defaultKeywords = "performance marketing agency, AI automation agency, global digital marketing agency, AI lead automation, growth marketing agency, paid ads, international media buying";
 
   const fullTitle = title ? `${title}` : siteTitle;
 
-  const organizationSchema = {
+  const localBusinessSchema = localBusiness ? {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "ProfessionalService",
     "name": "Social Ninja's",
-    "alternateName": ["Social Ninjas", "Social Ninjas AI Growth Agency"],
-    "url": "https://socialninjas.in",
-    "logo": "https://socialninjas.in/ninja-logo.png",
-    "description": defaultDescription,
-    "founder": {
-      "@type": "Person",
-      "name": "Nazim Pasha",
-      "jobTitle": "Founder & Technical Lead",
-      "email": "info@socialninjas.in"
-    },
-    "sameAs": [
-      "https://www.instagram.com/socialninjas.in",
-      "https://www.linkedin.com/company/social-ninjas",
-      "https://www.producthunt.com/@nazim_pasha",
-      "https://clutch.co/profile/social-ninjas-0",
-      "https://www.goodfirms.co/company/social-ninjas",
-      "https://www.sortlist.com/agency/social-ninja-s",
-      "https://www.crunchbase.com/organization/social-ninja-s",
-      "https://www.designrush.com/agency/profile/social-ninjas",
-      "https://www.agencyspotter.com/social-ninja-s",
-      "https://trustpilot.com/review/socialninjas.in"
-    ],
-    "knowsAbout": [
-      "AI Lead Automation",
-      "Performance Marketing",
-      "Meta Ads Management",
-      "Google Ads Management",
-      "WhatsApp Lead Generation & Chatbot Systems",
-      "Conversion Rate Optimization",
-      "Enterprise CRM Automation"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Social Ninja's Growth & Automation Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "AI Lead & WhatsApp Automation",
-            "description": "24/7 intelligent auto-reply chatbots and automated CRM calendar booking systems."
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Performance Paid Media (Meta & Google Ads)",
-            "description": "High-ROAS paid advertising management focused on unit economics and qualified lead pipeline."
-          }
-        }
-      ]
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "sales",
-      "email": "info@socialninjas.in",
-      "areaServed": ["IN", "AE", "US", "GB"],
-      "availableLanguage": ["English", "Hindi"]
-    },
+    "url": "https://socialninjas.in/",
+    "email": "info@socialninjas.in",
+    "telephone": "+918147757479",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Social Ninja's Agency",
+      "addressLocality": "Bangalore",
+      "addressRegion": "Karnataka",
       "addressCountry": "IN"
-    }
-  };
+    },
+    "priceRange": "₹₹"
+  } : null;
 
   const websiteSchema = {
     "@context": "https://schema.org",
@@ -144,22 +93,22 @@ const SEO: React.FC<SEOProps> = ({
 
   const articleSchema = article ? {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
     "headline": title || fullTitle,
     "description": description || defaultDescription,
     "image": image,
-    "datePublished": article.publishedTime,
-    "dateModified": article.modifiedTime || article.publishedTime,
+    "datePublished": article.publishedTime ? article.publishedTime.substring(0, 10) : '2026-06-15',
+    "dateModified": (article.modifiedTime || article.publishedTime) ? (article.modifiedTime || article.publishedTime).substring(0, 10) : '2026-06-15',
     "author": {
       "@type": "Person",
-      "name": article.author
+      "name": article.author || "Social Ninja's Team"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Social Ninja's",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://socialninjas.in/ninja-logo.png"
+        "url": "https://socialninjas.in/logo.png"
       }
     },
     "mainEntityOfPage": {
@@ -261,9 +210,11 @@ const SEO: React.FC<SEOProps> = ({
       )}
 
       {/* JSON-LD Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(organizationSchema)}
-      </script>
+      {localBusinessSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+      )}
       <script type="application/ld+json">
         {JSON.stringify(websiteSchema)}
       </script>

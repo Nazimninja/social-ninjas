@@ -37,6 +37,7 @@ const Contact: React.FC = () => {
       <SEO
         title="Book a Free Growth Strategy Session | Social Ninja's"
         description="Book a 15-minute growth strategy session. We'll audit your funnels and outline an AI-powered action plan for your brand."
+        localBusiness={true}
       />
 
       {/* HERO WITH AURORA BACKGROUND */}
