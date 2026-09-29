@@ -391,27 +391,28 @@ const marketingPagesContent = {
   'tools': `
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
       <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Free Tools</h1>
-      <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">Explore free calculators and growth utilities engineered by Social Ninja's to streamline marketing attribution, paychecks, and lead generation.</p>
+      <p style="font-size:18px;color:#a0a0b0;margin-bottom:48px;max-width:680px;line-height:1.6;">Free tools from the Social Ninja's team — built for founders, marketers and operators.</p>
+      
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://linkwa.in" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">WhatsApp Direct Chat Link Generator</a></h3>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">WhatsApp Direct Chat Link Generator</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Generate pre-filled instant WhatsApp chat links and QR codes for your ad campaigns, Instagram bios, and lead funnels.</p>
-          <a href="https://linkwa.in" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+          <a href="/tools/whatsapp-link-generator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://salary.socialninjas.in/salary-calculator/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">US Take-Home Pay &amp; Tax Calculator</a></h3>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay &amp; Tax Calculator</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Calculate accurate net take-home pay after federal FICA, state, and local deductions across all 50 US states.</p>
-          <a href="https://salary.socialninjas.in/salary-calculator/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+          <a href="/tools/us-take-home-pay-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://salary.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">Hourly ↔ Annual Wage Converter</a></h3>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/hourly-to-salary-calculator" style="color:#ffffff;text-decoration:none;">Hourly ↔ Annual Wage Converter</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Convert hourly rates to annual, monthly, bi-weekly, and weekly equivalents in real time.</p>
-          <a href="https://salary.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+          <a href="/tools/hourly-to-salary-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">US Mortgage &amp; Amortization Calculator</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Estimate monthly PITI mortgage payments including principal, interest, taxes, and PMI with amortization schedule.</p>
-          <a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/mortgage-rate-calculator" style="color:#ffffff;text-decoration:none;">Mortgage Payment Calculator with Taxes &amp; Insurance</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Estimate monthly PITI mortgage payments including principal, interest, taxes, and PMI with full amortization schedule.</p>
+          <a href="/tools/mortgage-rate-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
       </div>
 
@@ -436,6 +437,278 @@ const marketingPagesContent = {
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
             <h3 style="font-size:17px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:10px;">Can marketing teams use these tools for client campaigns?</h3>
             <p style="font-size:14.5px;color:#94a3b8;line-height:1.7;margin:0;">Yes. All Social Ninja's growth and financial utilities are 100% free to use for personal projects, client campaigns, and commercial workflows.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  `,
+  'tools/whatsapp-link-generator': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:760px;margin:0 auto 40px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);padding:6px 14px;border-radius:999px;">FREE GROWTH UTILITY</span>
+        <h1 style="font-size:40px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">Free WhatsApp Link Generator</h1>
+        <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Create direct click-to-chat wa.me links with custom pre-filled messages and instant QR codes in seconds. 100% free, no login required.</p>
+      </div>
+
+      <!-- Supporting Copy -->
+      <div style="max-width:800px;margin:0 auto;line-height:1.75;">
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What is a wa.me Link and Why Do Businesses Use It?</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:24px;">A wa.me link is an official short URL protocol developed by WhatsApp that allows anyone to start a direct chat conversation with you or your business without having to manually save your phone number to their contacts first. In traditional sales funnels, forcing prospects to save contacts introduces massive friction and causes up to 60% of potential leads to drop off. A direct wa.me link eliminates this barrier entirely: with a single tap, WhatsApp launches immediately on mobile or desktop with a pre-written message ready to send.</p>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">How to Create and Use Your WhatsApp Link (3 Easy Steps)</h2>
+        <ol style="color:#a0a0b0;font-size:15.5px;margin-bottom:24px;padding-left:24px;line-height:1.8;">
+          <li><strong>Enter Phone Number with Country Code:</strong> Select your international country code (e.g., +1 for US, +91 for India, +44 for UK, +971 for UAE) and input your WhatsApp number without spaces, brackets, or leading zeros.</li>
+          <li><strong>Add an Optional Pre-filled Message:</strong> Craft a welcoming prompt or qualifying question (e.g., &quot;Hi! I&#39;d like to book an audit&quot;). The message will automatically appear in the prospect&#39;s chat box when they click.</li>
+          <li><strong>Copy and Share Your Link:</strong> Copy your instant wa.me link or download the generated QR code to paste across your marketing campaigns.</li>
+        </ol>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">Where to Use Your WhatsApp Chat Link</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:20px;">Direct-response marketers and brands deploy wa.me links across high-intent channels: Instagram and TikTok bio links, website floating contact buttons, automated email signatures, and printed QR codes on physical product packaging. Works natively with both standard WhatsApp and WhatsApp Business accounts without requiring any registration.</p>
+
+        <!-- FAQ Section -->
+        <div style="margin-top:48px;">
+          <h2 style="font-size:26px;font-weight:700;color:#ffffff;margin-bottom:24px;">Frequently Asked Questions</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Is the WhatsApp link generator free?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes, 100% free with no registration or hidden fees. You can generate unlimited wa.me direct-chat links and download QR codes instantly.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Do I need WhatsApp Business to use wa.me links?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">No. wa.me links work identically on standard personal WhatsApp accounts, WhatsApp Business, and WhatsApp Web.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How do I add a pre-filled message to my WhatsApp link?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Type your desired text into the message box above. Our tool URL-encodes the text into the ?text= parameter automatically so it opens ready to send.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Where can I share my WhatsApp link?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">You can paste your link into your Instagram bio, TikTok profile, YouTube description, email signature, Google Business profile, or embed it behind website buttons.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Will my wa.me link work for international numbers?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes. As long as you include the correct country code without leading plus signs or zeros, customers anywhere in the world can reach you instantly.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Block -->
+        <div style="background:linear-gradient(135deg,#0e121d 0%,#121826 100%);border:1px solid rgba(56,189,248,0.25);border-radius:20px;padding:48px 32px;text-align:center;margin-top:56px;">
+          <h2 style="font-size:28px;font-weight:800;color:#ffffff;margin-bottom:14px;">Need more than a calculator?</h2>
+          <p style="font-size:15.5px;color:#94a3b8;margin-bottom:28px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;">Social Ninja&#39;s builds AI growth systems for brands — from autonomous WhatsApp lead qualifiers to full-funnel media buying.</p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:14.5px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Book Growth Audit →</a>
+            <a href="/services" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14.5px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Explore Services</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  `,
+  'tools/us-take-home-pay-calculator': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:760px;margin:0 auto 40px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">2026 PAYCHECK ESTIMATOR</span>
+        <h1 style="font-size:40px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">US Take-Home Pay Calculator</h1>
+        <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Calculate your net paycheck after federal, state, and FICA taxes across all 50 US states with bi-weekly, monthly, and annual breakdowns.</p>
+      </div>
+
+      <div style="max-width:800px;margin:0 auto;line-height:1.75;">
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What Does Take-Home Pay Mean? (Gross vs. Net Pay)</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:24px;">When evaluating compensation or budgeting business operations, understanding the difference between gross salary and net take-home pay is vital. Gross pay is your total contractual salary before any mandatory or voluntary withholdings. Net pay represents the actual cash deposited into your checking account after deducting federal income taxes, mandatory FICA contributions (Social Security and Medicare), and applicable state and municipal taxes.</p>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">How to Use This Paycheck Calculator</h2>
+        <ol style="color:#a0a0b0;font-size:15.5px;margin-bottom:24px;padding-left:24px;line-height:1.8;">
+          <li><strong>Enter Your Gross Annual Salary:</strong> Input your baseline base salary plus any regular bonuses or commissions.</li>
+          <li><strong>Select Pay Frequency &amp; Tax Status:</strong> Choose weekly, bi-weekly, semi-monthly, or monthly pay, and set your IRS filing status.</li>
+          <li><strong>Choose Your State of Residence:</strong> Select any of the 50 US states to account for state income tax brackets and standard deductions.</li>
+          <li><strong>Review Net Take-Home Breakdown:</strong> View your net paycheck per pay period, annual take-home, and effective tax rates.</li>
+        </ol>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What Gets Deducted from Your US Paycheck?</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:16px;">Every US paycheck is subject to statutory and voluntary deductions:</p>
+        <ul style="color:#a0a0b0;font-size:15px;margin-bottom:24px;padding-left:24px;line-height:1.8;">
+          <li><strong>Federal Income Tax:</strong> Progressive tax ranging from 10% to 37% based on IRS brackets.</li>
+          <li><strong>Social Security Tax:</strong> 6.2% on wages up to the statutory $176,100 wage base limit.</li>
+          <li><strong>Medicare Tax:</strong> 1.45% on all earnings, plus an additional 0.9% surtax for high-income earners.</li>
+          <li><strong>State Income Tax:</strong> Flat or progressive rates depending on your state (9 states feature 0% state tax).</li>
+        </ul>
+        <p style="font-size:13.5px;color:#707080;margin-bottom:32px;font-style:italic;">Disclaimer: Calculations provide mathematical estimates based on 2026 IRS federal brackets and general state guidelines. This tool is for educational purposes and does not constitute formal tax or accounting advice.</p>
+
+        <!-- FAQs -->
+        <div style="margin-top:40px;">
+          <h2 style="font-size:26px;font-weight:700;color:#ffffff;margin-bottom:24px;">Frequently Asked Questions</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How is take-home pay calculated?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Take-home pay is calculated by taking your gross earnings, subtracting pre-tax deductions (like 401k or health insurance), and deducting federal income taxes, FICA taxes (Social Security and Medicare), and state income taxes.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">What&#39;s the difference between gross pay and net pay?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Gross pay is your total agreed compensation before any withholdings or deductions are removed, while net pay is the actual spendable take-home amount deposited into your checking account.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Does this calculator include my state&#39;s income tax?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes. Our calculator calculates specific state tax brackets, flat rates, and standard deductions for all 50 US states, including zero-tax states like Texas, Florida, and Washington.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How accurate is this paycheck estimate?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">It is accurate within standard payroll margins based on 2026 IRS federal tax brackets, FICA limits, and state guidelines. Minor variances may occur from local municipal taxes or specific employer benefit packages.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Block -->
+        <div style="background:linear-gradient(135deg,#0e121d 0%,#121826 100%);border:1px solid rgba(56,189,248,0.25);border-radius:20px;padding:48px 32px;text-align:center;margin-top:56px;">
+          <h2 style="font-size:28px;font-weight:800;color:#ffffff;margin-bottom:14px;">Need more than a calculator?</h2>
+          <p style="font-size:15.5px;color:#94a3b8;margin-bottom:28px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;">Social Ninja&#39;s builds AI growth systems for brands — from automated customer funnels to unit-economic media buying.</p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:14.5px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Book Growth Audit →</a>
+            <a href="/services" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14.5px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Explore Services</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  `,
+  'tools/hourly-to-salary-calculator': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:760px;margin:0 auto 40px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">WAGE CONVERSION UTILITY</span>
+        <h1 style="font-size:40px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">Hourly to Salary Calculator</h1>
+        <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Convert your hourly rate to annual salary, monthly income, and weekly paychecks with overtime options and reference conversion tables.</p>
+      </div>
+
+      <div style="max-width:800px;margin:0 auto;line-height:1.75;">
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">The Conversion Math: How to Calculate Hourly Pay into Annual Salary</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:24px;">Converting an hourly rate into an annual salary is calculated using a standard formula: Hourly Wage × Hours Worked Per Week × 52 Weeks = Gross Annual Salary. For a standard full-time employee working 40 hours per week, this equals Hourly Wage × 2,080 working hours. For example, $25 an hour translates to $25 × 2,080 = $52,000 per year before taxes.</p>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">How to Use This Wage Converter</h2>
+        <ol style="color:#a0a0b0;font-size:15.5px;margin-bottom:24px;padding-left:24px;line-height:1.8;">
+          <li><strong>Enter Your Base Hourly Rate:</strong> Input your wage in dollars per hour.</li>
+          <li><strong>Set Your Weekly Hours:</strong> Adjust your standard weekly working hours (default is 40 hours).</li>
+          <li><strong>Toggle Overtime Settings:</strong> Account for hours worked beyond 40 at 1.5× time-and-a-half pay.</li>
+          <li><strong>View Equivalent Earnings:</strong> See your gross annual, monthly, bi-weekly, and weekly totals instantly.</li>
+        </ol>
+
+        <!-- Reference Table -->
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:12px;">Hourly to Annual Salary Reference Table</h2>
+        <p style="font-size:13px;color:#707080;margin-bottom:16px;">*Based on standard 40 hours per week and 52 weeks per year without overtime or unpaid time off.</p>
+        <div style="overflow-x:auto;margin-bottom:32px;">
+          <table style="width:100%;text-align:left;border-collapse:collapse;font-size:14.5px;background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);color:#a0a0b0;font-size:12px;text-transform:uppercase;">
+                <th style="padding:14px 16px;">Hourly Rate</th>
+                <th style="padding:14px 16px;">Weekly Pay</th>
+                <th style="padding:14px 16px;">Bi-Weekly Pay</th>
+                <th style="padding:14px 16px;">Monthly Pay</th>
+                <th style="padding:14px 16px;color:#38bdf8;">Annual Salary</th>
+              </tr>
+            </thead>
+            <tbody style="color:#e2e8f0;font-family:monospace;">
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.04);"><td style="padding:12px 16px;font-weight:700;">$15 / hr</td><td style="padding:12px 16px;">$600</td><td style="padding:12px 16px;">$1,200</td><td style="padding:12px 16px;">$2,600</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$31,200</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.04);"><td style="padding:12px 16px;font-weight:700;">$20 / hr</td><td style="padding:12px 16px;">$800</td><td style="padding:12px 16px;">$1,600</td><td style="padding:12px 16px;">$3,467</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$41,600</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.04);"><td style="padding:12px 16px;font-weight:700;">$25 / hr</td><td style="padding:12px 16px;">$1,000</td><td style="padding:12px 16px;">$2,000</td><td style="padding:12px 16px;">$4,333</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$52,000</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.04);"><td style="padding:12px 16px;font-weight:700;">$30 / hr</td><td style="padding:12px 16px;">$1,200</td><td style="padding:12px 16px;">$2,400</td><td style="padding:12px 16px;">$5,200</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$62,400</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.04);"><td style="padding:12px 16px;font-weight:700;">$40 / hr</td><td style="padding:12px 16px;">$1,600</td><td style="padding:12px 16px;">$3,200</td><td style="padding:12px 16px;">$6,933</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$83,200</td></tr>
+              <tr><td style="padding:12px 16px;font-weight:700;">$50 / hr</td><td style="padding:12px 16px;">$2,000</td><td style="padding:12px 16px;">$4,000</td><td style="padding:12px 16px;">$8,667</td><td style="padding:12px 16px;color:#38bdf8;font-weight:700;">$104,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">Overtime, Unpaid Leave &amp; Tax Considerations</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:28px;">Non-exempt hourly workers are entitled to 1.5× time-and-a-half pay for hours worked over 40 under FLSA rules. Taking unpaid time off reduces gross annual pay proportionally, whereas salaried workers typically receive consistent monthly pay regardless of minor hour variations.</p>
+
+        <!-- FAQs -->
+        <div style="margin-top:40px;">
+          <h2 style="font-size:26px;font-weight:700;color:#ffffff;margin-bottom:24px;">Frequently Asked Questions</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How do you convert hourly wage to annual salary?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Multiply your hourly wage by the number of hours worked per week, then multiply by 52 (weeks in a year). For a standard 40-hour full-time schedule, multiply your hourly wage directly by 2,080 hours.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">What is $25 an hour annually?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Working 40 hours per week, $25 an hour equals $52,000 per year before taxes, which breaks down to $4,333 per month, $2,000 bi-weekly, or $1,000 per week.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Does the calculator include overtime?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes. You can toggle the overtime feature to calculate hours worked beyond 40 hours per week at the standard 1.5× time-and-a-half overtime rate.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Is 40 hours a week assumed?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes, 40 hours per week across 52 weeks is the standard full-time baseline, but you can adjust your weekly hours to match any part-time, seasonal, or overtime schedule.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Block -->
+        <div style="background:linear-gradient(135deg,#0e121d 0%,#121826 100%);border:1px solid rgba(56,189,248,0.25);border-radius:20px;padding:48px 32px;text-align:center;margin-top:56px;">
+          <h2 style="font-size:28px;font-weight:800;color:#ffffff;margin-bottom:14px;">Need more than a calculator?</h2>
+          <p style="font-size:15.5px;color:#94a3b8;margin-bottom:28px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;">Social Ninja&#39;s builds AI growth systems for brands — from automated customer funnels to unit-economic media buying.</p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:14.5px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Book Growth Audit →</a>
+            <a href="/services" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14.5px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Explore Services</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  `,
+  'tools/mortgage-rate-calculator': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:760px;margin:0 auto 40px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">PITI HOUSING CALCULATOR</span>
+        <h1 style="font-size:38px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">Mortgage Payment Calculator with Taxes &amp; Insurance</h1>
+        <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Estimate your all-in monthly mortgage payment including principal, interest, property taxes, homeowners insurance, and PMI with full schedule breakdown.</p>
+      </div>
+
+      <div style="max-width:800px;margin:0 auto;line-height:1.75;">
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What Does This Mortgage Payment Calculator Estimate?</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:24px;">Most online mortgage tools only calculate Principal &amp; Interest (P&amp;I), leading buyers to underestimate their true monthly housing expense. Our calculator estimates your complete PITI payment: principal and interest on the loan, plus monthly escrow allocations for annual municipal property taxes, homeowners hazard insurance, Private Mortgage Insurance (PMI), and mandatory HOA fees.</p>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">How to Use This Mortgage Calculator (4 Steps)</h2>
+        <ol style="color:#a0a0b0;font-size:15.5px;margin-bottom:24px;padding-left:24px;line-height:1.8;">
+          <li><strong>Enter Home Price &amp; Down Payment:</strong> Input your target purchase price and the cash you plan to put down.</li>
+          <li><strong>Select Loan Term and Rate:</strong> Choose 15-year or 30-year fixed duration and enter current APR interest rates.</li>
+          <li><strong>Adjust Property Taxes &amp; Insurance:</strong> Input your local county property tax and homeowners insurance costs.</li>
+          <li><strong>Review All-In Monthly Payment:</strong> View your complete PITI monthly payment and lifetime loan interest cost.</li>
+        </ol>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What Factors Affect Your Monthly Mortgage Payment?</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:20px;">Your monthly housing payment is shaped by five core variables: your mortgage interest rate, the loan duration (15 vs 30 years), the down payment percentage (putting down under 20% triggers Private Mortgage Insurance), county property tax assessments, and hazard insurance premiums.</p>
+
+        <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">15-Year vs. 30-Year Mortgage: The Strategic Trade-Off</h2>
+        <p style="color:#a0a0b0;font-size:16px;margin-bottom:16px;">A 30-year mortgage offers lower required monthly payments, maximizing personal or business cash-flow flexibility. In contrast, a 15-year mortgage features slightly lower interest rates and saves tens of thousands in lifetime interest at the expense of higher required monthly payments.</p>
+        <p style="font-size:13.5px;color:#707080;margin-bottom:32px;font-style:italic;">Disclaimer: Mathematical estimates provided for educational scenario planning only. Does not constitute a formal loan offer or commitment to lend.</p>
+
+        <!-- FAQs -->
+        <div style="margin-top:40px;">
+          <h2 style="font-size:26px;font-weight:700;color:#ffffff;margin-bottom:24px;">Frequently Asked Questions</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How is my monthly mortgage payment calculated?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Your monthly housing payment consists of Principal and Interest (P&amp;I) calculated using standard amortization, plus one-twelfth of your annual property taxes, homeowners insurance, and any applicable private mortgage insurance (PMI) or HOA dues.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">What is PMI and when do I pay it?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Private Mortgage Insurance (PMI) is required by conventional lenders whenever your down payment is less than 20% of the home&#39;s purchase price. It protects the lender and typically costs 0.5% to 1.5% of the loan amount annually until you reach 20% equity.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">How does a bigger down payment change my payment?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">A larger down payment reduces your loan principal (lowering monthly interest and principal charges) and eliminates private mortgage insurance (PMI) once your down payment reaches at least 20%.</p>
+            </div>
+            <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;">
+              <h3 style="font-size:16.5px;font-weight:700;color:#ffffff;margin-top:0;margin-bottom:8px;">Should I choose a 15-year or 30-year mortgage?</h3>
+              <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">A 30-year loan offers lower monthly payments for maximum cash-flow flexibility, while a 15-year loan features slightly lower interest rates and saves tens of thousands in lifetime interest at the cost of higher required monthly payments.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Block -->
+        <div style="background:linear-gradient(135deg,#0e121d 0%,#121826 100%);border:1px solid rgba(56,189,248,0.25);border-radius:20px;padding:48px 32px;text-align:center;margin-top:56px;">
+          <h2 style="font-size:28px;font-weight:800;color:#ffffff;margin-bottom:14px;">Need more than a calculator?</h2>
+          <p style="font-size:15.5px;color:#94a3b8;margin-bottom:28px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;">Social Ninja&#39;s builds AI growth systems for brands — from automated customer funnels to unit-economic media buying.</p>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:14.5px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;">Book Growth Audit →</a>
+            <a href="/services" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14.5px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Explore Services</a>
           </div>
         </div>
       </div>
@@ -1068,6 +1341,242 @@ const routes = {
       }
     ]
   },
+  'tools/whatsapp-link-generator': {
+    title: "WhatsApp Link Generator | Free wa.me Link Creator",
+    description: "Create custom WhatsApp direct-chat links with pre-filled messages and free QR codes. Boost conversions on Instagram, ads, and landing pages.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "WhatsApp Link Generator",
+        "url": "https://socialninjas.in/tools/whatsapp-link-generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is this WhatsApp link generator free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, it is 100% free with no account or registration required. You can generate unlimited links and download QR codes instantly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the custom pre-filled message work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "When someone clicks your generated link, WhatsApp opens with your pre-written text automatically filled in the message box ready to send."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why should I include the country code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "WhatsApp requires full international format (digits only, no '+' or leading zeros) so that users anywhere in the world can reach you seamlessly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track clicks on my WhatsApp links?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. You can append UTM campaign parameters to the link, or run it through a link shortener to monitor click-through rates across channels."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between wa.me and api.whatsapp.com?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "wa.me is the official, short, and mobile-friendly URL format provided by WhatsApp. It loads faster and provides better UX."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  'tools/us-take-home-pay-calculator': {
+    title: "US Take-Home Pay Calculator | 2026 Paycheck Estimator",
+    description: "Calculate your exact take-home pay after federal, state, and FICA taxes across all 50 US states. Accurate 2026 tax brackets and deductions.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "US Take-Home Pay Calculator",
+        "url": "https://socialninjas.in/tools/us-take-home-pay-calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How is take-home pay calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Take-home pay equals your gross salary minus pre-tax deductions (401k, health insurance), minus federal income tax, state income tax, and FICA taxes (Social Security and Medicare)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which US states have no state income tax?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Alaska, Florida, Nevada, New Hampshire (no wage tax), South Dakota, Tennessee, Texas, Washington (no wage tax), and Wyoming do not levy personal state income tax on earned wages."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the FICA tax rates for 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Social Security tax is 6.2% on wages up to the wage cap ($176,100), and Medicare tax is 1.45% on all earnings, plus an additional 0.9% for high earners over $200k."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this calculator support 401(k) and health insurance deductions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. You can enter annual pre-tax 401(k) contributions and health insurance premiums to see your adjusted taxable income and exact net pay."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  'tools/hourly-to-salary-calculator': {
+    title: "Hourly to Salary Calculator | Convert Wage to Annual Pay",
+    description: "Convert your hourly wage into annual salary, monthly, bi-weekly, and weekly earnings. Factor in overtime, paid time off, and hours worked per week.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hourly to Salary Calculator",
+        "url": "https://socialninjas.in/tools/hourly-to-salary-calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do you convert an hourly wage to an annual salary?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Multiply your hourly wage by the number of hours worked per week (typically 40), then multiply by the number of weeks worked per year (typically 52). For example, $30/hour × 40 hrs × 52 weeks = $62,400/year."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many working hours are in a year?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A standard full-time year (40 hours/week × 52 weeks) consists of 2,080 working hours."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does overtime pay affect my annual earnings?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Overtime hours worked over 40 hours per week are generally compensated at 1.5× your base hourly rate under the US Fair Labor Standards Act (FLSA)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this calculation include taxes?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "This tool calculates gross earnings. To see your net after-tax paycheck, use our US Take-Home Pay Calculator."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  'tools/mortgage-rate-calculator': {
+    title: "Mortgage Payment Calculator with Taxes & Insurance",
+    description: "Estimate your monthly mortgage payments including principal, interest, property taxes, home insurance, and PMI. Free loan comparison tool.",
+    schemas: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mortgage Payment Calculator",
+        "url": "https://socialninjas.in/tools/mortgage-rate-calculator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is included in a PITI mortgage payment?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PITI stands for Principal, Interest, Taxes, and Insurance. It represents the total monthly cost of homeownership."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Private Mortgage Insurance (PMI) and when does it apply?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PMI is required by conventional lenders if your down payment is less than 20% of the home purchase price. It typically costs between 0.5% and 1.5% of the loan amount annually."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does loan term affect total interest paid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A 15-year fixed mortgage has higher monthly payments than a 30-year mortgage, but you pay substantially less total interest over the life of the loan due to the shorter amortization period and lower interest rates."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I include HOA fees in my mortgage calculation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Enter your monthly HOA fees into the calculator to get an accurate estimate of your complete monthly housing expense."
+            }
+          }
+        ]
+      }
+    ]
+  },
   'growth-systems': {
     title: "Autonomous AI Growth Systems | Social Ninja's",
     description: "See how Social Ninja's autonomous growth systems turn ad spend into booked calls — AI qualification, WhatsApp nurture and CRM sync in seconds."
@@ -1300,7 +1809,11 @@ function generateSitemap(posts) {
     { loc: 'https://socialninjas.in/services/ai-automation', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/web-seo', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/growth-consulting', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
-    { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools/whatsapp-link-generator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools/us-take-home-pay-calculator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools/hourly-to-salary-calculator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/tools/mortgage-rate-calculator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/about', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
     { loc: 'https://socialninjas.in/ai-products', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
     { loc: 'https://socialninjas.in/growth-systems', lastmod: '2026-07-27', changefreq: 'monthly', priority: '0.7' },

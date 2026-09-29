@@ -13,7 +13,7 @@ const UTILITY_TOOLS = [
     desc: 'Generate pre-filled instant WhatsApp chat links and QR codes for your ad campaigns, Instagram bios, and lead generation funnels.',
     badge: 'Lead Funnel',
     badgeColor: '#22c55e',
-    url: 'https://linkwa.in',
+    url: '/tools/whatsapp-link-generator',
   },
   {
     id: 'salary-calc',
@@ -22,7 +22,7 @@ const UTILITY_TOOLS = [
     desc: 'Calculate accurate net take-home pay after federal FICA, state, and local deductions across all 50 US states with bi-weekly and monthly breakdowns.',
     badge: 'Tax & Payroll',
     badgeColor: '#38bdf8',
-    url: 'https://salary.socialninjas.in/salary-calculator/',
+    url: '/tools/us-take-home-pay-calculator',
   },
   {
     id: 'salary-conv',
@@ -31,16 +31,16 @@ const UTILITY_TOOLS = [
     desc: 'Convert hourly rates to annual, monthly, bi-weekly, and weekly equivalents in real time with standard 40-hour work week and overtime settings.',
     badge: 'Wage Analytics',
     badgeColor: '#38bdf8',
-    url: 'https://salary.socialninjas.in/',
+    url: '/tools/hourly-to-salary-calculator',
   },
   {
     id: 'mortgage',
     Icon: Home,
-    title: 'US Mortgage & Amortization Calculator',
+    title: 'Mortgage Payment Calculator with Taxes & Insurance',
     desc: 'Estimate monthly PITI mortgage payments including principal, interest, property taxes, home insurance, and PMI with full schedule breakdown.',
     badge: 'Real Estate Tool',
     badgeColor: '#94a3b8',
-    url: 'https://mortgage.socialninjas.in/',
+    url: '/tools/mortgage-rate-calculator',
   },
 ];
 
@@ -85,11 +85,8 @@ const Tools: React.FC = () => {
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-white">
             Free Tools
           </h1>
-          <p className="text-xl sm:text-2xl font-bold text-[#38bdf8] tracking-tight">
-            High-Utility Tools for Marketers & Modern Teams.
-          </p>
-          <p className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto leading-relaxed">
-            Free calculators, link generators, and financial utilities designed to streamline lead capture, unit economics, and campaign operations.
+          <p className="text-base sm:text-lg text-neutral-300 max-w-xl mx-auto leading-relaxed">
+            Free tools from the Social Ninja's team — built for founders, marketers and operators.
           </p>
         </div>
       </AuroraBackground>
@@ -189,11 +186,9 @@ const Tools: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {UTILITY_TOOLS.map((tool) => (
-              <a
+              <Link
                 key={tool.id}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                to={tool.url}
                 className="text-left group w-full block"
                 style={{ textDecoration: 'none' }}
               >
@@ -223,10 +218,10 @@ const Tools: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 text-xs font-bold pt-3 border-t border-neutral-800/60" style={{ color: tool.badgeColor }}>
-                    Launch Free Tool <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+                    Open Tool <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
                   </div>
                 </SpotlightCard>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

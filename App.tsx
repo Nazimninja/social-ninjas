@@ -27,6 +27,10 @@ const LeadAutomation = lazy(() => import('./pages/promo/LeadAutomation'));
 const AIProducts = lazy(() => import('./pages/AIProducts'));
 const AIProductLanding = lazy(() => import('./pages/AIProductLanding'));
 const Tools = lazy(() => import('./pages/Tools'));
+const WhatsAppLinkGenerator = lazy(() => import('./pages/tools/WhatsAppLinkGenerator'));
+const TakeHomePayCalculator = lazy(() => import('./pages/tools/TakeHomePayCalculator'));
+const HourlyToSalaryCalculator = lazy(() => import('./pages/tools/HourlyToSalaryCalculator'));
+const MortgageRateCalculator = lazy(() => import('./pages/tools/MortgageRateCalculator'));
 
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
@@ -89,6 +93,10 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/ai-products" element={<PageTransition><AIProducts /></PageTransition>} />
         <Route path="/ai-products/:id" element={<PageTransition><AIProductLanding /></PageTransition>} />
         <Route path="/tools" element={<PageTransition><Tools /></PageTransition>} />
+        <Route path="/tools/whatsapp-link-generator" element={<PageTransition><WhatsAppLinkGenerator /></PageTransition>} />
+        <Route path="/tools/us-take-home-pay-calculator" element={<PageTransition><TakeHomePayCalculator /></PageTransition>} />
+        <Route path="/tools/hourly-to-salary-calculator" element={<PageTransition><HourlyToSalaryCalculator /></PageTransition>} />
+        <Route path="/tools/mortgage-rate-calculator" element={<PageTransition><MortgageRateCalculator /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
