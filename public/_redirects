@@ -1,5 +1,7 @@
 /services/performance-marketing /services/paid-ads 301
+/services/performance-marketing/ /services/paid-ads 301
 /services/creative-studio /services/content-production 301
+/services/creative-studio/ /services/content-production 301
 /standalone-crm /standalone-crm/index.html 200
 /api/* https://social-ninjas-main.vercel.app/api/:splat 200
 /* /index.html 200
