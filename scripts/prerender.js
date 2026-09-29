@@ -1325,6 +1325,57 @@ const servicesPrerenderData = {
 servicesPrerenderData['performance-marketing'] = servicesPrerenderData['paid-ads'];
 servicesPrerenderData['creative-studio'] = servicesPrerenderData['content-production'];
 
+const serviceToCaseStudiesMap = {
+  'paid-ads': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'performance-marketing': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
+  ],
+  'meta-ads-audit': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'content-production': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'UGC & Reels' }
+  ],
+  'creative-studio': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
+  ],
+  'instagram-seo': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local Business' }
+  ],
+  'social-media': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local Business' }
+  ],
+  'ai-appointment-setter': [
+    { slug: 'aura-aesthetics-clinic', client: 'Aura Aesthetics & Dental', metric: '₹46L+', metricLabel: 'High-Ticket Revenue', category: 'High-Ticket Healthcare' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'email-whatsapp': [
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Enterprise Outbound' },
+    { slug: 'aura-aesthetics-clinic', client: 'Aura Aesthetics & Dental', metric: '₹46L+', metricLabel: 'High-Ticket Revenue', category: 'WhatsApp Automation' }
+  ],
+  'ai-automation': [
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' },
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Outbound Automation' }
+  ],
+  'growth-consulting': [
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' },
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Enterprise Outbound' }
+  ],
+  'geo-agency': [
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B SaaS' }
+  ],
+  'web-seo': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local SEO' }
+  ]
+};
+
 function generateServiceHtml(slug, data) {
   return `
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
@@ -1387,6 +1438,35 @@ function generateServiceHtml(slug, data) {
                 <div style="font-size:24px;font-weight:800;color:#38bdf8;margin-bottom:10px;">${p.step}</div>
                 <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;margin-top:0;">${p.title}</h3>
                 <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0;">${p.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Verified Case Study Outcomes -->
+      ${serviceToCaseStudiesMap[slug] && serviceToCaseStudiesMap[slug].length > 0 ? `
+        <div style="margin-bottom:60px;">
+          <div style="text-align:center;margin-bottom:32px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">VERIFIED CLIENT PROOF</span>
+            <h2 style="font-size:32px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:0;">Real Client Growth Outcomes.</h2>
+            <p style="font-size:15px;color:#94a3b8;margin-top:10px;">Transparent revenue metrics and unit economic improvements delivered through our ${data.title} systems.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+            ${serviceToCaseStudiesMap[slug].map(cs => `
+              <div style="background:#0e121d;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <span style="color:#38bdf8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:rgba(56,189,248,0.1);padding:3px 10px;border-radius:999px;">${cs.category}</span>
+                    <span style="font-size:11.5px;color:#64748b;">Verified Case Study</span>
+                  </div>
+                  <h3 style="font-size:20px;color:#ffffff;margin:0 0 10px;font-weight:800;">${cs.client}</h3>
+                  <div style="display:flex;align-items:baseline;gap:8px;margin:12px 0;">
+                    <span style="font-size:34px;font-weight:900;color:#38bdf8;line-height:1;">${cs.metric}</span>
+                    <span style="font-size:13.5px;color:#94a3b8;font-weight:600;">${cs.metricLabel}</span>
+                  </div>
+                </div>
+                <a href="/case-studies/${cs.slug}" style="display:inline-block;text-align:center;background:rgba(255,255,255,0.05);color:#ffffff;border:1px solid rgba(255,255,255,0.12);padding:12px 18px;border-radius:8px;text-decoration:none;font-size:13.5px;font-weight:700;">Read Complete Case Study →</a>
               </div>
             `).join('')}
           </div>
