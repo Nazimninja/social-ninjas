@@ -71,7 +71,7 @@ export const HourlyToSalaryCalculator: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
       <SEO
-        title="Hourly to Salary Calculator | Convert Wage to Annual Pay"
+        title="Hourly to Salary Calculator | $/hr to Yearly Pay"
         description="Convert your hourly rate to annual, monthly, and weekly salary. Includes overtime toggle, tax reference tables, and standard 40-hour work week math."
         canonical="https://socialninjas.in/tools/hourly-to-salary-calculator"
         faq={FAQS}

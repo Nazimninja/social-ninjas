@@ -101,7 +101,7 @@ export const MortgageRateCalculator: React.FC = () => {
             <span>ALL-IN PITI HOUSING ESTIMATOR</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
-            Mortgage Payment Calculator with Taxes &amp; Insurance
+            Mortgage Rate Calculator
           </h1>
           <p className="text-base sm:text-lg text-neutral-300 max-w-xl mx-auto leading-relaxed">
             Calculate your true monthly housing payment including principal, interest, property taxes, homeowners insurance, and PMI across 15 and 30-year terms.

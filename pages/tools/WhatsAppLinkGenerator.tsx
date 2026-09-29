@@ -202,7 +202,7 @@ export const WhatsAppLinkGenerator: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
       <SEO
-        title="WhatsApp Link Generator | Free wa.me Link Creator"
+        title="Free WhatsApp Link Generator | Create wa.me Links"
         description="Generate free direct WhatsApp wa.me chat links and QR codes with custom pre-filled messages. No signup required. Fast, free, and mobile-ready."
         canonical="https://socialninjas.in/tools/whatsapp-link-generator"
         faq={FAQS}

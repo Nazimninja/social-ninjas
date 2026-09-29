@@ -9,36 +9,36 @@ const UTILITY_TOOLS = [
   {
     id: 'whatsapp',
     Icon: MessageSquare,
-    title: 'WhatsApp Direct Chat Link Generator',
-    desc: 'Generate pre-filled instant WhatsApp chat links and QR codes for your ad campaigns, Instagram bios, and lead generation funnels.',
-    badge: 'Lead Funnel',
+    title: 'Free WhatsApp Link Generator',
+    desc: 'Create direct click-to-chat wa.me links with custom pre-filled messages and free QR codes.',
+    badge: 'Free Tool',
     badgeColor: '#22c55e',
     url: '/tools/whatsapp-link-generator',
   },
   {
     id: 'salary-calc',
     Icon: DollarSign,
-    title: 'US Take-Home Pay & Tax Calculator',
-    desc: 'Calculate accurate net take-home pay after federal FICA, state, and local deductions across all 50 US states with bi-weekly and monthly breakdowns.',
-    badge: 'Tax & Payroll',
+    title: 'US Take-Home Pay Calculator',
+    desc: 'Calculate your net take-home pay after federal, state, and FICA taxes across all 50 US states.',
+    badge: 'Free Tool',
     badgeColor: '#38bdf8',
     url: '/tools/us-take-home-pay-calculator',
   },
   {
     id: 'salary-conv',
     Icon: Clock,
-    title: 'Hourly ↔ Annual Wage Converter',
-    desc: 'Convert hourly rates to annual, monthly, bi-weekly, and weekly equivalents in real time with standard 40-hour work week and overtime settings.',
-    badge: 'Wage Analytics',
+    title: 'Hourly to Salary Calculator',
+    desc: 'Convert hourly wages to annual salary, monthly, and weekly gross income with overtime calculations.',
+    badge: 'Free Tool',
     badgeColor: '#38bdf8',
     url: '/tools/hourly-to-salary-calculator',
   },
   {
     id: 'mortgage',
     Icon: Home,
-    title: 'Mortgage Payment Calculator with Taxes & Insurance',
-    desc: 'Estimate monthly PITI mortgage payments including principal, interest, property taxes, home insurance, and PMI with full schedule breakdown.',
-    badge: 'Real Estate Tool',
+    title: 'Mortgage Rate Calculator',
+    desc: 'Calculate monthly PITI mortgage payments including property taxes, home insurance, and PMI.',
+    badge: 'Free Tool',
     badgeColor: '#94a3b8',
     url: '/tools/mortgage-rate-calculator',
   },
@@ -92,8 +92,52 @@ const Tools: React.FC = () => {
       </AuroraBackground>
 
       {/* MAIN CONTAINER (Strict 1140px alignment) */}
-      <div style={{ maxWidth: 1140, margin: '0 auto 80px', width: '100%', boxSizing: 'border-box' }} className="px-4 sm:px-6 lg:px-8 pt-12 space-y-12">
+      <div style={{ maxWidth: 1140, margin: '0 auto 80px', width: '100%', boxSizing: 'border-box' }} className="px-4 sm:px-6 lg:px-8 pt-12 space-y-16">
         
+        {/* ── FREE GROWTH & FINANCIAL UTILITIES GRID (Directly below intro paragraph) ── */}
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {UTILITY_TOOLS.map((tool) => (
+              <Link
+                key={tool.id}
+                to={tool.url}
+                className="text-left group w-full block"
+                style={{ textDecoration: 'none' }}
+              >
+                <SpotlightCard className="p-7 bg-[#0e121d] border border-neutral-800/80 space-y-5 hover:border-neutral-700 transition-all duration-300 h-full flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center"
+                        style={{ background: `${tool.badgeColor}18`, border: `1px solid ${tool.badgeColor}30` }}
+                      >
+                        <tool.Icon size={20} style={{ color: tool.badgeColor }} />
+                      </div>
+                      <span
+                        className="text-[10px] font-bold uppercase px-3 py-1 rounded-full border"
+                        style={{ background: `${tool.badgeColor}12`, color: tool.badgeColor, borderColor: `${tool.badgeColor}25` }}
+                      >
+                        {tool.badge}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h2 className="text-xl font-bold text-white group-hover:text-[#38bdf8] transition-colors duration-200 leading-snug">
+                        {tool.title}
+                      </h2>
+                      <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{tool.desc}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs font-bold pt-3 border-t border-neutral-800/60" style={{ color: tool.badgeColor }}>
+                    Open Tool <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
+                  </div>
+                </SpotlightCard>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* ── FLAGSHIP SAAS SPOTLIGHT: FIT NINJA ── */}
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -173,58 +217,6 @@ const Tools: React.FC = () => {
           </SpotlightCard>
         </div>
 
-        {/* ── FREE GROWTH & FINANCIAL UTILITIES GRID ── */}
-        <div>
-          <div className="mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-              Free Utility Calculators & Funnel Generators
-            </h2>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
-              Zero-friction, instant online utilities with no signup or paywall required.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {UTILITY_TOOLS.map((tool) => (
-              <Link
-                key={tool.id}
-                to={tool.url}
-                className="text-left group w-full block"
-                style={{ textDecoration: 'none' }}
-              >
-                <SpotlightCard className="p-7 bg-[#0e121d] border border-neutral-800/80 space-y-5 hover:border-neutral-700 transition-all duration-300 h-full flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center"
-                        style={{ background: `${tool.badgeColor}18`, border: `1px solid ${tool.badgeColor}30` }}
-                      >
-                        <tool.Icon size={20} style={{ color: tool.badgeColor }} />
-                      </div>
-                      <span
-                        className="text-[10px] font-bold uppercase px-3 py-1 rounded-full border"
-                        style={{ background: `${tool.badgeColor}12`, color: tool.badgeColor, borderColor: `${tool.badgeColor}25` }}
-                      >
-                        {tool.badge}
-                      </span>
-                    </div>
-
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-white group-hover:text-[#38bdf8] transition-colors duration-200 leading-snug">
-                        {tool.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{tool.desc}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-xs font-bold pt-3 border-t border-neutral-800/60" style={{ color: tool.badgeColor }}>
-                    Open Tool <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
-                </SpotlightCard>
-              </Link>
-            ))}
-          </div>
-        </div>
 
         {/* ── FREQUENTLY ASKED QUESTIONS SECTION (Strict 800px alignment) ── */}
         <div style={{ maxWidth: 800, margin: '40px auto 0', width: '100%', boxSizing: 'border-box' }}>

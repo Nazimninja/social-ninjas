@@ -459,23 +459,23 @@ const marketingPagesContent = {
       
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">WhatsApp Direct Chat Link Generator</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Generate pre-filled instant WhatsApp chat links and QR codes for your ad campaigns, Instagram bios, and lead funnels.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">Free WhatsApp Link Generator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Create direct click-to-chat wa.me links with custom pre-filled messages and free QR codes.</p>
           <a href="/tools/whatsapp-link-generator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay &amp; Tax Calculator</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Calculate accurate net take-home pay after federal FICA, state, and local deductions across all 50 US states.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay Calculator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Calculate your net take-home pay after federal, state, and FICA taxes across all 50 US states.</p>
           <a href="/tools/us-take-home-pay-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/hourly-to-salary-calculator" style="color:#ffffff;text-decoration:none;">Hourly ↔ Annual Wage Converter</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Convert hourly rates to annual, monthly, bi-weekly, and weekly equivalents in real time.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/hourly-to-salary-calculator" style="color:#ffffff;text-decoration:none;">Hourly to Salary Calculator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Convert hourly wages to annual salary, monthly, and weekly gross income with overtime calculations.</p>
           <a href="/tools/hourly-to-salary-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/mortgage-rate-calculator" style="color:#ffffff;text-decoration:none;">Mortgage Payment Calculator with Taxes &amp; Insurance</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Estimate monthly PITI mortgage payments including principal, interest, taxes, and PMI with full amortization schedule.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/mortgage-rate-calculator" style="color:#ffffff;text-decoration:none;">Mortgage Rate Calculator</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Calculate monthly PITI mortgage payments including property taxes, home insurance, and PMI.</p>
           <a href="/tools/mortgage-rate-calculator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
       </div>
@@ -720,7 +720,7 @@ const marketingPagesContent = {
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
       <div style="text-align:center;max-width:760px;margin:0 auto 40px;">
         <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">PITI HOUSING CALCULATOR</span>
-        <h1 style="font-size:38px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">Mortgage Payment Calculator with Taxes &amp; Insurance</h1>
+        <h1 style="font-size:38px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:12px;line-height:1.2;">Mortgage Rate Calculator</h1>
         <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Estimate your all-in monthly mortgage payment including principal, interest, property taxes, homeowners insurance, and PMI with full schedule breakdown.</p>
       </div>
 
@@ -902,7 +902,7 @@ const servicesPrerenderData = {
     cta: 'Build My Creative Strategy'
   },
   'email-whatsapp': {
-    title: "WhatsApp & Email Marketing Automation | Social Ninja's",
+    title: "WhatsApp Marketing & Email Automation Services",
     h1: "WhatsApp & Email Automation That Sells",
     tagline: "AI agents and automation sequences that qualify, nurture and close leads inside the apps your customers actually open.",
     description: "Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.",
@@ -2096,7 +2096,7 @@ const routes = {
     ]
   },
   'tools/whatsapp-link-generator': {
-    title: "WhatsApp Link Generator | Free wa.me Link Creator",
+    title: "Free WhatsApp Link Generator | Create wa.me Links",
     description: "Create custom WhatsApp direct-chat links with pre-filled messages and free QR codes. Boost conversions on Instagram, ads, and landing pages.",
     schemas: [
       {
@@ -2161,7 +2161,7 @@ const routes = {
     ]
   },
   'tools/us-take-home-pay-calculator': {
-    title: "US Take-Home Pay Calculator | 2026 Paycheck Estimator",
+    title: "US Take-Home Pay Calculator 2026 | After-Tax Salary",
     description: "Calculate your exact take-home pay after federal, state, and FICA taxes across all 50 US states. Accurate 2026 tax brackets and deductions.",
     schemas: [
       {
@@ -2218,7 +2218,7 @@ const routes = {
     ]
   },
   'tools/hourly-to-salary-calculator': {
-    title: "Hourly to Salary Calculator | Convert Wage to Annual Pay",
+    title: "Hourly to Salary Calculator | $/hr to Yearly Pay",
     description: "Convert your hourly wage into annual salary, monthly, bi-weekly, and weekly earnings. Factor in overtime, paid time off, and hours worked per week.",
     schemas: [
       {

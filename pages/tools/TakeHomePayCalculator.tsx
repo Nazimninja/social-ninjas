@@ -167,7 +167,7 @@ export const TakeHomePayCalculator: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-white min-h-screen">
       <SEO
-        title="US Take-Home Pay Calculator | 2026 Paycheck Estimator"
+        title="US Take-Home Pay Calculator 2026 | After-Tax Salary"
         description="Calculate your net take-home pay after federal, state, and FICA taxes across all 50 US states. Free 2026 paycheck calculator with deductions breakdown."
         canonical="https://socialninjas.in/tools/us-take-home-pay-calculator"
         faq={FAQS}

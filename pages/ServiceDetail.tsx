@@ -151,7 +151,7 @@ const contentProductionData: ServiceData = {
 
 const emailWhatsappData: ServiceData = {
   title: 'WhatsApp Marketing & Email Automation Services',
-  metaTitle: "WhatsApp & Email Marketing Automation | Social Ninja's",
+  metaTitle: 'WhatsApp Marketing & Email Automation Services',
   metaDescription: 'Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.',
   h1: 'WhatsApp & Email Automation That Sells',
   tagline: 'AI agents and automation sequences that qualify, nurture and close leads inside the apps your customers actually open.',
