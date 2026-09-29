@@ -300,6 +300,27 @@ const BlogPost: React.FC = () => {
         </div>
       </article>
 
+      {/* Related posts (Placed directly above the service CTA banner) */}
+      {related.length > 0 && (
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 28px 48px', position: 'relative', zIndex: 1 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#38bdf8', marginBottom: 20 }}>
+            Related Articles &amp; Insights
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }} className="related-grid">
+            {related.slice(0, 3).map((r: any) => (
+              <Link key={r.id} to={`/blog/${r.id}`} style={{ textDecoration: 'none' }}>
+                <div style={{ padding: 22, borderRadius: 16, height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', background: 'rgba(14,18,29,0.9)', border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color 0.2s' }}>
+                  <span style={{ fontSize: 10.5, fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', marginBottom: 6 }}>{r.category}</span>
+                  <h3 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 14.5, fontWeight: 700, color: '#f0f0f0', lineHeight: 1.35, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
+                  <p style={{ fontSize: 12, color: '#8898aa', lineHeight: 1.6, flex: 1, margin: 0 }}>{r.excerpt}</p>
+                  <div style={{ fontSize: 11.5, color: '#38bdf8', marginTop: 12, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>Read Article <ArrowRight size={11} /></div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Service CTA Banner (Mapped directly to post topic) */}
       {serviceCta && (
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 28px 48px', position: 'relative', zIndex: 1 }}>
@@ -327,27 +348,6 @@ const BlogPost: React.FC = () => {
                 Book Free Audit Call →
               </Link>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Related posts */}
-      {related.length > 0 && (
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#38bdf8', marginBottom: 24 }}>
-            Related Articles &amp; Insights
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }} className="related-grid">
-            {related.map((r: any) => (
-              <Link key={r.id} to={`/blog/${r.id}`} style={{ textDecoration: 'none' }}>
-                <div style={{ padding: 24, borderRadius: 18, height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', background: 'rgba(14,18,29,0.9)', border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color 0.2s' }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', marginBottom: 8 }}>{r.category}</span>
-                  <h3 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 15, fontWeight: 700, color: '#f0f0f0', lineHeight: 1.3, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
-                  <p style={{ fontSize: 12.5, color: '#8898aa', lineHeight: 1.62, flex: 1 }}>{r.excerpt}</p>
-                  <div style={{ fontSize: 11.5, color: '#38bdf8', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>Read Article <ArrowRight size={11} /></div>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       )}

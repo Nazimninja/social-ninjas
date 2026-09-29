@@ -9,6 +9,17 @@
  */
 export async function onRequest(context) {
   const { request, next } = context;
+  const url = new URL(request.url);
+  const cleanPath = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : url.pathname;
+
+  // 301-redirect duplicate service pages
+  if (cleanPath === '/services/performance-marketing') {
+    return Response.redirect(`${url.origin}/services/paid-ads`, 301);
+  }
+  if (cleanPath === '/services/creative-studio') {
+    return Response.redirect(`${url.origin}/services/content-production`, 301);
+  }
+
   const response = await next();
 
   // Only process HTML document responses

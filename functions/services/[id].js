@@ -1,8 +1,6 @@
 const VALID_SLUGS = new Set([
   'paid-ads',
-  'performance-marketing',
   'content-production',
-  'creative-studio',
   'email-whatsapp',
   'social-media',
   'web-seo',
@@ -17,6 +15,15 @@ const VALID_SLUGS = new Set([
 export async function onRequest(context) {
   const { request, params, env } = context;
   const slug = params.id;
+  const url = new URL(request.url);
+
+  // 301-redirect duplicate service pages to canonical primary pages
+  if (slug === 'performance-marketing') {
+    return Response.redirect(`${url.origin}/services/paid-ads`, 301);
+  }
+  if (slug === 'creative-studio') {
+    return Response.redirect(`${url.origin}/services/content-production`, 301);
+  }
 
   if (VALID_SLUGS.has(slug)) {
     // Valid service slug - forward directly to the prerendered static asset

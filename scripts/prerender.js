@@ -332,6 +332,11 @@ const marketingPagesContent = {
           <a href="/services/social-media" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Social Media Management →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/growth-consulting" style="color:#ffffff;text-decoration:none;">Revenue Growth Consulting</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Deep-dive marketing audits and 90-day growth roadmaps designed to fix revenue funnel leaks and accelerate monthly recurring profit.</p>
+          <a href="/services/growth-consulting" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Growth Consulting →</a>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/web-seo" style="color:#ffffff;text-decoration:none;">Web Design &amp; Technical SEO</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Fast-loading, sub-second landing pages and technical search engine optimization to capture high-intent buyers organically.</p>
           <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Web Design &amp; Technical SEO →</a>
@@ -1321,18 +1326,11 @@ const servicesPrerenderData = {
     cta: 'Deploy My AI Appointment Setter'
   }
 };
-// Aliases
-servicesPrerenderData['performance-marketing'] = servicesPrerenderData['paid-ads'];
-servicesPrerenderData['creative-studio'] = servicesPrerenderData['content-production'];
 
 const serviceToCaseStudiesMap = {
   'paid-ads': [
     { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
     { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
-  ],
-  'performance-marketing': [
-    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
-    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
   ],
   'meta-ads-audit': [
     { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
@@ -1341,10 +1339,6 @@ const serviceToCaseStudiesMap = {
   'content-production': [
     { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
     { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'UGC & Reels' }
-  ],
-  'creative-studio': [
-    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
-    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
   ],
   'instagram-seo': [
     { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local Business' }
@@ -2635,26 +2629,26 @@ blogPosts.forEach(post => {
           ${markdownToHtml(post.content)}
         </div>
 
+        <!-- Related Articles & Insights (3 links placed directly above the Service CTA) -->
+        <div style="margin-top:60px;padding-top:40px;border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="margin-bottom:24px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:4px 12px;border-radius:999px;">DEEP-DIVE STRATEGIES</span>
+            <h3 style="font-size:24px;font-weight:800;color:#ffffff;margin-top:12px;margin-bottom:6px;">Related Articles &amp; Insights</h3>
+            <p style="font-size:14px;color:#94a3b8;margin:0;">Explore proven growth systems, automated ad frameworks, and technical marketing guides.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+            ${relatedPostsHtml}
+          </div>
+        </div>
+
         <!-- Mapped Service CTA Banner -->
-        <div style="margin:56px 0 48px;background:linear-gradient(135deg,rgba(15,23,42,0.8),rgba(14,18,29,0.95));border:1px solid rgba(56,189,248,0.25);border-radius:16px;padding:36px 32px;box-sizing:border-box;">
+        <div style="margin:48px 0 48px;background:linear-gradient(135deg,rgba(15,23,42,0.8),rgba(14,18,29,0.95));border:1px solid rgba(56,189,248,0.25);border-radius:16px;padding:36px 32px;box-sizing:border-box;">
           <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:4px 12px;border-radius:999px;margin-bottom:14px;">${serviceCta.badge}</span>
           <h3 style="font-size:24px;font-weight:800;color:#ffffff;margin:0 0 10px;line-height:1.3;">${serviceCta.title}</h3>
           <p style="font-size:15px;color:#94a3b8;line-height:1.65;margin:0 0 24px;">${serviceCta.desc}</p>
           <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
             <a href="${serviceCta.path}" style="background:#1F4B99;color:#ffffff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;">${serviceCta.cta} →</a>
             <a href="/contact" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#ffffff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:8px;text-decoration:none;display:inline-block;">Book Free Strategy Call</a>
-          </div>
-        </div>
-
-        <!-- Related Articles & Case Studies -->
-        <div style="margin-top:60px;padding-top:40px;border-top:1px solid rgba(255,255,255,0.08);">
-          <div style="margin-bottom:28px;">
-            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:4px 12px;border-radius:999px;">DEEP-DIVE STRATEGIES</span>
-            <h3 style="font-size:26px;font-weight:800;color:#ffffff;margin-top:12px;margin-bottom:6px;">Related Articles &amp; Case Studies</h3>
-            <p style="font-size:14px;color:#94a3b8;margin:0;">Explore proven growth systems, automated ad frameworks, and technical marketing guides.</p>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
-            ${relatedPostsHtml}
           </div>
         </div>
       </main>
@@ -2723,8 +2717,6 @@ function generateSitemap(posts) {
     { loc: 'https://socialninjas.in/services/instagram-seo', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/meta-ads-audit', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/ai-appointment-setter', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
-    { loc: 'https://socialninjas.in/services/performance-marketing', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
-    { loc: 'https://socialninjas.in/services/creative-studio', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools/whatsapp-link-generator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools/us-take-home-pay-calculator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
