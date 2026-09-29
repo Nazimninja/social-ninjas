@@ -7,6 +7,60 @@ import SEO from '../components/SEO';
 import AdSense from '../components/AdSense';
 import { POSTS, categoryColors } from '../data/blogPosts';
 
+// Map post category & topic to the most relevant service page
+const getServiceCta = (p: any) => {
+  if (!p) return null;
+  const cat = (p.category || '').toLowerCase();
+  const title = (p.title || '').toLowerCase();
+  const id = (p.id || '').toLowerCase();
+
+  // WhatsApp / commerce posts → /services/email-whatsapp
+  if (cat.includes('whatsapp') || title.includes('whatsapp') || id.includes('whatsapp') || title.includes('email') || id.includes('email')) {
+    return {
+      serviceName: 'Email & WhatsApp Automation',
+      serviceUrl: '/services/email-whatsapp',
+      badge: 'WHATSAPP & RETENTION ENGINE',
+      heading: 'Turn Inbound WhatsApp & Email into Predictable Revenue',
+      desc: 'Deploy official WhatsApp Cloud API auto-replies, abandoned checkout recovery, and automated nurture sequences that convert in seconds.',
+      buttonText: 'Explore WhatsApp Automation →'
+    };
+  }
+
+  // Ads posts → /services/paid-ads
+  if (cat.includes('ads') || cat.includes('paid') || title.includes('ads') || title.includes('meta') || title.includes('roas') || id.includes('ads') || id.includes('roas')) {
+    return {
+      serviceName: 'Performance Paid Ads Engine',
+      serviceUrl: '/services/paid-ads',
+      badge: 'PERFORMANCE PAID MEDIA',
+      heading: 'Scale Your Meta & Google Ads to 4.5× ROAS',
+      desc: 'Creative-first performance marketing run on unit economics, automated creative testing, and high-converting landing pages.',
+      buttonText: 'Explore Paid Ads Engine →'
+    };
+  }
+
+  // SEO / content posts → /services/web-seo
+  if (cat.includes('seo') || cat.includes('content') || title.includes('seo') || title.includes('geo') || id.includes('geo') || title.includes('content') || id.includes('instagram-seo') || id.includes('posting-frequency')) {
+    return {
+      serviceName: 'Web Design & Technical SEO',
+      serviceUrl: '/services/web-seo',
+      badge: 'ORGANIC GROWTH & SEO',
+      heading: 'Dominate Google & Generative Search Engines (GEO)',
+      desc: 'Sub-second technical architecture, search engine dominance, and high-converting landing page designs that turn visitors into leads.',
+      buttonText: 'Explore Web & SEO Systems →'
+    };
+  }
+
+  // AI / Automation posts → /services/ai-automation
+  return {
+    serviceName: 'AI & Lead Automation',
+    serviceUrl: '/services/ai-automation',
+    badge: 'AUTONOMOUS AI AGENTS',
+    heading: 'Qualify & Book Leads 24/7 with Autonomous AI Agents',
+    desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying leads and booking sales calls automatically.',
+    buttonText: 'Explore AI Automation →'
+  };
+};
+
 const BlogPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<any>(null);
@@ -51,8 +105,11 @@ const BlogPost: React.FC = () => {
     ]).then(([apiPost, all]) => {
       const finalPost = localPost || apiPost;
       setPost(finalPost);
-      if (finalPost && Array.isArray(all)) {
-        setRelated(all.filter((p: any) => p.id !== finalPost.id && p.category === finalPost.category).slice(0, 3));
+      if (finalPost) {
+        const pool = Array.isArray(all) && all.length > 0 ? all : POSTS;
+        const sameCategory = pool.filter((p: any) => p.id !== finalPost.id && p.category === finalPost.category);
+        const otherPosts = pool.filter((p: any) => p.id !== finalPost.id && p.category !== finalPost.category);
+        setRelated([...sameCategory, ...otherPosts].slice(0, 3));
       }
       setLoading(false);
     });
@@ -78,6 +135,7 @@ const BlogPost: React.FC = () => {
   );
 
   const color = categoryColors[post.category] || '#4281f5';
+  const serviceCta = getServiceCta(post);
 
   const share = () => {
     if (navigator.share) {
@@ -194,17 +252,51 @@ const BlogPost: React.FC = () => {
         </div>
       </article>
 
+      {/* Service CTA Banner (Mapped directly to post topic) */}
+      {serviceCta && (
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 28px 48px', position: 'relative', zIndex: 1 }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(56,189,248,0.1) 0%, rgba(14,18,29,0.95) 100%)',
+            border: '1px solid rgba(56,189,248,0.3)',
+            borderRadius: 20, padding: '36px 32px', textAlign: 'left', position: 'relative', overflow: 'hidden'
+          }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 999, background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.25)', color: '#38bdf8', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16 }}>
+              {serviceCta.badge}
+            </div>
+            <h2 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 'clamp(20px,3.5vw,28px)', fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 10, color: '#ffffff', lineHeight: 1.2 }}>
+              {serviceCta.heading}
+            </h2>
+            <p style={{ fontSize: 14.5, color: '#94a3b8', lineHeight: 1.6, marginBottom: 24, maxWidth: 620 }}>
+              {serviceCta.desc}
+            </p>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+              <Link to={serviceCta.serviceUrl} style={{ textDecoration: 'none' }}>
+                <button style={{ fontSize: 13.5, padding: '11px 24px', background: '#1F4B99', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}>
+                  {serviceCta.buttonText}
+                </button>
+              </Link>
+              <Link to="/contact" style={{ fontSize: 13.5, color: '#38bdf8', textDecoration: 'none', fontWeight: 600, padding: '11px 16px' }}>
+                Book Free Audit Call →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Related posts */}
       {related.length > 0 && (
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 28px 80px', position: 'relative', zIndex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#4281f5', marginBottom: 24 }}>More in {post.category}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }} className="related-grid">
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#38bdf8', marginBottom: 24 }}>
+            Related Articles &amp; Insights
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }} className="related-grid">
             {related.map((r: any) => (
               <Link key={r.id} to={`/blog/${r.id}`} style={{ textDecoration: 'none' }}>
                 <div style={{ padding: 24, borderRadius: 18, height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', background: 'rgba(14,18,29,0.9)', border: '1px solid rgba(255,255,255,0.08)', transition: 'border-color 0.2s' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', marginBottom: 8 }}>{r.category}</span>
                   <h3 style={{ fontFamily: "'Plus Jakarta Sans',system-ui", fontSize: 15, fontWeight: 700, color: '#f0f0f0', lineHeight: 1.3, marginBottom: 8, letterSpacing: '-0.3px' }}>{r.title}</h3>
-                  <p style={{ fontSize: 12.5, color: '#606070', lineHeight: 1.62, flex: 1 }}>{r.excerpt}</p>
-                  <div style={{ fontSize: 11, color: '#4281f5', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>Read <ArrowRight size={11} /></div>
+                  <p style={{ fontSize: 12.5, color: '#8898aa', lineHeight: 1.62, flex: 1 }}>{r.excerpt}</p>
+                  <div style={{ fontSize: 11.5, color: '#38bdf8', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>Read Article <ArrowRight size={11} /></div>
                 </div>
               </Link>
             ))}

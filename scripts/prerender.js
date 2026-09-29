@@ -23,6 +23,7 @@ const NAV_HTML = `
     <div style="display:flex;align-items:center;gap:32px;">
       <a href="/services" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">Services</a>
       <a href="/ai-products" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">AI Products</a>
+      <a href="/tools" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">Free Tools</a>
       <a href="/blog" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">Blog</a>
       <a href="/about" style="font-size:14px;color:#a0a0b0;text-decoration:none;font-weight:500;">About</a>
       <a href="/contact" style="font-size:13.5px;font-weight:600;color:#fff;background:#1F4B99;border:none;border-radius:8px;padding:9px 20px;text-decoration:none;">Book a Call</a>
@@ -97,7 +98,10 @@ function markdownToHtml(md) {
   
   // Replace bold
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#ffffff;">$1</strong>');
-  
+
+  // Replace links [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#38bdf8;text-decoration:underline;">$1</a>');
+
   // Replace list items
   html = html.replace(/^\-\s+(.+)$/gm, '<li style="margin-bottom:10px;color:#a0a0b0;line-height:1.6;">$1</li>');
   html = html.replace(/^\*\s+(.+)$/gm, '<li style="margin-bottom:10px;color:#a0a0b0;line-height:1.6;">$1</li>');
@@ -195,7 +199,7 @@ const marketingPagesContent = {
           AI-Powered Growth Systems <span style="color:#38bdf8;">That Scale Revenue.</span>
         </h1>
         <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;max-width:680px;margin-left:auto;margin-right:auto;">
-          We build autonomous AI lead pipelines, run high-margin Meta &amp; Google ad campaigns, and deploy automated content systems engineered for repeatable profit.
+          We build autonomous <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:underline;">AI lead pipelines</a>, run high-margin <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:underline;">Meta &amp; Google ad campaigns</a>, and deploy automated content systems engineered for repeatable profit. Explore our <a href="/tools" style="color:#38bdf8;text-decoration:underline;">free growth tools</a> to forecast returns and streamline outreach.
         </p>
         <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
           <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Book Free Audit →</a>
@@ -238,25 +242,59 @@ const marketingPagesContent = {
             <div style="font-size:24px;font-weight:800;color:#f97316;margin-bottom:12px;">01</div>
             <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/ai-automation" style="color:#ffffff;text-decoration:none;">AI Lead &amp; Sales Automation</a></h3>
             <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar 24/7 without manual work.</p>
-            <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+            <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore AI &amp; Lead Automation →</a>
           </div>
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
             <div style="font-size:24px;font-weight:800;color:#38bdf8;margin-bottom:12px;">02</div>
             <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/paid-ads" style="color:#ffffff;text-decoration:none;">Performance Paid Ads Engine</a></h3>
             <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">Creative-first Meta and Google campaigns engineered on unit economics, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our automated ad testing system.</p>
-            <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+            <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Performance Paid Ads →</a>
           </div>
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
             <div style="font-size:24px;font-weight:800;color:#ec4899;margin-bottom:12px;">03</div>
             <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/content-production" style="color:#ffffff;text-decoration:none;">Content Creation &amp; Branding</a></h3>
             <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">High-converting video scripts, carousel graphics, and social posts generated and scheduled automatically for your target niche.</p>
-            <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+            <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Content Production →</a>
           </div>
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
             <div style="font-size:24px;font-weight:800;color:#10b981;margin-bottom:12px;">04</div>
             <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/web-seo" style="color:#ffffff;text-decoration:none;">Full-Funnel CRO &amp; Web Systems</a></h3>
             <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">High-speed landing pages and checkout systems optimized for maximum conversion rate, instant speed scores, and zero lead dropoff.</p>
-            <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+            <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore CRO &amp; Web Systems →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Free Growth & Finance Tools -->
+      <div style="margin-top:80px;padding-top:60px;border-top:1px solid rgba(255,255,255,0.08);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:36px;">
+          <div>
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">FREE GROWTH TOOLS</span>
+            <h2 style="font-size:32px;font-weight:800;color:#ffffff;margin-top:14px;margin-bottom:8px;">Calculators &amp; Conversion Utilities</h2>
+            <p style="font-size:14.5px;color:#94a3b8;margin:0;">100% free client-side tools built by Social Ninja's for founders, marketers, and operators — zero signup required.</p>
+          </div>
+          <a href="/tools" style="color:#38bdf8;font-weight:700;font-size:14px;text-decoration:none;">Browse All Free Tools →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">WhatsApp Link Generator</a></h3>
+            <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">Create direct wa.me chat links with custom pre-filled messages and free QR codes.</p>
+            <a href="/tools/whatsapp-link-generator" style="color:#34d399;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay Calculator</a></h3>
+            <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">Estimate net pay after federal, state, and FICA taxes across all 50 US states.</p>
+            <a href="/tools/us-take-home-pay-calculator" style="color:#38bdf8;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/hourly-to-salary-calculator" style="color:#ffffff;text-decoration:none;">Hourly to Salary Calculator</a></h3>
+            <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">Convert hourly wages to annual salary, monthly, and weekly gross income with overtime.</p>
+            <a href="/tools/hourly-to-salary-calculator" style="color:#c084fc;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/mortgage-rate-calculator" style="color:#ffffff;text-decoration:none;">Mortgage Payment Calculator</a></h3>
+            <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">Calculate monthly PITI mortgage payments including property taxes, home insurance, and PMI.</p>
+            <a href="/tools/mortgage-rate-calculator" style="color:#fbbf24;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
           </div>
         </div>
       </div>
@@ -271,32 +309,32 @@ const marketingPagesContent = {
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/ai-automation" style="color:#ffffff;text-decoration:none;">AI &amp; Lead Automation</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Deploy custom conversational AI agents 24/7. Instantly respond, qualify, and schedule meetings from incoming leads over WhatsApp, SMS, and email.</p>
-          <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore AI &amp; Lead Automation →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/paid-ads" style="color:#ffffff;text-decoration:none;">Meta &amp; Google Ads Agency</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Performance marketing engineered on unit economics: creative testing systems averaging 4.5x ROAS by month 3.</p>
-          <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Meta &amp; Google Ads →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/content-production" style="color:#ffffff;text-decoration:none;">Content Production That Converts</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Scroll-stopping video scripts, carousels and branded content systems produced for your niche — engineered to convert, not just get views.</p>
-          <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Content Production That Converts →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/email-whatsapp" style="color:#ffffff;text-decoration:none;">WhatsApp &amp; Email Automation That Sells</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.</p>
-          <a href="/services/email-whatsapp" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/email-whatsapp" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore WhatsApp &amp; Email Automation →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/social-media" style="color:#ffffff;text-decoration:none;">Social Media Management</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">End-to-end organic social growth covering copywriting, monthly content calendars, community replies, and viral trend monitoring.</p>
-          <a href="/services/social-media" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/social-media" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Social Media Management →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/web-seo" style="color:#ffffff;text-decoration:none;">Web Design &amp; Technical SEO</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Fast-loading, sub-second landing pages and technical search engine optimization to capture high-intent buyers organically.</p>
-          <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Explore Web Design &amp; Technical SEO →</a>
         </div>
       </div>
     </main>
@@ -1728,11 +1766,73 @@ try {
 }
 
 // 4. Render individual blog post pages with rich, complete static body content for crawlers
+function getBlogServiceCta(post) {
+  const cat = (post.category || '').toLowerCase();
+  const text = (post.title + ' ' + post.content).toLowerCase();
+
+  if (cat.includes('ai') || cat.includes('automation') || text.includes('sales pipeline') || text.includes('lead qualification')) {
+    return {
+      title: 'Automate Your Inbound & Sales Pipeline With AI',
+      desc: 'Deploy custom AI agents that respond over WhatsApp & Instagram in under a second, qualify buyers, and book meetings directly into your calendar 24/7.',
+      cta: 'Explore AI & Lead Automation',
+      path: '/services/ai-automation',
+      badge: 'AI Automation Service'
+    };
+  }
+  if (cat.includes('paid') || cat.includes('performance') || cat.includes('advertising') || text.includes('roas') || text.includes('meta ads')) {
+    return {
+      title: 'Scale Paid Media With Proven Unit Economics',
+      desc: 'Creative-first Meta and Google ad campaigns engineered on real contribution margin, averaging 4.5× ROAS by month 3.',
+      cta: 'Explore Performance Paid Ads',
+      path: '/services/paid-ads',
+      badge: 'Paid Ads Service'
+    };
+  }
+  if (cat.includes('email') || cat.includes('whatsapp') || text.includes('whatsapp') || text.includes('deliverability')) {
+    return {
+      title: 'Turn Chats & Inbox Leads Into High-Margin Sales',
+      desc: 'Conversational commerce workflows, WhatsApp broadcast automation, and enterprise email nurture sequences built for maximum LTV.',
+      cta: 'Explore WhatsApp & Email Automation',
+      path: '/services/email-whatsapp',
+      badge: 'Conversational Commerce'
+    };
+  }
+  return {
+    title: 'Dominate Organic Search & AI Search Engines (GEO)',
+    desc: 'Technical SEO, sub-second web architecture, and Generative Engine Optimization engineered to capture high-intent buyers.',
+    cta: 'Explore Web Design & SEO',
+    path: '/services/web-seo',
+    badge: 'Web & SEO Service'
+  };
+}
+
 blogPosts.forEach(post => {
   try {
     const route = `blog/${post.id}`;
+    const serviceCta = getBlogServiceCta(post);
+
+    const categoryPosts = blogPosts.filter(p => p.id !== post.id && p.category === post.category);
+    const otherPosts = blogPosts.filter(p => p.id !== post.id && p.category !== post.category);
+    const relatedPosts = [...categoryPosts, ...otherPosts].slice(0, 3);
+
+    const relatedPostsHtml = relatedPosts.map(r => `
+      <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#38bdf8;">${r.category}</span>
+          <h4 style="font-size:18px;font-weight:700;color:#ffffff;line-height:1.35;margin:10px 0 12px;">
+            <a href="/blog/${r.id}" style="color:#ffffff;text-decoration:none;">${r.title}</a>
+          </h4>
+          <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin:0 0 16px;">${r.excerpt}</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:#707080;">
+          <span>${r.readTime}</span>
+          <a href="/blog/${r.id}" style="color:#38bdf8;text-decoration:none;font-weight:600;">Read Article →</a>
+        </div>
+      </div>
+    `).join('');
+
     const articleHtml = `
-      <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
+      <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
         <span style="color:#1F4B99;font-weight:600;font-size:13.5px;text-transform:uppercase;letter-spacing:1px;">${post.category}</span>
         <h1 style="font-size:clamp(28px,5vw,44px);font-weight:800;color:#ffffff;line-height:1.25;margin:12px 0 24px;letter-spacing:-0.5px;">${post.title}</h1>
         
@@ -1746,6 +1846,29 @@ blogPosts.forEach(post => {
         
         <div class="article-content" style="color:#a0a0b0;line-height:1.75;">
           ${markdownToHtml(post.content)}
+        </div>
+
+        <!-- Mapped Service CTA Banner -->
+        <div style="margin:56px 0 48px;background:linear-gradient(135deg,rgba(15,23,42,0.8),rgba(14,18,29,0.95));border:1px solid rgba(56,189,248,0.25);border-radius:16px;padding:36px 32px;box-sizing:border-box;">
+          <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:4px 12px;border-radius:999px;margin-bottom:14px;">${serviceCta.badge}</span>
+          <h3 style="font-size:24px;font-weight:800;color:#ffffff;margin:0 0 10px;line-height:1.3;">${serviceCta.title}</h3>
+          <p style="font-size:15px;color:#94a3b8;line-height:1.65;margin:0 0 24px;">${serviceCta.desc}</p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+            <a href="${serviceCta.path}" style="background:#1F4B99;color:#ffffff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;">${serviceCta.cta} →</a>
+            <a href="/contact" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#ffffff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:8px;text-decoration:none;display:inline-block;">Book Free Strategy Call</a>
+          </div>
+        </div>
+
+        <!-- Related Articles & Case Studies -->
+        <div style="margin-top:60px;padding-top:40px;border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="margin-bottom:28px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:4px 12px;border-radius:999px;">DEEP-DIVE STRATEGIES</span>
+            <h3 style="font-size:26px;font-weight:800;color:#ffffff;margin-top:12px;margin-bottom:6px;">Related Articles &amp; Case Studies</h3>
+            <p style="font-size:14px;color:#94a3b8;margin:0;">Explore proven growth systems, automated ad frameworks, and technical marketing guides.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+            ${relatedPostsHtml}
+          </div>
         </div>
       </main>
     `;

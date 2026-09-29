@@ -35,6 +35,8 @@ const SERVICES = [
   {
     num: '01',
     title: 'AI Lead & Sales Automation',
+    path: '/services/ai-automation',
+    cta: 'Explore AI Lead Automation',
     desc: 'Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar 24/7 without manual work.',
     tags: ['< 1s AI Response', 'Enterprise CRM Sync', 'WhatsApp & IG Automation'],
     color: 'from-orange-500/20 to-amber-500/10',
@@ -43,6 +45,8 @@ const SERVICES = [
   {
     num: '02',
     title: 'Performance Paid Ads Engine',
+    path: '/services/paid-ads',
+    cta: 'Explore Paid Ads Engine',
     desc: 'Creative-first Meta and Google campaigns engineered on unit economics, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our automated ad testing system.',
     tags: ['Meta & Google Ads', '4.5× Avg ROAS', 'Creative Matrix Testing'],
     color: 'from-blue-500/20 to-indigo-500/10',
@@ -51,6 +55,8 @@ const SERVICES = [
   {
     num: '03',
     title: 'Content Creation & Branding',
+    path: '/services/content-production',
+    cta: 'Explore Content Production',
     desc: 'High-converting video scripts, carousel graphics, and social posts generated and scheduled automatically for your target niche.',
     tags: ['Automated Content', 'Viral Script Writing', 'Niche Audio Models'],
     color: 'from-purple-500/20 to-pink-500/10',
@@ -59,6 +65,8 @@ const SERVICES = [
   {
     num: '04',
     title: 'Full-Funnel CRO & Web Systems',
+    path: '/services/web-seo',
+    cta: 'Explore CRO & Web Systems',
     desc: 'High-speed landing pages and checkout systems optimized for maximum conversion rate, Instant speed scores, and zero lead dropoff.',
     tags: ['Sub-Second Speed', 'Instant Conversion', 'A/B Split Testing'],
     color: 'from-emerald-500/20 to-teal-500/10',
@@ -156,7 +164,19 @@ const Home: React.FC = () => {
               </h1>
 
               <p className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl">
-                We build autonomous AI lead pipelines, run high-margin Meta & Google ad campaigns, and deploy automated content systems engineered for repeatable profit.
+                We build autonomous{' '}
+                <Link to="/services/ai-automation" className="text-brand-primary underline hover:text-white transition-colors">
+                  AI lead pipelines
+                </Link>
+                , run high-margin{' '}
+                <Link to="/services/paid-ads" className="text-brand-primary underline hover:text-white transition-colors">
+                  Meta &amp; Google ad campaigns
+                </Link>
+                , and deploy automated content systems engineered for repeatable profit. Explore our{' '}
+                <Link to="/tools" className="text-brand-primary underline hover:text-white transition-colors">
+                  free growth tools
+                </Link>{' '}
+                to forecast returns and streamline outreach.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -275,7 +295,11 @@ const Home: React.FC = () => {
                   <ArrowRight size={16} className="text-neutral-500 group-hover:text-brand-primary transition-colors" />
                 </div>
 
-                <h3 className="text-xl font-bold text-white">{svc.title}</h3>
+                <h3 className="text-xl font-bold text-white">
+                  <Link to={svc.path} className="text-white hover:text-brand-primary transition-colors">
+                    {svc.title}
+                  </Link>
+                </h3>
                 <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{svc.desc}</p>
 
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -284,6 +308,12 @@ const Home: React.FC = () => {
                       {t}
                     </span>
                   ))}
+                </div>
+
+                <div className="pt-2">
+                  <Link to={svc.path} className="text-xs font-bold text-brand-primary hover:underline inline-flex items-center gap-1">
+                    {svc.cta} <ArrowRight size={14} />
+                  </Link>
                 </div>
               </SpotlightCard>
             ))}
@@ -346,6 +376,98 @@ const Home: React.FC = () => {
               </div>
             </SpotlightCard>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5.5 FREE GROWTH & FINANCE TOOLS (LINK EQUITY & DISCOVERY) ─ */}
+      <section className="py-20 bg-[#07090e] border-t border-neutral-800/80 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-3 max-w-2xl">
+              <span className="px-3.5 py-1 bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-bold uppercase rounded-full tracking-wider">
+                FREE GROWTH TOOLS
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                Calculators &amp; Conversion Utilities
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-400">
+                100% free client-side tools built by Social Ninja's for founders, marketers, and operators — zero signup required.
+              </p>
+            </div>
+            <Link to="/tools" className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:underline shrink-0">
+              Browse All Free Tools <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <Link to="/tools/whatsapp-link-generator" className="group block text-decoration-none">
+              <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">
+                  WA
+                </div>
+                <h3 className="text-base font-bold text-white group-hover:text-brand-primary transition-colors">
+                  WhatsApp Link Generator
+                </h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Create direct wa.me chat links with custom pre-filled messages and free QR codes.
+                </p>
+                <div className="text-[11px] font-bold text-emerald-400 pt-1 flex items-center gap-1">
+                  Use Tool →
+                </div>
+              </SpotlightCard>
+            </Link>
+
+            <Link to="/tools/us-take-home-pay-calculator" className="group block text-decoration-none">
+              <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">
+                  TAX
+                </div>
+                <h3 className="text-base font-bold text-white group-hover:text-brand-primary transition-colors">
+                  US Take-Home Pay Calculator
+                </h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Estimate net pay after federal, state, and FICA taxes across all 50 US states.
+                </p>
+                <div className="text-[11px] font-bold text-blue-400 pt-1 flex items-center gap-1">
+                  Use Tool →
+                </div>
+              </SpotlightCard>
+            </Link>
+
+            <Link to="/tools/hourly-to-salary-calculator" className="group block text-decoration-none">
+              <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">
+                  $/H
+                </div>
+                <h3 className="text-base font-bold text-white group-hover:text-brand-primary transition-colors">
+                  Hourly to Salary Calculator
+                </h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Convert hourly wages to annual salary, monthly, and weekly gross income with overtime.
+                </p>
+                <div className="text-[11px] font-bold text-purple-400 pt-1 flex items-center gap-1">
+                  Use Tool →
+                </div>
+              </SpotlightCard>
+            </Link>
+
+            <Link to="/tools/mortgage-rate-calculator" className="group block text-decoration-none">
+              <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm">
+                  %
+                </div>
+                <h3 className="text-base font-bold text-white group-hover:text-brand-primary transition-colors">
+                  Mortgage Payment Calculator
+                </h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Calculate monthly PITI mortgage payments including property taxes, home insurance, and PMI.
+                </p>
+                <div className="text-[11px] font-bold text-amber-400 pt-1 flex items-center gap-1">
+                  Use Tool →
+                </div>
+              </SpotlightCard>
+            </Link>
           </div>
         </div>
       </section>

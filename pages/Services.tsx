@@ -65,7 +65,11 @@ const Services: React.FC = () => {
 
               <div>
                 <div className="text-[10px] font-bold text-[#4281f5] uppercase tracking-wider mb-1">{s.sub}</div>
-                <h3 className="text-xl font-bold text-white">{s.title}</h3>
+                <h3 className="text-xl font-bold text-white">
+                  <Link to={`/services/${s.id}`} className="text-white hover:text-[#38bdf8] transition-colors">
+                    {s.title}
+                  </Link>
+                </h3>
               </div>
 
               <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">{s.desc}</p>
@@ -80,8 +84,8 @@ const Services: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <Link to={`/services/${s.id}`} className="text-xs font-bold text-[#4281f5] hover:underline flex items-center gap-1">
-                  Learn More <ArrowRight size={14} />
+                <Link to={`/services/${s.id}`} className="text-xs font-bold text-[#38bdf8] hover:underline flex items-center gap-1">
+                  Explore {s.title} <ArrowRight size={14} />
                 </Link>
               </div>
             </SpotlightCard>

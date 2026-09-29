@@ -43,7 +43,7 @@ export const POSTS = [
 
 In B2B sales, momentum is everything. Yet, high-performing sales executives spend up to 4 hours per day manually logging calls, updating lead stages, and writing personalized follow-up emails in CRM tools like HubSpot. This operational overhead slows down response times, leads to incomplete client profiles, and ultimately drives up customer acquisition costs (CAC). 
 
-By connecting HubSpot with custom **AI sales automation agents**, you can completely eliminate manual data entry.
+By connecting HubSpot with custom **[AI sales automation agents](/services/ai-automation)**, you can completely eliminate manual data entry.
 
 **The average sales representative spends only 34% of their day actually selling. The rest is eaten by CRM administration.**
 
@@ -55,13 +55,13 @@ Automating your CRM pipeline requires three core architectural layers:
 3. **Personalized Copywriting**: Generates a bespoke value proposition highlighting specific pain points.
 4. **Calendar Integration**: Inserts a direct booking link and syncs the booked calendar event back to the HubSpot contact card.
 
-By coupling LLMs with API connectors, you can build a system that qualifies leads and scripts custom proposals on autopilot.
+By coupling LLMs with API connectors, you can build a system that [qualifies leads and scripts custom proposals](/services/ai-automation) on autopilot.
 
 ## Achieving Positive Pipeline ROI
 
 Integrating custom LLM workflows into HubSpot doesn't just save time—it improves booking rates by responding to high-value leads with bespoke personalization in under a minute. 
 
-Social Ninja's builds custom B2B sales pipelines that optimize every stage of client engagement, letting you scale outbound campaigns without expanding your administrative team.
+Social Ninja's builds custom [B2B sales pipelines](/services/ai-automation) that optimize every stage of client engagement, letting you scale outbound campaigns without expanding your administrative team.
     `,
     cta: 'Automate Your CRM Pipeline →',
     ctaHref: '/contact',
@@ -107,13 +107,13 @@ Social Ninja's builds custom B2B sales pipelines that optimize every stage of cl
 
 The GCC region—specifically Dubai, Abu Dhabi, Riyadh, and Jeddah—represents one of the most lucrative digital marketing environments globally. Consumers in these cities exhibit high disposable income, resulting in Average Order Values (AOV) that are 3x to 5x higher than in India. 
 
-However, entering these markets is not simple. Customer acquisition costs (CAC) on Meta and Google Ads are premium, and bidding strategies that work elsewhere fail when deployed in the GCC.
+However, entering these markets is not simple. Customer acquisition costs (CAC) on [Meta and Google Ads](/services/paid-ads) are premium, and bidding strategies that work elsewhere fail when deployed in the GCC.
 
 **Higher ad costs (CPMs) in Dubai require specialized high-basket offers to remain profitable.**
 
 ## Locational Targeting and Creative Localization
 
-To win paid ads in Dubai and Saudi Arabia, you need to structure your media buying around two core concepts: locational audience mapping and creative localization. 
+To win paid ads in Dubai and Saudi Arabia, you need to structure your media buying around two core concepts: locational audience mapping and [creative localization](/services/content-production). 
 
 - **Dubai and UAE**: Operate primarily on high-fidelity English creative featuring premium luxury aesthetics. 
 - **Saudi Arabia (KSA)**: Responds heavily to localized, native Arabic video content. Deploying generic English creatives in Saudi Arabia yields 60% lower conversion rates.
@@ -124,7 +124,7 @@ To win paid ads in Dubai and Saudi Arabia, you need to structure your media buyi
 
 Successful expansion to the Middle East requires mapping out your gross margins before spending a single dollar. If your unit economics are not set up for high ad spend, you will burn capital. 
 
-At Social Ninja's, we help international brands scale profitably in the GCC market using profit-focused media buying, high-converting creatives, and AI-driven bidding scripts.
+At Social Ninja's, we help international brands scale profitably in the GCC market using [profit-focused media buying](/services/paid-ads), high-converting creatives from our [creative production studio](/services/content-production), and AI-driven bidding scripts.
     `,
     cta: 'Get a GCC Growth Consultation →',
     ctaHref: '/contact',
@@ -168,7 +168,7 @@ At Social Ninja's, we help international brands scale profitably in the GCC mark
     content: `
 ## The Death of Blue Links: The Rise of GEO
 
-Search is experiencing its biggest shift since the late 90s. Users are no longer Googling and clicking through lists of links; they are asking Perplexity, ChatGPT, and Claude directly. This behavior shift has spawned **Generative Engine Optimization (GEO)**. 
+Search is experiencing its biggest shift since the late 90s. Users are no longer Googling and clicking through lists of links; they are asking Perplexity, ChatGPT, and Claude directly. This behavior shift has spawned **[Generative Engine Optimization (GEO)](/services/web-seo)**. 
 
 If your business is not referenced, quoted, or recommended in these AI search summaries, you do not exist to a rapidly growing segment of buyers.
 
@@ -180,14 +180,14 @@ Unlike traditional search engine crawlers that score page structure and backlink
 
 1. **Information Richness**: Write depth-oriented content that answers multiple connected long-tail questions on a single page.
 2. **Cite Authority Sources**: Back up claims with statistics, surveys, and third-party links. LLMs trust content that is anchored in verifiable data.
-3. **Schema Markup & Structured Data**: Help LLMs crawl your site by exposing structured JSON-LD data for products, FAQs, and articles.
+3. **Schema Markup & Structured Data**: Help LLMs crawl your site by exposing structured [JSON-LD schema markup](/services/web-seo) for products, FAQs, and articles.
 4. **Mention Frequency & Co-occurrence**: Get mentioned in reputable directories, news publications, and industry lists next to your target keywords.
 
 ## Your Actionable GEO Playbook for 2026
 
 Transitioning to GEO requires a content restructure. Stop writing thin 500-word SEO blogs. Instead, create comprehensive master resources that address technical nuances, provide downloadable templates, and speak directly to user intent. 
 
-At Social Ninja's, we build GEO-optimized growth systems that ensure AI models surface your brand when high-intent prospects search.
+At Social Ninja's, we build [GEO-optimized growth systems](/services/web-seo) that ensure AI models surface your brand when high-intent prospects search.
     `,
     cta: 'Get a GEO Readiness Audit →',
     ctaHref: '/contact',
@@ -233,7 +233,7 @@ At Social Ninja's, we build GEO-optimized growth systems that ensure AI models s
 
 For years, automation meant setting up rigid, rule-based triggers in tools like Zapier. *If X happens, do Y.* But modern business operations are rarely linear. 
 
-Enter **autonomous AI agents**. Unlike traditional software, agents are goal-oriented. You give them an objective, a set of tools (email, CRM access, APIs), and the autonomy to figure out the steps required to achieve it.
+Enter **[autonomous AI agents](/services/ai-automation)**. Unlike traditional software, agents are goal-oriented. You give them an objective, a set of tools (email, CRM access, APIs), and the autonomy to figure out the steps required to achieve it.
 
 **Rule-based automation breaks when something unexpected occurs. AI agents reason, adapt, and solve problems dynamically.**
 
@@ -241,7 +241,7 @@ Enter **autonomous AI agents**. Unlike traditional software, agents are goal-ori
 
 AI workers are transforming critical departments by executing end-to-end workflows that previously required teams of humans:
 
-- **Autonomous Lead Nurturing**: Instantly researching a new lead, crafting a hyper-personalized response based on their company website, and following up via WhatsApp.
+- **Autonomous Lead Nurturing**: Instantly researching a new lead, crafting a hyper-personalized response based on their company website, and [following up via WhatsApp](/services/email-whatsapp).
 - **Dynamic CRM Management**: Listening to sales calls, extracting key pain points, and updating Salesforce or HubSpot with structured summaries and action items.
 - **AI-Powered Competitor Analysis**: Scanning competitor pricing, social media announcements, and reviews daily to compile weekly action summaries.
 - **Omnichannel Support**: Resolving 85% of complex customer support tickets across email, SMS, and WhatsApp without human intervention.
@@ -250,7 +250,7 @@ AI workers are transforming critical departments by executing end-to-end workflo
 
 Deploying AI agents successfully requires an orchestration framework. By combining agent tasks with human guardrails, you build a hybrid workflow that scales efficiency while maintaining brand safety. 
 
-Social Ninja's specializes in deploying custom AI automation agents that integrate seamlessly with your existing tech stack, letting you scale operations without increasing headcount.
+Social Ninja's specializes in deploying [custom AI automation agents](/services/ai-automation) that integrate seamlessly with your existing tech stack, letting you scale operations without increasing headcount.
     `,
     cta: 'Build Your AI Agent Workflow →',
     ctaHref: '/contact',
@@ -304,7 +304,9 @@ Your sales team is excellent. But they're human. They have lunch breaks, client 
 
 ## What an AI Agent Actually Does
 
-An AI sales agent sits on every entry point — your website, WhatsApp, Instagram DM, Facebook ad — and responds instantly, 24/7. But it doesn't just say "thanks for your message." It qualifies. It asks the right questions. It determines budget, timeline, intent. And for qualified leads, it books directly into your sales team's calendar.
+An [AI sales agent](/services/ai-automation) sits on every entry point — your website, [WhatsApp](/services/email-whatsapp), Instagram DM, Facebook ad — and responds instantly, 24/7. But it doesn't just say "thanks for your message." It [qualifies leads](/services/ai-automation). It asks the right questions. It determines budget, timeline, intent. And for qualified leads, it books directly into your sales team's calendar.
+
+You can also use our [free WhatsApp link generator](/tools/whatsapp-link-generator) to set up direct-to-chat links with custom pre-filled message prompts for instant response testing.
 
 *One client: response time 47hrs → 0.8s. Close rate: 8% → 21%.*
     `,
@@ -360,7 +362,7 @@ There's a 48-72 hour window where posting about a trending topic gets massive or
 
 ## What Actually Works: The 3×/week System
 
-Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each piece should use a platform-native hook (Instagram hooks are different from LinkedIn hooks), reference something that's happening this week in your niche, and never repeat an angle you've used before. We research live trends before every campaign — so every post is timed to trend momentum.
+Post 3 high-quality, trend-timed pieces per week instead of 7 generic ones. Each piece should use a platform-native hook (Instagram hooks are different from LinkedIn hooks), reference something that's happening this week in your niche, and never repeat an angle you've used before. We research live trends before every campaign through our [content production studio](/services/content-production) and pair it with structured [social media management](/services/social-media) — so every post is timed to trend momentum.
 
 *Quality + timing beats volume every single time. The data is not ambiguous.*
     `,
@@ -410,6 +412,8 @@ Your agency reports 4× ROAS. You feel good. But run the actual math: ₹1L spen
 
 **4× ROAS with 60% COGS = 60% net return. Not 400%.**
 
+To model your true unit economics and net earnings across campaigns, you can explore our [free business tools](/tools).
+
 ## The Metrics That Actually Matter
 
 Three numbers should run your paid media decisions:
@@ -421,7 +425,9 @@ Three numbers should run your paid media decisions:
 
 ## Building a Real Performance Dashboard
 
-The brands that dominate paid media connect three data streams: their ad platform data (Meta, Google), their backend revenue data (Shopify, CRM), and their actual margins. When these three are live in one dashboard, you can see the real number — and make decisions that grow the business instead of just the reporting slide. We build these dashboards for every client in the first 2 weeks.
+The brands that dominate paid media connect three data streams: their ad platform data (Meta, Google), their backend revenue data (Shopify, CRM), and their actual margins. When these three are live in one dashboard, you can see the real number — and make decisions that grow the business instead of just the reporting slide. 
+
+At Social Ninja's, our [performance paid ads engine](/services/paid-ads) and [revenue growth consulting](/services/growth-consulting) build these dashboards for every client in the first 2 weeks.
 
 *The brands that win ads aren't the ones with highest ROAS. They know their real numbers.*
     `,
@@ -470,7 +476,7 @@ The brands that dominate paid media connect three data streams: their ad platfor
     content: `
 ## Why Most Brand Partnerships Fail with a Performance Marketing Agency
 
-The global digital landscape is highly competitive. With rising customer acquisition costs (CAC) on Meta and Google Ads, brands can no longer afford to run generic campaigns. Yet, many businesses hire a **performance marketing agency** only to be disappointed by reports filled with vanity metrics like impressions and clicks.
+The global digital landscape is highly competitive. With rising customer acquisition costs (CAC) on [Meta and Google Ads](/services/paid-ads), brands can no longer afford to run generic campaigns. Yet, many businesses hire a **[performance marketing agency](/services/paid-ads)** only to be disappointed by reports filled with vanity metrics like impressions and clicks.
 
 If your Shopify store is receiving traffic but not generating sales, your paid media strategy is likely misaligned. To scale your D2C or B2B brand profitably, you must ask hard questions before partnering with any digital growth agency.
 
@@ -481,11 +487,11 @@ If your Shopify store is receiving traffic but not generating sales, your paid m
 2. **What attribution model do you use to verify Shopify sales?**
    Relying solely on Meta's default attribution can lead to over-reporting. Your agency should use triple-source attribution tracking (Ad manager data + Shopify backend + platforms like TripleWhale) to ensure you are paying for actual incremental conversions.
 3. **How do you handle ad fatigue and creative testing?**
-   High-converting creatives are the single most important factor for paid ads in 2026. A top-tier **performance marketing agency** must have a structured framework for testing hooks, captions, and user-generated content (UGC) weekly.
+   High-converting creatives are the single most important factor for paid ads in 2026. A top-tier **performance marketing agency** must have a structured framework for testing hooks, captions, and user-generated content (UGC) weekly via dedicated [creative production services](/services/content-production).
 4. **Do you build custom landing pages, or send traffic to product pages?**
-   Sending cold traffic to generic collection pages yields low conversion rates. High-performance campaigns require dedicated, fast-loading mobile landing pages optimized specifically for conversions.
+   Sending cold traffic to generic collection pages yields low conversion rates. High-performance campaigns require dedicated, fast-loading mobile landing pages optimized specifically for conversions via [technical SEO and CRO architectures](/services/web-seo).
 5. **How do you integrate AI automation to manage daily bidding?**
-   Automated budget allocation scripts are essential. Bids should be dynamically shifted to winning ad sets every hour based on real-time API integrations, rather than manual daily checks.
+   Automated budget allocation scripts are essential. Connect your funnels with [AI sales and lead automation](/services/ai-automation) to qualify buyers dynamically.
 6. **Who will be managing our ad accounts daily?**
    Many agencies pitch with senior strategists but hand account management to junior interns. Ensure you have dedicated senior media buyers who understand your industry vertical.
 7. **What is your client retention rate for ad budgets over ₹5 Lakhs per month?**
@@ -495,7 +501,7 @@ If your Shopify store is receiving traffic but not generating sales, your paid m
 
 Instead of vanity metrics, base your scaling decisions on **Marketing Efficiency Ratio (MER)**—your total revenue divided by total marketing spend. At Social Ninja's, we combine profit-focused media buying, high-converting creative scripting, and AI-driven bidding to help brands achieve predictable scale. 
 
-If you are ready to audit your current campaigns, explore our [Performance Marketing Services](/services) or schedule a [Free Ads Audit](/contact) today.
+If you are ready to audit your current campaigns, explore our [Performance Paid Ads Services](/services/paid-ads) or schedule a [Free Ads Audit](/contact) today.
     `,
     cta: 'Get a Free Ads Audit →',
     ctaHref: '/contact',
@@ -541,7 +547,7 @@ If you are ready to audit your current campaigns, explore our [Performance Marke
 
 Many brands drive high traffic to their websites but suffer from low conversion rates. The culprit is almost always slow follow-up times. If a hot prospect submits an inquiry form or sends a DM, and your sales team takes hours to reply, the lead goes cold. In fact, responding within 5 minutes versus 30 minutes increases your chance of qualifying a lead by 400%.
 
-Deploying modern **AI marketing automation tools** is the ultimate solution to capture high-intent buyers instantly, 24 hours a day.
+Deploying modern **[AI marketing automation tools](/services/ai-automation)** is the ultimate solution to capture high-intent buyers instantly, 24 hours a day.
 
 ## How a Conversational AI Sales Agent Transforms Your Funnel
 
@@ -549,8 +555,8 @@ Traditional chatbots fail because they rely on rigid, pre-scripted decision tree
 
 Here is how an automated system optimizes your sales funnel:
 - **Instant Response (under 0.8 seconds)**: The AI responds to website forms, Instagram DMs, and Facebook Lead forms immediately.
-- **WhatsApp Marketing Automation**: Leads are qualified in real-time over WhatsApp, one of the highest-engagement conversion channels globally.
-- **Automated Lead Qualification**: The AI agent filters out low-intent users by asking about budget, intent, and requirements before handoff.
+- **[WhatsApp Marketing Automation](/services/email-whatsapp)**: Leads are qualified in real-time over WhatsApp, one of the highest-engagement conversion channels globally.
+- **[Automated Lead Qualification](/services/ai-automation)**: The AI agent filters out low-intent users by asking about budget, intent, and requirements before handoff.
 - **Direct Calendar Booking**: Once a lead is qualified, the AI automatically shares a calendar link to book a meeting directly with your sales representatives.
 
 ## Transitioning to an Automation-First Strategy
@@ -601,7 +607,7 @@ Automating your lead qualification isn't just about saving time—it's about max
 
 The search behavior of consumers is shifting. Over 40% of young users now search for products, reviews, and services directly on Instagram and TikTok instead of Google. If your brand does not appear in social search results, you are missing out on high-intent organic traffic.
 
-This **Instagram SEO guide** outlines the exact steps to optimize your profile, captions, and Reels so you rank at the top of search queries in your niche.
+This **[Instagram SEO guide](/services/web-seo)** outlines the exact steps to optimize your profile, captions, and Reels so you rank at the top of search queries in your niche.
 
 ## 4 Pillars to Optimize Your Instagram Profile for Search
 
@@ -616,7 +622,7 @@ This **Instagram SEO guide** outlines the exact steps to optimize your profile, 
 
 ## Driving Sustainable Inbound Leads Organically
 
-Unlike temporary social media posts that disappear from user feeds in 24 hours, search-optimized Reels can rank and drive traffic for months. Combining an active organic search strategy with automated creation tools is the most cost-effective way to generate inbound inquiries.
+Unlike temporary social media posts that disappear from user feeds in 24 hours, search-optimized Reels can rank and drive traffic for months. Combining an active organic search strategy with automated [content production](/services/content-production) and [social media management](/services/social-media) is the most cost-effective way to generate inbound inquiries.
 
 To start scaling your social search strategy, sign up for a [Free Organic Strategy Call](/contact) with our team.
     `,
@@ -681,7 +687,7 @@ Ensuring your emails land in the primary inbox requires a robust technical setup
 
 Filters now analyze the semantic content of your emails. Standard copy-paste templates trigger automated spam alerts. To maintain high engagement rates, you must use AI-driven custom intro lines and clean your lead lists weekly using verification tools.
 
-Social Ninja's builds scalable B2B outbound engines that handle the technical setup, copy generation, and inbox management for your business.
+Social Ninja's builds scalable B2B outbound engines and [email & WhatsApp automation systems](/services/email-whatsapp) that handle the technical setup, copy generation, and inbox management for your business. Connect with our [revenue growth consulting](/services/growth-consulting) team to audit your sender domains.
     `,
     cta: 'Fix Your Email Deliverability →',
     ctaHref: '/contact',
@@ -727,13 +733,13 @@ Social Ninja's builds scalable B2B outbound engines that handle the technical se
 
 Modern consumers demand immediate gratification and frictionless shopping experiences. Directing customers from social media ads to a slow-loading website with a complex multi-step checkout process results in massive cart abandonment rates. 
 
-Conversational commerce changes this completely by bringing the entire shopping journey directly into the user's favorite messaging application: WhatsApp. By automating checkout flows in chat, brands can capture intent at its peak.
+Conversational commerce changes this completely by bringing the entire shopping journey directly into the user's favorite messaging application: WhatsApp. By automating checkout flows in chat, brands can capture intent at its peak using the official [WhatsApp Cloud API](/services/email-whatsapp).
 
 **WhatsApp has a 98% open rate, making it the most powerful channel for direct-to-consumer sales interactions.**
 
 ## Automating the WhatsApp Sales Funnel
 
-Building a conversational revenue channel requires combining WhatsApp Business API with advanced natural language processing. Instead of standard, rigid button menus, modern AI agents understand natural conversation, recommend products, and process payments securely in-chat. Here is how it works:
+Building a conversational revenue channel requires combining WhatsApp Business API with advanced natural language processing. You can create your initial entry point with our [free WhatsApp link generator](/tools/whatsapp-link-generator).
 
 1. **AI Product Recommendations**: The bot queries the catalog based on natural descriptions, suggesting the perfect product match.
 2. **In-Chat Cart Building**: Customers can add items to their cart, change quantities, and check out without leaving WhatsApp.
@@ -744,7 +750,7 @@ Building a conversational revenue channel requires combining WhatsApp Business A
 
 Moving your sales funnel to WhatsApp does not mean hiring a massive support team. A single conversational AI integration can manage thousands of parallel chats, qualify leads, and close sales 24/7. 
 
-Social Ninja's designs and deploys custom WhatsApp conversational commerce systems that integrate directly with Shopify, WooCommerce, and Salesforce CRM.
+Social Ninja's designs and deploys custom [WhatsApp conversational commerce systems](/services/email-whatsapp) and [AI sales pipelines](/services/ai-automation) that integrate directly with Shopify, WooCommerce, and Salesforce CRM.
     `,
     cta: 'Automate Your WhatsApp Sales →',
     ctaHref: '/contact',
@@ -790,7 +796,7 @@ Social Ninja's designs and deploys custom WhatsApp conversational commerce syste
 
 Every media buyer has experienced it: you launch a new ad set, it achieves a stellar 5x ROAS, and then, after two weeks, performance falls off a cliff. This is creative fatigue. As your target audience sees your ad multiple times, its effectiveness decays, click-through rates (CTR) plummet, and CPMs skyrocket. 
 
-In 2026, targeting options are highly automated, meaning that the creative itself has become your primary targeting lever and growth engine.
+In 2026, targeting options are highly automated, meaning that the creative itself has become your primary targeting lever in [performance paid ads](/services/paid-ads).
 
 **Meta's algorithm rewards fresh creatives. High creative velocity is the secret to scaling ad budgets sustainably.**
 
@@ -800,14 +806,14 @@ To maintain a consistent 4x ROAS, you need an assembly line for creative testing
 
 1. **Hook Variations**: Test 3 to 5 different opening hooks (verbal or text overlay) for every single video concept. The first 3 seconds are critical.
 2. **Aspect Ratio Matching**: Ensure every creative is built in 9:16 (Reels/Stories), 1:1 (Feed), and 16:9 (Right Column) ratios for optimal placement bidding.
-3. **Weekly Creative Pipeline**: Produce and launch at least 3 new creative concepts weekly to prevent audience fatigue.
+3. **Weekly Creative Pipeline**: Produce and launch at least 3 new creative concepts weekly through a dedicated [creative production studio](/services/content-production) to prevent audience fatigue.
 4. **Concept vs. Variation**: Find a winning concept, then scale by changing callouts, colors, background music, and voiceover scripts.
 
 ## Data-Driven Scaling and Attribution
 
 When reviewing performance, analyze hook rate (3-second views divided by impressions) and hold rate (15-second views divided by impressions). These metrics tell you exactly where users lose interest in your ad, allowing you to edit existing videos to boost conversions. 
 
-Social Ninja's implements high-velocity creative testing systems for D2C brands, delivering premium ad creative that maintains long-term profitability.
+Social Ninja's implements high-velocity creative testing systems for D2C brands via our [paid advertising engine](/services/paid-ads), delivering premium ad creative that maintains long-term profitability.
     `,
     cta: 'Scale Your Ad Creative →',
     ctaHref: '/contact',
@@ -859,9 +865,9 @@ During this 24-48 hour delay, the lead's intent decays, or they book a demo with
 
 ## Integrating AI Qualifiers into Your Funnel
 
-An AI-powered inbound qualifier eliminates friction by responding to demo requests in under 60 seconds. By connecting LLM-driven agents to your lead forms and scheduling tools, you can automate qualification and booking instantly:
+An [AI-powered inbound qualifier](/services/ai-automation) eliminates friction by responding to demo requests in under 60 seconds. By connecting LLM-driven agents to your lead forms and scheduling tools, you can automate qualification and booking instantly:
 
-1. **Immediate Outreach**: Send an automated, highly personalized email or WhatsApp message as soon as a lead submits their details.
+1. **Immediate Outreach**: Send an automated, highly personalized email or [WhatsApp message](/services/email-whatsapp) as soon as a lead submits their details.
 2. **Contextual Qualification**: The AI agent asks conversational questions to determine budget, team size, and primary use cases.
 3. **Calendar Integration**: For qualified leads, the AI instantly provides booking options via Cal.com or Calendly, assigning the lead to the correct Account Executive.
 4. **CRM Syncing**: Populate HubSpot or Salesforce with detailed notes of the conversation, ensuring the AE has full context before the call.
@@ -870,7 +876,7 @@ An AI-powered inbound qualifier eliminates friction by responding to demo reques
 
 Deploying AI qualifiers does not replace your sales team; it empowers them. By automating the administrative steps of lead enrichment, initial outreach, and calendar scheduling, your SDRs and AEs can focus entirely on running demos and closing deals. 
 
-Social Ninja's builds custom B2B sales automation stacks that optimize lead handoffs and double conversion rates.
+Social Ninja's builds custom [AI lead automation systems](/services/ai-automation) that optimize lead handoffs and double conversion rates.
     `,
     cta: 'Build Your AI Qualifier →',
     ctaHref: '/contact',
@@ -916,7 +922,7 @@ Social Ninja's builds custom B2B sales automation stacks that optimize lead hand
 
 The SEO playbook is being rewritten. With the rapid growth of search platforms like Perplexity AI, ChatGPT Search, and Google Gemini, users are no longer clicking through a list of blue links. They ask complex, multi-variable questions and receive synthesized, citation-rich summaries. 
 
-If your brand is not mentioned in these generative AI answers, you are losing visibility to a massive segment of modern buyers. This has made **Generative Engine Optimization (GEO)** the most important growth channel of 2026.
+If your brand is not mentioned in these generative AI answers, you are losing visibility to a massive segment of modern buyers. This has made **[Generative Engine Optimization (GEO)](/services/web-seo)** the most important growth channel of 2026.
 
 **Traditional SEO focuses on page rank. GEO focuses on semantic relevance, domain authority, and dataset inclusion.**
 
@@ -926,14 +932,14 @@ Generative search engines do not crawl websites like Google's old PageRank index
 
 1. **Semantic Depth**: Create long-form, highly informative resources that address specific technical questions and cover topics comprehensively.
 2. **First-Party Authority**: Include proprietary data, case studies, and original surveys. AI models love citing unique, verified facts.
-3. **Structured JSON-LD Schema**: Expose detailed schema markup for your articles, product details, and FAQs so models can easily parse your content.
+3. **Structured JSON-LD Schema**: Expose detailed [technical SEO architecture and structured schemas](/services/web-seo) for your articles, product details, and FAQs so models can easily parse your content.
 4. **External Mentions & PR**: Get your brand mentioned next to key industry terms in reputable news sites, industry wikis, and directories.
 
 ## Preparing for the GEO-First Era
 
 Winning the GEO era requires restructuring your content creation process. Moving away from short, keyword-stuffed articles, you must build comprehensive guides that answer multi-intent queries, provide downloadable checklists, and provide clear value. 
 
-Social Ninja's designs GEO growth frameworks that guarantee your brand is indexed and cited by major LLM engines.
+Social Ninja's designs [GEO growth frameworks and web architectures](/services/web-seo) that guarantee your brand is indexed and cited by major LLM engines.
     `,
     cta: 'Get Your GEO Strategy →',
     ctaHref: '/contact',
