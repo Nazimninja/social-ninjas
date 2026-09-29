@@ -183,6 +183,85 @@ function extractBlogPostsFull() {
 
 // Render static HTML for marketing pages
 const marketingPagesContent = {
+  '': `
+    <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <!-- Hero -->
+      <div style="text-align:center;max-width:840px;margin:0 auto 48px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);color:#38bdf8;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:20px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#34d399;display:inline-block;"></span>
+          150+ Brands Scaled Globally Since 2022
+        </div>
+        <h1 style="font-size:clamp(32px,5vw,56px);font-weight:900;color:#ffffff;line-height:1.1;margin:0 0 20px;letter-spacing:-0.03em;">
+          AI-Powered Growth Systems <span style="color:#38bdf8;">That Scale Revenue.</span>
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;max-width:680px;margin-left:auto;margin-right:auto;">
+          We build autonomous AI lead pipelines, run high-margin Meta &amp; Google ad campaigns, and deploy automated content systems engineered for repeatable profit.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Book Free Audit →</a>
+          <a href="/services" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">Explore Core Systems</a>
+        </div>
+      </div>
+
+      <!-- Proof Metrics (The Real Stat Numbers) -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin:60px 0;text-align:center;">
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 20px;">
+          <div style="font-size:38px;font-weight:900;color:#38bdf8;line-height:1;margin-bottom:8px;">4.8×</div>
+          <div style="font-size:14px;font-weight:700;color:#ffffff;margin-bottom:4px;">Average Client ROAS</div>
+          <div style="font-size:12px;color:#707080;">Across Meta &amp; Google Ads</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 20px;">
+          <div style="font-size:38px;font-weight:900;color:#38bdf8;line-height:1;margin-bottom:8px;">₹40Cr+</div>
+          <div style="font-size:14px;font-weight:700;color:#ffffff;margin-bottom:4px;">Media Spend Managed</div>
+          <div style="font-size:12px;color:#707080;">Data-driven ad campaigns</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 20px;">
+          <div style="font-size:38px;font-weight:900;color:#38bdf8;line-height:1;margin-bottom:8px;">150+</div>
+          <div style="font-size:14px;font-weight:700;color:#ffffff;margin-bottom:4px;">Active Brand Partners</div>
+          <div style="font-size:12px;color:#707080;">Worldwide client base</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px 20px;">
+          <div style="font-size:38px;font-weight:900;color:#38bdf8;line-height:1;margin-bottom:8px;">97%</div>
+          <div style="font-size:14px;font-weight:700;color:#ffffff;margin-bottom:4px;">Client Retention Rate</div>
+          <div style="font-size:12px;color:#707080;">Month-over-month stability</div>
+        </div>
+      </div>
+
+      <!-- Core Growth Systems -->
+      <div style="margin-top:80px;">
+        <div style="text-align:center;margin-bottom:40px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">CORE GROWTH SYSTEMS</span>
+          <h2 style="font-size:36px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:0;">Engineered for Predictable Scale</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+            <div style="font-size:24px;font-weight:800;color:#f97316;margin-bottom:12px;">01</div>
+            <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/ai-automation" style="color:#ffffff;text-decoration:none;">AI Lead &amp; Sales Automation</a></h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">Custom AI agents reply to Instagram DMs, WhatsApp, and web forms in under 1 second — qualifying, nurturing, and booking leads into your calendar 24/7 without manual work.</p>
+            <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+            <div style="font-size:24px;font-weight:800;color:#38bdf8;margin-bottom:12px;">02</div>
+            <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/paid-ads" style="color:#ffffff;text-decoration:none;">Performance Paid Ads Engine</a></h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">Creative-first Meta and Google campaigns engineered on unit economics, not vanity metrics. Average client reaches 4.5× ROAS by month 3 with our automated ad testing system.</p>
+            <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+            <div style="font-size:24px;font-weight:800;color:#ec4899;margin-bottom:12px;">03</div>
+            <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/content-production" style="color:#ffffff;text-decoration:none;">Content Creation &amp; Branding</a></h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">High-converting video scripts, carousel graphics, and social posts generated and scheduled automatically for your target niche.</p>
+            <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+            <div style="font-size:24px;font-weight:800;color:#10b981;margin-bottom:12px;">04</div>
+            <h3 style="font-size:20px;font-weight:700;color:#ffffff;margin-bottom:12px;"><a href="/services/web-seo" style="color:#ffffff;text-decoration:none;">Full-Funnel CRO &amp; Web Systems</a></h3>
+            <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0 0 16px;">High-speed landing pages and checkout systems optimized for maximum conversion rate, instant speed scores, and zero lead dropoff.</p>
+            <a href="/services/web-seo" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  `,
   'services': `
     <main style="max-width:1140px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
       <h1 style="font-size:42px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.2;">Digital Growth &amp; Marketing Services</h1>
@@ -226,6 +305,26 @@ const marketingPagesContent = {
     <main style="max-width:800px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;">
       <h1 style="font-size:40px;font-weight:800;color:#ffffff;margin-bottom:24px;line-height:1.2;">About Social Ninja's</h1>
       <p style="font-size:17.5px;line-height:1.7;color:#a0a0b0;margin-bottom:24px;">Social Ninja's is a premium digital growth partner. Founded in Bangalore in 2022, we engineer automated revenue funnels and manage paid media for high-growth brands worldwide.</p>
+
+      <!-- Proof Numbers -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:36px 0;text-align:center;">
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">150+</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:6px;">Active Brand Partners</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">₹40Cr+</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:6px;">Ad Spend Managed</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">4.8×</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:6px;">Average Client ROAS</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">97%</div>
+          <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:6px;">Retention Rate</div>
+        </div>
+      </div>
       
       <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:40px;margin-bottom:16px;">Our Core Philosophy</h2>
       <p style="font-size:16px;line-height:1.75;color:#a0a0b0;margin-bottom:20px;">We reject vanity metrics like clicks and impressions. Our media buyers focus on unit economics and Contribution Margin (net profit after ad spend, COGS, and shipping). By combining AI automation with conversion-focused design, we help D2C and B2B brands achieve predictable scale.</p>
@@ -803,7 +902,7 @@ function prerenderRoute(route, metadata, contentBodyHtml) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  const url = `https://socialninjas.in/${route}`;
+  const url = route ? `https://socialninjas.in/${route}` : 'https://socialninjas.in/';
   
   let html = template;
   
@@ -871,6 +970,10 @@ function prerenderRoute(route, metadata, contentBodyHtml) {
 
 // Dynamic routes list helper for index loop
 const routes = {
+  '': {
+    title: "AI Performance Marketing Agency | Social Ninja's",
+    description: "We build AI lead pipelines, run high-ROAS Meta & Google ads, and automate content for 150+ brands. Book a free strategy session."
+  },
   'services': {
     title: "Digital Marketing Services | AI, Ads, Content & SEO",
     description: "Explore Social Ninja's growth services: AI sales automation, Meta & Google ads, content production, SEO and web systems engineered for revenue."

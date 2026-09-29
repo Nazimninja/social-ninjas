@@ -8,18 +8,18 @@ interface AnimatedNumberProps {
 
 export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, className = '' }) => {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
-  const [displayValue, setDisplayValue] = useState('0');
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
+  // Progressive enhancement: Initialize with target value so SSR/raw HTML/no-JS displays the real number
+  const [displayValue, setDisplayValue] = useState(value);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || hasAnimated.current) return;
+    hasAnimated.current = true;
 
     // Extract numeric part and non-numeric prefix/suffix
     const match = value.match(/^([^0-9.]*)([0-9.]+)(.*)$/);
-    if (!match) {
-      setDisplayValue(value);
-      return;
-    }
+    if (!match) return;
 
     const prefix = match[1];
     const targetNum = parseFloat(match[2]);
@@ -28,9 +28,11 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, className
 
     let start = 0;
     const duration = 1800; // ms
-    const startTime = performance.now();
+    let animationFrameId: number;
+    let startTime: number | null = null;
 
     function step(now: number) {
+      if (!startTime) startTime = now;
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       // Ease out expo formula
@@ -42,11 +44,15 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value, className
       );
 
       if (progress < 1) {
-        requestAnimationFrame(step);
+        animationFrameId = requestAnimationFrame(step);
       }
     }
 
-    requestAnimationFrame(step);
+    animationFrameId = requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, [isInView, value]);
 
   return <span ref={ref} className={className}>{displayValue}</span>;

@@ -1,5 +1,5 @@
 
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
@@ -114,6 +114,45 @@ const AnimatedRoutes: React.FC = () => {
 // Main Layout Component to handle conditional rendering
 const MainLayout: React.FC = () => {
   const location = useLocation();
+  const [loadWidgets, setLoadWidgets] = useState(false);
+
+  useEffect(() => {
+    // Defer non-critical chat and support widgets so they do not block initial render or compete with critical resources
+    let triggered = false;
+    const trigger = () => {
+      if (!triggered) {
+        triggered = true;
+        setLoadWidgets(true);
+        cleanup();
+      }
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('scroll', trigger);
+      window.removeEventListener('pointerdown', trigger);
+      window.removeEventListener('touchstart', trigger);
+    };
+
+    window.addEventListener('scroll', trigger, { passive: true, once: true });
+    window.addEventListener('pointerdown', trigger, { passive: true, once: true });
+    window.addEventListener('touchstart', trigger, { passive: true, once: true });
+
+    // Fallback: idle callback or timeout to ensure widgets load even without interaction
+    let idleId: any;
+    let timerId: any;
+    if ('requestIdleCallback' in window) {
+      idleId = (window as any).requestIdleCallback(trigger, { timeout: 3500 });
+    } else {
+      timerId = setTimeout(trigger, 3000);
+    }
+
+    return () => {
+      cleanup();
+      if (idleId && 'cancelIdleCallback' in window) (window as any).cancelIdleCallback(idleId);
+      if (timerId) clearTimeout(timerId);
+    };
+  }, []);
+
   const hidePublicChrome = location.pathname.startsWith('/promo') || 
                            location.pathname === '/app' ||
                            location.pathname.startsWith('/app/') || 
@@ -126,12 +165,12 @@ const MainLayout: React.FC = () => {
         <AnimatedRoutes />
       </Suspense>
       {!hidePublicChrome && <Footer />}
-      {!hidePublicChrome && (
+      {!hidePublicChrome && loadWidgets && (
         <Suspense fallback={null}>
           <WhatsAppWidget />
         </Suspense>
       )}
-      {!hidePublicChrome && (
+      {!hidePublicChrome && loadWidgets && (
         <Suspense fallback={null}>
           <ChatBot />
         </Suspense>
