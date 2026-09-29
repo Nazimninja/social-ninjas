@@ -187,18 +187,18 @@ const marketingPagesContent = {
           <a href="/services/ai-automation" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/paid-ads" style="color:#ffffff;text-decoration:none;">Paid Ads &amp; Performance Marketing</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Profitable paid advertising campaigns on Meta, Google, and LinkedIn. Bidding and spending managed mathematically to maximize Contribution Margin.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/paid-ads" style="color:#ffffff;text-decoration:none;">Meta &amp; Google Ads Agency</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Performance marketing engineered on unit economics: creative testing systems averaging 4.5x ROAS by month 3.</p>
           <a href="/services/paid-ads" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/content-production" style="color:#ffffff;text-decoration:none;">Content Production &amp; Creative Studio</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">High-converting short-form videos, Reels, native ads, and landing page designs built specifically to scale customer acquisition costs.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/content-production" style="color:#ffffff;text-decoration:none;">Content Production That Converts</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Scroll-stopping video scripts, carousels and branded content systems produced for your niche — engineered to convert, not just get views.</p>
           <a href="/services/content-production" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/email-whatsapp" style="color:#ffffff;text-decoration:none;">Email &amp; WhatsApp Automation</a></h3>
-          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Automated retention flows, abandoned cart recovery, and broadcast messaging via official Meta WhatsApp Cloud API and Klaviyo/HubSpot.</p>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/services/email-whatsapp" style="color:#ffffff;text-decoration:none;">WhatsApp &amp; Email Automation That Sells</a></h3>
+          <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.</p>
           <a href="/services/email-whatsapp" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Learn More →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
@@ -282,56 +282,62 @@ const marketingPagesContent = {
   `
 };
 
-// Prerender individual service pages
+// Prerender individual service pages with exact 1.1A copy spec
 const servicesPrerenderData = {
   'paid-ads': {
-    title: "Paid Ads & Performance Marketing Agency | Social Ninja's",
-    h1: "Paid Ads & Performance Marketing",
-    tagline: "Data-driven Meta, Google & LinkedIn campaigns engineered for maximum ROAS.",
-    description: "Scale your brand with data-driven paid advertising across Meta, Google, and LinkedIn. Average 4.5x ROAS backed by rigorous creative testing and unit economics.",
-    hero: "Running ads is easy. Running ads that generate real profit and scale predictably is hard. Most businesses waste significant ad budget on fatigued creatives and misaligned targeting. We engineer full-funnel media buying campaigns across Meta, Google, and LinkedIn that acquire high-intent buyers, optimize unit economics, and eliminate wasted spend.",
-    problem: "You have likely tried boosting posts, running ads yourself, or working with agencies that deliver vanity metrics like clicks and impressions while sales stay flat. Rising customer acquisition costs (CAC), uncalibrated tracking, and creative fatigue destroy campaign margins when media buying lacks direct-response discipline.",
+    title: "Meta & Google Ads Agency | 4.5x Average ROAS",
+    h1: "Meta & Google Ads Engineered for Profit",
+    tagline: "Creative-first campaigns run on unit economics, not vanity metrics.",
+    description: "Performance marketing engineered on unit economics: creative testing systems averaging 4.5x ROAS by month 3. Get a free Meta & Google ads audit.",
+    hero: "Performance marketing engineered on unit economics: creative testing systems averaging 4.5x ROAS by month 3. We engineer full-funnel media buying campaigns across Meta, Google, and LinkedIn that target high-intent buyers, optimize unit economics, and eliminate wasted spend.",
+    problem: "You have likely tried boosting posts, running ads yourself, or working with agencies that deliver vanity metrics like clicks and impressions while sales stay flat. Rising customer acquisition costs (CAC), uncalibrated attribution, and ad fatigue destroy campaign margins when media buying lacks direct-response discipline.",
     solution: "We rebuild your entire customer acquisition architecture. Starting with full conversion tracking verification (Meta CAPI & GA4), we design high-converting direct-response creatives, launch disciplined A/B testing matrices, and optimize bids mathematically based on net contribution margin — scaling what generates profit and cutting what does not.",
     stats: [
-      ['4.5x', 'Average Client ROAS'],
-      ['₹40Cr+', 'Ad Spend Managed'],
-      ['60 Days', 'Avg. Scaling Timeline'],
+      ['4.5x', 'Avg ROAS by month 3'],
+      ['150+', 'Brands Scaled'],
+      ['₹40Cr+', 'Media Spend Managed'],
       ['97%', 'Client Retention Rate'],
     ],
+    process: [
+      { step: '01', title: 'Audit', desc: 'Deep forensic audit of past ad accounts, tracking architecture (Meta CAPI & GA4), and baseline unit economics.' },
+      { step: '02', title: 'Creative Testing', desc: 'Deploying direct-response hook matrices across static ads, value carousels, and high-retention video variations.' },
+      { step: '03', title: 'Scale', desc: 'Mathematical bid and budget scaling focused on winning ad sets that produce profitable Contribution Margin.' },
+      { step: '04', title: 'CRO Loop', desc: 'Continuous landing page optimization and post-click offer testing to steadily reduce acquisition costs.' },
+    ],
     benefits: [
-      'Full-funnel Meta (Facebook & Instagram) and Google Ads campaign architecture',
-      'High-intent keyword and Performance Max campaign management for Google & YouTube',
-      'Conversion tracking & server-side attribution with Meta CAPI and Google Enhanced Conversions',
-      'Weekly creative matrix testing: static image hooks, carousels, and high-converting video variations',
-      'Granular audience segmentation, lookalikes, and dynamic retargeting funnels',
-      'Weekly transparent executive reporting focused on CAC, MER, and Contribution Margin',
+      'Meta ads management across Facebook, Instagram & Audience Network',
+      'Google ads management across Search, YouTube & Performance Max',
+      'Creative matrix testing with weekly direct-response variations',
+      'Landing page CRO & offer architecture to maximize conversion rate',
+      'Weekly transparent executive reporting focused on CAC & ROAS',
+      'Full-funnel dynamic retargeting & custom audience segmentation',
     ],
     faqs: [
       {
-        q: 'Which advertising platforms do you manage?',
-        a: 'We specialize in Meta (Facebook and Instagram), Google Search, Google Performance Max, YouTube, and LinkedIn Ads. We choose platform mixes based on where your high-intent buyers spend their time.'
-      },
-      {
-        q: 'What budget do I need to start?',
-        a: 'We typically recommend a minimum monthly ad spend of ₹1,00,000 ($1,500 USD) to ensure sufficient conversion data for rapid creative and audience testing.'
-      },
-      {
-        q: 'How quickly will we see results?',
+        q: 'How fast until results?',
         a: 'Initial creative testing and pixel calibration take 14 to 21 days. Most clients achieve stabilized customer acquisition costs and profitable scaling within 45 to 60 days.'
       },
       {
-        q: 'Who owns the ad accounts and creative assets?',
-        a: 'You retain 100% full legal ownership of your Meta Business Manager, Google Ads accounts, pixel data, custom audiences, and all creative assets developed during our engagement.'
+        q: 'What budget do I need?',
+        a: 'We typically recommend a minimum monthly ad spend of ₹1,00,000 ($1,500 USD) to ensure sufficient conversion data for rapid creative and audience testing.'
+      },
+      {
+        q: 'Do you require creative from us?',
+        a: 'We offer flexible workflows: you can share raw product footage/assets, or our creative studio can script, design, and produce high-converting direct-response static and video creatives from scratch.'
+      },
+      {
+        q: 'What makes you different from other ad agencies?',
+        a: 'We reject vanity metrics like impressions and cheap clicks. We manage media buying on unit economics and Contribution Margin (net profit after ad spend, COGS, and shipping), scaling winning campaigns with relentless direct-response creative testing.'
       }
     ],
-    cta: 'Audit My Ad Campaigns'
+    cta: 'Get a Free Meta & Google Ads Audit'
   },
   'content-production': {
-    title: "Content Production & Creative Studio | Social Ninja's",
-    h1: "Content Production & Creative Studio",
-    tagline: "High-velocity video, Reels, and direct-response creatives that stop the scroll.",
-    description: "High-converting video production, Instagram Reels, and direct-response ad creative designed to stop the scroll and drive measurable customer acquisition.",
-    hero: "Most advertising campaigns fail not from poor audience targeting, but from mediocre creative. Audiences scroll past generic stock images and templated corporate videos within a fraction of a second. We produce high-velocity short-form videos, UGC-style creatives, and scroll-stopping visuals engineered specifically to convert cold viewers into paying customers.",
+    title: "Content Production Services for Brands | Social Ninja's",
+    h1: "Content Production That Converts",
+    tagline: "High-converting video scripts, carousel graphics and social posts, generated and scheduled for your niche.",
+    description: "Scroll-stopping video scripts, carousels and branded content systems produced for your niche — engineered to convert, not just get views.",
+    hero: "Scroll-stopping video scripts, carousels and branded content systems produced for your niche — engineered to convert, not just get views. We produce high-velocity short-form videos, UGC-style creatives, and scroll-stopping visuals built specifically to turn cold viewers into paying customers.",
     problem: "Producing consistent, high-performing content requires videographers, direct-response scriptwriters, motion editors, and performance analysts. In-house production is slow and costly, while typical creative agencies deliver aesthetic art projects with zero conversion focus.",
     solution: "Our Creative Studio functions as your agile direct-response production team. We research high-performing competitor hooks, write psychologically calibrated scripts, and edit high-velocity creative packages designed for platform algorithms and maximum conversion rate.",
     stats: [
@@ -340,72 +346,76 @@ const servicesPrerenderData = {
       ['100%', 'Commercial Asset Ownership'],
       ['Data-Led', 'Every Frame Tested'],
     ],
+    process: [
+      { step: '01', title: 'Niche Research', desc: 'Algorithmic competitor teardown and viral hook discovery tailored to your industry.' },
+      { step: '02', title: 'Script & Storyboard', desc: 'Direct-response scriptwriting with high-retention visual hooks and persuasive psychological framing.' },
+      { step: '03', title: 'Production & Editing', desc: 'High-velocity video cutting, motion graphics, audio calibration, and formatting for vertical feeds.' },
+      { step: '04', title: 'Review & Schedule', desc: 'Pre-scheduled calendar approvals and continuous performance iteration based on conversion metrics.' },
+    ],
     benefits: [
-      'Direct-response vertical short-form video production (Instagram Reels, YouTube Shorts, TikTok)',
-      'Paid ad creative packs: static image hooks, value carousels, and motion graphics ads',
-      'UGC (User-Generated Content) sourcing, creator briefing, and high-converting video editing',
-      'Psychological direct-response copywriting for hooks, scripts, and captions',
-      'High-converting landing page graphic visual assets and product mockups',
-      'Bi-weekly creative refresh cycles to combat ad fatigue and sustain high ROAS',
+      'Viral script writing tailored to your niche and market sophistication',
+      'Short-form video production direction for Reels, Shorts & TikTok',
+      'Carousel & graphic design engineered for high click-through rates',
+      'Content calendar planning & automated multi-platform scheduling',
+      'Niche audio models & trending sound curation for algorithmic reach',
+      'Bi-weekly creative refresh cycles to combat ad fatigue and sustain scale',
     ],
     faqs: [
       {
-        q: 'What types of creative assets do you produce?',
-        a: 'We produce short-form vertical videos (Reels & Shorts), direct-response paid social ads, multi-slide educational carousels, UGC-style product showcases, and conversion-focused landing page graphics.'
+        q: 'Who owns the content?',
+        a: 'You own 100% of all scripts, video assets, graphics, and source files. All commercial rights belong to your brand permanently.'
       },
       {
-        q: 'How do you determine what creative style works for our brand?',
-        a: 'We analyze real engagement data, competitor ad libraries, and emerging algorithmic formats in your niche to build creative briefs with tested emotional hooks and proven conversion angles.'
+        q: 'How many assets per month?',
+        a: 'Packages typically range from 15 to 30 custom assets per month, combining vertical short-form videos (Reels/Shorts), multi-slide carousels, and high-CTR static ad graphics.'
       },
       {
-        q: 'What is your typical turnaround time for new creatives?',
-        a: 'Standard creative batches — including scripts, graphic designs, and video cuts — are completed and delivered for review within 48 to 72 hours.'
-      },
-      {
-        q: 'Do we need to supply our own raw video footage?',
-        a: 'We offer flexible workflows. You can provide existing product footage, send physical products to our creators, or let our motion design team produce 100% custom graphic and animation assets.'
+        q: 'Can you match our brand voice?',
+        a: 'Yes. During onboarding, we conduct a comprehensive brand audit and build a custom style guide, vocabulary matrix, and visual playbook to ensure every script and graphic feels native to your brand.'
       }
     ],
     cta: 'Build My Creative Strategy'
   },
   'email-whatsapp': {
-    title: "Email & WhatsApp Marketing Automation | Social Ninja's",
-    h1: "Email & WhatsApp Marketing Automation",
-    tagline: "Automated retention, abandoned cart recovery, and broadcast funnels that drive recurring revenue.",
-    description: "Turn leads into repeat buyers with automated Email and WhatsApp marketing funnels. Official WhatsApp Cloud API integration, abandoned cart recovery, and CRM sync.",
-    hero: "Acquiring new customers is expensive, but your existing leads and past buyers are your most profitable asset. We build high-converting automated Email and WhatsApp marketing funnels that engage leads instantly, recover abandoned revenue, and generate consistent repeat purchases on autopilot.",
+    title: "WhatsApp Marketing & Email Automation Services",
+    h1: "WhatsApp & Email Automation That Sells",
+    tagline: "AI agents and automation sequences that qualify, nurture and close leads inside the apps your customers actually open.",
+    description: "Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you.",
+    hero: "Turn chats into revenue with WhatsApp broadcast automation, AI follow-ups and email nurture sequences. Conversational commerce, done for you. We build high-converting automated Email and WhatsApp marketing funnels that engage leads instantly, recover abandoned revenue, and generate consistent repeat purchases on autopilot.",
     problem: "Most businesses rely solely on paid acquisition and neglect lead nurturing. Inbound leads grow cold within hours, abandoned checkouts are left unrecovered, and manual WhatsApp messaging is impossible to scale across hundreds of prospects.",
     solution: "We design and deploy automated lifecycle marketing systems. By integrating official WhatsApp Cloud API and Klaviyo/HubSpot email infrastructure, we deliver personalized sub-second messages, segmented broadcast campaigns, and automated sales sequences that nurture leads into loyal buyers.",
     stats: [
+      ['< 1s', 'Response Time'],
+      ['24/7', 'Always Online'],
       ['98%', 'WhatsApp Open Rate'],
-      ['< 1s', 'Automated Response Time'],
       ['25-40%', 'Revenue From Retention'],
-      ['4.8x', 'Average Email & WA ROI'],
+    ],
+    process: [
+      { step: '01', title: 'Infrastructure & API Setup', desc: 'Official WhatsApp Cloud API verification and email domain authentication (SPF, DKIM, DMARC).' },
+      { step: '02', title: 'Flow Mapping & Copy', desc: 'Engineering high-converting welcome, abandoned checkout, and post-purchase conversational pathways.' },
+      { step: '03', title: 'CRM Integration', desc: 'Bi-directional data syncing between WhatsApp, web forms, and your core sales CRM pipelines.' },
+      { step: '04', title: 'Automated Scaling', desc: 'Deploying behavioral broadcast drops, automated re-engagement triggers, and VIP retention offers.' },
     ],
     benefits: [
-      'Official WhatsApp Cloud API setup with verified green tick brand guidance',
-      'Automated high-converting WhatsApp workflows: Welcome flows, abandoned checkout recovery, and post-purchase sequences',
-      'Full email marketing infrastructure setup in Klaviyo, HubSpot, or Brevo',
-      'Sub-second automated lead follow-up triggered from web forms, Facebook Ads, and landing pages',
-      'Behavioral customer segmentation based on purchase frequency, order value, and engagement',
-      'Bi-directional CRM synchronization with Supabase, HubSpot, and custom databases',
+      'WhatsApp broadcast & drip campaigns using official Cloud API',
+      'AI DM & chat qualifier with sub-second intelligent response',
+      'Email nurture sequences engineered for high open and click rates',
+      'Automated abandoned-cart & abandoned-inquiry recovery flows',
+      'CRM + calendar sync with HubSpot, Supabase, and Google Calendar',
+      'Strict deliverability optimization & Meta template compliance verification',
     ],
     faqs: [
       {
-        q: 'Is WhatsApp marketing compliant with Meta policies?',
-        a: 'Yes. We deploy exclusively via the official Meta WhatsApp Business Cloud API with pre-approved opt-in templates, ensuring 100% compliance, maximum delivery rates, and zero risk of phone number bans.'
+        q: "Is WhatsApp automation compliant with Meta's policies?",
+        a: "Yes. We deploy exclusively via the official Meta WhatsApp Business Cloud API with pre-approved opt-in templates, ensuring 100% compliance, zero risk of bans, and highest delivery rates."
       },
       {
-        q: 'Which email marketing platforms do you integrate with?',
-        a: 'We work primarily with Klaviyo, HubSpot, ActiveCampaign, and Brevo, integrating them seamlessly with Shopify, WooCommerce, or custom web platforms.'
+        q: 'Do I need WhatsApp Business API?',
+        a: 'Yes, scaling automated broadcasts and multi-agent inboxes requires the official WhatsApp Business API. We manage the entire verification and setup process for your business phone number.'
       },
       {
-        q: 'How does automated abandoned cart recovery work?',
-        a: 'When an inquiry or checkout is abandoned, an automated personalized WhatsApp message with a one-click checkout or booking link triggers within 15 minutes, recovering up to 30% of lost transactions.'
-      },
-      {
-        q: 'Can our sales team step in to chat with WhatsApp leads manually?',
-        a: 'Yes. Automated sequences handle the initial instant response and qualification, and your team can view all conversations and take over live chat anytime from a unified team inbox.'
+        q: 'How do you avoid spam filters?',
+        a: 'We implement strict opt-in verification, warm up sender domains, configure SPF/DKIM/DMARC for email, and use behavioral segmenting so prospects only receive relevant, high-value communications.'
       }
     ],
     cta: 'Automate My Revenue Funnels'
@@ -423,6 +433,12 @@ const servicesPrerenderData = {
       ['Daily', 'Consistent Posting Schedule'],
       ['All Channels', 'Instagram, LinkedIn, X, Meta'],
       ['Monthly', 'Clear Transparent Reports'],
+    ],
+    process: [
+      { step: '01', title: 'Brand & Niche Audit', desc: 'Analyzing current profile performance, competitor engagement gaps, and audience demographics.' },
+      { step: '02', title: 'Content Blueprint', desc: 'Crafting monthly pillars: educational carousels, authority builder posts, and engagement reels.' },
+      { step: '03', title: 'Design & Copywriting', desc: 'Writing punchy, platform-native copy paired with clean, on-brand graphic design.' },
+      { step: '04', title: 'Publishing & Community', desc: 'Deploying at peak times, managing incoming comments, and reviewing monthly performance reports.' },
     ],
     benefits: [
       'Data-driven monthly content strategy aligned with your target audience and brand voice',
@@ -466,6 +482,12 @@ const servicesPrerenderData = {
       ['24/7', 'Always Available'],
       ['3x', 'Lead Conversion Lift'],
     ],
+    process: [
+      { step: '01', title: 'Knowledge Base Curation', desc: 'Structuring your product docs, objection handling playbooks, and qualification criteria.' },
+      { step: '02', title: 'Custom Agent Training', desc: 'Building prompt architecture, retrieval boundaries (RAG), and deterministic fallback rules.' },
+      { step: '03', title: 'Omnichannel Integration', desc: 'Deploying web chat widgets, WhatsApp Cloud API, and calendar booking webhooks.' },
+      { step: '04', title: 'Live Optimization', desc: 'Continuous transcript auditing, objection tuning, and conversion rate optimization.' },
+    ],
     benefits: [
       'Sub-second conversational response to every incoming lead day or night',
       'Automated lead qualification matching your specific Ideal Customer Profile (ICP)',
@@ -508,6 +530,12 @@ const servicesPrerenderData = {
       ['100%', 'Google PageSpeed Score'],
       ['2.5x', 'Average Conversion Rate Lift'],
     ],
+    process: [
+      { step: '01', title: 'Technical Audit', desc: 'Full architectural scan covering indexing, Core Web Vitals, crawl errors, and backlink health.' },
+      { step: '02', title: 'Architecture & Code Optimization', desc: 'Refactoring page speed, implementing static pre-rendering, and embedding JSON-LD schemas.' },
+      { step: '03', title: 'High-Intent Content Strategy', desc: 'Publishing targeted service guides and articles addressing high-intent buyer searches.' },
+      { step: '04', title: 'Rankings & CRO Monitoring', desc: 'Tracking search console positions, optimizing internal links, and fine-tuning lead capture funnels.' },
+    ],
     benefits: [
       'Comprehensive technical SEO audit and architectural optimization',
       'High-intent keyword research targeting buyers actively searching for your solutions',
@@ -549,6 +577,12 @@ const servicesPrerenderData = {
       ['90 Days', 'From Audit To Scaled Execution'],
       ['Weekly', 'Executive Strategy Check-ins'],
       ['100%', 'You Own Every Strategy & Doc'],
+    ],
+    process: [
+      { step: '01', title: 'Data Diagnostic', desc: 'Forensic review of revenue streams, CAC/LTV dynamics, churn, and team workflows.' },
+      { step: '02', title: 'Bottleneck Mapping', desc: 'Isolating conversion leaks across media buying, landing pages, and lead follow-up.' },
+      { step: '03', title: '90-Day Execution Roadmap', desc: 'Delivering an uncompromising, step-by-step master plan with prioritized milestones.' },
+      { step: '04', title: 'Weekly Strategy Sprints', desc: 'Weekly 60-minute executive check-ins and asynchronous guidance to keep execution on track.' },
     ],
     benefits: [
       'Comprehensive marketing and sales funnel audit across all touchpoints',
@@ -627,6 +661,25 @@ function generateServiceHtml(slug, data) {
           `).join('')}
         </div>
       </div>
+
+      <!-- Process -->
+      ${data.process && data.process.length > 0 ? `
+        <div style="margin-bottom:60px;">
+          <div style="text-align:center;margin-bottom:32px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">THE PROCESS</span>
+            <h2 style="font-size:32px;font-weight:800;color:#ffffff;margin-top:16px;margin-bottom:0;">How we execute and scale.</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+            ${data.process.map(p => `
+              <div style="background:#0e121d;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+                <div style="font-size:24px;font-weight:800;color:#38bdf8;margin-bottom:10px;">${p.step}</div>
+                <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;margin-top:0;">${p.title}</h3>
+                <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0;">${p.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
 
       <!-- FAQ Section -->
       <div style="max-width:800px;margin:0 auto 60px;width:100%;">
@@ -844,7 +897,7 @@ for (const [slug, data] of Object.entries(servicesPrerenderData)) {
       "@context": "https://schema.org",
       "@type": "Service",
       "name": data.title,
-      "description": data.hero,
+      "description": data.description,
       "provider": {
         "@type": "Organization",
         "name": "Social Ninja's",
