@@ -92,6 +92,10 @@ const paidAdsData: ServiceData = {
     {
       q: 'What makes you different from other ad agencies?',
       a: 'We reject vanity metrics like impressions and cheap clicks. We manage media buying on unit economics and Contribution Margin (net profit after ad spend, COGS, and shipping), scaling winning campaigns with relentless direct-response creative testing.'
+    },
+    {
+      q: 'How much does Meta and Google ads management cost in India?',
+      a: 'Professional performance agency retainers in India typically range from ₹40,000 to ₹1,50,000/month or 10–15% of ad spend depending on creative volume and attribution complexity. Read our full breakdown: Meta Ads Agency Pricing in India (2026) for transparent market benchmarks.'
     }
   ],
   cta: 'Get a Free Meta & Google Ads Audit',
@@ -397,6 +401,214 @@ const growthConsultingData: ServiceData = {
   cta: 'Book a Strategy Session',
 };
 
+const geoAgencyData: ServiceData = {
+  title: 'Generative Engine Optimization (GEO) Agency',
+  metaTitle: 'GEO Agency | Get Cited by ChatGPT, Perplexity & Gemini',
+  metaDescription: 'Generative Engine Optimization: get your brand cited in AI answers. Audits, entity building and content systems for the AI-search era.',
+  h1: 'Be the Brand AI Search Recommends',
+  tagline: 'Generative Engine Optimization engineered for citation dominance across AI search engines.',
+  Icon: Globe,
+  color: '#38bdf8',
+  hero: 'Generative Engine Optimization (GEO) is the new frontier of search visibility. Buyers no longer just scroll 10 blue links on Google — they ask ChatGPT, Perplexity, Gemini, and Claude for direct recommendations. If your brand lacks structured entity architecture and citation authority, AI engines will recommend your competitors instead.',
+  problem: 'Traditional SEO keyword stuffing does not work in LLM answers. AI search engines synthesize answers using semantic entity extraction, retrieval-augmented knowledge bases, and authoritative multi-source consensus. Unstructured websites are invisible to generative AI.',
+  solution: 'We engineer your brand\'s digital presence specifically for LLM citation. Through comprehensive AI visibility audits, Knowledge Graph entity building, nested JSON-LD schema architectures, and citation-worthy technical data assets, we position your company as the authoritative answer across all major AI search platforms.',
+  benefits: [
+    'AI-search visibility audit across ChatGPT Search, Perplexity, Google Gemini, and Claude',
+    'Knowledge Graph entity building & structured nested JSON-LD schema implementation',
+    'Citation-worthy technical content systems & digital PR designed for LLM retrieval (RAG)',
+    'Continuous Perplexity, Gemini & ChatGPT prompt tracking & sentiment monitoring',
+    'Information gain analysis & multi-source authoritative co-citation engineering',
+    'Sub-second crawlable web architecture with semantic markdown & clean HTML rendering',
+  ],
+  stats: [
+    ['Top 3', 'Target AI Placement'],
+    ['4x', 'Higher Conversion vs Blue Links'],
+    ['100%', 'Entity Schema Verification'],
+    ['Weekly', 'Prompt Citation Tracking'],
+  ],
+  process: [
+    { step: '01', title: 'AI Visibility Audit', desc: 'Forensic audit across 50+ target commercial prompts in ChatGPT, Perplexity, and Gemini to identify current citation gaps.' },
+    { step: '02', title: 'Entity & Schema Architecture', desc: 'Building Wikidata-aligned entity structures, Organization schemas, and verified sameAs authority networks.' },
+    { step: '03', title: 'Citation-Dense Content Assets', desc: 'Publishing high-information-gain statistics, technical frameworks, and proprietary data tables that LLMs love to cite.' },
+    { step: '04', title: 'Prompt Rank Monitoring', desc: 'Weekly algorithmic tracking of AI model responses to defend brand positioning and expand citation share.' },
+  ],
+  faqs: [
+    {
+      q: 'What is Generative Engine Optimization (GEO)?',
+      a: 'GEO (Generative Engine Optimization) is the process of optimizing digital content and technical entity structures so that generative AI models (such as ChatGPT Search, Perplexity AI, Google Gemini, and Claude) cite and recommend your brand when users ask conversational questions.'
+    },
+    {
+      q: 'How is GEO different from traditional SEO?',
+      a: 'Traditional SEO focuses on ranking blue links for exact keyword searches on Google. GEO focuses on entity relationships, semantic knowledge graphs, information gain, and multi-source consensus so AI synthesis engines quote your data as authoritative facts.'
+    },
+    {
+      q: 'How long does it take for AI models like ChatGPT and Perplexity to cite our brand?',
+      a: 'Perplexity and ChatGPT Search access live web indexes and can reflect structured entity updates within 2 to 4 weeks. Foundational LLM model weights reflect updates during subsequent crawl and fine-tuning cycles.'
+    },
+    {
+      q: 'How do you measure GEO performance and rankings?',
+      a: 'We test and monitor a prioritized matrix of commercial buying prompts across ChatGPT, Perplexity, and Gemini weekly, tracking brand mention frequency, sentiment polarity, and direct referral traffic from AI search engines.'
+    }
+  ],
+  cta: 'Audit My AI Search Visibility',
+};
+
+const instagramSeoData: ServiceData = {
+  title: 'Instagram SEO Services',
+  metaTitle: 'Instagram SEO Services | Rank Higher on Instagram',
+  metaDescription: 'Instagram SEO that gets your profile and reels discovered in search — keyword-optimized bios, captions and content systems.',
+  h1: 'Get Discovered on Instagram Search',
+  tagline: 'Rank at the top of Instagram search and explore feeds for high-intent queries.',
+  Icon: Share2,
+  color: '#38bdf8',
+  hero: 'Instagram has evolved into a primary search engine for modern consumers. Millions of high-intent buyers search for products, local services, and solutions directly in the Instagram search bar. We optimize your entire profile, reel metadata, and caption systems so your brand ranks at the top when ideal customers search your niche.',
+  problem: 'Relying exclusively on 30 random hashtags or hoping the algorithm randomly blesses your Reels is a failing strategy. Without deliberate keyword optimization across your profile name, bio, closed captions, and audio tags, your account remains invisible to searchers looking to buy right now.',
+  solution: 'We turn your Instagram account into a high-intent search engine funnel. By identifying high-volume search terms, structuring your profile metadata, and implementing semantic caption frameworks, we deliver compounding organic discovery from non-followers every single week.',
+  benefits: [
+    'Profile keyword optimization: Name field, bio, and categorization engineered for search ranking',
+    'Searchable caption systems: Natural semantic keyword integration that feeds Instagram\'s recommendation AI',
+    'Reel SEO & alt-text optimization: Audio tagging, text overlay keywords, and accessible metadata',
+    'Strategic hashtag & topic categorization: Niche cluster tags that signal relevance to the Explore feed',
+    'Inbound keyword intent mapping: Targeting high-intent commercial terms your buyers search for',
+    'Monthly Instagram search impressions & organic reach growth reporting',
+  ],
+  stats: [
+    ['3.2x', 'Lift in Non-Follower Reach'],
+    ['Top 3', 'Target Search Positions'],
+    ['100%', 'Organic Search-Driven Intent'],
+    ['Weekly', 'Competitor Keyword Audits'],
+  ],
+  process: [
+    { step: '01', title: 'Search Keyword Research', desc: 'Mining Instagram search suggestion data to uncover the exact terms your buyers type into the search bar.' },
+    { step: '02', title: 'Profile Architecture Overhaul', desc: 'Optimizing your handle, searchable name field, bio hook, and category tags for algorithmic indexing.' },
+    { step: '03', title: 'Searchable Content Framework', desc: 'Writing direct-response captions and Reel video scripts rich in semantic keywords, closed captions, and topic tags.' },
+    { step: '04', title: 'Performance & Rank Tracking', desc: 'Monitoring search impression share, explore traffic percentage, and non-follower profile visits.' },
+  ],
+  faqs: [
+    {
+      q: 'How does Instagram SEO work?',
+      a: 'Instagram uses computer vision, natural language processing, audio transcription, and metadata indexing to rank search results. By optimizing your name field, bio, captions, spoken video keywords, and on-screen text, your content matches user search queries.'
+    },
+    {
+      q: 'Does Instagram SEO replace hashtags?',
+      a: 'Instagram\'s leadership has confirmed that descriptive keywords in captions and bios carry significantly higher ranking weight than broad hashtags. Hashtags still assist with topical categorization, but semantic keywords drive core search discovery.'
+    },
+    {
+      q: 'How quickly do Instagram search rankings update?',
+      a: 'Profile name and bio optimizations index within 24 to 48 hours. Searchable Reel content begins accumulating non-follower search impressions over 7 to 30 days as engagement metrics validate relevance.'
+    },
+    {
+      q: 'Can Instagram SEO drive direct inbound leads and sales?',
+      a: 'Yes. Search traffic is inherently high-intent: users are actively seeking a solution rather than passively scrolling. When paired with our automated DM appointment setters, searchers convert directly into booked calls.'
+    }
+  ],
+  cta: 'Optimize My Instagram for Search',
+};
+
+const metaAdsAuditData: ServiceData = {
+  title: 'Free Meta Ads Audit',
+  metaTitle: 'Free Meta Ads Audit | Find Your Wasted Spend',
+  metaDescription: 'A free, no-fluff audit of your Meta ad account: creative diagnosis, targeting gaps and the 3 fixes with the biggest ROAS upside.',
+  h1: 'See Exactly What\'s Wrong With Your Ads',
+  tagline: 'Forensic account teardown that identifies wasted spend, creative fatigue, and your 3 biggest ROAS levers.',
+  Icon: BarChart2,
+  color: '#38bdf8',
+  hero: 'Stop burning ad budget on uncalibrated campaigns. Our forensic Meta Ads Audit provides an uncompromising teardown of your ad accounts, creative performance, attribution tracking, and funnel drop-offs — showing you precisely where ad spend is leaking and the 3 high-leverage fixes to unlock profitable scale.',
+  problem: 'Most ad accounts suffer from hidden leaks: overlapping custom audiences bidding against each other, degraded attribution from broken Conversions API (CAPI) setups, severe creative fatigue, and ad spend poured into campaigns with negative unit contribution margins.',
+  solution: 'We perform a deep forensic analysis of your last 90 days of Meta advertising. We inspect CAPI match quality, dissect hook and hold rates on your creatives, audit account structure, and deliver an actionable 3-step blueprint to increase ROAS — 100% free with zero obligation.',
+  benefits: [
+    'Full account structure teardown: Campaign architecture, budget allocation (CBO/ABO), and bid strategies',
+    'Creative fatigue & scoring: Hook rate (<3s), hold rate, and visual fatigue diagnosis across past 90 days',
+    'Audience overlap & tracking check: Meta Conversions API (CAPI) event match quality and pixel deduplication',
+    '3 prioritized fixes with the highest immediate ROAS and net contribution margin upside',
+    'Unit economics breakdown: Realistic CAC vs Contribution Margin benchmarks for your specific industry',
+    '30-minute recorded video walk-through and actionable executive PDF summary',
+  ],
+  stats: [
+    ['₹0', '100% Free Audit'],
+    ['48hrs', 'Delivery Turnaround'],
+    ['20-40%', 'Wasted Spend Uncovered'],
+    ['3', 'Prioritized ROAS Fixes'],
+  ],
+  process: [
+    { step: '01', title: 'View-Only Access', desc: 'Grant secure, view-only analyst access to your Meta Ads Manager (no billing or edit permissions required).' },
+    { step: '02', title: 'Forensic Account Teardown', desc: 'Analyzing tracking match rates, audience cannibalization, creative drop-off curves, and bid efficiency.' },
+    { step: '03', title: 'Diagnosis & Levers', desc: 'Calculating wasted ad dollars and formulating the exact 3 adjustments needed to unlock scale.' },
+    { step: '04', title: 'Video & Blueprint Delivery', desc: 'Receiving a personalized video breakdown and step-by-step PDF roadmap you can implement immediately.' },
+  ],
+  faqs: [
+    {
+      q: 'Is the Meta ads audit genuinely free?',
+      a: 'Yes, 100% free with zero catch or obligation. We do not require credit card details or contracts. If you want us to implement the fixes, great; if you implement them in-house, you keep the full blueprint.'
+    },
+    {
+      q: 'Do I need to share passwords or edit access?',
+      a: 'No. You simply grant standard view-only analyst permissions to our Meta Business Manager ID. We cannot edit campaigns, change budgets, or access billing information.'
+    },
+    {
+      q: 'What monthly ad spend level qualifies for the audit?',
+      a: 'We perform audits for brands currently spending at least ₹50,000 ($600 USD) per month on Meta ads, ensuring sufficient conversion data for forensic analysis.'
+    },
+    {
+      q: 'What happens after the audit is delivered?',
+      a: 'You receive a 15–20 minute custom video walk-through and PDF summary. If you want our team to manage your ad operations and execute the strategy, we can discuss a performance partnership.'
+    }
+  ],
+  cta: 'Claim Free Meta Ads Audit',
+};
+
+const aiAppointmentSetterData: ServiceData = {
+  title: 'AI Appointment Setter',
+  metaTitle: 'AI Appointment Setter | Never Miss a Lead Again',
+  metaDescription: 'An AI setter that answers every DM, call and form in seconds, qualifies prospects and books them straight into your calendar — 24/7.',
+  h1: 'Every Lead Answered in Seconds',
+  tagline: 'Autonomous AI setter that qualifies buyers and books meetings 24/7 across DMs, web forms, and WhatsApp.',
+  Icon: Bot,
+  color: '#38bdf8',
+  hero: 'Every minute a prospect waits for a response, their likelihood of booking a call drops by 80%. Human sales reps sleep, take lunch breaks, and take hours to reply. Our AI Appointment Setter answers every Instagram DM, WhatsApp message, and website inquiry in under 1 second, asks rigorous qualifying questions, and books qualified meetings directly into your calendar 24/7.',
+  problem: 'Inbound leads cost serious money to acquire. When inquiries sit unaddressed for hours or days, high-value prospects hire a competitor. Human SDR teams are expensive to hire, train, and manage, and manual follow-up consistently drops qualified pipeline.',
+  solution: 'We build and deploy a dedicated conversational AI setter calibrated to your qualification criteria. The AI setter engages inquiries instantly, conversationalizes objection handling, validates budget and timeline, and seamlessly drops a calendar booking link with automated SMS/email reminders.',
+  benefits: [
+    'Sub-second (<1s) conversational response across Instagram DMs, WhatsApp, SMS, and website forms',
+    'Custom qualification scripts: Screening budget, timeline, and decision-maker status against your ICP',
+    'Direct calendar booking into Google Calendar, Calendly, or Cal.com with automated reminder notifications',
+    'Bi-directional CRM sync with HubSpot, GoHighLevel, Supabase, and custom webhook pipelines',
+    'Missed-lead & cold database reactivation sequences that revive old pipeline contacts automatically',
+    'Strict anti-hallucination bounds: RAG architecture grounded strictly in your verified company knowledge',
+  ],
+  stats: [
+    ['< 1s', 'Response Time'],
+    ['24/7/365', 'Zero Downtime'],
+    ['14x', 'Faster Than Human SDRs'],
+    ['3x', 'More Booked Calls'],
+  ],
+  process: [
+    { step: '01', title: 'ICP & Qualification Logic', desc: 'Mapping your target qualification criteria, deal disqualifiers, objection scripts, and booking protocols.' },
+    { step: '02', title: 'Agent Configuration', desc: 'Programming conversational flows, tone of voice, RAG knowledge boundaries, and scheduling links.' },
+    { step: '03', title: 'Omnichannel Integration', desc: 'Connecting the AI setter to your Instagram Direct, WhatsApp Cloud API, website forms, and CRM.' },
+    { step: '04', title: 'Stress-Testing & Launch', desc: 'Conducting live simulation drills across 100+ edge-case scenarios before pushing the agent live.' },
+  ],
+  faqs: [
+    {
+      q: 'How does the AI appointment setter interact with leads?',
+      a: 'The setter responds conversationally and naturally over chat (WhatsApp, Instagram DM, SMS, or web). It greets the prospect, answers product questions, asks your qualification criteria, and sends a booking link once qualified.'
+    },
+    {
+      q: 'What happens if a lead asks a complex question the AI doesn\'t know?',
+      a: 'Our systems use strict fallback bounds. If a prospect asks an out-of-scope question, the AI setter politely acknowledges the question and routes the conversation directly to your human sales rep with a notification.'
+    },
+    {
+      q: 'Does the AI appointment setter reduce meeting no-show rates?',
+      a: 'Yes. Upon booking, the AI immediately sends calendar invites and triggers automated, conversational WhatsApp and SMS reminders 24 hours and 1 hour before the scheduled call.'
+    },
+    {
+      q: 'Which CRM platforms and calendar tools are supported?',
+      a: 'We integrate with Google Calendar, Microsoft Outlook, Calendly, Cal.com, HubSpot, GoHighLevel, Salesforce, and custom Supabase/PostgreSQL databases.'
+    }
+  ],
+  cta: 'Deploy My AI Appointment Setter',
+};
+
 const servicesData: Record<string, ServiceData> = {
   'paid-ads': paidAdsData,
   'performance-marketing': paidAdsData,
@@ -407,6 +619,10 @@ const servicesData: Record<string, ServiceData> = {
   'social-media': socialMediaData,
   'web-seo': webSeoData,
   'growth-consulting': growthConsultingData,
+  'geo-agency': geoAgencyData,
+  'instagram-seo': instagramSeoData,
+  'meta-ads-audit': metaAdsAuditData,
+  'ai-appointment-setter': aiAppointmentSetterData,
 };
 
 function useReveal() {
@@ -645,6 +861,30 @@ const ServiceDetail: React.FC = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* PRICING GUIDE CALLOUT (FOR PAID ADS) */}
+        {(id === 'paid-ads' || id === 'performance-marketing') && (
+          <div style={{ maxWidth: 800, margin: '0 auto 60px', width: '100%', boxSizing: 'border-box' }}>
+            <div style={{ background: 'linear-gradient(135deg, rgba(31, 75, 153, 0.2) 0%, rgba(14, 18, 29, 0.95) 100%)', border: '1px solid rgba(56, 189, 248, 0.25)', borderRadius: 16, padding: '28px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#38bdf8' }}>
+                  TRANSPARENT AGENCY BENCHMARKS
+                </span>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: '#ffffff', margin: '6px 0 4px' }}>
+                  What Does Meta Ads Management Actually Cost in India?
+                </h3>
+                <p style={{ fontSize: 13.5, color: '#94a3b8', margin: 0, lineHeight: 1.6 }}>
+                  Compare retainer bands, % of spend models, red flags in cheap agency quotes, and our 5-question hiring checklist.
+                </p>
+              </div>
+              <Link to="/blog/meta-ads-agency-pricing-india-2026" style={{ textDecoration: 'none' }}>
+                <button style={{ background: '#1F4B99', color: '#ffffff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  Read Pricing Guide <ArrowRight size={14} />
+                </button>
+              </Link>
             </div>
           </div>
         )}
