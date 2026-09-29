@@ -27,12 +27,6 @@ export async function onRequest(context) {
   if (!contentType.includes('text/html')) {
     return response;
   }
-
-  const url = new URL(request.url);
-
-  // Normalize path: strip trailing slashes (except for root '/')
-  const cleanPath = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : url.pathname;
-
   // Clean canonical URL without any query string or hash
   const canonicalUrl = `${url.origin}${cleanPath}`;
 
