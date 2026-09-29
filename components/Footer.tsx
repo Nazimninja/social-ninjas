@@ -55,6 +55,11 @@ const Footer: React.FC = () => {
                 </a>
               ))}
             </div>
+            <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 12, color: '#888888', lineHeight: 1.6 }}>
+              <div style={{ fontWeight: 600, color: '#cccccc', marginBottom: 2 }}>Headquarters:</div>
+              <div style={{ color: '#aaaaaa' }}>Social Ninja's Agency, Bangalore, Karnataka, India</div>
+              <div style={{ marginTop: 4, color: '#666666', fontSize: 11 }}>Global Partner Hub: Business Bay, Dubai, UAE</div>
+            </div>
           </div>
 
           {/* Services */}

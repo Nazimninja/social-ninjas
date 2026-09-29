@@ -95,11 +95,14 @@ const Contact: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/15 border border-[#1F4B99]/30 flex items-center justify-center text-[#4281f5]">
                 <MapPin size={20} />
               </div>
-              <h3 className="font-bold text-white text-base">Global Hubs</h3>
-              <p className="text-xs text-neutral-400">Worldwide Operations</p>
+              <h3 className="font-bold text-white text-base">Office Headquarters</h3>
+              <p className="text-xs text-neutral-400">Primary Registered Office</p>
               <div className="text-xs text-neutral-300 font-semibold pt-1">
-                US • UK • UAE • India • Global Remote
+                Social Ninja's Agency, Bangalore, Karnataka, India
               </div>
+              <p className="text-[11px] text-neutral-500 pt-1">
+                Global Partner Hub: Business Bay, Dubai, UAE
+              </p>
             </SpotlightCard>
           </div>
 

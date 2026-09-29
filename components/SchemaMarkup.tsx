@@ -12,15 +12,15 @@ export const SchemaMarkup = () => {
         "telephone": "+918147757479",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Business Bay",
-            "addressLocality": "Dubai",
-            "postalCode": "00000",
-            "addressCountry": "AE"
+            "streetAddress": "Social Ninja's Agency",
+            "addressLocality": "Bangalore",
+            "addressRegion": "Karnataka",
+            "addressCountry": "IN"
         },
         "geo": {
             "@type": "GeoCoordinates",
-            "latitude": 25.1837,
-            "longitude": 55.2666
+            "latitude": 12.9716,
+            "longitude": 77.5946
         },
         "openingHoursSpecification": {
             "@type": "OpeningHoursSpecification",

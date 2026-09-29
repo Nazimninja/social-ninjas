@@ -37,6 +37,10 @@ const FOOTER_HTML = `
     <div style="max-width:280px;">
       <div style="font-size:16px;font-weight:700;color:#f0f0f0;margin-bottom:16px;">Social<span style="color:#3B82F6;">Ninja's</span></div>
       <p style="font-size:13.5px;color:#707080;line-height:1.6;">Automated growth systems and premium performance marketing partnerships for digital brands.</p>
+      <div style="margin-top:14px;font-size:12px;color:#808090;line-height:1.5;">
+        <span style="color:#a0a0b0;font-weight:600;">HQ:</span> Social Ninja's Agency, Bangalore, Karnataka, India<br>
+        <span style="color:#606070;">Global Partner Hub: Business Bay, Dubai, UAE</span>
+      </div>
     </div>
     <div style="display:flex;gap:60px;">
       <div>
@@ -254,7 +258,8 @@ const marketingPagesContent = {
       
       <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px;text-align:left;margin-bottom:40px;">
         <h3 style="font-size:20px;color:#ffffff;margin-bottom:20px;">Contact Details</h3>
-        <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Office:</strong> Social Ninja's Agency, Bangalore, Karnataka, India</p>
+        <p style="color:#a0a0b0;font-size:15px;margin-bottom:8px;line-height:1.6;"><strong>Office Headquarters:</strong> Social Ninja's Agency, Bangalore, Karnataka, India</p>
+        <p style="color:#707080;font-size:13.5px;margin-bottom:12px;line-height:1.6;"><strong>Global Partner Hub:</strong> Business Bay, Dubai, UAE</p>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:12px;line-height:1.6;"><strong>Email:</strong> info@socialninjas.in</p>
         <p style="color:#a0a0b0;font-size:15px;margin-bottom:24px;line-height:1.6;"><strong>Hours:</strong> Mon - Sat | 10:00 AM - 7:00 PM IST</p>
         <a href="mailto:info@socialninjas.in" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Email Our Team</a>
