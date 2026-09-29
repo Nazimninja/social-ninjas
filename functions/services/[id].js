@@ -7,7 +7,11 @@ const VALID_SLUGS = new Set([
   'social-media',
   'web-seo',
   'ai-automation',
-  'growth-consulting'
+  'growth-consulting',
+  'geo-agency',
+  'instagram-seo',
+  'meta-ads-audit',
+  'ai-appointment-setter'
 ]);
 
 export async function onRequest(context) {
