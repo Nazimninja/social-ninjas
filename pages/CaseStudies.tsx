@@ -9,7 +9,7 @@ import { caseStudies } from '../data/caseStudies';
 
 const CaseStudies: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
-  const categories = ['All', 'E-Commerce', 'B2B Lead Gen', 'App Growth', 'Local Business'];
+  const categories = ['All', 'E-Commerce', 'B2B Lead Gen', 'App Growth', 'High-Ticket Healthcare', 'Enterprise Outbound', 'Local Business'];
 
   const filteredStudies = activeCategory === 'All'
     ? caseStudies
@@ -127,7 +127,7 @@ const CaseStudies: React.FC = () => {
                   </div>
                 </div>
 
-                <Link to={`/case-studies/${study.id}`}>
+                <Link to={`/case-studies/${study.slug}`}>
                   <button className="flex items-center gap-2 px-6 py-3 rounded-xl border border-neutral-700 text-sm font-bold text-neutral-300 hover:border-[#1F4B99] hover:text-white transition-all duration-200 group/btn">
                     View Full Breakdown <ArrowRight size={15} className="group-hover/btn:translate-x-1 transition-transform" />
                   </button>

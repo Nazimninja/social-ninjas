@@ -12,21 +12,45 @@ export interface CaseStudyMetric {
 
 export interface CaseStudy {
   id: number;
+  slug: string;
   client: string;
   logo: string;
   category: string;
+  industry?: string;
+  location?: string;
+  timeline?: string;
+  servicesUsed?: string[];
   mainMetric: string;
   metricLabel: string;
   secondaryMetrics: CaseStudyMetric[];
   image: string;
   challenge: string;
   solution: string;
+  clientBackground?: string;
+  whatWeDid?: {
+    step: string;
+    title: string;
+    description: string;
+  }[];
+  detailedResults?: {
+    metric: string;
+    before: string;
+    after: string;
+    impact: string;
+  }[];
+  keyTakeaways?: string[];
   tags: string[];
   testimonial?: {
     text: string;
     author: string;
     role: string;
     image: string;
+  };
+  publishedAt?: string;
+  updatedAt?: string;
+  relatedService?: {
+    name: string;
+    path: string;
   };
 }
 

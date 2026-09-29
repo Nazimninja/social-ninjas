@@ -636,6 +636,57 @@ function useReveal() {
   }, []);
 }
 
+const serviceToCaseStudies: Record<string, { slug: string; client: string; metric: string; metricLabel: string; category: string }[]> = {
+  'paid-ads': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'performance-marketing': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
+  ],
+  'meta-ads-audit': [
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'E-Commerce D2C' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'content-production': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
+    { slug: 'zara-skin-co', client: 'Zara Skin Co.', metric: '6.1x', metricLabel: 'ROAS in 90 Days', category: 'UGC & Reels' }
+  ],
+  'creative-studio': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Hospitality & F&B' },
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' }
+  ],
+  'instagram-seo': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local Business' }
+  ],
+  'social-media': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local Business' }
+  ],
+  'ai-appointment-setter': [
+    { slug: 'aura-aesthetics-clinic', client: 'Aura Aesthetics & Dental', metric: '₹46L+', metricLabel: 'High-Ticket Revenue', category: 'High-Ticket Healthcare' },
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' }
+  ],
+  'email-whatsapp': [
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Enterprise Outbound' },
+    { slug: 'aura-aesthetics-clinic', client: 'Aura Aesthetics & Dental', metric: '₹46L+', metricLabel: 'High-Ticket Revenue', category: 'WhatsApp Automation' }
+  ],
+  'ai-automation': [
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B Lead Gen' },
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Outbound Automation' }
+  ],
+  'growth-consulting': [
+    { slug: 'pocketfit-india', client: 'PocketFit India', metric: '-61%', metricLabel: 'Cost Per Install', category: 'App Growth' },
+    { slug: 'cloudscale-logistics', client: 'CloudScale Logistics', metric: '₹3.4Cr+', metricLabel: 'Closed Enterprise Value', category: 'Enterprise Outbound' }
+  ],
+  'geo-agency': [
+    { slug: 'nexvue-technologies', client: 'Nexvue Technologies', metric: '+134%', metricLabel: 'Qualified Pipeline', category: 'B2B SaaS' }
+  ],
+  'web-seo': [
+    { slug: 'the-biryani-house', client: 'The Biryani House', metric: '4.2M+', metricLabel: 'Organic Views in 60 Days', category: 'Local SEO' }
+  ]
+};
+
 const ServiceDetail: React.FC = () => {
   useReveal();
   const { id } = useParams<{ id: string }>();
@@ -885,6 +936,70 @@ const ServiceDetail: React.FC = () => {
                   Read Pricing Guide <ArrowRight size={14} />
                 </button>
               </Link>
+            </div>
+          </div>
+        )}
+
+        {/* RELEVANT CASE STUDY PROOF SECTION */}
+        {id && serviceToCaseStudies[id] && serviceToCaseStudies[id].length > 0 && (
+          <div style={{ maxWidth: 1140, margin: '0 auto 80px', width: '100%', boxSizing: 'border-box' }}>
+            <div style={{ textAlign: 'center', marginBottom: 36 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 999, background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.25)', color: '#38bdf8', fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 14 }}>
+                VERIFIED PROOF & CASE STUDIES
+              </div>
+              <h2 style={{ fontFamily: "'Bricolage Grotesque',system-ui", fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff', margin: 0 }}>
+                Real Client Growth Outcomes.
+              </h2>
+              <p style={{ fontSize: 15, color: '#94a3b8', maxWidth: 540, margin: '12px auto 0', lineHeight: 1.6 }}>
+                Transparent revenue metrics and unit economic improvements delivered through our {s.title} systems.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+              {serviceToCaseStudies[id].map((cs, idx) => (
+                <div 
+                  key={idx}
+                  style={{
+                    background: '#0e121d',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: 20,
+                    padding: 28,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: 20,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <div style={{ position: 'absolute', top: 0, right: 0, width: 160, height: 160, background: 'radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: '#38bdf8', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.2)', padding: '4px 10px', borderRadius: 999 }}>
+                        {cs.category}
+                      </span>
+                      <span style={{ fontSize: 11.5, color: '#64748b', fontWeight: 600 }}>Verified Case Study</span>
+                    </div>
+                    <h3 style={{ fontSize: 20, fontWeight: 800, color: '#ffffff', margin: '0 0 10px', letterSpacing: '-0.01em' }}>
+                      {cs.client}
+                    </h3>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, margin: '12px 0 6px' }}>
+                      <span style={{ fontSize: 34, fontWeight: 900, color: '#38bdf8', fontFamily: "'Bricolage Grotesque',system-ui" }}>
+                        {cs.metric}
+                      </span>
+                      <span style={{ fontSize: 13.5, color: '#94a3b8', fontWeight: 600 }}>
+                        {cs.metricLabel}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link to={`/case-studies/${cs.slug}`} style={{ textDecoration: 'none' }}>
+                    <button style={{ width: '100%', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: 10, padding: '12px 18px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'all 0.2s ease' }}>
+                      Read Complete Case Study <ArrowRight size={14} />
+                    </button>
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         )}
