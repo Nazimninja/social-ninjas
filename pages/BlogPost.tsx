@@ -14,6 +14,54 @@ const getServiceCta = (p: any) => {
   const title = (p.title || '').toLowerCase();
   const id = (p.id || '').toLowerCase();
 
+  // Salary & wage calculator posts → /tools/hourly-to-salary-calculator
+  if (id.includes('salary') || id.includes('hour') || title.includes('salary') || title.includes('hour') || title.includes('take-home')) {
+    return {
+      serviceName: 'Hourly to Salary Calculator',
+      serviceUrl: '/tools/hourly-to-salary-calculator',
+      badge: 'FINANCIAL CALCULATORS & BENCHMARKS',
+      heading: 'Calculate Your Exact Net Take-Home Pay in Seconds',
+      desc: 'Model 2026 federal withholding, FICA payroll taxes, and state income tax brackets with our instant interactive wage calculator.',
+      buttonText: 'Open Free Salary Calculator →'
+    };
+  }
+
+  // Instagram SEO posts → /services/instagram-seo
+  if (id.includes('instagram-seo') || title.includes('instagram seo') || title.includes('instagram search')) {
+    return {
+      serviceName: 'Instagram SEO & Social Search',
+      serviceUrl: '/services/instagram-seo',
+      badge: 'SOCIAL SEARCH OPTIMIZATION',
+      heading: 'Rank #1 on Instagram Search & Reels Discovery',
+      desc: 'Optimize your Instagram profile, captions, audio tracks, and Reels metadata to capture high-intent organic search traffic from Gen Z buyers.',
+      buttonText: 'Explore Instagram SEO →'
+    };
+  }
+
+  // GEO posts → /services/geo-agency
+  if (id.includes('geo') || title.includes('generative engine') || title.includes('perplexity') || title.includes('chatgpt')) {
+    return {
+      serviceName: 'Generative Engine Optimization (GEO)',
+      serviceUrl: '/services/geo-agency',
+      badge: 'AI SEARCH & CITATION ENGINE',
+      heading: 'Get Your Brand Cited by ChatGPT, Perplexity & Gemini',
+      desc: 'Transition from legacy blue-link SEO to Generative Engine Optimization. We engineer structured entity authority, citation hooks, and schema graphs so AI models recommend you first.',
+      buttonText: 'Explore GEO Agency →'
+    };
+  }
+
+  // Meta Ads Pricing / Audit posts → /services/meta-ads-audit
+  if (id.includes('pricing') || id.includes('audit') || title.includes('pricing')) {
+    return {
+      serviceName: 'Meta Ads Performance Audit',
+      serviceUrl: '/services/meta-ads-audit',
+      badge: 'FREE 48-HOUR AD AUDIT',
+      heading: 'Stop Wasting Ad Spend: Claim Your Free Meta Ads Audit',
+      desc: 'We inspect your ad account structure, CAPI event match quality, hook drop-off rates, and audience fatigue to uncover your 3 highest-leverage ROAS fixes.',
+      buttonText: 'Claim Free Ad Audit →'
+    };
+  }
+
   // WhatsApp / commerce posts → /services/email-whatsapp
   if (cat.includes('whatsapp') || title.includes('whatsapp') || id.includes('whatsapp') || title.includes('email') || id.includes('email')) {
     return {
@@ -39,7 +87,7 @@ const getServiceCta = (p: any) => {
   }
 
   // SEO / content posts → /services/web-seo
-  if (cat.includes('seo') || cat.includes('content') || title.includes('seo') || title.includes('geo') || id.includes('geo') || title.includes('content') || id.includes('instagram-seo') || id.includes('posting-frequency')) {
+  if (cat.includes('seo') || cat.includes('content') || title.includes('seo') || title.includes('content') || id.includes('posting-frequency')) {
     return {
       serviceName: 'Web Design & Technical SEO',
       serviceUrl: '/services/web-seo',

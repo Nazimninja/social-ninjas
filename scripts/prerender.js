@@ -2723,6 +2723,8 @@ function generateSitemap(posts) {
     { loc: 'https://socialninjas.in/services/instagram-seo', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/meta-ads-audit', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/services/ai-appointment-setter', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/performance-marketing', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/services/creative-studio', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools/whatsapp-link-generator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/tools/us-take-home-pay-calculator', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },

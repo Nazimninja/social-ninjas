@@ -16,8 +16,9 @@ const categoryColors: Record<string, string> = {
 };
 
 const Blog: React.FC = () => {
-  const featured = POSTS[0];
-  const rest = POSTS.slice(1);
+  const sortedPosts = [...POSTS].sort((a, b) => ((b.publishedAt || b.date || '') > (a.publishedAt || a.date || '') ? 1 : -1));
+  const featured = sortedPosts[0];
+  const rest = sortedPosts.slice(1);
 
   return (
     <div className="page-wrap bg-[#07090e] text-white">
