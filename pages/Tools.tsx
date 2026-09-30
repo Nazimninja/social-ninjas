@@ -13,7 +13,8 @@ const UTILITY_TOOLS = [
     desc: 'Create direct click-to-chat wa.me links with custom pre-filled messages and free QR codes.',
     badge: 'Free Tool',
     badgeColor: '#22c55e',
-    url: '/tools/whatsapp-link-generator',
+    url: 'https://linkwa.in/',
+    isExternal: true,
   },
   {
     id: 'salary-calc',
@@ -97,13 +98,8 @@ const Tools: React.FC = () => {
         {/* ── FREE GROWTH & FINANCIAL UTILITIES GRID (Directly below intro paragraph) ── */}
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {UTILITY_TOOLS.map((tool) => (
-              <Link
-                key={tool.id}
-                to={tool.url}
-                className="text-left group w-full block"
-                style={{ textDecoration: 'none' }}
-              >
+            {UTILITY_TOOLS.map((tool) => {
+              const cardInner = (
                 <SpotlightCard className="p-7 bg-[#0e121d] border border-neutral-800/80 space-y-5 hover:border-neutral-700 transition-all duration-300 h-full flex flex-col justify-between">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -133,8 +129,30 @@ const Tools: React.FC = () => {
                     Open Tool <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
                   </div>
                 </SpotlightCard>
-              </Link>
-            ))}
+              );
+
+              return tool.isExternal ? (
+                <a
+                  key={tool.id}
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-left group w-full block"
+                  style={{ textDecoration: 'none' }}
+                >
+                  {cardInner}
+                </a>
+              ) : (
+                <Link
+                  key={tool.id}
+                  to={tool.url}
+                  className="text-left group w-full block"
+                  style={{ textDecoration: 'none' }}
+                >
+                  {cardInner}
+                </Link>
+              );
+            })}
           </div>
         </div>
 

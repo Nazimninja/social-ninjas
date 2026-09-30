@@ -401,7 +401,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <Link to="/tools/whatsapp-link-generator" className="group block text-decoration-none">
+            <a href="https://linkwa.in/" target="_blank" rel="noopener" className="group block text-decoration-none">
               <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">
                   WA
@@ -416,7 +416,7 @@ const Home: React.FC = () => {
                   Use Tool →
                 </div>
               </SpotlightCard>
-            </Link>
+            </a>
 
             <Link to="/tools/us-take-home-pay-calculator" className="group block text-decoration-none">
               <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">

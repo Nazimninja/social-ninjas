@@ -277,9 +277,9 @@ const marketingPagesContent = {
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
-            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">WhatsApp Link Generator</a></h3>
+            <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="https://linkwa.in/" target="_blank" rel="noopener" style="color:#ffffff;text-decoration:none;">WhatsApp Link Generator</a></h3>
             <p style="font-size:13.5px;color:#94a3b8;line-height:1.6;margin-bottom:16px;">Create direct wa.me chat links with custom pre-filled messages and free QR codes.</p>
-            <a href="/tools/whatsapp-link-generator" style="color:#34d399;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
+            <a href="https://linkwa.in/" target="_blank" rel="noopener" style="color:#34d399;text-decoration:none;font-weight:700;font-size:13px;">Use Tool →</a>
           </div>
           <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
             <h3 style="font-size:18px;font-weight:700;color:#ffffff;margin-bottom:8px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay Calculator</a></h3>
@@ -459,9 +459,9 @@ const marketingPagesContent = {
       
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:60px;">
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
-          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/whatsapp-link-generator" style="color:#ffffff;text-decoration:none;">Free WhatsApp Link Generator</a></h3>
+          <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="https://linkwa.in/" target="_blank" rel="noopener" style="color:#ffffff;text-decoration:none;">Free WhatsApp Link Generator</a></h3>
           <p style="color:#a0a0b0;font-size:14.5px;line-height:1.6;margin-bottom:16px;">Create direct click-to-chat wa.me links with custom pre-filled messages and free QR codes.</p>
-          <a href="/tools/whatsapp-link-generator" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
+          <a href="https://linkwa.in/" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:none;font-weight:600;font-size:14px;">Open Tool →</a>
         </div>
         <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;">
           <h3 style="font-size:20px;color:#ffffff;margin-bottom:12px;"><a href="/tools/us-take-home-pay-calculator" style="color:#ffffff;text-decoration:none;">US Take-Home Pay Calculator</a></h3>
@@ -514,6 +514,18 @@ const marketingPagesContent = {
         <p style="font-size:17px;color:#a0a0b0;line-height:1.6;">Create direct click-to-chat wa.me links with custom pre-filled messages and instant QR codes in seconds. 100% free, no login required.</p>
       </div>
 
+      <!-- Prominent LinkWA Callout Above Inputs -->
+      <div style="max-width:800px;margin:0 auto 36px;background:linear-gradient(135deg,rgba(31,75,153,0.3) 0%,#0e121d 100%);border:1px solid rgba(56,189,248,0.35);border-radius:14px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:#ffffff;display:flex;align-items:center;gap:6px;">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;"></span>
+            <span>LinkWA — Dedicated WhatsApp QR &amp; Link Studio</span>
+          </div>
+          <p style="font-size:12px;color:#94a3b8;margin:4px 0 0;">Need custom branded QR codes, SVG logos, or UTM campaign tracking?</p>
+        </div>
+        <a href="https://linkwa.in/" target="_blank" rel="noopener" style="background:#38bdf8;color:#07090e;font-weight:700;font-size:13px;padding:10px 18px;border-radius:8px;text-decoration:none;display:inline-block;">Open the full LinkWA app →</a>
+      </div>
+
       <!-- Supporting Copy -->
       <div style="max-width:800px;margin:0 auto;line-height:1.75;">
         <h2 style="font-size:24px;font-weight:700;color:#ffffff;margin-top:36px;margin-bottom:16px;">What is a wa.me Link and Why Do Businesses Use It?</h2>
@@ -554,6 +566,14 @@ const marketingPagesContent = {
               <p style="font-size:14.5px;color:#94a3b8;line-height:1.65;margin:0;">Yes. As long as you include the correct country code without leading plus signs or zeros, customers anywhere in the world can reach you instantly.</p>
             </div>
           </div>
+        </div>
+
+        <!-- Prominent LinkWA Callout After FAQs -->
+        <div style="background:linear-gradient(135deg,#0e121d 0%,#121826 100%);border:1px solid rgba(56,189,248,0.35);border-radius:18px;padding:36px 28px;text-align:center;margin-top:44px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);padding:4px 12px;border-radius:999px;">OFFICIAL SATELLITE UTILITY</span>
+          <h3 style="font-size:22px;font-weight:800;color:#ffffff;margin:14px 0 8px;">Need Advanced QR Styling &amp; Campaign Tracking?</h3>
+          <p style="font-size:13.5px;color:#94a3b8;max-width:540px;margin:0 auto 20px;line-height:1.6;">LinkWA gives you high-res QR code exports with custom colors, embedded logos, dynamic UTM tracking for Meta &amp; Google ads, and sub-second link generation.</p>
+          <a href="https://linkwa.in/" target="_blank" rel="noopener" style="background:#38bdf8;color:#07090e;font-weight:700;font-size:13.5px;padding:12px 24px;border-radius:10px;text-decoration:none;display:inline-block;">Open the full LinkWA app →</a>
         </div>
 
         <!-- CTA Block -->

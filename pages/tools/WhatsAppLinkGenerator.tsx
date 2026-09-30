@@ -233,6 +233,27 @@ export const WhatsAppLinkGenerator: React.FC = () => {
             
             {/* Left Inputs (7 cols) */}
             <div className="lg:col-span-7 space-y-6">
+              {/* Prominent link to LinkWA */}
+              <div className="p-4 rounded-xl bg-gradient-to-r from-[#1F4B99]/30 via-[#0e121d] to-[#121724] border border-[#38bdf8]/35 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+                <div className="space-y-0.5">
+                  <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse" />
+                    <span>LinkWA — Standalone WhatsApp QR &amp; Link Studio</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-400">
+                    Need custom branded QR codes, SVG logos, or UTM campaign tracking?
+                  </p>
+                </div>
+                <a
+                  href="https://linkwa.in/"
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-flex items-center justify-center gap-1.5 bg-[#38bdf8] hover:bg-[#38bdf8]/90 text-[#07090e] font-bold px-4 py-2.5 rounded-lg text-xs transition-all shrink-0 shadow"
+                >
+                  Open the full LinkWA app →
+                </a>
+              </div>
+
               <div>
                 <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">
                   1. Country &amp; WhatsApp Phone Number
@@ -507,6 +528,29 @@ export const WhatsAppLinkGenerator: React.FC = () => {
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          {/* ── LINKWA FULL APP PROMO (POST-FAQ) ── */}
+          <div className="p-7 rounded-2xl bg-gradient-to-r from-[#0e121d] via-[#121826] to-[#0e121d] border border-[#38bdf8]/35 text-center space-y-3.5 shadow-xl">
+            <span className="px-3 py-1 bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] text-xs font-bold uppercase rounded-full tracking-wider">
+              OFFICIAL SATELLITE UTILITY
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-white">
+              Need Advanced QR Styling &amp; Campaign Tracking?
+            </h3>
+            <p className="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto leading-relaxed">
+              LinkWA gives you high-res QR code exports with custom colors, embedded logos, dynamic UTM tracking for Meta &amp; Google ads, and sub-second link generation.
+            </p>
+            <div className="pt-2">
+              <a
+                href="https://linkwa.in/"
+                target="_blank"
+                rel="noopener"
+                className="inline-flex items-center gap-2 bg-[#38bdf8] hover:bg-[#38bdf8]/90 text-[#07090e] font-bold px-6 py-3 rounded-xl text-xs sm:text-sm transition-all shadow-lg"
+              >
+                Open the full LinkWA app →
+              </a>
             </div>
           </div>
 
