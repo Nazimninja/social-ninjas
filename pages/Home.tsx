@@ -418,7 +418,7 @@ const Home: React.FC = () => {
               </SpotlightCard>
             </a>
 
-            <Link to="/tools/us-take-home-pay-calculator" className="group block text-decoration-none">
+            <a href="https://salary.socialninjas.in/salary-calculator/" target="_blank" rel="noopener" className="group block text-decoration-none">
               <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">
                   TAX
@@ -433,9 +433,9 @@ const Home: React.FC = () => {
                   Use Tool →
                 </div>
               </SpotlightCard>
-            </Link>
+            </a>
 
-            <Link to="/tools/hourly-to-salary-calculator" className="group block text-decoration-none">
+            <a href="https://salary.socialninjas.in/" target="_blank" rel="noopener" className="group block text-decoration-none">
               <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">
                   $/H
@@ -450,9 +450,9 @@ const Home: React.FC = () => {
                   Use Tool →
                 </div>
               </SpotlightCard>
-            </Link>
+            </a>
 
-            <Link to="/tools/mortgage-rate-calculator" className="group block text-decoration-none">
+            <a href="https://mortgage.socialninjas.in/" target="_blank" rel="noopener" className="group block text-decoration-none">
               <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800/80 space-y-3 h-full hover:border-brand-primary/50 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm">
                   %
@@ -467,7 +467,7 @@ const Home: React.FC = () => {
                   Use Tool →
                 </div>
               </SpotlightCard>
-            </Link>
+            </a>
           </div>
         </div>
       </section>

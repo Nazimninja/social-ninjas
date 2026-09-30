@@ -2,6 +2,14 @@
 /services/performance-marketing/ /services/paid-ads 301
 /services/creative-studio /services/content-production 301
 /services/creative-studio/ /services/content-production 301
+/tools/whatsapp-link-generator https://linkwa.in/ 301
+/tools/whatsapp-link-generator/ https://linkwa.in/ 301
+/tools/us-take-home-pay-calculator https://salary.socialninjas.in/salary-calculator/ 301
+/tools/us-take-home-pay-calculator/ https://salary.socialninjas.in/salary-calculator/ 301
+/tools/hourly-to-salary-calculator https://salary.socialninjas.in/ 301
+/tools/hourly-to-salary-calculator/ https://salary.socialninjas.in/ 301
+/tools/mortgage-rate-calculator https://mortgage.socialninjas.in/ 301
+/tools/mortgage-rate-calculator/ https://mortgage.socialninjas.in/ 301
 /standalone-crm /standalone-crm/index.html 200
 /api/* https://social-ninjas-main.vercel.app/api/:splat 200
 /* /index.html 200

@@ -23,7 +23,8 @@ const UTILITY_TOOLS = [
     desc: 'Calculate your net take-home pay after federal, state, and FICA taxes across all 50 US states.',
     badge: 'Free Tool',
     badgeColor: '#38bdf8',
-    url: '/tools/us-take-home-pay-calculator',
+    url: 'https://salary.socialninjas.in/salary-calculator/',
+    isExternal: true,
   },
   {
     id: 'salary-conv',
@@ -31,8 +32,9 @@ const UTILITY_TOOLS = [
     title: 'Hourly to Salary Calculator',
     desc: 'Convert hourly wages to annual salary, monthly, and weekly gross income with overtime calculations.',
     badge: 'Free Tool',
-    badgeColor: '#38bdf8',
-    url: '/tools/hourly-to-salary-calculator',
+    badgeColor: '#a855f7',
+    url: 'https://salary.socialninjas.in/',
+    isExternal: true,
   },
   {
     id: 'mortgage',
@@ -40,8 +42,9 @@ const UTILITY_TOOLS = [
     title: 'Mortgage Rate Calculator',
     desc: 'Calculate monthly PITI mortgage payments including property taxes, home insurance, and PMI.',
     badge: 'Free Tool',
-    badgeColor: '#94a3b8',
-    url: '/tools/mortgage-rate-calculator',
+    badgeColor: '#f59e0b',
+    url: 'https://mortgage.socialninjas.in/',
+    isExternal: true,
   },
 ];
 
@@ -126,7 +129,7 @@ const Tools: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 text-xs font-bold pt-3 border-t border-neutral-800/60" style={{ color: tool.badgeColor }}>
-                    Open Tool <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
+                    Launch Free Tool <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                   </div>
                 </SpotlightCard>
               );

@@ -20,6 +20,20 @@ export async function onRequest(context) {
     return Response.redirect(`${url.origin}/services/content-production`, 301);
   }
 
+  // 301-redirect standalone satellite tools
+  if (cleanPath === '/tools/whatsapp-link-generator') {
+    return Response.redirect('https://linkwa.in/', 301);
+  }
+  if (cleanPath === '/tools/us-take-home-pay-calculator') {
+    return Response.redirect('https://salary.socialninjas.in/salary-calculator/', 301);
+  }
+  if (cleanPath === '/tools/hourly-to-salary-calculator') {
+    return Response.redirect('https://salary.socialninjas.in/', 301);
+  }
+  if (cleanPath === '/tools/mortgage-rate-calculator') {
+    return Response.redirect('https://mortgage.socialninjas.in/', 301);
+  }
+
   const response = await next();
 
   // Only process HTML document responses
