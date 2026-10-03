@@ -78,7 +78,8 @@ export async function onRequestPost(context) {
     }
 
     if (fileBuffer) {
-      const isVideo = mediaType === 'video' || (downloadUrl && downloadUrl.endsWith('.mp4') && mediaType !== 'document');
+      const isVideo = mediaType === 'video' || (downloadUrl && downloadUrl.endsWith('.mp4') && mediaType !== 'document' && mediaType !== 'image');
+      const isImage = mediaType === 'image' || mediaType === 'single_image' || (downloadUrl && (downloadUrl.endsWith('.png') || downloadUrl.endsWith('.jpg') || downloadUrl.endsWith('.jpeg')) && mediaType !== 'document');
 
       if (isVideo) {
         // Video upload flow
@@ -111,6 +112,43 @@ export async function onRequestPost(context) {
           body: fileBuffer
         });
         if (!upRes.ok) throw new Error(`LinkedIn video CDN upload failed: ${await upRes.text()}`);
+      } else if (isImage) {
+        // LinkedIn Single Image upload flow
+        console.log('Initializing LinkedIn Single Image upload for author:', effectiveAuthor);
+        const initRes = await fetch('https://api.linkedin.com/rest/images?action=initializeUpload', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'LinkedIn-Version': '202602',
+            'Content-Type': 'application/json',
+            'X-Restli-Protocol-Version': '2.0.0'
+          },
+          body: JSON.stringify({
+            initializeUploadRequest: {
+              owner: effectiveAuthor
+            }
+          })
+        });
+
+        if (!initRes.ok) {
+          const errText = await initRes.text();
+          throw new Error(`LinkedIn image init failed (${initRes.status}): ${errText}`);
+        }
+        const initData = await initRes.json();
+        mediaUrn = initData.value.image;
+        const uploadUrl = initData.value.uploadUrl;
+        console.log('LinkedIn Image URN:', mediaUrn);
+
+        // Upload image binary to LinkedIn CDN
+        const upRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'image/png' },
+          body: fileBuffer
+        });
+        if (!upRes.ok && upRes.status !== 201 && upRes.status !== 200) {
+          throw new Error(`LinkedIn image CDN upload failed (${upRes.status}): ${await upRes.text()}`);
+        }
+        console.log('Single Image uploaded successfully to LinkedIn CDN (200/201 OK)!');
       } else {
         // Document / PDF Carousel upload flow
         console.log('Initializing LinkedIn Document Carousel upload for author:', effectiveAuthor);
@@ -197,12 +235,21 @@ export async function onRequestPost(context) {
     };
 
     if (mediaUrn) {
-      postPayload.content = {
-        media: {
-          title: title || 'Carousel Slide Deck',
-          id: mediaUrn
-        }
-      };
+      if (isImage) {
+        postPayload.content = {
+          media: {
+            title: title || 'Post Image',
+            id: mediaUrn
+          }
+        };
+      } else {
+        postPayload.content = {
+          media: {
+            title: title || 'Carousel Slide Deck',
+            id: mediaUrn
+          }
+        };
+      }
     }
 
     const postRes = await fetch('https://api.linkedin.com/rest/posts', {
@@ -222,12 +269,13 @@ export async function onRequestPost(context) {
     }
 
     const postId = postRes.headers.get('x-restli-id') || 'published';
-    console.log('LinkedIn Carousel post created successfully! ID:', postId);
+    const publishedType = isImage ? 'single_image' : (mediaUrn ? 'carousel_document' : 'article');
+    console.log(`LinkedIn ${publishedType} post created successfully! ID:`, postId);
 
     return new Response(JSON.stringify({
       success: true,
       postId,
-      type: mediaUrn ? 'carousel_document' : 'article'
+      type: publishedType
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
