@@ -9,6 +9,8 @@ export async function onRequestPost(context) {
   let author = 'urn:li:person:WEfd679Fsv';
   let token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ';
   let downloadUrl = null;
+  let isVideo = false;
+  let isImage = false;
 
   if (contentType.includes('multipart/form-data')) {
     try {
@@ -78,8 +80,8 @@ export async function onRequestPost(context) {
     }
 
     if (fileBuffer) {
-      const isVideo = mediaType === 'video' || (downloadUrl && downloadUrl.endsWith('.mp4') && mediaType !== 'document' && mediaType !== 'image');
-      const isImage = mediaType === 'image' || mediaType === 'single_image' || (downloadUrl && (downloadUrl.endsWith('.png') || downloadUrl.endsWith('.jpg') || downloadUrl.endsWith('.jpeg')) && mediaType !== 'document');
+      isVideo = mediaType === 'video' || (downloadUrl && downloadUrl.endsWith('.mp4') && mediaType !== 'document' && mediaType !== 'image');
+      isImage = mediaType === 'image' || mediaType === 'single_image' || (downloadUrl && (downloadUrl.endsWith('.png') || downloadUrl.endsWith('.jpg') || downloadUrl.endsWith('.jpeg')) && mediaType !== 'document');
 
       if (isVideo) {
         // Video upload flow
