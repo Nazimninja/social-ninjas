@@ -14,8 +14,8 @@ export default async function handler(req, res) {
     token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ'
   } = req.body || {};
 
-  if (!videoUrl && !text) {
-    return res.status(400).json({ error: 'Missing videoUrl or text' });
+  if (!text || text.trim().length < 10) {
+    return res.status(400).json({ error: 'Missing or too short commentary text (minimum 10 characters required)' });
   }
 
   try {

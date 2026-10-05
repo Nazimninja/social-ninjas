@@ -217,9 +217,17 @@ export async function onRequestPost(context) {
       throw new Error('Refusing to publish carousel post: No document was provided or document conversion failed. Refusing to publish an empty post.');
     }
 
-    if (!text || text.trim() === '' || text.trim() === 'Swipe through for the full breakdown! 👉') {
-      console.warn('Warning: Default or empty text detected.');
+    if (!text || text.trim().length < 10) {
+      throw new Error('Refusing to publish post: Caption / commentary text is missing or too short (length < 10). Every LinkedIn post must have commentary.');
     }
+
+    let cleanTitle = (title || '')
+      .replace(/^[0-9]+_[A-Za-z0-9]+_/g, '')
+      .replace(/_CAROUSEL/gi, '')
+      .replace(/\.[^/.]+$/, '')
+      .replace(/_/g, ' ')
+      .trim();
+    if (!cleanTitle) cleanTitle = 'Social Ninjas Insights';
 
     // Create LinkedIn Post
     console.log('Publishing post on LinkedIn...');
@@ -240,14 +248,14 @@ export async function onRequestPost(context) {
       if (isImage) {
         postPayload.content = {
           media: {
-            title: title || 'Post Image',
+            title: cleanTitle,
             id: mediaUrn
           }
         };
       } else {
         postPayload.content = {
           media: {
-            title: title || 'Carousel Slide Deck',
+            title: cleanTitle,
             id: mediaUrn
           }
         };
