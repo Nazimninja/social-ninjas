@@ -1,6 +1,6 @@
 # Social Ninja's & Fit Ninja - Comprehensive Project Memory
 
-This document stores the consolidated history, architectural decisions, design system, and marketing guidelines gathered across 127 development conversations.
+This document stores the consolidated history, architectural decisions, design system, and marketing guidelines gathered across all development conversations.
 
 ---
 
@@ -12,14 +12,23 @@ This document stores the consolidated history, architectural decisions, design s
   - Connected to CRM tables in Supabase for inbound leads and content studio clients.
 - **Fit Ninja (`fit.socialninjas.in`)**:
   - Dedicated fitness application and workout planner.
-  - Contains full exercise library (1,300+ animated exercises), custom routine generator, workout session tracker with rest countdowns, and Dynamic Island / Live Activity integration.
+  - Contains full exercise library (4,000+ exercises in `public/data/exercises_master.json`), custom routine generator, workout session tracker with rest countdowns, and Dynamic Island / Live Activity integration.
+  - Core exercises must always have verified GIF demos and thumbnails.
 - **Satellite Inbound Tools**:
-  - `linkwa.in`: WhatsApp link generator with custom message templates. Funnels traffic to agency services.
-  - `salarytools.us`: US salary calculator and take-home pay tool. Funnels traffic to agency services.
+  - `linkwa.in`: WhatsApp link generator with custom message templates and HD QR Studio. Funnels traffic to agency services.
+  - `salarytools.us` & `salary.socialninjas.in`: US salary calculator and take-home pay tool. Funnels traffic to agency services.
 
 ---
 
-## 2. Business Logic, Pricing & Policies
+## 2. Contact & Identity Standards
+
+1. **Standard Business Email**: `info@socialninjas.in` on all headers, footers, privacy policies, terms, and tools.
+2. **Founder & Cloud Admin**: `nazim.socialninja@gmail.com` (Google Business Profile, SaaSHub, GoodFirms, Crunchbase).
+3. **Official Phone**: `+918147757479`.
+
+---
+
+## 3. Business Logic, Pricing & Policies
 
 1. **Pricing Structure**:
    - **Starter Pass**: Free forever (₹0). 50+ basic tutorials, manual set logger, basic rest timer. Anchors value for Pro.
@@ -34,7 +43,7 @@ This document stores the consolidated history, architectural decisions, design s
 
 ---
 
-## 3. Design System & UI Specifications
+## 4. Design System & UI Specifications
 
 1. **Color Palette**:
    - **Obsidian Dark & Deep Carbon**: `#0c0c0e`, `#101116`, `#121215` provide a unified dark aesthetic.
@@ -45,10 +54,21 @@ This document stores the consolidated history, architectural decisions, design s
    - **1140px Container**: Applied to navigation, hero grids, exercise showcases, sandbox previews, pricing tables, and footer (`max-width: 1140px; margin: 0 auto 80px; width: 100%; box-sizing: border-box;`).
    - **800px Reading Container**: Applied to guides, FAQs, and documentation (`max-width: 800px; margin: 0 auto 80px; width: 100%; box-sizing: border-box;`).
    - **Zoom Stability**: Tested and locked for 100% zoom with no layout shifts or horizontal scrollbars.
+3. **Form Physics**: Disabled 3D tilt physics (`rotateX`, `rotateY`, `translateZ`) on form inputs for reliable accessibility.
 
 ---
 
-## 4. Key Integrations & APIs
+## 5. Marketing Operations & Automations
+
+1. **Daily LinkedIn Publisher (`NazimOS Publisher`, ID `ztKys5j4Ug21IEud`)**:
+   - Fires at 9:30 AM IST (`30 9 * * *`).
+   - Auto-converts scheduled PDF slides & images into high-resolution PNGs for posting.
+2. **Multi-Platform Monitor / Lead Generator**:
+   - Configured with strict cron schedules to maintain reliability in n8n.
+
+---
+
+## 6. Key Integrations & APIs
 
 1. **Meta Pixel & CAPI**:
    - **Pixel ID**: `1022819360737558`
@@ -65,7 +85,7 @@ This document stores the consolidated history, architectural decisions, design s
 
 ---
 
-## 5. Development & Deployment Workflow
+## 7. Development & Deployment Workflow
 
 1. **Build Step**:
    ```bash
