@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, Phone, MapPin, Send, ArrowRight, ShieldCheck, Clock, Sparkles, Loader2, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, ArrowRight, ShieldCheck, Clock, Sparkles, Loader2, CheckCircle2, MessageCircle } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
 import AuroraBackground from '../components/AuroraBackground';
@@ -88,13 +88,28 @@ const Contact: React.FC = () => {
 
             <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800 space-y-3">
               <div className="w-10 h-10 rounded-xl bg-[#3ba213]/15 border border-[#3ba213]/30 flex items-center justify-center text-[#3ba213]">
-                <Phone size={20} />
+                <MessageCircle size={20} />
               </div>
               <h3 className="font-bold text-white text-base">Phone & WhatsApp</h3>
               <p className="text-xs text-neutral-400">Instant response during business hours</p>
-              <a href="tel:+918147757479" className="text-xs font-bold text-[#3ba213] hover:underline block pt-1">
-                +91 81477 57479
-              </a>
+              <div className="flex flex-col gap-2 pt-1">
+                <a
+                  href="https://wa.me/918147757479"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-[#22c55e] hover:underline inline-flex items-center gap-1.5"
+                >
+                  <MessageCircle size={14} />
+                  Chat on WhatsApp (+91 81477 57479) →
+                </a>
+                <a
+                  href="tel:+918147757479"
+                  className="text-xs text-neutral-400 hover:text-white inline-flex items-center gap-1.5"
+                >
+                  <Phone size={13} />
+                  Direct Call: +91 81477 57479
+                </a>
+              </div>
             </SpotlightCard>
 
             <SpotlightCard className="p-6 bg-[#0e121d] border border-neutral-800 space-y-3">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Linkedin, Facebook, Mail, Phone } from 'lucide-react';
+import { Instagram, Linkedin, Facebook, Mail, Phone, MessageCircle } from 'lucide-react';
 import Logo from './Logo';
 
 const Footer: React.FC = () => {
@@ -40,6 +40,7 @@ const Footer: React.FC = () => {
                 { Icon: Instagram, href: 'https://www.instagram.com/socialninja.s/', label: 'Instagram' },
                 { Icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61553674457871', label: 'Facebook' },
                 { Icon: Linkedin, href: 'https://www.linkedin.com/company/99078419/', label: 'LinkedIn' },
+                { Icon: MessageCircle, href: 'https://wa.me/918147757479', label: 'WhatsApp' },
                 { Icon: Mail, href: 'mailto:info@socialninjas.in', label: 'Email' },
                 { Icon: Phone, href: 'tel:+918147757479', label: 'Phone' },
               ].map(({ Icon, href, label }) => (
