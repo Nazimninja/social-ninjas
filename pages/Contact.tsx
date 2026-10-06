@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
 import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
+import { supabase } from './supabase';
 
 const PRODUCT_NAMES: Record<string, string> = {
   'ai-sales-agent': 'AI Sales Agent (Waitlist / Early Access)',
@@ -16,9 +17,14 @@ const PRODUCT_NAMES: Record<string, string> = {
 const Contact: React.FC = () => {
   const location = useLocation();
   const [productKey, setProductKey] = useState<string | null>(null);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [budget, setBudget] = useState('Under $1,000 / ₹50,000 / mo');
   const [goals, setGoals] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -151,35 +157,121 @@ const Contact: React.FC = () => {
                 </div>
               ) : (
                 <form
-                  onSubmit={e => {
+                  onSubmit={async e => {
                     e.preventDefault();
                     setIsSubmitting(true);
-                    setTimeout(() => {
-                      setIsSubmitting(false);
+                    setErrorMessage(null);
+
+                    const payload = {
+                      name: fullName.trim(),
+                      email: email.trim(),
+                      phone: phone.trim() || null,
+                      company: goals ? goals.substring(0, 100) : null,
+                      message: `[Budget: ${budget}] ${goals}`.trim(),
+                      source: productKey ? `waitlist-${productKey}` : 'main-contact-page',
+                      status: 'new'
+                    };
+
+                    try {
+                      // 1. Insert lead directly into Supabase CRM
+                      try {
+                        await supabase.from('leads').insert([payload]);
+                      } catch (sbErr) {
+                        console.warn('Supabase lead insert note:', sbErr);
+                      }
+
+                      // 2. Send instant email notification via FormSubmit
+                      try {
+                        await fetch("https://formsubmit.co/ajax/info@socialninjas.in", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                          },
+                          body: JSON.stringify({
+                            _subject: `🔥 New Lead from socialninjas.in: ${fullName}`,
+                            _template: "table",
+                            Name: fullName,
+                            Email: email,
+                            Phone: phone || 'Not provided',
+                            Budget: budget,
+                            "Business & Goals": goals || 'Not provided',
+                            Source: productKey ? `Early Access: ${productKey}` : 'Free Strategy Audit',
+                            Date: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+                          })
+                        });
+                      } catch (fsErr) {
+                        console.warn('FormSubmit note:', fsErr);
+                      }
+
+                      // 3. Track conversion event
+                      if (typeof window !== 'undefined') {
+                        if ((window as any).gtag) {
+                          (window as any).gtag('event', 'generate_lead', {
+                            event_category: 'Contact',
+                            event_label: productKey || 'Strategy Audit'
+                          });
+                        }
+                        if ((window as any).fbq) {
+                          (window as any).fbq('track', 'Lead', {
+                            content_name: productKey || 'Strategy Audit'
+                          });
+                        }
+                      }
+
                       setIsSubmitted(true);
-                    }, 1200);
+                    } catch (err: any) {
+                      console.error('Lead submission error:', err);
+                      setIsSubmitted(true);
+                    } finally {
+                      setIsSubmitting(false);
+                    }
                   }}
                   className="space-y-4 text-xs"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Your Full Name *</label>
-                      <input type="text" required placeholder="John Doe" className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                      <input
+                        type="text"
+                        required
+                        value={fullName}
+                        onChange={e => setFullName(e.target.value)}
+                        placeholder="John Doe"
+                        className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]"
+                      />
                     </div>
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Work Email *</label>
-                      <input type="email" required placeholder="john@company.com" className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder="john@company.com"
+                        className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]"
+                      />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Phone Number</label>
-                      <input type="tel" placeholder="+1 / +44 / +971 / +91..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                        placeholder="+1 / +44 / +971 / +91..."
+                        className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]"
+                      />
                     </div>
                     <div>
                       <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Monthly Ad Budget</label>
-                      <select className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]">
+                      <select
+                        value={budget}
+                        onChange={e => setBudget(e.target.value)}
+                        className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]"
+                      >
                         <option>Under $1,000 / ₹50,000 / mo</option>
                         <option>$1,000 - $3,000 / ₹50,000 - ₹2,50,000 / mo</option>
                         <option>$3,000 - $10,000 / ₹2,50,000 - ₹8,00,000 / mo</option>
@@ -190,7 +282,13 @@ const Contact: React.FC = () => {
 
                   <div>
                     <label className="block font-bold text-neutral-300 uppercase tracking-wider mb-2">Your Business & Goals</label>
-                    <textarea rows={4} value={goals} onChange={e => setGoals(e.target.value)} placeholder="Tell us about your brand, current challenges, and revenue goals..." className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]" />
+                    <textarea
+                      rows={4}
+                      value={goals}
+                      onChange={e => setGoals(e.target.value)}
+                      placeholder="Tell us about your brand, current challenges, and revenue goals..."
+                      className="w-full bg-[#141a29] border border-neutral-800 rounded-xl p-3.5 text-white focus:outline-none focus:border-[#1F4B99]"
+                    />
                   </div>
 
                   <div className="pt-2">

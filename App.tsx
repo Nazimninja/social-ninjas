@@ -63,9 +63,9 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Scroll to top on route change or hash navigation
+// Scroll to top and track SPA page views on route change or hash navigation
 const ScrollToTop = () => {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, search } = useLocation();
 
   useEffect(() => {
     if (hash) {
@@ -78,7 +78,22 @@ const ScrollToTop = () => {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname, hash]);
+
+    // SPA Analytics Tracking (GA4 + Meta Pixel)
+    if (typeof window !== 'undefined') {
+      const fullPath = pathname + search;
+      if ((window as any).gtag) {
+        (window as any).gtag('event', 'page_view', {
+          page_path: fullPath,
+          page_location: window.location.href,
+          page_title: document.title
+        });
+      }
+      if ((window as any).fbq) {
+        (window as any).fbq('track', 'PageView');
+      }
+    }
+  }, [pathname, hash, search]);
 
   return null;
 }
