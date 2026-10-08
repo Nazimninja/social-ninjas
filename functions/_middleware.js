@@ -34,7 +34,18 @@ export async function onRequest(context) {
     return Response.redirect('https://mortgage.socialninjas.in/', 301);
   }
 
-  const response = await next();
+  // SPA Route rewrite for dynamic client-only views (/app, /app/*, /admin)
+  if (cleanPath === '/app' || cleanPath.startsWith('/app/') || cleanPath === '/admin') {
+    return context.env.ASSETS.fetch(new URL('/index.html', request.url));
+  }
+
+  let response = await next();
+
+  // If asset was not found (404) and this is a page navigation request (no file extension),
+  // fallback to /index.html so React Router SPA handles client-side routing
+  if (response.status === 404 && !/\.[a-zA-Z0-9]+$/.test(cleanPath)) {
+    response = await context.env.ASSETS.fetch(new URL('/index.html', request.url));
+  }
 
   // Only process HTML document responses
   const contentType = response.headers.get('content-type') || '';

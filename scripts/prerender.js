@@ -407,8 +407,137 @@ const marketingPagesContent = {
             <span style="color:#2fcf8e;font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Active Product</span>
             <h3 style="font-size:26px;color:#ffffff;margin:8px 0 16px;">Fit Ninja</h3>
             <p style="color:#a0a0b0;font-size:15px;line-height:1.65;margin-bottom:20px;">Deploy personalized fitness and workout tracking. Delivers structured training splits, progressive overload logging, rest timers, and exercise guides.</p>
-            <a href="/contact" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;background:rgba(255,255,255,0.05);">Request Trial Access</a>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <a href="/ai-products/fit-ninja" style="display:inline-block;background:#1F4B99;color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;">Learn More About Fit Ninja</a>
+              <a href="https://fit.socialninjas.in/app?mode=signup" target="_blank" rel="noopener noreferrer" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;text-decoration:none;background:rgba(255,255,255,0.05);">Launch App (₹99 First Month)</a>
+            </div>
           </div>
+        </div>
+      </div>
+    </main>
+  `,
+  'ai-products/fit-ninja': `
+    <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:800px;margin:0 auto 48px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">ATHLETIC PERFORMANCE SAAS</span>
+        <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#ffffff;line-height:1.2;margin:16px 0;">
+          Fit Ninja — Athletic Training &amp; Progressive Overload System
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;">
+          4,000+ HD animated exercise demos, guided set player with smart rest timers, automatic progressive overload calculations, and precision macro nutrition planning.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="https://fit.socialninjas.in/app?mode=signup" target="_blank" rel="noopener noreferrer" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Launch Athlete App (₹99 First Month) →</a>
+          <a href="/contact" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">Contact Team</a>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin:48px 0;text-align:center;">
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">4,000+</div>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">HD Video Demonstrations</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">Screen Lock</div>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">Persistent Rest Player</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">Auto Overload</div>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">Linear Progression Engine</div>
+        </div>
+        <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <div style="font-size:32px;font-weight:800;color:#38bdf8;">₹99</div>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">First Month Introductory Hook</div>
+        </div>
+      </div>
+
+      <div style="margin:60px 0;">
+        <h2 style="font-size:28px;font-weight:800;color:#ffffff;margin-bottom:20px;">Built for Serious Athletes &amp; Lifters</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;color:#ffffff;margin:0 0 10px;">4,000+ Exercise Video Library</h3>
+            <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0;">Every major barbell, dumbbell, cable and machine movement with animated biomechanical form demonstrations and muscle target guides.</p>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;color:#ffffff;margin:0 0 10px;">Smart Rest Timer &amp; Wake Lock</h3>
+            <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0;">Full-screen rest countdowns with audio signals that prevent screen timeout during heavy compound sets without touching your phone.</p>
+          </div>
+          <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <h3 style="font-size:18px;color:#ffffff;margin:0 0 10px;">Adaptive Macro Nutrition</h3>
+            <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0;">Calibrated protein and calorie targets optimized for Indian Vegetarian, Non-Vegetarian, Vegan, and Keto dietary protocols.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#0c0f17;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:36px;margin:40px 0;text-align:center;">
+        <h3 style="font-size:24px;color:#ffffff;margin:0 0 12px;">Start Training With Fit Ninja</h3>
+        <p style="color:#94a3b8;font-size:15px;max-width:560px;margin:0 auto 24px;">First month introductory access at ₹99. Ongoing renewal at ₹399/mo or use our ₹0 Starter Pass anytime.</p>
+        <a href="https://fit.socialninjas.in/app?mode=signup" target="_blank" rel="noopener noreferrer" style="background:#1F4B99;color:#ffffff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;display:inline-block;">Get Started Now →</a>
+      </div>
+    </main>
+  `,
+  'ai-products/ai-sales-agent': `
+    <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:800px;margin:0 auto 48px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">ENTERPRISE SALES AUTOMATION</span>
+        <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#ffffff;line-height:1.2;margin:16px 0;">
+          AI Lead &amp; Sales Agent
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;">
+          Sub-second 24/7 lead qualification and automated CRM calendar booking across WhatsApp, Instagram DMs, and website inquiries.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact?product=ai-sales-agent" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Deploy Your AI Sales Agent →</a>
+          <a href="/services/ai-automation" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">View Automation Systems</a>
+        </div>
+      </div>
+    </main>
+  `,
+  'ai-products/ad-copy-generator': `
+    <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:800px;margin:0 auto 48px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">PERFORMANCE COPY MATRIX</span>
+        <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#ffffff;line-height:1.2;margin:16px 0;">
+          AI Ad Copy &amp; Creative Engine
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;">
+          High-ROAS Meta &amp; Google ad copy, headlines, and hooks generated in seconds across direct-response frameworks.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact?product=ad-copy-generator" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Request Early Access →</a>
+          <a href="/services/paid-ads" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ffffff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;">Explore Paid Ads</a>
+        </div>
+      </div>
+    </main>
+  `,
+  'ai-products/reporting-assistant': `
+    <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:800px;margin:0 auto 48px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">MARKETING INTELLIGENCE</span>
+        <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#ffffff;line-height:1.2;margin:16px 0;">
+          Autonomous Reporting Intelligence
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;">
+          Weekly synthesized executive summaries unifying Meta Ads, Google Ads, and GA4 with zero manual spreadsheets.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact?product=reporting-assistant" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Connect Your Channels →</a>
+        </div>
+      </div>
+    </main>
+  `,
+  'promo/ai-lead-handling': `
+    <main style="max-width:960px;margin:120px auto 80px;padding:0 24px;width:100%;font-family:system-ui,sans-serif;box-sizing:border-box;">
+      <div style="text-align:center;max-width:800px;margin:0 auto 48px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);padding:6px 14px;border-radius:999px;">AUTONOMOUS LEAD ARCHITECTURE</span>
+        <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#ffffff;line-height:1.2;margin:16px 0;">
+          Zero-Latency AI Lead Qualification &amp; CRM Sync
+        </h1>
+        <p style="font-size:18px;color:#a0a0b0;line-height:1.6;margin:0 0 32px;">
+          Engage, qualify, and book inbound marketing leads in under 1 second without manual intervention.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact" style="background:#1F4B99;color:#ffffff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;">Book Free Strategy Call →</a>
         </div>
       </div>
     </main>
@@ -1734,7 +1863,27 @@ const routes = {
   },
   'ai-products': {
     title: "AI Products & SaaS | Fit Ninja by Social Ninja's",
-    description: "Explore Social Ninja's AI product suite — including Fit Ninja, the AI fitness coach. Request trial access."
+    description: "Explore Social Ninja's AI product suite — including Fit Ninja, athletic training SaaS. Request trial access."
+  },
+  'ai-products/fit-ninja': {
+    title: "Fit Ninja — Athletic Training & Progressive Overload System | Social Ninja's",
+    description: "Fit Ninja workout companion: 4,000+ animated exercises, automatic progressive overload calculations, persistent rest timer and precision macro nutrition."
+  },
+  'ai-products/ai-sales-agent': {
+    title: "AI Lead & Sales Agent — 24/7 Autonomous Qualification | Social Ninja's",
+    description: "Deploy custom AI sales agents across WhatsApp, Instagram DMs and web forms. Reply in under 1s, qualify inbound prospects, and book calendar meetings 24/7."
+  },
+  'ai-products/ad-copy-generator': {
+    title: "AI Ad Copy & Creative Engine | Social Ninja's",
+    description: "Produce high-converting Meta & Google ad hooks, primary copy and direct-response angles in seconds to prevent creative fatigue."
+  },
+  'ai-products/reporting-assistant': {
+    title: "Autonomous Reporting Intelligence | Social Ninja's",
+    description: "Automated executive weekly ROAS & attribution summaries unifying Meta Ads, Google Ads and GA4 without manual spreadsheets."
+  },
+  'promo/ai-lead-handling': {
+    title: "AI Lead Handling & Outbound Growth Architecture | Social Ninja's",
+    description: "Zero-latency autonomous growth engine qualifying inbound leads in seconds and synchronizing with your CRM."
   },
   'case-studies': {
     title: "Case Studies | Real Client Growth Results",
@@ -2212,6 +2361,11 @@ function generateSitemap(posts) {
     { loc: 'https://socialninjas.in/tools', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/about', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
     { loc: 'https://socialninjas.in/ai-products', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/ai-products/fit-ninja', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.8' },
+    { loc: 'https://socialninjas.in/ai-products/ai-sales-agent', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/ai-products/ad-copy-generator', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/ai-products/reporting-assistant', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
+    { loc: 'https://socialninjas.in/promo/ai-lead-handling', lastmod: '2026-09-26', changefreq: 'monthly', priority: '0.7' },
     { loc: 'https://socialninjas.in/growth-systems', lastmod: '2026-07-27', changefreq: 'monthly', priority: '0.7' },
     { loc: 'https://socialninjas.in/case-studies', lastmod: '2026-09-29', changefreq: 'weekly', priority: '0.8' },
     { loc: 'https://socialninjas.in/case-studies/zara-skin-co', lastmod: '2026-09-29', changefreq: 'monthly', priority: '0.7' },
