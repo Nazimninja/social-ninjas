@@ -1,38 +1,57 @@
 export default async function handler(req, res) {
+  const origin = req.headers.origin || '';
+  const isAllowed = !origin || origin.includes('socialninjas.in') || origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('vercel.app');
+
+  if (isAllowed && origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else {
+    return res.status(403).json({ error: 'Origin not allowed' });
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return res.status(503).json({ error: 'AI chat service temporarily unavailable' });
+  }
 
-  const systemPrompt = `You are the official AI Support Agent for Social Ninja's, a premium digital growth & performance marketing agency.
-Your goal is to be helpful, concise, authoritative, and friendly. Answer questions about the agency's services.
+  // Prevent token abuse / large body attacks
+  const rawMessages = Array.isArray(req.body?.messages) ? req.body.messages.slice(-6) : [];
+
+  const systemPrompt = `You are the official Growth Assistant for Social Ninja's, an elite digital growth, content studio & performance marketing agency.
+Your goal is to be helpful, concise, authoritative, and friendly. Answer questions about the agency's scaling systems and services.
 Key Info:
-- Services: Lead Automation (Custom chatbots & CRM), Paid Ads (Meta/Google), Growth Systems, Web & SEO.
-- Contact: If they want to speak to our team or book an audit call, direct them to email info@socialninjas.in or use the /contact page.
-Do NOT reveal you are an AI, you are 'Social Ninja's AI Assistant'. Provide short, conversational answers.`;
+- Services: Lead Automation (Custom conversational workflows & CRM sync), Paid Ads (Meta/Google performance), Content Studio (high-retention video assets), Web & SEO.
+- Contact: Direct inquiries to email info@socialninjas.in or the /contact page.
+Provide short, punchy, conversational answers.`;
 
   try {
     const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+            "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-            model: "gpt-4o-mini", // Use mini for support chat for faster, cheaper responses
-            max_tokens: 1024,
+            model: "gpt-4o-mini",
+            max_tokens: 512,
             messages: [
                 { role: "system", content: systemPrompt },
-                ...(req.body.messages || [])
+                ...rawMessages
             ]
         })
     });
 
     if (!openaiRes.ok) {
-        const error = await openaiRes.json();
+        const error = await openaiRes.json().catch(() => ({}));
         return res.status(openaiRes.status).json(error);
     }
 

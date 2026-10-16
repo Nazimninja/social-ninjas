@@ -9,7 +9,7 @@
 /tools/hourly-to-salary-calculator https://salary.socialninjas.in/ 301
 /tools/hourly-to-salary-calculator/ https://salary.socialninjas.in/ 301
 /tools/mortgage-rate-calculator https://mortgage.socialninjas.in/ 301
-/tools/mortgage-rate-calculator/ https://mortgage.socialninjas.in/ 301
-/standalone-crm /standalone-crm/index.html 200
+/standalone-crm /admin 301
+/standalone-crm/ /admin 301
 /api/* https://social-ninjas-main.vercel.app/api/:splat 200
 /* /index.html 200
