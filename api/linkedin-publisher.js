@@ -1,18 +1,33 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-key');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  // ── Admin Authorization Check ───────────────────────────────────────
+  const authHeader = req.headers.authorization || req.headers.Authorization || '';
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+  const customHeader = req.headers['x-admin-key'];
+  const tokenHeader = bearerToken || customHeader;
+  const adminKey = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD;
+
+  if (adminKey && tokenHeader !== adminKey) {
+    return res.status(401).json({ error: 'Unauthorized: Admin authentication required to publish to LinkedIn.' });
+  }
 
   const {
     videoUrl,
     text,
     title = 'Nazim OS Video',
-    author = 'urn:li:person:WEfd679Fsv',
-    token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ'
+    author = process.env.LINKEDIN_AUTHOR_URN || 'urn:li:person:WEfd679Fsv',
+    token = process.env.LINKEDIN_ACCESS_TOKEN
   } = req.body || {};
+
+  if (!token) {
+    return res.status(400).json({ error: 'LinkedIn access token is not configured in server environment.' });
+  }
 
   if (!text || text.trim().length < 10) {
     return res.status(400).json({ error: 'Missing or too short commentary text (minimum 10 characters required)' });

@@ -166,7 +166,7 @@ const doy = () => Math.floor((new Date().getTime() - new Date(new Date().getFull
 export const Admin: React.FC = () => {
   // ── Executive Security Gate ─────────────────────────────────────────
   const [adminKey, setAdminKey] = useState<string>(() => {
-    return sessionStorage.getItem('sn_admin_key') || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_PASSWORD) || '';
+    return sessionStorage.getItem('sn_admin_key') || '';
   });
   const [keyInput, setKeyInput] = useState<string>('');
   const [authError, setAuthError] = useState<string | null>(null);

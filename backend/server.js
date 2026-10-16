@@ -134,14 +134,14 @@ app.post('/api/chat', async (req, res) => {
 // ─────────────────────────────────────────────────────────────────
 // UNIFIED /api/data — blogs, leads, scripts
 // ─────────────────────────────────────────────────────────────────
-const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD || 'sn@admin2026';
+const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD;
 
 function isAuthorizedAdmin(req) {
     if (!ADMIN_KEY) return false;
     const authHeader = req.headers.authorization || req.headers.Authorization || '';
     const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
     const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
-    const token = bearerToken || customHeader || req.query.admin_key;
+    const token = bearerToken || customHeader;
     return Boolean(token && token === ADMIN_KEY);
 }
 

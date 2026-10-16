@@ -1,13 +1,28 @@
 export async function onRequestPost(context) {
   const req = context.request;
+
+  // ── Admin Authorization Check ───────────────────────────────────────
+  const authHeader = req.headers.get('authorization') || '';
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+  const customHeader = req.headers.get('x-admin-key');
+  const tokenHeader = bearerToken || customHeader;
+  const adminKey = context.env?.ADMIN_API_KEY || context.env?.ADMIN_PASSWORD;
+
+  if (adminKey && tokenHeader !== adminKey) {
+    return new Response(JSON.stringify({ error: 'Unauthorized: Admin authentication required.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   const contentType = req.headers.get('content-type') || '';
 
   let fileBuffer = null;
   let text = '';
   let title = 'Swipe Through — Carousel Playbook';
   let mediaType = 'document';
-  let author = 'urn:li:person:WEfd679Fsv';
-  let token = 'AQXjKU5fxaevdQDIGZXKzhKBRVSRAKMPdYI5Y5Ac4Fsla0x4YJt1mHZMR531kP610ZAomQtKJYuGkCeTYISEDhnuo3aIQP-EfB2I11kaGCWsiGMMef3r4uc9U1fm-hCahu33ameR04oS3DBPOPg09GBKBIgqfZ6trOJdOJhjJaRdywPmA8p19WaF0FFtmSdEOvqEIe-GRwhzlhDQZtYH7NFwZdqankxO5Vo_3Emgj_ktdzeqO51aw27u0V4OGBPP-nfIpWWZ6mbcOQhivfZFnk3FeEcIgzGMtOfSu772zOHfKK3OPQan4zIjDnOkxTaUll8hV0BxD3DWh9efg177UxI5pi6ZhQ';
+  let author = context.env?.LINKEDIN_AUTHOR_URN || 'urn:li:person:WEfd679Fsv';
+  let token = context.env?.LINKEDIN_ACCESS_TOKEN || '';
   let downloadUrl = null;
   let isVideo = false;
   let isImage = false;
@@ -309,7 +324,7 @@ export async function onRequestOptions() {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-admin-key'
     }
   });
 }
