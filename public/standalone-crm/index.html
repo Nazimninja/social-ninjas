@@ -389,16 +389,41 @@ textarea.fi{resize:vertical;min-height:80px;line-height:1.6}
 </div></div></div>
 
 <script>
-const API='https://socialninjas.in',PW_KEY='sn_crm_pw',DEF='sn@admin2026';
-const gpw=()=>localStorage.getItem(PW_KEY)||DEF;
+const API=window.location.origin,PW_KEY='sn_crm_pw';
 let _clients=[];
 
 // AUTH
-function login(){const pw=document.getElementById('pw').value.trim();if(pw===gpw()){sessionStorage.setItem('sn_crm','1');document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ham').style.display='flex';startup();}else{document.getElementById('lerr').style.display='block';document.getElementById('pw').value='';}}
-function lock(){sessionStorage.removeItem('sn_crm');location.reload();}
-function changePw(){const c=document.getElementById('cur-pw').value.trim(),n=document.getElementById('new-pw').value.trim(),al=document.getElementById('pw-al');if(c!==gpw()){al.innerHTML='<div class="ale">Current password wrong.</div>';return;}if(!n||n.length<6){al.innerHTML='<div class="ale">Need 6+ characters.</div>';return;}localStorage.setItem(PW_KEY,n);al.innerHTML='<div class="alo">Updated!</div>';document.getElementById('cur-pw').value='';document.getElementById('new-pw').value='';}
+async function login(){
+  const pw=document.getElementById('pw').value.trim();
+  if(!pw){document.getElementById('lerr').style.display='block';return;}
+  try {
+    const r=await fetch(API+'/api/data?resource=leads', {
+      headers: { 'Authorization': 'Bearer ' + pw, 'x-admin-key': pw }
+    });
+    if(r.ok){
+      sessionStorage.setItem('sn_crm','1');
+      sessionStorage.setItem('sn_admin_token', pw);
+      document.getElementById('login').style.display='none';
+      document.getElementById('app').style.display='block';
+      document.getElementById('ham').style.display='flex';
+      startup();
+    } else {
+      document.getElementById('lerr').style.display='block';
+      document.getElementById('pw').value='';
+    }
+  } catch(e) {
+    document.getElementById('lerr').style.display='block';
+    document.getElementById('pw').value='';
+  }
+}
+function lock(){sessionStorage.removeItem('sn_crm');sessionStorage.removeItem('sn_admin_token');location.reload();}
+function changePw(){const al=document.getElementById('pw-al');al.innerHTML='<div class="ale">Password is managed securely in environment variables.</div>';}
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-if(sessionStorage.getItem('sn_crm')==='1'){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('ham').style.display='flex';}
+if(sessionStorage.getItem('sn_crm')==='1' && sessionStorage.getItem('sn_admin_token')){
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('ham').style.display='flex';
+}
 
 // NAV
 const LOADERS={dash:loadDash,clients:loadClients,blogs:loadBlogs,social:renderOC,notes:renderNotes,gen:initGen,hist:initHist};
@@ -416,7 +441,15 @@ function closeModal(id){document.getElementById(id).classList.remove('on');}
 document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
 
 // DATA
-async function fetchAPI(){try{const r=await fetch(API+'/api/data?resource=clients');return r.ok?await r.json():[];}catch{return [];}}
+async function fetchAPI(){
+  try{
+    const token = sessionStorage.getItem('sn_admin_token') || '';
+    const r=await fetch(API+'/api/data?resource=leads', {
+      headers: { 'Authorization': 'Bearer ' + token, 'x-admin-key': token }
+    });
+    return r.ok?await r.json():[];
+  }catch{return [];}
+}
 function readLocal(){try{return Object.values(JSON.parse(localStorage.getItem('snstudio_clients')||'{}'));}catch{return [];}}
 async function loadClients(){
   const tb=document.getElementById('ctb');

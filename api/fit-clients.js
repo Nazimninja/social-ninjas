@@ -1,13 +1,26 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-admin-key');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET' && req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // ── Admin Authentication Check ─────────────────────────────────────
+  const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD;
+  const authHeader = req.headers.authorization || req.headers.Authorization || '';
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+  const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
+  const token = bearerToken || customHeader || req.query.admin_key;
+  if (!ADMIN_KEY || token !== ADMIN_KEY) {
+    return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+  }
+
   const supabaseUrl = process.env.SUPABASE_URL || process.env.SUPABASE_CRM_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_CRM_SERVICE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_CRM_SERVICE_KEY;
+  if (!serviceRoleKey) {
+    return res.status(500).json({ error: 'Supabase service key is not configured.' });
+  }
 
   // ── 1. POST: Update Plan Status (Manage Subscription) ─────────────
   if (req.method === 'POST') {

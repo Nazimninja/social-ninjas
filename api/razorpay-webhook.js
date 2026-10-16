@@ -9,36 +9,38 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    console.error('[Social Ninjas Webhook] RAZORPAY_WEBHOOK_SECRET is not configured.');
+    return res.status(500).json({ error: 'Razorpay webhook secret is not configured' });
+  }
 
-  // 1. Verify Razorpay webhook signature if secret configured
-  if (webhookSecret) {
-    try {
-      const signature = req.headers['x-razorpay-signature'];
-      if (!signature) {
-        return res.status(400).json({ error: 'Missing x-razorpay-signature header' });
-      }
-
-      let rawBody = '';
-      if (typeof req.body === 'string') {
-        rawBody = req.body;
-      } else if (Buffer.isBuffer(req.body)) {
-        rawBody = req.body.toString('utf8');
-      } else {
-        rawBody = JSON.stringify(req.body);
-      }
-
-      const expectedSignature = crypto
-        .createHmac('sha256', webhookSecret)
-        .update(rawBody)
-        .digest('hex');
-
-      if (signature !== expectedSignature) {
-        return res.status(400).json({ verified: false, error: 'Invalid webhook signature.' });
-      }
-    } catch (sigErr) {
-      console.error('[Social Ninjas Webhook] Signature verification error:', sigErr);
-      return res.status(400).json({ error: 'Signature verification failed' });
+  // 1. Verify Razorpay webhook signature strictly
+  try {
+    const signature = req.headers['x-razorpay-signature'];
+    if (!signature) {
+      return res.status(401).json({ error: 'Missing x-razorpay-signature header' });
     }
+
+    let rawBody = '';
+    if (typeof req.body === 'string') {
+      rawBody = req.body;
+    } else if (Buffer.isBuffer(req.body)) {
+      rawBody = req.body.toString('utf8');
+    } else {
+      rawBody = JSON.stringify(req.body);
+    }
+
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(rawBody)
+      .digest('hex');
+
+    if (signature !== expectedSignature) {
+      return res.status(401).json({ verified: false, error: 'Invalid webhook signature.' });
+    }
+  } catch (sigErr) {
+    console.error('[Social Ninjas Webhook] Signature verification error:', sigErr);
+    return res.status(401).json({ error: 'Signature verification failed' });
   }
 
   // 2. Parse payload event
@@ -150,7 +152,7 @@ export default async function handler(req, res) {
 
       // ── B. RESILIENT SUPABASE RECORDING (scripts & leads tables) ──
       const supabaseUrl = process.env.SUPABASE_URL || process.env.SUPABASE_CRM_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
-      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_CRM_SERVICE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_CRM_SERVICE_KEY;
 
       if (supabaseUrl && serviceRoleKey) {
         const topicKey = cleanEmail || digits || 'athlete';

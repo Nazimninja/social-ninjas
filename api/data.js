@@ -5,12 +5,30 @@
 const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
+// ── Admin Auth Helper ─────────────────────────────────────────────────
+const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD;
+
+function isAuthorizedAdmin(req) {
+  if (!ADMIN_KEY) {
+    console.warn('[api/data] Warning: ADMIN_API_KEY / ADMIN_PASSWORD is not set in environment.');
+    return false;
+  }
+  const authHeader = req.headers.authorization || req.headers.Authorization || '';
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+  const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
+  const token = bearerToken || customHeader || req.query.admin_key;
+  return Boolean(token && token === ADMIN_KEY);
+}
+
 // ── Supabase CRM helpers ──────────────────────────────────────────────
 const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
-const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 async function crmGet(table, options = {}) {
-  if (!CRM_URL || !CRM_KEY) return null;
+  if (!CRM_URL || !CRM_KEY) {
+    console.warn('[api/data] crmGet skipped: SUPABASE_SERVICE_ROLE_KEY not configured.');
+    return null;
+  }
   try {
     let url = `${CRM_URL}/rest/v1/${table}?`;
     if (options.filter)   url += `${options.filter}&`;
@@ -168,6 +186,9 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+      if (!isAuthorizedAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+      }
       const body = req.body;
       if (!body.title) return res.status(400).json({ error: 'Title required' });
       const stored = await kvGet('sn_blogs') || [...SEED_BLOGS];
@@ -190,6 +211,9 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'DELETE') {
+      if (!isAuthorizedAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+      }
       if (!id) return res.status(400).json({ error: 'id required' });
       const stored = await kvGet('sn_blogs') || [...SEED_BLOGS];
       const updated = stored.filter(b => b.id !== id);
@@ -201,10 +225,16 @@ export default async function handler(req, res) {
   // ── LEADS (Supabase CRM) ─────────────────────────────────────
   if (resource === 'leads') {
     if (req.method === 'GET') {
+      if (!isAuthorizedAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+      }
       const rows = await crmGet('leads', { order: 'created_at.desc' });
       return res.json(rows || []);
     }
     if (req.method === 'PATCH') {
+      if (!isAuthorizedAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+      }
       const targetId = id || req.body?.id;
       if (!targetId) return res.status(400).json({ error: 'id required for PATCH' });
       
@@ -224,8 +254,11 @@ export default async function handler(req, res) {
       const body = req.body || {};
       const targetId = id || body.id;
 
-      // Partial update scenario (e.g. updating status, notes, or follow up)
+      // Partial update scenario (e.g. updating status, notes, or follow up) - requires Admin auth
       if (targetId && (body._action === 'update' || !body.name)) {
+        if (!isAuthorizedAdmin(req)) {
+          return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+        }
         const allowedFields = ['status', 'notes', 'next_follow_up', 'follow_up_notes', 'message', 'company', 'website', 'phone', 'email', 'name', 'source'];
         const updates = {};
         for (const f of allowedFields) {
@@ -239,7 +272,7 @@ export default async function handler(req, res) {
         return res.json({ success: true, updated: result });
       }
 
-      // Complete lead creation/upsert with deduplication & status protection
+      // Complete lead creation/upsert with deduplication & status protection (Public Inbound permitted)
       let existingLead = null;
       if (body.website) {
         const rows = await crmGet('leads', { filter: `website=eq.${encodeURIComponent(body.website)}`, limit: 1 });
@@ -299,6 +332,9 @@ export default async function handler(req, res) {
       return res.status(201).json({ success: true, lead: leadRow });
     }
     if (req.method === 'DELETE') {
+      if (!isAuthorizedAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+      }
       if (!id) return res.status(400).json({ error: 'id required' });
       const ok = await crmDelete('leads', 'id', id);
       if (!ok) return res.status(500).json({ error: 'Failed to delete lead' });
@@ -308,6 +344,9 @@ export default async function handler(req, res) {
 
   // ── SCRIPTS (Supabase CRM) ──────────────────────────────────
   if (resource === 'scripts') {
+    if (!isAuthorizedAdmin(req)) {
+      return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
+    }
     if (req.method === 'GET') {
       const rows = await crmGet('scripts', { order: 'created_at.desc' });
       return res.json(rows || []);

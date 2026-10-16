@@ -6,7 +6,8 @@ import {
   Share2, Video, Eye, Users, RefreshCw, Send, 
   CheckSquare, Copy, ArrowUpRight, Flame, Layers,
   TrendingUp, Compass, ChevronRight, Zap, Target, Bookmark, Star,
-  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe, Instagram, List, Activity
+  ExternalLink, ArrowRight, ShieldCheck, Check, ChevronDown, MessageSquare, AlertCircle, Info, Globe, Instagram, List, Activity,
+  Lock, KeyRound
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { supabase } from './supabase';
@@ -163,6 +164,46 @@ const fmtDate = (d?: string | null) => d ? new Date(d).toLocaleDateString('en-IN
 const doy = () => Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
 
 export const Admin: React.FC = () => {
+  // ── Executive Security Gate ─────────────────────────────────────────
+  const [adminKey, setAdminKey] = useState<string>(() => {
+    return sessionStorage.getItem('sn_admin_key') || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_PASSWORD) || '';
+  });
+  const [keyInput, setKeyInput] = useState<string>('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [authenticating, setAuthenticating] = useState<boolean>(false);
+
+  const handleAdminAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const candidate = keyInput.trim();
+    if (!candidate) return;
+    setAuthenticating(true);
+    setAuthError(null);
+    try {
+      const res = await fetch(getApiUrl('/api/data?resource=leads'), {
+        headers: {
+          'Authorization': `Bearer ${candidate}`,
+          'x-admin-key': candidate
+        }
+      });
+      if (res.ok) {
+        sessionStorage.setItem('sn_admin_key', candidate);
+        setAdminKey(candidate);
+        setKeyInput('');
+      } else {
+        setAuthError('Invalid Access Key. Access denied.');
+      }
+    } catch (err) {
+      setAuthError('Connection error. Please try again.');
+    } finally {
+      setAuthenticating(false);
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('sn_admin_key');
+    setAdminKey('');
+  };
+
   // ── Navigation & Global States ──────────────────────────────────────
   const [activeTab, setActiveTab] = useState<string>('tasks');
   const [userRole, setUserRole] = useState<string>('founder');
@@ -240,20 +281,31 @@ export const Admin: React.FC = () => {
 
   // ── Master Loader ───────────────────────────────────────────────────
   const loadAllData = useCallback(async () => {
+    if (!adminKey) {
+      setLoading(false);
+      return;
+    }
     setRefreshing(true);
+    const authHeaders = {
+      'Authorization': `Bearer ${adminKey}`,
+      'x-admin-key': adminKey
+    };
     try {
       // 1. Parallel fetch with resilient direct Supabase fallbacks
       const [
         leadsRes, fitRes, postsRes, scriptsRes, queueRes, mentionsRes, teamRes, blogsRes
       ] = await Promise.all([
-        fetch(getApiUrl('/api/data?resource=leads')).then(r => r.ok ? r.json() : null).catch(() => null),
-        fetch(getApiUrl('/api/fit-clients')).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(getApiUrl('/api/data?resource=leads'), { headers: authHeaders }).then(r => {
+          if (r.status === 401) { sessionStorage.removeItem('sn_admin_key'); setAdminKey(''); }
+          return r.ok ? r.json() : null;
+        }).catch(() => null),
+        fetch(getApiUrl('/api/fit-clients'), { headers: authHeaders }).then(r => r.ok ? r.json() : null).catch(() => null),
         supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
-        fetch(getApiUrl('/api/data?resource=scripts')).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(getApiUrl('/api/data?resource=scripts'), { headers: authHeaders }).then(r => r.ok ? r.json() : null).catch(() => null),
         supabase.from('scheduled_posts').select('*').order('created_at', { ascending: false }),
         supabase.from('mentions').select('*').eq('dismissed', false).order('created_at', { ascending: false }),
         supabase.from('team_members').select('*').order('created_at', { ascending: false }),
-        fetch(getApiUrl('/api/data?resource=blogs')).then(r => r.ok ? r.json() : null).catch(() => null)
+        fetch(getApiUrl('/api/data?resource=blogs'), { headers: authHeaders }).then(r => r.ok ? r.json() : null).catch(() => null)
       ]);
 
       // Leads: API or direct Supabase fallback
@@ -326,11 +378,13 @@ export const Admin: React.FC = () => {
     }
     setLoading(false);
     setRefreshing(false);
-  }, []);
+  }, [adminKey]);
 
   useEffect(() => {
-    loadAllData();
-  }, [loadAllData]);
+    if (adminKey) {
+      loadAllData();
+    }
+  }, [adminKey, loadAllData]);
 
   // ── Action Handlers ─────────────────────────────────────────────────
   const copyToClipboard = (text: string, id: string) => {
@@ -349,7 +403,11 @@ export const Admin: React.FC = () => {
     try {
       await fetch(getApiUrl('/api/data?resource=leads'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminKey}`,
+          'x-admin-key': adminKey
+        },
         body: JSON.stringify(payload)
       });
     } catch (_) {
@@ -366,7 +424,13 @@ export const Admin: React.FC = () => {
   const handleDeleteLead = async (id: string) => {
     if (!window.confirm('Delete this lead from pipeline?')) return;
     try {
-      await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { method: 'DELETE' });
+      await fetch(getApiUrl(`/api/data?resource=leads&id=${id}`), { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminKey}`,
+          'x-admin-key': adminKey
+        }
+      });
     } catch (_) {
       await supabase.from('leads').delete().eq('id', id);
     }
@@ -405,7 +469,11 @@ export const Admin: React.FC = () => {
       // 2. Call backend /api/data with PATCH (runs with service_role key to bypass Supabase RLS)
       const res = await fetch(getApiUrl(`/api/data?resource=leads&id=${leadId}`), {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminKey}`,
+          'x-admin-key': adminKey
+        },
         body: JSON.stringify({ id: leadId, ...partialUpdates })
       });
 
@@ -413,7 +481,11 @@ export const Admin: React.FC = () => {
         // Fallback to POST with _action update
         const postRes = await fetch(getApiUrl('/api/data?resource=leads'), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminKey}`,
+            'x-admin-key': adminKey
+          },
           body: JSON.stringify({ id: leadId, _action: 'update', ...partialUpdates })
         });
         if (!postRes.ok) {
@@ -561,7 +633,13 @@ export const Admin: React.FC = () => {
   const handleDeleteScript = async (id: string, topic?: string) => {
     if (!window.confirm(`Delete script "${topic || 'this script'}" after use?`)) return;
     try {
-      await fetch(getApiUrl(`/api/data?resource=scripts&id=${id}`), { method: 'DELETE' }).catch(() => {});
+      await fetch(getApiUrl(`/api/data?resource=scripts&id=${id}`), { 
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminKey}`,
+          'x-admin-key': adminKey
+        }
+      }).catch(() => {});
       await supabase.from('scripts').delete().eq('id', id);
       setScripts(prev => prev.filter(s => s.id !== id));
     } catch (e) {
@@ -574,7 +652,11 @@ export const Admin: React.FC = () => {
     try {
       const res = await fetch(getApiUrl('/api/fit-clients'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminKey}`,
+          'x-admin-key': adminKey
+        },
         body: JSON.stringify({ id: manageFitStatus.id, plan_status: newFitStatus })
       });
       if (res.ok) {
@@ -696,6 +778,81 @@ export const Admin: React.FC = () => {
     (b.excerpt || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (!adminKey) {
+    return (
+      <div data-lenis-prevent="true" className="min-h-screen bg-[#06080e] flex items-center justify-center p-4 selection:bg-brand-primary/30">
+        <SEO title="Restricted Deck | Social Ninja's" description="Executive Operations Dashboard" />
+        <div className="w-full max-w-md bg-[#0c101c] border border-white/[0.08] rounded-2xl p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+          
+          <div className="flex flex-col items-center text-center mb-8 relative">
+            <div className="w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mb-4 shadow-inner">
+              <Lock size={26} className="text-brand-primary" />
+            </div>
+            <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-1.5">
+              <span>Social<span className="text-brand-primary">Ninja's</span></span>
+              <span className="text-[10px] font-bold text-slate-400 bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-full">RESTRICTED</span>
+            </h1>
+            <p className="text-xs text-slate-400 mt-2 max-w-xs">
+              Executive Command Deck & Agency CRM. Please enter your Founder Access Key to unlock.
+            </p>
+          </div>
+
+          <form onSubmit={handleAdminAuth} className="space-y-4 relative">
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                Founder Access Key
+              </label>
+              <div className="relative">
+                <KeyRound size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="password"
+                  value={keyInput}
+                  onChange={e => setKeyInput(e.target.value)}
+                  placeholder="Enter admin password..."
+                  required
+                  autoFocus
+                  className="w-full bg-[#111726] border border-white/[0.1] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all shadow-inner"
+                />
+              </div>
+            </div>
+
+            {authError && (
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs">
+                <AlertCircle size={14} className="shrink-0 text-rose-400" />
+                <span>{authError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={authenticating || !keyInput.trim()}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-300 hover:to-sky-400 text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-sky-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {authenticating ? (
+                <>
+                  <RefreshCw size={15} className="animate-spin" />
+                  <span>Verifying Key...</span>
+                </>
+              ) : (
+                <>
+                  <span>Unlock Command Deck</span>
+                  <ArrowRight size={15} />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-5 border-t border-white/[0.06] text-center">
+            <span className="text-[11px] text-slate-500">
+              Protected by Social Ninja's Enterprise Key Auth
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div data-lenis-prevent="true" className="min-h-screen bg-[#06080e] text-slate-100 font-sans selection:bg-brand-primary/30 antialiased pb-28">
       <SEO title="Social Ninja's | Agency Command Deck" description="Executive Operations Dashboard" />
@@ -768,6 +925,15 @@ export const Admin: React.FC = () => {
               title="Refresh All Database Streams"
             >
               <RefreshCw size={14} className={refreshing ? 'animate-spin text-brand-primary' : ''} />
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="p-2 text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-xl transition-all text-xs active:scale-95 flex items-center gap-1"
+              title="Lock Command Deck"
+            >
+              <Lock size={14} />
+              <span className="hidden sm:inline text-[11px] font-semibold">Lock</span>
             </button>
           </div>
         </div>
@@ -3239,7 +3405,11 @@ export const Admin: React.FC = () => {
                     const nextStatus = isPaid ? 'free' : 'premium';
                     await fetch(getApiUrl('/api/fit-clients'), {
                       method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
+                      headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminKey}`,
+                        'x-admin-key': adminKey
+                      },
                       body: JSON.stringify({ id: fit.id, plan_status: nextStatus })
                     });
                     setViewFitClientDetails({ ...fit, plan_status: nextStatus });

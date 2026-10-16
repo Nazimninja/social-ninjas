@@ -132,8 +132,19 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────
-// UNIFIED /api/data — blogs
+// UNIFIED /api/data — blogs, leads, scripts
 // ─────────────────────────────────────────────────────────────────
+const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD;
+
+function isAuthorizedAdmin(req) {
+    if (!ADMIN_KEY) return false;
+    const authHeader = req.headers.authorization || req.headers.Authorization || '';
+    const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
+    const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
+    const token = bearerToken || customHeader || req.query.admin_key;
+    return Boolean(token && token === ADMIN_KEY);
+}
+
 app.all('/api/data', async (req, res) => {
     const resource = req.query.resource;
     const id       = req.query.id;
@@ -150,6 +161,7 @@ app.all('/api/data', async (req, res) => {
             return res.json(data.blogs.sort((a,b) => new Date(b.publishedAt||b.date) - new Date(a.publishedAt||a.date)));
         }
         if (req.method === 'POST') {
+            if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
             const body = req.body;
             const newPost = {
                 id: body.id || `post-${Date.now()}`,
@@ -165,6 +177,7 @@ app.all('/api/data', async (req, res) => {
             return res.status(201).json(newPost);
         }
         if (req.method === 'DELETE') {
+            if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
             if (!id) return res.status(400).json({ error: 'id required' });
             data.blogs = data.blogs.filter(b => b.id !== id);
             writeBlogs(data);
@@ -175,9 +188,11 @@ app.all('/api/data', async (req, res) => {
     // LEADS (Supabase CRM)
     if (resource === 'leads') {
         const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
-        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (!CRM_KEY) return res.status(500).json({ error: 'Supabase service key is unconfigured' });
 
         if (req.method === 'GET') {
+            if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
             try {
                 const r = await fetch(`${CRM_URL}/rest/v1/leads?select=*&order=created_at.desc`, {
                     headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
@@ -191,6 +206,7 @@ app.all('/api/data', async (req, res) => {
         }
 
         if (req.method === 'PATCH' || (req.method === 'POST' && (req.body?._action === 'update' || (id || req.body?.id && !req.body?.name)))) {
+            if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
             const targetId = id || req.body?.id;
             if (!targetId) return res.status(400).json({ error: 'id required for update' });
             const allowedFields = ['status', 'notes', 'next_follow_up', 'follow_up_notes', 'message', 'company', 'website', 'phone', 'email', 'name', 'source'];
@@ -322,6 +338,7 @@ app.all('/api/data', async (req, res) => {
         }
 
         if (req.method === 'DELETE') {
+            if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
             if (!id) return res.status(400).json({ error: 'id required' });
             try {
                 const r = await fetch(`${CRM_URL}/rest/v1/leads?id=eq.${id}`, {
@@ -338,8 +355,10 @@ app.all('/api/data', async (req, res) => {
 
     // SCRIPTS (Supabase CRM)
     if (resource === 'scripts') {
+        if (!isAuthorizedAdmin(req)) return res.status(401).json({ error: 'Unauthorized: Admin authentication required' });
         const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || 'https://mocqyvmntemsnmdusjcy.supabase.co';
-        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vY3F5dm1udGVtc25tZHVzamN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDg5MzAzMCwiZXhwIjoyMTAwNDY5MDMwfQ.3D1lYMhzIql9On42MvLq2B0iKAebqtdUKJvOxF1uxpE';
+        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (!CRM_KEY) return res.status(500).json({ error: 'Supabase service key is unconfigured' });
 
         if (req.method === 'GET') {
             try {
