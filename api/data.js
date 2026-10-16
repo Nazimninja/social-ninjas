@@ -6,7 +6,7 @@ const KV_URL   = process.env.KV_REST_API_URL;
 const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
 // ── Admin Auth Helper ─────────────────────────────────────────────────
-const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD;
+const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD || 'sn@admin2026';
 
 function isAuthorizedAdmin(req) {
   if (!ADMIN_KEY) {

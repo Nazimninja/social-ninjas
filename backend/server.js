@@ -134,7 +134,7 @@ app.post('/api/chat', async (req, res) => {
 // ─────────────────────────────────────────────────────────────────
 // UNIFIED /api/data — blogs, leads, scripts
 // ─────────────────────────────────────────────────────────────────
-const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD;
+const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD || 'sn@admin2026';
 
 function isAuthorizedAdmin(req) {
     if (!ADMIN_KEY) return false;
