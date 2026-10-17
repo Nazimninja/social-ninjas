@@ -5,7 +5,6 @@ import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import twilio from 'twilio';
 import { GoogleGenAI } from '@google/genai';
 
 dotenv.config();
