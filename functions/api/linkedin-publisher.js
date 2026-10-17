@@ -1,14 +1,14 @@
 export async function onRequestPost(context) {
   const req = context.request;
 
-  // ── Admin Authorization Check ───────────────────────────────────────
+  // ── Admin Authorization Check (Fail Closed) ──────────────────────────
   const authHeader = req.headers.get('authorization') || '';
   const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
   const customHeader = req.headers.get('x-admin-key');
   const tokenHeader = bearerToken || customHeader;
   const adminKey = context.env?.ADMIN_API_KEY || context.env?.ADMIN_PASSWORD;
 
-  if (adminKey && tokenHeader !== adminKey) {
+  if (!adminKey || !tokenHeader || tokenHeader !== adminKey) {
     return new Response(JSON.stringify({ error: 'Unauthorized: Admin authentication required.' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' }
@@ -77,6 +77,13 @@ export async function onRequestPost(context) {
   }
 
   const effectiveAuthor = author.includes('person') ? author : 'urn:li:person:WEfd679Fsv';
+
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'LinkedIn access token is not configured in server environment.' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+  }
 
   try {
     let mediaUrn = null;

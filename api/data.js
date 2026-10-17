@@ -9,30 +9,25 @@ const KV_TOKEN = process.env.KV_REST_API_TOKEN;
 
 // ── Admin Auth Helper ─────────────────────────────────────────────────
 const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD;
-// SHA-256 hash of authorized founder access key (no cleartext credentials in code)
-const MASTER_KEY_HASH = '8a3c4f19b1a1bd0153c8ce9ead321b1415f3955af9be5bf4f33e71f1781f39d7';
 
 function isAuthorizedAdmin(req) {
+  if (!ADMIN_KEY) {
+    console.warn('[api/data] Warning: ADMIN_API_KEY / ADMIN_PASSWORD is not set in environment.');
+    return false;
+  }
   const authHeader = req.headers.authorization || req.headers.Authorization || '';
   const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
   const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
   const token = bearerToken || customHeader;
   if (!token) return false;
 
-  // Direct environment variable match (if configured in deployment)
-  if (ADMIN_KEY && token === ADMIN_KEY) return true;
-
-  // Cryptographic constant-time hash comparison
   try {
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    const bufA = Buffer.from(tokenHash, 'utf8');
-    const bufB = Buffer.from(MASTER_KEY_HASH, 'utf8');
-    if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
-      return true;
-    }
-  } catch (_) {}
-
-  return false;
+    const bufToken = Buffer.from(token, 'utf8');
+    const bufKey = Buffer.from(ADMIN_KEY, 'utf8');
+    return bufToken.length === bufKey.length && crypto.timingSafeEqual(bufToken, bufKey);
+  } catch (_) {
+    return false;
+  }
 }
 
 // ── Supabase CRM helpers ──────────────────────────────────────────────

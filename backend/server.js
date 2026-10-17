@@ -136,27 +136,22 @@ app.post('/api/chat', async (req, res) => {
 // UNIFIED /api/data — blogs, leads, scripts
 // ─────────────────────────────────────────────────────────────────
 const ADMIN_KEY = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD;
-const MASTER_KEY_HASH = '8a3c4f19b1a1bd0153c8ce9ead321b1415f3955af9be5bf4f33e71f1781f39d7';
 
 function isAuthorizedAdmin(req) {
+    if (!ADMIN_KEY) return false;
     const authHeader = req.headers.authorization || req.headers.Authorization || '';
     const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
     const customHeader = req.headers['x-admin-key'] || req.headers['x-admin-password'];
     const token = bearerToken || customHeader;
     if (!token) return false;
 
-    if (ADMIN_KEY && token === ADMIN_KEY) return true;
-
     try {
-        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-        const bufA = Buffer.from(tokenHash, 'utf8');
-        const bufB = Buffer.from(MASTER_KEY_HASH, 'utf8');
-        if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
-            return true;
-        }
-    } catch (_) {}
-
-    return false;
+        const bufToken = Buffer.from(token, 'utf8');
+        const bufKey = Buffer.from(ADMIN_KEY, 'utf8');
+        return bufToken.length === bufKey.length && crypto.timingSafeEqual(bufToken, bufKey);
+    } catch (_) {
+        return false;
+    }
 }
 
 app.all('/api/data', async (req, res) => {

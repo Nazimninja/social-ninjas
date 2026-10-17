@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   const tokenHeader = bearerToken || customHeader;
   const adminKey = process.env.ADMIN_API_KEY || process.env.ADMIN_PASSWORD;
 
-  if (adminKey && tokenHeader !== adminKey) {
+  if (!adminKey || !tokenHeader || tokenHeader !== adminKey) {
     return res.status(401).json({ error: 'Unauthorized: Admin authentication required to publish to LinkedIn.' });
   }
 
