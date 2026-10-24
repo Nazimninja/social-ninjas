@@ -1979,6 +1979,10 @@ const routes = {
   'careers': {
     title: "Careers | Social Ninja's",
     description: "Join Social Ninja's team of AI engineers and growth strategists scaling revenue globally."
+  },
+  'samples': {
+    title: "High-Retention Reels Studio & Samples | Social Ninja's",
+    description: "Explore high-retention vertical Reels edited for aesthetic clinics, interior designers, and modern brands. Start the $200 4-Reel Growth Trial."
   }
 };
 

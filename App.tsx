@@ -26,6 +26,7 @@ const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const LeadAutomation = lazy(() => import('./pages/promo/LeadAutomation'));
 const AIProducts = lazy(() => import('./pages/AIProducts'));
 const AIProductLanding = lazy(() => import('./pages/AIProductLanding'));
+const ReelsPortfolio = lazy(() => import('./pages/ReelsPortfolio'));
 const Tools = lazy(() => import('./pages/Tools'));
 const ExternalRedirect: React.FC<{ to: string }> = ({ to }) => {
   useEffect(() => {
@@ -124,6 +125,9 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/case-studies/:id" element={<PageTransition><CaseStudyDetail /></PageTransition>} />
+        <Route path="/samples" element={<PageTransition><ReelsPortfolio /></PageTransition>} />
+        <Route path="/reels" element={<Navigate to="/samples" replace />} />
+        <Route path="/portfolio/reels" element={<Navigate to="/samples" replace />} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
 
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />

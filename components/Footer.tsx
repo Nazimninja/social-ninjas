@@ -120,6 +120,7 @@ const Footer: React.FC = () => {
                 { label: 'About Us', path: '/about' },
                 { label: 'Blog', path: '/blog' },
                 { label: 'Case Studies', path: '/case-studies' },
+                { label: 'Reel Samples & Trial', path: '/samples' },
                 { label: 'Contact', path: '/contact' },
                 { label: 'Careers', path: '/careers' },
                 { label: 'Privacy Policy', path: '/privacy' },
