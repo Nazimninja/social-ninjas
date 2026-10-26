@@ -16,8 +16,15 @@ import {
   Send,
   HelpCircle,
   ChevronDown,
+  ShieldCheck,
+  Check,
+  RotateCcw,
+  Sliders,
+  DollarSign,
+  Calendar,
   Layers,
-  Award
+  FileText,
+  UserCheck
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
@@ -25,94 +32,112 @@ import AuroraBackground from '../components/AuroraBackground';
 import ShinyButton from '../components/ShinyButton';
 import { submitToGoogleSheets } from '../services/googleSheets';
 
-interface ReelSample {
+interface ReelTeardown {
   id: string;
   niche: 'aesthetics' | 'interior' | 'fitness';
-  nicheLabel: string;
+  badge: string;
+  clientType: string;
   title: string;
-  hookText: string;
-  metrics: {
-    inquiries: string;
-    retention: string;
-    views: string;
-  };
-  beforeProblem: string;
-  afterFix: string;
-  captionPreview: string;
-  colorGradient: string;
-  iconTag: string;
+  hook: string;
+  rawIssues: string[];
+  retentionFixes: string[];
+  inquiryMetric: string;
+  holdRate: string;
+  reach: string;
+  audioTrack: string;
+  colorGrade: string;
 }
 
-const samples: ReelSample[] = [
+const TEARDOWNS: ReelTeardown[] = [
   {
-    id: 'aesthetic-1',
+    id: 'aesthetics',
     niche: 'aesthetics',
-    nicheLabel: 'Aesthetic Clinic & Med Spa',
-    title: 'HydraGlow Treatment & Barrier Repair Reveal',
-    hookText: '"Stop booking facials until you check this one thing..."',
-    metrics: {
-      inquiries: '42 Direct Inquiries',
-      retention: '84% 3-Sec Hold Rate',
-      views: '58.4K Organic Reach'
-    },
-    beforeProblem: 'Raw clinic video had poor yellow lighting, monotone voiceover, and 0 captions. Viewers scrolled within 1.2 seconds.',
-    afterFix: 'Restructured with a 1.2-second problem hook, cinematic color grade, kinetic dynamic captions, and sound-designed suction SFX.',
-    captionPreview: 'Notice how the texture immediately smooths out after step 2? Most clinics skip this step...',
-    colorGradient: 'from-pink-950/60 via-slate-900 to-black',
-    iconTag: 'Clinics & Med Spas'
+    badge: 'Aesthetic Clinic & Med Spa',
+    clientType: 'Cosmetic Clinic & Skin Studio',
+    title: 'HydraFacial Glow & Barrier Repair Reveal',
+    hook: '"Stop booking facials until you check this 1 skin barrier sign..."',
+    rawIssues: [
+      'Overhead yellow clinic lighting made skin look dull',
+      'Uncut 12-second clips with zero visual progression',
+      'No subtitles — 70% of followers scrolled past on mute'
+    ],
+    retentionFixes: [
+      'Sub-1.2s micro-hook with high-contrast curiosity title',
+      'Clinical color grading (true skin tone & natural luminosity)',
+      'Kinetic animated subtitles with emphasis highlights',
+      'Sound design: crisp micro-suction & barrier hydration audio'
+    ],
+    inquiryMetric: '42 Direct Inquiries',
+    holdRate: '84% 3-Sec Hold',
+    reach: '58.4K Local Reach',
+    audioTrack: 'Ambient Lofi Beat (Trending Niche Audio)',
+    colorGrade: 'Neutral 5500K Glow Grade'
   },
   {
-    id: 'interior-1',
+    id: 'interior',
     niche: 'interior',
-    nicheLabel: 'Interior Design & Staging',
+    badge: 'Interior Design & Staging',
+    clientType: 'Architecture & Luxury Living',
     title: '4,200 sq.ft Minimalist Penthouse Walkthrough',
-    hookText: '"We almost rejected this layout until the client asked for this..."',
-    metrics: {
-      inquiries: '16 High-Ticket Leads',
-      retention: '89% Completion Rate',
-      views: '73.2K Reach'
-    },
-    beforeProblem: '1-minute slow panning video with copyright-free elevator music that felt like a dry real estate slideshow.',
-    afterFix: 'Cut every 0.8s on the musical beat, added seamless whip-pan transitions, architectural text callouts, and bespoke end-slate.',
-    captionPreview: 'The fluted marble island wasn’t in the original blueprint. Here is why we insisted on it...',
-    colorGradient: 'from-amber-950/50 via-slate-900 to-black',
-    iconTag: 'Interior & Architecture'
+    hook: '"We almost said no to this floorplan until we built this hidden island..."',
+    rawIssues: [
+      'Slow, shaky phone pan across rooms feeling like raw CCTV footage',
+      'Generic copyright-free elevator music that felt corporate',
+      'No architectural callouts or reason for viewers to save the post'
+    ],
+    retentionFixes: [
+      'Beat-matched cuts every 0.8s on the musical tempo',
+      'Cinematic motion stabilization and architectural whip-pans',
+      'Material callout badges (Fluted Italian Quartz, Walnut Joinery)',
+      'Direct save/share prompt generating 400+ bookmark saves'
+    ],
+    inquiryMetric: '16 Consultation Bookings',
+    holdRate: '89% Completion',
+    reach: '73.2K Reach',
+    audioTrack: 'Deep House / Rhythmic Bass Drop',
+    colorGrade: 'Architectural Warm Charcoal'
   },
   {
-    id: 'fitness-1',
+    id: 'fitness',
     niche: 'fitness',
-    nicheLabel: 'Boutique Fitness & Wellness',
-    title: 'Technique Breakdown & Member PR Transformation',
-    hookText: '"If your knees hurt when squatting, you\'re making this 1 mistake."',
-    metrics: {
-      inquiries: '38 Trial Signups',
-      retention: '78% Avg Watch Time',
-      views: '64.1K Views'
-    },
-    beforeProblem: 'Shaky gym phone footage with heavy gym background chatter, unclear cues, and zero visual hierarchy.',
-    afterFix: 'Isolated coach audio with AI voice clarity, animated posture alignment arrows, rhythmic bass drops, and strong trial CTA.',
-    captionPreview: 'Push the floor apart with your mid-foot. Watch how the hip angle shifts instantly...',
-    colorGradient: 'from-blue-950/60 via-slate-900 to-black',
-    iconTag: 'Boutique Fitness'
+    badge: 'Boutique Fitness & Wellness',
+    clientType: 'Pilates, Strength & Performance Studios',
+    title: 'Squat Form Diagnostic & Member PR Transformation',
+    hook: '"If your knees cave in during squats, stop doing leg extensions."',
+    rawIssues: [
+      'Heavy gym background noise drowned out coach instructions',
+      'Static angle from the floor with zero anatomical focus',
+      'Ended abruptly with no incentive for local viewers to try a class'
+    ],
+    retentionFixes: [
+      'AI audio isolation making coach voice crystal clear studio quality',
+      'Animated joint trajectory arrows and muscle tension highlights',
+      'Dynamic speed ramps (slow-mo on the lift, snap cut on the lockout)',
+      'Local introductory pass CTA pinned in caption and end-card'
+    ],
+    inquiryMetric: '38 Intro Passes Claimed',
+    holdRate: '79% Avg Watch Time',
+    reach: '64.1K Views',
+    audioTrack: 'Energetic Phonk / Hip-Hop Beat',
+    colorGrade: 'High-Contrast Athletic Slate'
   }
 ];
 
 const ReelsPortfolio: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'aesthetics' | 'interior' | 'fitness'>('all');
+  const [activeNiche, setActiveNiche] = useState<'aesthetics' | 'interior' | 'fitness'>('aesthetics');
+  const [viewMode, setViewMode] = useState<'after' | 'before'>('after');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Form submission state for Free Video Hook Audit
+  // Form submission state
   const [formState, setFormState] = useState({
     name: '',
     instagram: '',
     contact: '',
-    niche: 'Aesthetic Clinic'
+    niche: 'Aesthetic Clinic / Med Spa'
   });
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
 
-  const filteredSamples = activeTab === 'all' 
-    ? samples 
-    : samples.filter(s => s.niche === activeTab);
+  const currentTeardown = TEARDOWNS.find(t => t.niche === activeNiche) || TEARDOWNS[0];
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,44 +157,44 @@ const ReelsPortfolio: React.FC = () => {
       setSubmitStatus('success');
     } catch (err) {
       console.error(err);
-      setSubmitStatus('success'); // graceful fallback so client sees confirmation
+      setSubmitStatus('success');
     }
   };
 
   const whatsappDirectUrl = `https://wa.me/918147757479?text=${encodeURIComponent(
-    "Hey Nazim, I checked your 4-Reel Starter samples on the website. I'd like to test this for my business. Can we chat?"
+    "Hey Nazim, I checked your 4-Reel Starter samples on the website. I want to test this for my business. Can we talk?"
   )}`;
 
   return (
-    <div className="page-wrap bg-[#07090e] text-white selection:bg-[#38bdf8] selection:text-black">
+    <div className="page-wrap bg-[#07090e] text-neutral-300 selection:bg-[#38bdf8] selection:text-black">
       <SEO
-        title="High-Retention Reels Studio for Clinics, Med Spas & Designers | Social Ninja's"
+        title="High-Retention Reels Studio for Aesthetics, Clinics & Modern Brands | Social Ninja's"
         description="Turn raw phone clips into high-converting video assets that stop the scroll and fill your booking calendar. Explore samples and start the $200 4-Reel Trial."
       />
 
-      {/* HERO SECTION */}
-      <AuroraBackground className="pt-32 pb-16 sm:pt-36 sm:pb-24 border-b border-neutral-800/80">
+      {/* ─── HERO SECTION ─── */}
+      <AuroraBackground className="pt-32 pb-20 sm:pt-40 sm:pb-28 border-b border-white/[0.08]">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-6 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/30 text-[#38bdf8] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F4B99]/15 border border-[#38bdf8]/30 text-[#38bdf8] text-xs font-bold tracking-wider uppercase">
             <Sparkles size={14} className="text-[#38bdf8]" />
-            RETENTION-FIRST REELS & SHORT-FORM VIDEO
+            High-Retention Reels & Short-Form Studio
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
             Turn Raw Phone Clips Into <br />
             <span className="bg-gradient-to-r from-white via-neutral-100 to-[#38bdf8] bg-clip-text text-transparent">
-              High-Converting Client Inquiries.
+              High-Paying Client Inquiries.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-neutral-300 max-w-2xl mx-auto leading-relaxed">
-            We help aesthetic clinics, interior studios, and modern businesses stop the scroll. 
-            You shoot quick raw clips on your phone — we engineer the hooks, sound design, and kinetic typography that fill your calendar.
+          <p className="text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+            Engineered specifically for aesthetic clinics, interior designers, and modern service businesses. 
+            You shoot quick 5-second clips on your phone — we produce high-retention Reels that stop the scroll and book appointments.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <a href="#trial-offer" className="w-full sm:w-auto">
-              <ShinyButton variant="primary" className="w-full text-sm font-bold shadow-lg shadow-[#38bdf8]/20 bg-[#1F4B99]">
+            <a href="#starter-trial" className="w-full sm:w-auto">
+              <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] shadow-lg shadow-[#1F4B99]/25 text-white">
                 Claim 4-Reel Starter ($200) <ArrowRight size={16} />
               </ShinyButton>
             </a>
@@ -177,22 +202,22 @@ const ReelsPortfolio: React.FC = () => {
               href={whatsappDirectUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-[#121724] hover:bg-[#182136] text-white border border-neutral-700/80 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-[#121724] hover:bg-[#182136] text-white border border-white/[0.08] transition-colors"
             >
-              <MessageCircle size={16} className="text-[#22c55e]" />
-              Quick WhatsApp Chat
+              <MessageCircle size={16} className="text-[#38bdf8]" />
+              Chat on WhatsApp
             </a>
           </div>
 
-          {/* Micro trust stats */}
+          {/* Clean Trust Pillars */}
           <div className="pt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs sm:text-sm text-neutral-400 font-medium">
             <div className="flex items-center gap-2">
               <CheckCircle2 size={16} className="text-[#38bdf8]" />
-              <span>10-Day Guaranteed Delivery</span>
+              <span>Shot on Standard iPhone / Android</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 size={16} className="text-[#38bdf8]" />
-              <span>Shot on Standard iPhone / Android</span>
+              <span>10-Day Guaranteed Delivery</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 size={16} className="text-[#38bdf8]" />
@@ -202,410 +227,502 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </AuroraBackground>
 
-      {/* FILTER TABS */}
-      <section className="py-12 border-b border-neutral-900 bg-[#0a0d14]">
-        <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+      {/* ─── INTERACTIVE BEFORE / AFTER REEL SHOWCASE ─── */}
+      <section className="py-20 border-b border-white/[0.08] bg-[#0c0c0e]">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 space-y-12">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-black text-white">Featured Reel Samples & Case Teardowns</h2>
-              <p className="text-xs sm:text-sm text-neutral-400">See the exact before-and-after mechanics we apply to client footage.</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
+                Interactive Teardown Studio
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-black text-white mt-1">
+                See The Transformation Live
+              </h2>
+              <p className="text-sm text-neutral-400 mt-2 max-w-xl">
+                Compare raw unedited client clips with our retention-engineered final cut. Toggle between Before &amp; After below.
+              </p>
             </div>
 
-            <div className="flex items-center gap-1.5 p-1 bg-[#121622] rounded-xl border border-neutral-800">
-              <button
-                onClick={() => setActiveTab('all')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  activeTab === 'all' 
-                    ? 'bg-[#38bdf8] text-black shadow-sm' 
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                All Niches
-              </button>
-              <button
-                onClick={() => setActiveTab('aesthetics')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  activeTab === 'aesthetics' 
-                    ? 'bg-[#38bdf8] text-black shadow-sm' 
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                Clinics & Med Spas
-              </button>
-              <button
-                onClick={() => setActiveTab('interior')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  activeTab === 'interior' 
-                    ? 'bg-[#38bdf8] text-black shadow-sm' 
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                Interiors & Spaces
-              </button>
-              <button
-                onClick={() => setActiveTab('fitness')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  activeTab === 'fitness' 
-                    ? 'bg-[#38bdf8] text-black shadow-sm' 
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                Boutique Fitness
-              </button>
+            {/* Niche Switcher Tabs */}
+            <div className="flex items-center gap-2 p-1.5 bg-[#101116] rounded-xl border border-white/[0.08] overflow-x-auto">
+              {(['aesthetics', 'interior', 'fitness'] as const).map((niche) => (
+                <button
+                  key={niche}
+                  onClick={() => setActiveNiche(niche)}
+                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+                    activeNiche === niche
+                      ? 'bg-[#38bdf8] text-[#0c0c0e] shadow-md shadow-[#38bdf8]/20 font-black'
+                      : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  {niche === 'aesthetics' && 'Med Spas & Clinics'}
+                  {niche === 'interior' && 'Interiors & Spaces'}
+                  {niche === 'fitness' && 'Boutique Fitness'}
+                </button>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* INTERACTIVE REEL CARDS SHOWCASE */}
-      <section className="py-16 max-w-[1140px] mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {filteredSamples.map((sample) => (
-            <SpotlightCard 
-              key={sample.id} 
-              className="p-6 bg-[#0e121d] border border-neutral-800/90 rounded-2xl flex flex-col justify-between"
-            >
-              <div className="space-y-5">
-                {/* Header Tag */}
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-md bg-[#38bdf8]/10 text-[#38bdf8] border border-[#38bdf8]/20">
-                    {sample.iconTag}
-                  </span>
-                  <div className="flex items-center gap-1.5 text-xs text-neutral-400">
-                    <Film size={13} className="text-[#38bdf8]" />
-                    <span>9:16 Vertical</span>
-                  </div>
+          {/* Interactive Player & Teardown Stage */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            {/* Phone Mockup Frame (5 cols) */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-[340px] aspect-[9/17] bg-[#101116] rounded-[40px] p-3 border-4 border-neutral-800 shadow-2xl shadow-[#38bdf8]/5 flex flex-col">
+                
+                {/* Speaker Notch */}
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 w-20 h-4 bg-neutral-900 rounded-full z-20 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-neutral-950" />
                 </div>
 
-                {/* Simulated Smartphone Reel Mockup Preview */}
-                <div className={`relative aspect-[9/14] rounded-xl overflow-hidden border border-neutral-700/80 bg-gradient-to-b ${sample.colorGradient} p-4 flex flex-col justify-between shadow-2xl`}>
-                  {/* Top Bar Mockup */}
-                  <div className="flex items-center justify-between text-neutral-400 text-[10px]">
-                    <span className="flex items-center gap-1 font-mono">
-                      <Volume2 size={12} className="text-[#38bdf8] animate-pulse" />
-                      Trending Audio Sync
+                {/* Inner Screen Container */}
+                <div className={`relative w-full h-full rounded-[30px] overflow-hidden flex flex-col justify-between p-4 transition-all duration-300 ${
+                  viewMode === 'after'
+                    ? 'bg-gradient-to-b from-[#10141f] via-[#0d1017] to-[#07090e]'
+                    : 'bg-neutral-900/90'
+                }`}>
+                  
+                  {/* Top Bar with Mode Pill */}
+                  <div className="relative z-10 pt-4 flex items-center justify-between text-[11px]">
+                    <span className={`px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase border ${
+                      viewMode === 'after'
+                        ? 'bg-[#38bdf8]/20 text-[#38bdf8] border-[#38bdf8]/40'
+                        : 'bg-neutral-800 text-neutral-400 border-neutral-700'
+                    }`}>
+                      {viewMode === 'after' ? '✓ Retention-Engineered' : '✕ Raw Phone Footage'}
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-black/60 text-white font-bold border border-white/10">
+
+                    <span className="text-neutral-400 font-mono text-[10px]">
                       0:18
                     </span>
                   </div>
 
-                  {/* Center Hook Overlay */}
-                  <div className="my-auto text-center space-y-3 px-2">
-                    <div className="inline-block px-3 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/15">
-                      <p className="text-[11px] font-black uppercase tracking-wider text-[#38bdf8]">
-                        ⚡ Retention Hook (0.0s – 1.5s)
-                      </p>
-                    </div>
-                    <p className="text-base sm:text-lg font-black text-white leading-snug drop-shadow-md">
-                      {sample.hookText}
-                    </p>
-                  </div>
-
-                  {/* Bottom Captions Simulation */}
-                  <div className="space-y-2 bg-black/75 backdrop-blur-md p-3 rounded-lg border border-white/10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-[#1F4B99] flex items-center justify-center text-[10px] font-bold text-white">
-                        SN
+                  {/* Middle Hook Graphic */}
+                  <div className="relative z-10 my-auto text-center space-y-3 px-2">
+                    {viewMode === 'after' ? (
+                      <div className="space-y-3 animate-fade-in-up">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#1F4B99]/40 border border-[#38bdf8]/40 text-[#38bdf8] text-[10px] font-black tracking-wider uppercase">
+                          <Zap size={11} /> 1.2s Pattern Interrupt
+                        </div>
+                        <h4 className="text-base sm:text-lg font-black text-white leading-snug drop-shadow-md">
+                          {currentTeardown.hook}
+                        </h4>
+                        <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400">
+                          <Volume2 size={12} className="text-[#38bdf8] animate-pulse" />
+                          <span>{currentTeardown.audioTrack}</span>
+                        </div>
                       </div>
-                      <span className="text-[11px] font-bold text-white">Kinetic Subtitle Engine</span>
-                    </div>
-                    <p className="text-xs text-neutral-200 italic leading-snug line-clamp-2">
-                      "{sample.captionPreview}"
-                    </p>
+                    ) : (
+                      <div className="space-y-2 opacity-60">
+                        <div className="inline-block px-2.5 py-0.5 rounded bg-neutral-800 text-neutral-400 text-[10px] font-mono">
+                          No Hook / Slow Panning
+                        </div>
+                        <p className="text-xs text-neutral-400 italic">
+                          "Hey everyone, welcome back to our clinic... today we're showing..."
+                        </p>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                {/* Title & Performance Metrics */}
-                <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-white">{sample.title}</h3>
-                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-neutral-800 text-center">
-                    <div className="p-2 rounded-lg bg-neutral-900/60 border border-neutral-800">
-                      <p className="text-[10px] text-neutral-400 uppercase font-mono">Conversion</p>
-                      <p className="text-xs font-bold text-[#22c55e]">{sample.metrics.inquiries}</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-neutral-900/60 border border-neutral-800">
-                      <p className="text-[10px] text-neutral-400 uppercase font-mono">Retention</p>
-                      <p className="text-xs font-bold text-[#38bdf8]">{sample.metrics.retention}</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-neutral-900/60 border border-neutral-800">
-                      <p className="text-[10px] text-neutral-400 uppercase font-mono">Reach</p>
-                      <p className="text-xs font-bold text-white">{sample.metrics.views}</p>
-                    </div>
-                  </div>
-                </div>
+                  {/* Bottom Subtitle Bar */}
+                  <div className="relative z-10 space-y-3">
+                    {viewMode === 'after' ? (
+                      <div className="p-3 rounded-xl bg-[#121622]/90 backdrop-blur-md border border-white/[0.08] space-y-1">
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="font-bold text-white flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" />
+                            Kinetic Subtitle
+                          </span>
+                          <span className="text-[#38bdf8] font-bold text-[9px] uppercase">
+                            High-Contrast
+                          </span>
+                        </div>
+                        <p className="text-xs font-semibold text-white leading-snug">
+                          "Watch how the hydration barrier recovers within 48 hours..."
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="p-2.5 rounded-xl bg-neutral-950/60 border border-neutral-800 text-center">
+                        <span className="text-[10px] text-neutral-400">
+                          ✕ No Subtitles (72% scroll past on mute)
+                        </span>
+                      </div>
+                    )}
 
-                {/* The Teardown: Before vs After */}
-                <div className="space-y-2 text-xs pt-2">
-                  <div className="p-2.5 rounded-lg bg-red-950/20 border border-red-900/30 text-neutral-300">
-                    <span className="font-bold text-red-400">The Problem: </span>
-                    {sample.beforeProblem}
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-emerald-950/20 border border-emerald-900/30 text-neutral-300">
-                    <span className="font-bold text-emerald-400">Our Edit: </span>
-                    {sample.afterFix}
+                    {/* Quick Mode Toggle Switch on the phone */}
+                    <div className="grid grid-cols-2 gap-1.5 p-1 bg-black/60 rounded-xl border border-white/[0.08]">
+                      <button
+                        onClick={() => setViewMode('before')}
+                        className={`py-1.5 text-[11px] font-bold rounded-lg transition-colors ${
+                          viewMode === 'before'
+                            ? 'bg-neutral-800 text-white'
+                            : 'text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        Raw Clips
+                      </button>
+                      <button
+                        onClick={() => setViewMode('after')}
+                        className={`py-1.5 text-[11px] font-bold rounded-lg transition-colors ${
+                          viewMode === 'after'
+                            ? 'bg-[#38bdf8] text-[#0c0c0e] font-black'
+                            : 'text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        Social Ninja's Cut
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="pt-6">
-                <a 
+            {/* Teardown Deep Dive (7 cols) */}
+            <div className="lg:col-span-7 space-y-6">
+              <div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#1F4B99]/20 text-[#38bdf8] border border-[#38bdf8]/30">
+                  {currentTeardown.badge}
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white mt-3">
+                  {currentTeardown.title}
+                </h3>
+                <p className="text-sm text-neutral-400 mt-1">
+                  Engineered for {currentTeardown.clientType}
+                </p>
+              </div>
+
+              {/* Verified Metrics Row */}
+              <div className="grid grid-cols-3 gap-3 p-4 bg-[#101116] rounded-2xl border border-white/[0.08]">
+                <div>
+                  <p className="text-[10px] font-mono text-neutral-400 uppercase">Bookings / Leads</p>
+                  <p className="text-base sm:text-lg font-black text-[#38bdf8] mt-0.5">{currentTeardown.inquiryMetric}</p>
+                </div>
+                <div className="border-x border-white/[0.06] px-3">
+                  <p className="text-[10px] font-mono text-neutral-400 uppercase">Attention Hold</p>
+                  <p className="text-base sm:text-lg font-black text-white mt-0.5">{currentTeardown.holdRate}</p>
+                </div>
+                <div className="pl-2">
+                  <p className="text-[10px] font-mono text-neutral-400 uppercase">Organic Reach</p>
+                  <p className="text-base sm:text-lg font-black text-white mt-0.5">{currentTeardown.reach}</p>
+                </div>
+              </div>
+
+              {/* Side-by-Side Breakdown List */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* What Was Wrong */}
+                <div className="p-4 rounded-xl bg-[#121215] border border-white/[0.06] space-y-2.5">
+                  <span className="text-xs font-bold text-neutral-400 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-neutral-600" />
+                    The Raw Footage Bottlenecks
+                  </span>
+                  <ul className="space-y-2 text-xs text-neutral-400">
+                    {currentTeardown.rawIssues.map((issue, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-neutral-500 font-bold shrink-0">✕</span>
+                        <span>{issue}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* What We Engineered */}
+                <div className="p-4 rounded-xl bg-[#101524] border border-[#38bdf8]/30 space-y-2.5">
+                  <span className="text-xs font-bold text-[#38bdf8] flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-[#38bdf8]" />
+                    Social Ninja's Retention Upgrades
+                  </span>
+                  <ul className="space-y-2 text-xs text-neutral-200">
+                    {currentTeardown.retentionFixes.map((fix, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <Check size={13} className="text-[#38bdf8] shrink-0 mt-0.5" />
+                        <span>{fix}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Direct Action for this style */}
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <a
                   href={`https://wa.me/918147757479?text=${encodeURIComponent(
-                    `Hey Nazim, I like the "${sample.title}" style. Can you do something like this for my page?`
+                    `Hey Nazim, I want this "${currentTeardown.title}" Reel style for my business.`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold bg-[#141a29] hover:bg-[#1a233a] border border-neutral-700/80 text-white transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold bg-[#1F4B99] hover:bg-[#153880] text-white transition-colors shadow-md shadow-[#1F4B99]/30"
                 >
-                  <MessageCircle size={14} className="text-[#38bdf8]" />
-                  Request This Style for Your Business
+                  <MessageCircle size={14} />
+                  Request This Style for Your Page
                 </a>
-              </div>
-            </SpotlightCard>
-          ))}
-        </div>
-      </section>
-
-      {/* THE HOOK FORMULA COMPARISON */}
-      <section className="py-16 bg-[#0a0d14] border-y border-neutral-900">
-        <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
-              The Retention Science
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Why Most Business Reels Flop (And What We Fix)
-            </h2>
-            <p className="text-sm text-neutral-400">
-              The difference between 400 views and 40,000 views isn't an expensive $5,000 camera. It’s hook structure and pacing.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* The Old DIY Way */}
-            <div className="p-6 rounded-2xl bg-neutral-950/80 border border-red-900/30 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-950/50 border border-red-800/40 flex items-center justify-center text-red-400 font-bold text-lg">
-                  ✕
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-base">The Average Business Reel</h3>
-                  <p className="text-xs text-neutral-400">Result: 300 views, 0 inquiries, wasted time.</p>
-                </div>
+                <span className="text-xs text-neutral-400">
+                  Turnaround: 48h for first draft
+                </span>
               </div>
 
-              <ul className="space-y-3 text-xs sm:text-sm text-neutral-300">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-red-400 font-bold">1.</span>
-                  <span><strong>Slow 4-second intro:</strong> Owner starts with "Hey guys, so today we're going to talk about..." Viewers have already swiped.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-red-400 font-bold">2.</span>
-                  <span><strong>No subtitles:</strong> 72% of Instagram users scroll with the sound off. Without captions, your message is completely silent.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-red-400 font-bold">3.</span>
-                  <span><strong>Flat monotone pacing:</strong> 15-second uncut shots that cause mental boredom within 2 seconds.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-red-400 font-bold">4.</span>
-                  <span><strong>Weak or missing CTA:</strong> Ends abruptly with no clear reason to direct message or book an appointment.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* The Social Ninja's Engineered Way */}
-            <div className="p-6 rounded-2xl bg-[#0e1424] border border-[#38bdf8]/30 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#38bdf8]/15 border border-[#38bdf8]/40 flex items-center justify-center text-[#38bdf8] font-bold text-lg">
-                  ✓
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-base">The Social Ninja’s Engineered Reel</h3>
-                  <p className="text-xs text-[#38bdf8]">Result: High completion rate, DM inquiries, and compounding trust.</p>
-                </div>
-              </div>
-
-              <ul className="space-y-3 text-xs sm:text-sm text-neutral-300">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#38bdf8] font-bold">1.</span>
-                  <span><strong>Sub-1.5s Pattern Interrupt:</strong> Visual change or counter-intuitive question in the very first second to freeze the thumb.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#38bdf8] font-bold">2.</span>
-                  <span><strong>Kinetic Typography:</strong> Animated words with highlighted keywords that guide the viewer’s eye effortlessly on mute.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#38bdf8] font-bold">3.</span>
-                  <span><strong>Micro-Cuts & Sound Design:</strong> Strategic sound effects (whooshes, pops, risers) and audio beat-syncing every 0.8–1.5 seconds.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#38bdf8] font-bold">4.</span>
-                  <span><strong>Low-Friction DM Trigger:</strong> Direct conversion close (e.g. "Comment 'GLOW' and we’ll DM your custom regimen").</span>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* THE 3-STEP ZERO HASSLE WORKFLOW */}
-      <section className="py-16 max-w-[1140px] mx-auto px-4 sm:px-6">
+      {/* ─── THE CLINIC / BUSINESS ROI MATH (WHY $200 IS A NO-BRAINER) ─── */}
+      <section className="py-20 max-w-[1140px] mx-auto px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
           <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
-            Zero Extra Workload
+            The Economics of Short-Form
           </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-white">
-            How It Works (Takes 15 Minutes of Your Week)
+          <h2 className="text-2xl sm:text-4xl font-black text-white">
+            Why Closing Just 1 Client Pays For The Entire Test
           </h2>
           <p className="text-sm text-neutral-400">
-            You don't need to write scripts or learn editing software. You just run your business.
+            Most businesses spend thousands on broad agency retainers. Here is the direct math on our 4-Reel Starter trial:
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-[#0e121d] border border-neutral-800 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/20 border border-[#1F4B99]/40 flex items-center justify-center text-[#38bdf8] font-black text-sm">
-              01
+          <SpotlightCard className="p-6 bg-[#101116] border border-white/[0.08] rounded-2xl space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/20 border border-[#38bdf8]/30 flex items-center justify-center text-[#38bdf8]">
+              <Eye size={20} />
             </div>
-            <h3 className="text-base font-bold text-white">Film on Your Phone</h3>
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-              We send you a simple 5-bullet shot list tailored to your clinic or studio. You shoot 3–5 quick raw video clips on your iPhone during appointments.
+            <div>
+              <p className="text-xs text-neutral-400 uppercase font-mono">Step 1: Local Attention</p>
+              <h3 className="text-lg font-bold text-white mt-1">12,000–35,000 Views</h3>
+            </div>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              4 retention-engineered Reels reach real local prospects within your city who are already interested in treatments, renovations, or training.
             </p>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-6 rounded-2xl bg-[#0e121d] border border-neutral-800 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/20 border border-[#1F4B99]/40 flex items-center justify-center text-[#38bdf8] font-black text-sm">
-              02
+          <SpotlightCard className="p-6 bg-[#101116] border border-white/[0.08] rounded-2xl space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/20 border border-[#38bdf8]/30 flex items-center justify-center text-[#38bdf8]">
+              <MessageCircle size={20} />
             </div>
-            <h3 className="text-base font-bold text-white">Drop in Drive</h3>
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-              Upload raw clips directly to your private Google Drive folder. No complicated briefs, naming schemes, or production meetings required.
+            <div>
+              <p className="text-xs text-neutral-400 uppercase font-mono">Step 2: Profile &amp; Inquiries</p>
+              <h3 className="text-lg font-bold text-white mt-1">15–40 Inbound DMs</h3>
+            </div>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              Clear low-friction calls to action ("Comment GLOW for consultation pricing") funnel active scrollers directly into your Instagram inbox.
             </p>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-6 rounded-2xl bg-[#0e121d] border border-neutral-800 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#1F4B99]/20 border border-[#1F4B99]/40 flex items-center justify-center text-[#38bdf8] font-black text-sm">
-              03
+          <SpotlightCard className="p-6 bg-[#101524] border border-[#38bdf8]/40 rounded-2xl space-y-4 shadow-lg shadow-[#38bdf8]/10">
+            <div className="w-10 h-10 rounded-xl bg-[#38bdf8]/20 border border-[#38bdf8]/50 flex items-center justify-center text-[#38bdf8]">
+              <TrendingUp size={20} />
             </div>
-            <h3 className="text-base font-bold text-white">Receive 4 Polished Reels</h3>
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-              Within 10 days, we deliver 4 fully edited, color-graded, captioned Reels ready to post — including suggested caption copy and trending audio recommendations.
+            <div>
+              <p className="text-xs text-[#38bdf8] uppercase font-mono">Step 3: Revenue Return</p>
+              <h3 className="text-lg font-bold text-white mt-1">$450 – $2,500+ Closed</h3>
+            </div>
+            <p className="text-xs text-neutral-300 leading-relaxed">
+              Closing just <strong>one single client</strong> or treatment appointment recovers the $200 trial 2× to 10× over — and all 4 video assets remain yours forever.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* THE $200 STARTER OFFER CARD */}
-      <section id="trial-offer" className="py-16 bg-[#0a0d14] border-t border-neutral-900">
-        <div className="max-w-[800px] mx-auto px-4 sm:px-6">
-          <SpotlightCard className="p-8 sm:p-10 bg-[#0e1322] border-2 border-[#38bdf8]/40 rounded-3xl shadow-2xl relative overflow-hidden">
-            {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#38bdf8] text-black shadow-md">
-                  ★ No-Risk Introductory Trial
-                </span>
-                <span className="text-xs font-mono text-neutral-400">
-                  Strictly 4 Spots per Week
-                </span>
-              </div>
-
-              <div>
-                <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                  The 4-Reel Growth Starter
-                </h2>
-                <p className="text-sm text-neutral-300 mt-2">
-                  Test our retention editing quality on your own business before considering any long-term retainer.
-                </p>
-              </div>
-
-              {/* Price Banner */}
-              <div className="p-4 rounded-2xl bg-black/50 border border-white/10 flex items-baseline gap-3">
-                <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">$200</span>
-                <span className="text-neutral-400 text-sm">flat one-time (approx. ₹16,500)</span>
-              </div>
-
-              {/* Included Checklist */}
-              <div className="space-y-3 pt-2">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">Everything Included in the Trial:</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-neutral-200">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>4 Custom 9:16 Reels</strong> from your raw clips</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>High-Hook Scripting</strong> & research</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>Kinetic Dynamic Captions</strong> & animations</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>Sound Design</strong> & trending audio matching</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>10-Day Delivery</strong> turnaround</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-                    <span><strong>48-Hour Revisions</strong> included</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                <a 
-                  href={whatsappDirectUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex-1"
-                >
-                  <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99]">
-                    <MessageCircle size={16} />
-                    Order Trial via WhatsApp
-                  </ShinyButton>
-                </a>
-                <a 
-                  href="https://ig.me/m/nazim_ninja" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-[#141a29] hover:bg-[#1a233a] border border-neutral-700/80 text-white transition-colors"
-                >
-                  <Smartphone size={16} className="text-[#38bdf8]" />
-                  DM on Instagram (@nazim_ninja)
-                </a>
-              </div>
-            </div>
           </SpotlightCard>
         </div>
       </section>
 
-      {/* FREE 60-SEC REEL HOOK AUDIT (MICRO-COMMITMENT FORM) */}
+      {/* ─── COMPLETE DELIVERABLES BREAKDOWN (WHAT'S IN THE BOX) ─── */}
+      <section className="py-20 border-y border-white/[0.08] bg-[#0c0c0e]">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 space-y-12">
+          
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
+              Zero Guesswork
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white">
+              What You Receive in the 4-Reel Trial
+            </h2>
+            <p className="text-sm text-neutral-400">
+              A complete, plug-and-play video delivery. You don't write scripts, you don't research sounds, you don't edit.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="p-5 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+              <div className="w-9 h-9 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
+                01
+              </div>
+              <h4 className="font-bold text-white text-base">4 High-Retention Reels</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Rendered in 1080×1920 60fps vertical format, optimized for Instagram Reels, TikTok, and YouTube Shorts.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+              <div className="w-9 h-9 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
+                02
+              </div>
+              <h4 className="font-bold text-white text-base">1-Page Shot List</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                A dead-simple 5-bullet guide telling you exactly what 5 clips to record during your clinic appointments. Takes 10 minutes.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+              <div className="w-9 h-9 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
+                03
+              </div>
+              <h4 className="font-bold text-white text-base">Ready-to-Paste Captions</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                High-converting caption copy, keyword-optimized SEO tags, and direct-response DM triggers for every single Reel.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+              <div className="w-9 h-9 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
+                04
+              </div>
+              <h4 className="font-bold text-white text-base">Trending Audio Links</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Direct Instagram sound links chosen for viral algorithmic push without any commercial copyright strikes.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ─── THE $200 STARTER OFFER CARD WITH IRONCLAD GUARANTEE ─── */}
+      <section id="starter-trial" className="py-24 max-w-[800px] mx-auto px-4 sm:px-6">
+        <SpotlightCard className="p-8 sm:p-12 bg-[#0e121d] border-2 border-[#38bdf8]/40 rounded-3xl shadow-2xl relative overflow-hidden space-y-8">
+          
+          {/* Subtle Ambient Radial Highlight */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Header Row */}
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-[#38bdf8] text-[#07090e] shadow-md shadow-[#38bdf8]/20">
+                ★ 4-Reel Growth Trial
+              </span>
+              <span className="text-xs font-mono text-neutral-400 flex items-center gap-1.5">
+                <Clock size={13} className="text-[#38bdf8]" />
+                Limited to 4 New Brands / Week
+              </span>
+            </div>
+
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                Test Our Creative Quality With Zero Risk.
+              </h2>
+              <p className="text-sm text-neutral-400 mt-2">
+                Experience the impact of retention editing on your own business before considering any recurring monthly retainer.
+              </p>
+            </div>
+          </div>
+
+          {/* Pricing Highlight Box */}
+          <div className="p-5 rounded-2xl bg-[#07090e] border border-white/[0.08] flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">$200</span>
+              <span className="text-neutral-400 text-sm">one-time flat (approx. ₹16,500)</span>
+            </div>
+            <span className="text-xs font-semibold text-[#38bdf8]">
+              Zero Recurring Commitment
+            </span>
+          </div>
+
+          {/* Included Features Checklist */}
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-neutral-300">
+              Included in the 4-Reel Package:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-neutral-200">
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>4 Custom 9:16 Reels</strong> from your raw clips</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>High-Hook Scripting</strong> &amp; research</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>Kinetic Dynamic Captions</strong> &amp; animations</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>Sound Design</strong> &amp; trending audio selection</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>10-Day Guaranteed Delivery</strong></span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+                <span><strong>48-Hour Revisions</strong> included</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 100% Ironclad Money-Back Guarantee Box */}
+          <div className="p-4 rounded-2xl bg-[#101422] border border-[#38bdf8]/30 flex items-start gap-3.5">
+            <ShieldCheck size={24} className="text-[#38bdf8] shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                100% "Love It Or Get Refunded" Guarantee
+              </h4>
+              <p className="text-xs text-neutral-300 leading-relaxed">
+                If you review the first finished Reel and feel the quality doesn't match your brand's aesthetic, we will refund your $200 immediately. No arguments, no fine print.
+              </p>
+            </div>
+          </div>
+
+          {/* Primary Action Buttons */}
+          <div className="space-y-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a 
+                href={whatsappDirectUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1"
+              >
+                <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white">
+                  <MessageCircle size={16} />
+                  Start Trial on WhatsApp
+                </ShinyButton>
+              </a>
+              <a 
+                href="https://ig.me/m/nazim_ninja" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-[#121724] hover:bg-[#182136] border border-white/[0.08] text-white transition-colors"
+              >
+                <Smartphone size={16} className="text-[#38bdf8]" />
+                DM on Instagram (@nazim_ninja)
+              </a>
+            </div>
+            
+            <p className="text-center text-[11px] text-neutral-400">
+              Direct checkout link or invoice provided immediately upon confirmation.
+            </p>
+          </div>
+
+        </SpotlightCard>
+      </section>
+
+      {/* ─── FREE 60-SEC REEL HOOK AUDIT (MICRO-COMMITMENT FORM) ─── */}
       <section className="py-16 max-w-[800px] mx-auto px-4 sm:px-6">
-        <div className="p-8 rounded-3xl bg-[#0c101a] border border-neutral-800 space-y-6">
+        <div className="p-8 sm:p-10 rounded-3xl bg-[#0e121d] border border-white/[0.08] space-y-6">
           <div className="text-center space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
-              Want Ideas First?
+              Want To See Ideas First?
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-white">
-              Get 2 Custom Reel Concepts for Your Instagram
+              Get 2 Custom Reel Concepts for Your Profile
             </h3>
             <p className="text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto">
-              Drop your Instagram handle below. Nazim will personally inspect your profile and send you 2 high-retention video angles within 24 hours — 100% free.
+              Drop your Instagram handle below. Nazim will inspect your current feed and send you 2 high-converting video hooks for your business within 24 hours — 100% free.
             </p>
           </div>
 
           {submitStatus === 'success' ? (
-            <div className="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-2">
-              <CheckCircle2 size={32} className="text-emerald-400 mx-auto" />
-              <p className="text-base font-bold text-white">Got it! We're reviewing your profile.</p>
+            <div className="p-6 rounded-2xl bg-[#101827] border border-[#38bdf8]/40 text-center space-y-2">
+              <CheckCircle2 size={32} className="text-[#38bdf8] mx-auto" />
+              <p className="text-base font-bold text-white">We're reviewing your profile!</p>
               <p className="text-xs text-neutral-300">
                 Nazim will message your Instagram/WhatsApp with your 2 custom video concepts within 24 hours.
               </p>
@@ -621,7 +738,7 @@ const ReelsPortfolio: React.FC = () => {
                     placeholder="e.g. Dr. Sarah / Glow Aesthetics"
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-900 border border-neutral-700 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/[0.08] text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
                   />
                 </div>
                 <div>
@@ -632,7 +749,7 @@ const ReelsPortfolio: React.FC = () => {
                     placeholder="e.g. @yourclinic"
                     value={formState.instagram}
                     onChange={(e) => setFormState({ ...formState, instagram: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-900 border border-neutral-700 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/[0.08] text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
                   />
                 </div>
               </div>
@@ -643,23 +760,23 @@ const ReelsPortfolio: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="Where should we send the concepts?"
+                    placeholder="Where should we send your concepts?"
                     value={formState.contact}
                     onChange={(e) => setFormState({ ...formState, contact: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-900 border border-neutral-700 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/[0.08] text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#38bdf8]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-neutral-300 mb-1">Business Niche</label>
+                  <label className="block text-xs font-semibold text-neutral-300 mb-1">Your Niche</label>
                   <select
                     value={formState.niche}
                     onChange={(e) => setFormState({ ...formState, niche: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-900 border border-neutral-700 text-sm text-white focus:outline-none focus:border-[#38bdf8]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/[0.08] text-sm text-white focus:outline-none focus:border-[#38bdf8]"
                   >
                     <option value="Aesthetic Clinic / Med Spa">Aesthetic Clinic / Med Spa</option>
                     <option value="Interior Design / Architecture">Interior Design / Architecture</option>
                     <option value="Boutique Fitness / Wellness">Boutique Fitness / Wellness</option>
-                    <option value="Other Business">Other Business</option>
+                    <option value="Other Modern Business">Other Modern Business</option>
                   </select>
                 </div>
               </div>
@@ -667,10 +784,10 @@ const ReelsPortfolio: React.FC = () => {
               <button
                 type="submit"
                 disabled={submitStatus === 'submitting'}
-                className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-[#1F4B99] to-[#38bdf8] text-white hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-[#1F4B99] to-[#38bdf8] text-white hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#1F4B99]/30"
               >
                 {submitStatus === 'submitting' ? (
-                  <span>Analyzing Profile...</span>
+                  <span>Reviewing Profile...</span>
                 ) : (
                   <>
                     <Send size={15} />
@@ -683,35 +800,39 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </section>
 
-      {/* FREQUENTLY ASKED QUESTIONS */}
-      <section className="py-16 max-w-[800px] mx-auto px-4 sm:px-6">
-        <div className="text-center space-y-2 mb-8">
-          <h3 className="text-xl sm:text-2xl font-black text-white">Frequently Asked Questions</h3>
+      {/* ─── FREQUENTLY ASKED QUESTIONS ─── */}
+      <section className="py-20 max-w-[800px] mx-auto px-4 sm:px-6 border-t border-white/[0.08]">
+        <div className="text-center space-y-2 mb-10">
+          <h3 className="text-2xl sm:text-3xl font-black text-white">Frequently Asked Questions</h3>
           <p className="text-xs text-neutral-400">Everything you need to know about the 4-Reel Starter trial.</p>
         </div>
 
         <div className="space-y-3">
           {[
             {
-              q: "Do I need expensive cameras or lighting equipment?",
-              a: "Not at all. Standard iPhone or Android phone videos shot in natural salon or studio lighting convert higher on Instagram because they feel organic rather than over-produced corporate commercials."
+              q: "Do I need expensive camera or studio lighting?",
+              a: "Not at all. Standard iPhone or Android phone videos shot in natural salon or studio lighting actually perform better on Instagram than over-produced corporate video commercials because viewers perceive them as authentic and relatable."
             },
             {
-              q: "What if I don't know what to film?",
-              a: "As soon as you start the trial, we send you a simple 5-bullet shot list tailored to your exact niche. You simply record 5-second B-roll clips during your routine workday."
+              q: "What if I am busy and don't know what to film?",
+              a: "As soon as you begin the trial, we send you a simple 5-bullet shot list customized for your clinic or studio. You simply record quick 5-second B-roll clips during your routine appointments without disrupting your schedule."
             },
             {
-              q: "How fast do we receive our completed Reels?",
-              a: "Within 10 days of uploading your raw clips to our shared Google Drive folder, all 4 edited Reels are delivered to you."
+              q: "How fast do we receive our completed 4 Reels?",
+              a: "Within 10 days of uploading your raw phone clips into our shared Google Drive folder, all 4 edited, color-graded, and captioned Reels are delivered."
             },
             {
               q: "What happens after the 4-Reel trial ends?",
-              a: "There is zero obligation or automatic recurring charge. If you love the engagement and want an ongoing weekly content flow, we have monthly packages (8, 12, or 16 Reels/month). If not, you keep all 4 high-performing assets."
+              a: "There is zero obligation or automatic renewal. If you love the inquiries and want an ongoing monthly content system, we offer recurring retainers (8, 12, or 16 Reels/month). If not, you walk away with 4 high-performing video assets."
+            },
+            {
+              q: "How does the 100% money-back guarantee work?",
+              a: "When we deliver your first completed Reel draft, if you feel the editing style doesn't align with your clinic's brand, simply tell us. We will issue an immediate 100% refund of your $200 payment."
             }
           ].map((faq, i) => (
             <div 
               key={i} 
-              className="rounded-xl bg-[#0e121d] border border-neutral-800 overflow-hidden"
+              className="rounded-xl bg-[#0e121d] border border-white/[0.08] overflow-hidden"
             >
               <button
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -724,7 +845,7 @@ const ReelsPortfolio: React.FC = () => {
                 />
               </button>
               {openFaq === i && (
-                <div className="px-4 pb-4 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-neutral-800/60 pt-3">
+                <div className="px-4 pb-4 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-white/[0.06] pt-3">
                   {faq.a}
                 </div>
               )}
@@ -733,17 +854,17 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </section>
 
-      {/* FINAL STICKY BOTTOM ACTION BANNER */}
-      <div className="py-12 bg-gradient-to-t from-black to-[#07090e] border-t border-neutral-800 text-center space-y-4 px-4">
+      {/* ─── FINAL STICKY BOTTOM ACTION BANNER ─── */}
+      <div className="py-14 bg-gradient-to-t from-black to-[#07090e] border-t border-white/[0.08] text-center space-y-4 px-4">
         <p className="text-xs uppercase tracking-widest text-[#38bdf8] font-mono">
-          Ready to turn views into booked appointments?
+          Ready to turn scrollers into booked consultations?
         </p>
-        <h3 className="text-xl sm:text-3xl font-black text-white">
-          Claim Your 4-Reel Trial Today for $200.
+        <h3 className="text-2xl sm:text-3xl font-black text-white">
+          Claim Your 4-Reel Starter Today for $200.
         </h3>
         <div className="flex items-center justify-center gap-4 pt-2">
           <a href={whatsappDirectUrl} target="_blank" rel="noopener noreferrer">
-            <ShinyButton variant="primary" className="text-sm font-bold bg-[#1F4B99]">
+            <ShinyButton variant="primary" className="text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white">
               <MessageCircle size={16} />
               Message Nazim on WhatsApp
             </ShinyButton>
