@@ -39,8 +39,7 @@ interface ReelTeardown {
   clientType: string;
   title: string;
   hook: string;
-  embedId: string;
-  creatorCredit: string;
+  videoSrc?: string;
   rawIssues: string[];
   retentionFixes: string[];
   inquiryMetric: string;
@@ -58,8 +57,7 @@ const TEARDOWNS: ReelTeardown[] = [
     clientType: 'Cosmetic Clinic & Skin Studio',
     title: 'HydraFacial Glow & Barrier Repair Reveal',
     hook: '"Stop booking facials until you check this 1 skin barrier sign..."',
-    embedId: 'OPz6tTTNdVs',
-    creatorCredit: 'Clinical Aesthetic Treatment Demo',
+    videoSrc: '/videos/aesthetics.mp4',
     rawIssues: [
       'Overhead yellow clinic lighting made skin look dull',
       'Uncut 12-second clips with zero visual progression',
@@ -84,8 +82,7 @@ const TEARDOWNS: ReelTeardown[] = [
     clientType: 'Architecture & Luxury Living',
     title: '4,200 sq.ft Minimalist Penthouse Walkthrough',
     hook: '"We almost said no to this floorplan until we built this hidden island..."',
-    embedId: 'F4bL8fE76L4',
-    creatorCredit: 'Architectural Space Walkthrough Reference',
+    videoSrc: '/videos/interior.mp4',
     rawIssues: [
       'Slow, shaky phone pan across rooms feeling like raw CCTV footage',
       'Generic copyright-free elevator music that felt corporate',
@@ -110,8 +107,7 @@ const TEARDOWNS: ReelTeardown[] = [
     clientType: 'Pilates, Strength & Performance Studios',
     title: 'Squat Form Diagnostic & Member PR Transformation',
     hook: '"If your knees cave in during squats, stop doing leg extensions."',
-    embedId: 'bEv6CCg2BC8',
-    creatorCredit: 'Squat University Technique & Biomechanics',
+    videoSrc: '/videos/fitness.mp4',
     rawIssues: [
       'Heavy gym background noise drowned out coach instructions',
       'Static angle from the floor with zero anatomical focus',
@@ -133,7 +129,7 @@ const TEARDOWNS: ReelTeardown[] = [
 
 const ReelsPortfolio: React.FC = () => {
   const [activeNiche, setActiveNiche] = useState<'aesthetics' | 'interior' | 'fitness'>('aesthetics');
-  const [viewMode, setViewMode] = useState<'video' | 'after' | 'before'>('video');
+  const [viewMode, setViewMode] = useState<'after' | 'before'>('after');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // Form submission state
@@ -296,15 +292,11 @@ const ReelsPortfolio: React.FC = () => {
                   {/* Top Bar with Mode Pill */}
                   <div className="relative z-20 pt-4 flex items-center justify-between text-[11px]">
                     <span className={`px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase border ${
-                      viewMode === 'video'
-                        ? 'bg-[#38bdf8]/20 text-[#38bdf8] border-[#38bdf8]/40'
-                        : viewMode === 'after'
+                      viewMode === 'after'
                         ? 'bg-[#38bdf8]/20 text-[#38bdf8] border-[#38bdf8]/40'
                         : 'bg-neutral-800 text-neutral-400 border-neutral-700'
                     }`}>
-                      {viewMode === 'video' && '▶ Live Reference Video'}
-                      {viewMode === 'after' && '✓ Retention-Engineered'}
-                      {viewMode === 'before' && '✕ Raw Phone Footage'}
+                      {viewMode === 'after' ? '✓ Retention-Engineered Cut' : '✕ Raw Phone Footage'}
                     </span>
 
                     <span className="text-neutral-400 font-mono text-[10px]">
@@ -312,99 +304,74 @@ const ReelsPortfolio: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Video Player or Interactive Graphic */}
-                  {viewMode === 'video' ? (
-                    <div className="absolute inset-0 w-full h-full z-10 pt-12 pb-14 bg-black flex items-center justify-center">
-                      <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${currentTeardown.embedId}?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1`}
-                        title={currentTeardown.title}
-                        className="w-full h-full border-0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      {/* Middle Hook Graphic */}
-                      <div className="relative z-10 my-auto text-center space-y-3 px-2">
-                        {viewMode === 'after' ? (
-                          <div className="space-y-3 animate-fade-in-up">
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#1F4B99]/40 border border-[#38bdf8]/40 text-[#38bdf8] text-[10px] font-black tracking-wider uppercase">
-                              <Zap size={11} /> 1.2s Pattern Interrupt
-                            </div>
-                            <h4 className="text-base sm:text-lg font-black text-white leading-snug drop-shadow-md">
-                              {currentTeardown.hook}
-                            </h4>
-                            <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400">
-                              <Volume2 size={12} className="text-[#38bdf8] animate-pulse" />
-                              <span>{currentTeardown.audioTrack}</span>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="space-y-2 opacity-60">
-                            <div className="inline-block px-2.5 py-0.5 rounded bg-neutral-800 text-neutral-400 text-[10px] font-mono">
-                              No Hook / Slow Panning
-                            </div>
-                            <p className="text-xs text-neutral-400 italic">
-                              "Hey everyone, welcome back to our clinic... today we're showing..."
-                            </p>
-                          </div>
-                        )}
+                  {/* Middle Hook Graphic */}
+                  <div className="relative z-10 my-auto text-center space-y-3 px-2">
+                    {viewMode === 'after' ? (
+                      <div className="space-y-3 animate-fade-in-up">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#1F4B99]/40 border border-[#38bdf8]/40 text-[#38bdf8] text-[10px] font-black tracking-wider uppercase">
+                          <Zap size={11} /> 1.2s Pattern Interrupt
+                        </div>
+                        <h4 className="text-base sm:text-lg font-black text-white leading-snug drop-shadow-md">
+                          {currentTeardown.hook}
+                        </h4>
+                        <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400">
+                          <Volume2 size={12} className="text-[#38bdf8] animate-pulse" />
+                          <span>{currentTeardown.audioTrack}</span>
+                        </div>
                       </div>
-
-                      {/* Bottom Subtitle Bar */}
-                      <div className="relative z-10 space-y-3">
-                        {viewMode === 'after' ? (
-                          <div className="p-3 rounded-xl bg-[#121622]/90 backdrop-blur-md border border-white/[0.08] space-y-1">
-                            <div className="flex items-center justify-between text-[10px]">
-                              <span className="font-bold text-white flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" />
-                                Kinetic Subtitle
-                              </span>
-                              <span className="text-[#38bdf8] font-bold text-[9px] uppercase">
-                                High-Contrast
-                              </span>
-                            </div>
-                            <p className="text-xs font-semibold text-white leading-snug">
-                              "Watch how the hydration barrier recovers within 48 hours..."
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="p-2.5 rounded-xl bg-neutral-950/60 border border-neutral-800 text-center">
-                            <span className="text-[10px] text-neutral-400">
-                              ✕ No Subtitles (72% scroll past on mute)
-                            </span>
-                          </div>
-                        )}
+                    ) : (
+                      <div className="space-y-2 opacity-60">
+                        <div className="inline-block px-2.5 py-0.5 rounded bg-neutral-800 text-neutral-400 text-[10px] font-mono">
+                          No Hook / Slow Panning
+                        </div>
+                        <p className="text-xs text-neutral-400 italic">
+                          "Hey everyone, welcome back to our clinic... today we're showing..."
+                        </p>
                       </div>
-                    </>
-                  )}
+                    )}
+                  </div>
 
-                  {/* 3-Way Mode Toggle Switch on the phone */}
-                  <div className="grid grid-cols-3 gap-1 p-1 bg-black/90 backdrop-blur-md rounded-xl border border-white/[0.08] relative z-30">
-                    <button
-                      onClick={() => setViewMode('video')}
-                      className={`py-1.5 text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1 ${
-                        viewMode === 'video'
-                          ? 'bg-[#38bdf8] text-[#0c0c0e] font-black shadow-sm'
-                          : 'text-neutral-400 hover:text-white'
-                      }`}
-                    >
-                      <Play size={10} className="fill-current" /> Watch Video
-                    </button>
+                  {/* Bottom Subtitle Bar */}
+                  <div className="relative z-10 space-y-3">
+                    {viewMode === 'after' ? (
+                      <div className="p-3 rounded-xl bg-[#121622]/90 backdrop-blur-md border border-white/[0.08] space-y-1">
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="font-bold text-white flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" />
+                            Kinetic Subtitle
+                          </span>
+                          <span className="text-[#38bdf8] font-bold text-[9px] uppercase">
+                            High-Contrast
+                          </span>
+                        </div>
+                        <p className="text-xs font-semibold text-white leading-snug">
+                          "Watch how the hydration barrier recovers within 48 hours..."
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="p-2.5 rounded-xl bg-neutral-950/60 border border-neutral-800 text-center">
+                        <span className="text-[10px] text-neutral-400">
+                          ✕ No Subtitles (72% scroll past on mute)
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Mode Toggle Switch on the phone */}
+                  <div className="grid grid-cols-2 gap-1.5 p-1 bg-black/90 backdrop-blur-md rounded-xl border border-white/[0.08] relative z-30">
                     <button
                       onClick={() => setViewMode('after')}
-                      className={`py-1.5 text-[10px] font-bold rounded-lg transition-colors ${
+                      className={`py-1.5 text-[11px] font-bold rounded-lg transition-colors ${
                         viewMode === 'after'
                           ? 'bg-[#38bdf8] text-[#0c0c0e] font-black shadow-sm'
                           : 'text-neutral-400 hover:text-white'
                       }`}
                     >
-                      Our Edit
+                      Social Ninja's Cut
                     </button>
                     <button
                       onClick={() => setViewMode('before')}
-                      className={`py-1.5 text-[10px] font-bold rounded-lg transition-colors ${
+                      className={`py-1.5 text-[11px] font-bold rounded-lg transition-colors ${
                         viewMode === 'before'
                           ? 'bg-neutral-800 text-white font-bold'
                           : 'text-neutral-400 hover:text-white'
