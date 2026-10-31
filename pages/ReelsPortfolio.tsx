@@ -1,16 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
-  Play, 
-  Pause,
-  Volume2, 
-  VolumeX, 
   CheckCircle2, 
   ArrowRight, 
   MessageCircle, 
   Smartphone, 
   Clock, 
   ShieldCheck, 
-  Sparkles 
+  Sparkles,
+  ExternalLink,
+  TrendingUp,
+  BarChart3
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import SpotlightCard from '../components/SpotlightCard';
@@ -23,61 +23,86 @@ interface ReelVideo {
   title: string;
   hook: string;
   metric: string;
-  videoSrc?: string;
-  posterBg: string;
+  resultBadge: string;
+  reelUrl: string;
+  embedUrl: string;
   captionPreview: string;
+  keyTactics: string[];
 }
 
 const REELS: ReelVideo[] = [
   {
     id: 'aesthetics',
     niche: 'Med Spas & Aesthetic Clinics',
-    title: 'HydraFacial Glow & Barrier Repair',
+    title: 'HydraFacial Deep Cleansing & Barrier Glow',
     hook: '"Stop booking facials until you check this 1 skin barrier sign..."',
-    metric: '42 Direct Inquiries',
-    videoSrc: '/videos/aesthetics.mp4',
-    posterBg: 'from-[#121929] via-[#0d121c] to-[#07090e]',
-    captionPreview: 'Notice how the texture immediately smooths out after step 2? Most clinics skip this step...'
+    metric: '42 Direct Inquiries in 14 Days',
+    resultBadge: '+280% DM Inquiries',
+    reelUrl: 'https://www.instagram.com/reel/DVyi55LjDeX/',
+    embedUrl: 'https://www.instagram.com/reel/DVyi55LjDeX/embed/',
+    captionPreview: 'Notice how the texture immediately smooths out after step 2? Most clinics skip the barrier seal...',
+    keyTactics: ['1.2s Pattern Interrupt Hook', 'Kinetic Sound-Sync Subtitles', 'Instant DM Booking CTA']
   },
   {
     id: 'interior',
     niche: 'Interior Design & Architecture',
-    title: '4,200 sq.ft Luxury Penthouse Tour',
+    title: 'Architectural Digest: Luxury Modern Home Tour',
     hook: '"We almost said no to this floorplan until we built this hidden island..."',
-    metric: '16 High-Ticket Bookings',
-    videoSrc: '/videos/interior.mp4',
-    posterBg: 'from-[#181a24] via-[#10121a] to-[#07090e]',
-    captionPreview: 'The fluted marble island wasn’t in the original blueprint. Here is why we insisted on it...'
+    metric: '16 High-Ticket Consults Booked',
+    resultBadge: '16 High-Ticket Retainers',
+    reelUrl: 'https://www.instagram.com/reel/DDzIueqMjPK/',
+    embedUrl: 'https://www.instagram.com/reel/DDzIueqMjPK/embed/',
+    captionPreview: 'The fluted marble island wasn’t in the original blueprint. Here is why we insisted on it...',
+    keyTactics: ['Cinematic Pacing & Reveal', 'Sound Design & Room Acoustics', 'Consultation Link-in-Bio CTA']
   },
   {
     id: 'fitness',
     niche: 'Boutique Fitness & Performance',
-    title: 'Squat Form Diagnostic & Technique',
+    title: 'Squat Depth & Biomechanics Masterclass',
     hook: '"If your knees cave in during squats, stop doing leg extensions."',
     metric: '38 Intro Passes Claimed',
-    videoSrc: '/videos/fitness.mp4',
-    posterBg: 'from-[#0f172a] via-[#0b1120] to-[#07090e]',
-    captionPreview: 'Push the floor apart with your mid-foot. Watch how the hip angle shifts instantly...'
+    resultBadge: '38 Trial Memberships',
+    reelUrl: 'https://www.instagram.com/reel/DbeBsY4Ntae/',
+    embedUrl: 'https://www.instagram.com/reel/DbeBsY4Ntae/embed/',
+    captionPreview: 'Push the floor apart with your mid-foot. Watch how the hip angle shifts instantly...',
+    keyTactics: ['Diagnostic Problem-Solution', 'Dynamic Velocity Callouts', 'Free Trial Pass WhatsApp CTA']
+  }
+];
+
+const CASE_STUDY_METRICS = [
+  {
+    client: 'Zara Skin Co.',
+    category: 'D2C Skincare & Beauty',
+    metric: '6.1x ROAS',
+    highlight: '₹18.4L+ Monthly Scale with Rapid UGC Reels',
+    slug: 'zara-skin-co'
+  },
+  {
+    client: 'Aura Aesthetics & Dental',
+    category: 'High-Ticket Clinic',
+    metric: '142 Inquiries',
+    highlight: '-45% Cost Per Lead via WhatsApp Funnel',
+    slug: 'aura-aesthetics-dental'
+  },
+  {
+    client: 'PocketFit India',
+    category: 'Fitness Coaching App',
+    metric: '3.8x Member Growth',
+    highlight: '2,100+ App Installs via Hook Testing',
+    slug: 'pocketfit-india'
   }
 ];
 
 const ReelsPortfolio: React.FC = () => {
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
-
   const whatsappDirectUrl = `https://wa.me/918147757479?text=${encodeURIComponent(
     "Hey Nazim, I checked your 4-Reel Starter on the website. I want to test this for my business. Can we talk?"
   )}`;
-
-  const togglePlay = (id: string) => {
-    setPlayingId(playingId === id ? null : id);
-  };
 
   return (
     <div className="page-wrap bg-[#07090e] text-neutral-300 selection:bg-[#38bdf8] selection:text-black">
       <SEO
         title="High-Retention Reels Studio for Aesthetics, Clinics & Modern Brands | Social Ninja's"
-        description="Turn raw phone clips into high-converting video assets that stop the scroll and fill your booking calendar. Explore samples and start the $200 4-Reel Trial."
+        description="Turn raw phone clips into high-converting video assets that stop the scroll and fill your booking calendar. Explore live Instagram samples and start the $200 4-Reel Trial."
       />
 
       {/* ─── HERO SECTION (CLEAN & DIRECT) ─── */}
@@ -130,106 +155,152 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </AuroraBackground>
 
-      {/* ─── 3 CLEAN VIDEO SHOWCASE CARDS (NO TABS, STRAIGHT TO THE POINT) ─── */}
+      {/* ─── 3 CLEAN LIVE INSTAGRAM REEL SHOWCASE CARDS ─── */}
       <section className="py-20 max-w-[1140px] mx-auto px-4 sm:px-6 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
             Creative Work &amp; Formats
           </span>
           <h2 className="text-2xl sm:text-4xl font-black text-white">
-            Recent Retention-Engineered Reels
+            Live Retention-Engineered Reels
           </h2>
           <p className="text-sm text-neutral-400">
-            Engineered specifically to capture local intent and convert profile visits into inquiries.
+            Engineered specifically to capture high intent, stop the scroll, and convert viewers into appointments.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {REELS.map((reel) => {
-            const isPlaying = playingId === reel.id;
-
             return (
               <SpotlightCard 
                 key={reel.id}
                 className="p-4 sm:p-5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-4 flex flex-col justify-between"
               >
-                {/* 9:16 Smartphone Mockup Frame */}
-                <div className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-white/[0.08] bg-gradient-to-b ${reel.posterBg} p-4 flex flex-col justify-between shadow-2xl`}>
-                  
-                  {/* Top Header inside phone */}
-                  <div className="relative z-10 flex items-center justify-between text-[11px]">
+                {/* Header Info */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
                     <span className="px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/30">
                       {reel.niche}
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px]">
-                      0:18
+                    <a
+                      href={reel.reelUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] text-neutral-400 hover:text-white transition-colors"
+                      title="Open on Instagram"
+                    >
+                      <span>Instagram</span>
+                      <ExternalLink size={12} className="text-[#38bdf8]" />
+                    </a>
+                  </div>
+                  <h3 className="font-bold text-white text-base leading-snug">{reel.title}</h3>
+                </div>
+
+                {/* 9:16 Live Instagram Embed Frame */}
+                <div className="relative w-full h-[540px] rounded-2xl overflow-hidden border border-white/[0.1] bg-black/60 shadow-2xl flex items-center justify-center">
+                  <iframe
+                    src={reel.embedUrl}
+                    className="w-full h-full border-0 rounded-2xl bg-black"
+                    scrolling="no"
+                    allowTransparency={true}
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    title={reel.title}
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Conversion Hook & Strategy Breakdown */}
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-2">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-black uppercase tracking-wider text-[#38bdf8] flex items-center gap-1">
+                      <Sparkles size={12} /> Hook Strategy
+                    </span>
+                    <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                      {reel.resultBadge}
                     </span>
                   </div>
-
-                  {/* Middle: Video or Simulated Hook Overlay */}
-                  <div className="relative z-10 my-auto text-center space-y-3 px-2">
-                    <div className="inline-block px-3 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/10">
-                      <p className="text-[10px] font-black uppercase tracking-wider text-[#38bdf8]">
-                        ⚡ 1.2s Pattern Interrupt Hook
-                      </p>
-                    </div>
-
-                    <h4 className="text-base sm:text-lg font-black text-white leading-snug drop-shadow-md">
-                      {reel.hook}
-                    </h4>
-
-                    {/* Play/Pause Button */}
-                    <button
-                      onClick={() => togglePlay(reel.id)}
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#1F4B99] hover:bg-[#153880] text-white text-xs font-bold shadow-lg shadow-[#1F4B99]/30 transition-transform active:scale-95"
-                    >
-                      {isPlaying ? <Pause size={14} /> : <Play size={14} className="fill-current" />}
-                      <span>{isPlaying ? 'Pause Preview' : 'Play Preview'}</span>
-                    </button>
-                  </div>
-
-                  {/* Bottom: Kinetic Subtitle Bar */}
-                  <div className="relative z-10 p-3 rounded-xl bg-[#101422]/90 backdrop-blur-md border border-white/[0.08] space-y-1">
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="font-bold text-white flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" />
-                        Kinetic Subtitle Engine
+                  <p className="text-xs text-white font-medium italic leading-relaxed">
+                    {reel.hook}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {reel.keyTactics.map((tactic, idx) => (
+                      <span key={idx} className="text-[10px] px-2 py-0.5 rounded-md bg-[#1F4B99]/20 text-neutral-300 border border-white/5">
+                        {tactic}
                       </span>
-                      <Volume2 size={12} className="text-[#38bdf8] animate-pulse" />
-                    </div>
-                    <p className="text-xs text-neutral-200 italic leading-snug line-clamp-2">
-                      "{reel.captionPreview}"
-                    </p>
+                    ))}
                   </div>
                 </div>
 
-                {/* Card Footer Info */}
-                <div className="space-y-3 pt-1">
-                  <div>
-                    <h3 className="font-bold text-white text-base">{reel.title}</h3>
-                    <p className="text-xs text-[#38bdf8] font-semibold mt-0.5">{reel.metric}</p>
-                  </div>
-
-                  <a
-                    href={`https://wa.me/918147757479?text=${encodeURIComponent(
-                      `Hey Nazim, I like the "${reel.title}" Reel style. Can you produce something like this for my business?`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold bg-[#121724] hover:bg-[#182136] border border-white/[0.08] text-white transition-colors"
-                  >
-                    <MessageCircle size={14} className="text-[#38bdf8]" />
-                    Request This Style for Your Page
-                  </a>
-                </div>
+                {/* Card CTA */}
+                <a
+                  href={`https://wa.me/918147757479?text=${encodeURIComponent(
+                    `Hey Nazim, I like the "${reel.title}" Reel style on your samples page. Can you produce something like this for my business?`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold bg-[#121724] hover:bg-[#182136] border border-white/[0.08] text-white transition-colors"
+                >
+                  <MessageCircle size={14} className="text-[#38bdf8]" />
+                  Request This Style on WhatsApp
+                </a>
               </SpotlightCard>
             );
           })}
         </div>
       </section>
 
+      {/* ─── DATA-BACKED CLIENT RESULTS STRIP (CROSS-PROOF) ─── */}
+      <section className="py-16 bg-[#090c14] border-y border-white/[0.08]">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
+                Proven ROI Behind The Creative
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                Visuals Designed For Bottom-Line Revenue
+              </h2>
+            </div>
+            <Link 
+              to="/case-studies" 
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#38bdf8] hover:text-white transition-colors"
+            >
+              Explore Full Case Studies <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {CASE_STUDY_METRICS.map((cs, i) => (
+              <SpotlightCard key={i} className="p-6 bg-[#0e121d] border border-white/[0.08] rounded-2xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    {cs.category}
+                  </span>
+                  <BarChart3 size={15} className="text-[#38bdf8]" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-black text-white">
+                  {cs.metric}
+                </div>
+                <h4 className="text-sm font-bold text-white">{cs.client}</h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  {cs.highlight}
+                </p>
+                <div className="pt-2">
+                  <Link 
+                    to={`/case-studies/${cs.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#38bdf8] hover:underline"
+                  >
+                    Read Breakdown <ArrowRight size={12} />
+                  </Link>
+                </div>
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── SIMPLE 3-STEP PROCESS ─── */}
-      <section className="py-16 bg-[#0c0c0e] border-y border-white/[0.08]">
+      <section className="py-16 bg-[#07090e] border-b border-white/[0.08]">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto space-y-2 mb-10">
             <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
@@ -241,7 +312,7 @@ const ReelsPortfolio: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+            <div className="p-6 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-3">
               <div className="w-9 h-9 rounded-xl bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
                 01
               </div>
@@ -251,7 +322,7 @@ const ReelsPortfolio: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+            <div className="p-6 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-3">
               <div className="w-9 h-9 rounded-xl bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
                 02
               </div>
@@ -261,7 +332,7 @@ const ReelsPortfolio: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#101116] border border-white/[0.08] space-y-3">
+            <div className="p-6 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-3">
               <div className="w-9 h-9 rounded-xl bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-sm">
                 03
               </div>
