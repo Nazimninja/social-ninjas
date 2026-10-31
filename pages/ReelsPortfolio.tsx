@@ -1,9 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { 
-  Play, 
-  Pause,
-  Volume2, 
-  VolumeX, 
   CheckCircle2, 
   ArrowRight, 
   MessageCircle, 
@@ -11,6 +7,7 @@ import {
   Clock, 
   ShieldCheck, 
   Sparkles,
+  ExternalLink,
   TrendingUp
 } from 'lucide-react';
 import SEO from '../components/SEO';
@@ -20,93 +17,73 @@ import ShinyButton from '../components/ShinyButton';
 
 interface ShowcaseReel {
   id: string;
-  niche: string;
-  formatTitle: string;
-  hook: string;
-  metric: string;
-  videoUrl: string;
-  subtitles: string;
+  reelId: string;
+  category: string;
+  creator: string;
+  title: string;
+  highlight: string;
+  cleanUrl: string;
+  embedUrl: string;
   ctaMessage: string;
 }
 
 const SHOWCASE_REELS: ShowcaseReel[] = [
   {
-    id: 'aesthetics',
-    niche: 'Med Spas & Aesthetics',
-    formatTitle: 'Patient Procedure & Barrier Glow',
-    hook: 'Stop booking facials until you check this 1 skin barrier sign...',
-    metric: '42 Direct Inquiries in 14 Days',
-    videoUrl: 'https://videos.pexels.com/video-files/28749160/12466354_1440_2560_60fps.mp4',
-    subtitles: 'Notice how the texture immediately smooths out after step 2? Most clinics skip the barrier seal.',
-    ctaMessage: 'Hey Nazim, I want the Med Spa & Aesthetics Reel format for my clinic.'
+    id: 'automotive-luxury',
+    reelId: 'DXZRFYTESme',
+    category: 'Automotive & Luxury',
+    creator: '@9thgear_',
+    title: 'BMW iX vs. Mercedes EQS Comparison',
+    highlight: '52K+ Views • High-Aesthetic Sensory Edit',
+    cleanUrl: 'https://www.instagram.com/reel/DXZRFYTESme/',
+    embedUrl: 'https://www.instagram.com/reel/DXZRFYTESme/embed/',
+    ctaMessage: 'Hey Nazim, I love the Luxury Automotive Reel style on your samples page. Can we produce this for my brand?'
   },
   {
-    id: 'interior',
-    niche: 'Luxury Interior & Architecture',
-    formatTitle: 'Cinematic Space Walkthrough',
-    hook: 'We almost said no to this floorplan until we built this hidden island...',
-    metric: '16 High-Ticket Retainers Booked',
-    videoUrl: 'https://videos.pexels.com/video-files/40397833/17261455_1440_2560_60fps.mp4',
-    subtitles: 'The fluted marble island wasn’t in the original blueprint. Here is why we insisted on it.',
-    ctaMessage: 'Hey Nazim, I want the Luxury Interior walkthrough Reel format for my studio.'
+    id: 'hook-strategy',
+    reelId: 'Dey4nf4B3Wg',
+    category: 'Retention & Hook Strategy',
+    creator: '@hellowjai',
+    title: 'Saurabh Joshi Immediate Payoff Breakdown',
+    highlight: '587K+ Views • 18.9K Likes • 1.2s Retention Hook',
+    cleanUrl: 'https://www.instagram.com/reel/Dey4nf4B3Wg/',
+    embedUrl: 'https://www.instagram.com/reel/Dey4nf4B3Wg/embed/',
+    ctaMessage: 'Hey Nazim, I want high-retention hook strategy Reels like the one on your samples page. How do we start?'
   },
   {
-    id: 'fitness',
-    niche: 'Boutique Fitness & Performance',
-    formatTitle: 'Diagnostic Problem-Solution',
-    hook: 'If your knees cave in during squats, stop doing leg extensions.',
-    metric: '38 Intro Passes Claimed',
-    videoUrl: 'https://videos.pexels.com/video-files/34491185/14614270_1080_1920_30fps.mp4',
-    subtitles: 'Push the floor apart through your mid-foot. Watch how the hip angle shifts instantly.',
-    ctaMessage: 'Hey Nazim, I want the Fitness & Performance Reel format for my coaching business.'
+    id: 'kinetic-explainer',
+    reelId: 'DanU-jWK_bP',
+    category: 'Kinetic Motion Explainer',
+    creator: '@rohitiyerexplains',
+    title: 'Mercedes Naming Decoded & Explained',
+    highlight: '79K+ Likes • Kinetic Motion Graphics & Subtitles',
+    cleanUrl: 'https://www.instagram.com/reel/DanU-jWK_bP/',
+    embedUrl: 'https://www.instagram.com/reel/DanU-jWK_bP/embed/',
+    ctaMessage: 'Hey Nazim, I want kinetic educational explainers like the Rohit Iyer sample. Can we talk?'
+  },
+  {
+    id: 'brand-authority',
+    reelId: 'Dcs_ND2vUsc',
+    category: 'Brand Story & Leadership',
+    creator: '@kccinstitutes',
+    title: 'Marcus Aurelius: 5 Rules for Leadership',
+    highlight: '309K+ Views • 38K Likes • Cinematic Pacing',
+    cleanUrl: 'https://www.instagram.com/reel/Dcs_ND2vUsc/',
+    embedUrl: 'https://www.instagram.com/reel/Dcs_ND2vUsc/embed/',
+    ctaMessage: 'Hey Nazim, I love the Brand Leadership Reel style on your samples page. Can we create this for my business?'
   }
 ];
 
 const ReelsPortfolio: React.FC = () => {
-  const [playingStates, setPlayingStates] = useState<{ [key: string]: boolean }>({
-    aesthetics: true,
-    interior: true,
-    fitness: true
-  });
-  const [mutedStates, setMutedStates] = useState<{ [key: string]: boolean }>({
-    aesthetics: true,
-    interior: true,
-    fitness: true
-  });
-
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
-
   const whatsappDirectUrl = `https://wa.me/918147757479?text=${encodeURIComponent(
     "Hey Nazim, I checked your 4-Reel Starter on the website. I want to test this for my business. Can we talk?"
   )}`;
 
-  const togglePlay = (id: string) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      if (video.paused) {
-        video.play();
-        setPlayingStates((prev) => ({ ...prev, [id]: true }));
-      } else {
-        video.pause();
-        setPlayingStates((prev) => ({ ...prev, [id]: false }));
-      }
-    }
-  };
-
-  const toggleMute = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const video = videoRefs.current[id];
-    if (video) {
-      video.muted = !video.muted;
-      setMutedStates((prev) => ({ ...prev, [id]: video.muted }));
-    }
-  };
-
   return (
     <div className="page-wrap bg-[#07090e] text-neutral-300 selection:bg-[#38bdf8] selection:text-black">
       <SEO
-        title="Short-Form Video Production & Conversion Showcase | Social Ninja's"
-        description="High-retention Reels engineered to convert viewers into booked clients. Explore our 3 proven formats and start the $200 4-Reel Trial."
+        title="High-Retention Reels Studio & Conversion Showcase | Social Ninja's"
+        description="Review real high-retention Instagram Reels engineered to convert viewers into booked clients. Explore our 4 proven editing styles and start the $200 4-Reel Trial."
       />
 
       {/* ─── HERO SECTION ─── */}
@@ -159,126 +136,80 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </AuroraBackground>
 
-      {/* ─── 3 REAL PLAYABLE 9:16 VIDEO SHOWCASE CARDS ─── */}
-      <section className="py-20 max-w-[1140px] mx-auto px-4 sm:px-6 space-y-12">
+      {/* ─── 4 REAL INSTAGRAM REEL SHOWCASE CARDS (CLEAN 2x2 GRID) ─── */}
+      <section className="py-20 max-w-[1020px] mx-auto px-4 sm:px-6 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
-            Conversion-Tested Formats
+            Proven Client Work
           </span>
           <h2 className="text-2xl sm:text-4xl font-black text-white">
-            The 3 High-Intent Reel Formats
+            Real High-Retention Reels In Action
           </h2>
           <p className="text-sm text-neutral-400">
-            Engineered to stop scroll abandonment in 1.2 seconds and direct viewers straight into your DM inbox.
+            From high-ticket brand storytelling to viral kinetic breakdowns. Click play on any Reel below to review our production standard.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {SHOWCASE_REELS.map((reel) => {
-            const isPlaying = playingStates[reel.id] ?? true;
-            const isMuted = mutedStates[reel.id] ?? true;
-
-            return (
-              <SpotlightCard 
-                key={reel.id}
-                className="p-4 sm:p-5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-4 flex flex-col justify-between hover:border-white/[0.18] transition-all"
-              >
-                {/* 9:16 Smartphone Mockup with Real Video */}
-                <div 
-                  onClick={() => togglePlay(reel.id)}
-                  className="relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-white/[0.12] bg-black shadow-2xl cursor-pointer group select-none"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {SHOWCASE_REELS.map((reel) => (
+            <SpotlightCard 
+              key={reel.id}
+              className="p-5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-4 flex flex-col justify-between hover:border-white/[0.18] transition-all shadow-xl"
+            >
+              {/* Card Header: Category & Clean Instagram Link */}
+              <div className="flex items-center justify-between pb-1">
+                <span className="px-3 py-1 rounded-full font-bold text-[11px] tracking-wider uppercase bg-[#1F4B99]/20 text-[#38bdf8] border border-[#38bdf8]/30">
+                  {reel.category}
+                </span>
+                <a
+                  href={reel.cleanUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition-colors"
+                  title="Open Reel on Instagram"
                 >
-                  {/* Real Video Element */}
-                  <video
-                    ref={(el) => (videoRefs.current[reel.id] = el)}
-                    src={reel.videoUrl}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
+                  <span>{reel.creator}</span>
+                  <ExternalLink size={13} className="text-[#38bdf8]" />
+                </a>
+              </div>
 
-                  {/* Top Glass Header */}
-                  <div className="absolute top-3 inset-x-3 z-20 flex items-center justify-between pointer-events-none">
-                    <span className="px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase bg-black/70 backdrop-blur-md text-[#38bdf8] border border-white/10 shadow-lg">
-                      {reel.niche}
-                    </span>
-                    <button
-                      onClick={(e) => toggleMute(reel.id, e)}
-                      className="pointer-events-auto p-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white border border-white/10 transition-transform active:scale-90"
-                      title={isMuted ? "Unmute" : "Mute"}
-                    >
-                      {isMuted ? <VolumeX size={13} className="text-neutral-400" /> : <Volume2 size={13} className="text-[#38bdf8]" />}
-                    </button>
+              {/* Clean Instagram Embed Container (Without Any Referral Popups) */}
+              <div className="relative w-full h-[520px] rounded-2xl overflow-hidden bg-black border border-white/[0.1] shadow-2xl flex items-center justify-center">
+                <iframe
+                  src={reel.embedUrl}
+                  className="w-full h-full border-0 rounded-2xl bg-black"
+                  scrolling="no"
+                  allowTransparency={true}
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  title={reel.title}
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Card Meta & Direct Action */}
+              <div className="space-y-3 pt-1">
+                <div>
+                  <h3 className="font-bold text-white text-base leading-snug">
+                    {reel.title}
+                  </h3>
+                  <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium mt-1">
+                    <TrendingUp size={13} />
+                    <span>{reel.highlight}</span>
                   </div>
-
-                  {/* Play/Pause Overlay Indicator on Hover / Pause */}
-                  {!isPlaying && (
-                    <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
-                      <div className="w-14 h-14 rounded-full bg-[#1F4B99] text-white flex items-center justify-center shadow-2xl transform transition-transform group-hover:scale-110">
-                        <Play size={24} className="fill-current ml-1" />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 1.2s Pattern Interrupt Hook Banner Overlay */}
-                  <div className="absolute top-16 inset-x-3 z-20 pointer-events-none">
-                    <div className="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-center space-y-1 shadow-xl">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-[#38bdf8] block">
-                        ⚡ 1.2s Pattern Interrupt Hook
-                      </span>
-                      <p className="text-xs sm:text-sm font-black text-white leading-snug drop-shadow-md">
-                        "{reel.hook}"
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Bottom: Kinetic Subtitle Banner */}
-                  <div className="absolute bottom-3 inset-x-3 z-20 pointer-events-none">
-                    <div className="p-3 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 space-y-1 shadow-2xl">
-                      <div className="flex items-center justify-between text-[10px]">
-                        <span className="font-bold text-white flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] animate-pulse" />
-                          Kinetic Dynamic Captions
-                        </span>
-                        <span className="text-[9px] font-mono text-neutral-400">9:16 Format</span>
-                      </div>
-                      <p className="text-xs text-neutral-200 italic leading-snug line-clamp-2">
-                        "{reel.subtitles}"
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Subtle Dark Vignette */}
-                  <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
                 </div>
 
-                {/* Card Info & CTA */}
-                <div className="space-y-3 pt-1">
-                  <div>
-                    <h3 className="font-bold text-white text-base leading-tight">
-                      {reel.formatTitle}
-                    </h3>
-                    <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-bold mt-1">
-                      <TrendingUp size={14} />
-                      <span>{reel.metric}</span>
-                    </div>
-                  </div>
-
-                  <a
-                    href={`https://wa.me/918147757479?text=${encodeURIComponent(reel.ctaMessage)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold bg-[#1F4B99] hover:bg-[#153880] text-white shadow-md shadow-[#1F4B99]/20 transition-all hover:scale-[1.02]"
-                  >
-                    <MessageCircle size={14} />
-                    Get This Format on WhatsApp
-                  </a>
-                </div>
-              </SpotlightCard>
-            );
-          })}
+                <a
+                  href={`https://wa.me/918147757479?text=${encodeURIComponent(reel.ctaMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold bg-[#1F4B99] hover:bg-[#153880] text-white shadow-md shadow-[#1F4B99]/20 transition-all hover:scale-[1.01]"
+                >
+                  <MessageCircle size={14} />
+                  Get This Editing Style on WhatsApp
+                </a>
+              </div>
+            </SpotlightCard>
+          ))}
         </div>
       </section>
 
