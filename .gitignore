@@ -36,3 +36,7 @@ dist-landing/
 # Vercel generated
 .env.local
 screenshots/
+
+# Chat History and Memory Archives
+chat_history/
+
