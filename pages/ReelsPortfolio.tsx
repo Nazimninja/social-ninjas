@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Play, 
   Pause,
@@ -24,9 +24,8 @@ interface ShowcaseReel {
   formatTitle: string;
   hook: string;
   metric: string;
-  bgGradient: string;
-  accentColor: string;
-  subtitles: string[];
+  videoUrl: string;
+  subtitles: string;
   ctaMessage: string;
 }
 
@@ -34,16 +33,11 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
   {
     id: 'aesthetics',
     niche: 'Med Spas & Aesthetics',
-    formatTitle: 'Patient Procedure & Barrier Reveal',
+    formatTitle: 'Patient Procedure & Barrier Glow',
     hook: 'Stop booking facials until you check this 1 skin barrier sign...',
     metric: '42 Direct Inquiries in 14 Days',
-    bgGradient: 'from-[#1e1b4b] via-[#0f172a] to-[#020617]',
-    accentColor: '#38bdf8',
-    subtitles: [
-      'Notice how the texture immediately smooths out after step 2?',
-      'Most clinics skip the barrier seal step.',
-      'Here is what actually restores long-term hydration.'
-    ],
+    videoUrl: 'https://videos.pexels.com/video-files/28749160/12466354_1440_2560_60fps.mp4',
+    subtitles: 'Notice how the texture immediately smooths out after step 2? Most clinics skip the barrier seal.',
     ctaMessage: 'Hey Nazim, I want the Med Spa & Aesthetics Reel format for my clinic.'
   },
   {
@@ -52,13 +46,8 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     formatTitle: 'Cinematic Space Walkthrough',
     hook: 'We almost said no to this floorplan until we built this hidden island...',
     metric: '16 High-Ticket Retainers Booked',
-    bgGradient: 'from-[#2e1065] via-[#170e28] to-[#020617]',
-    accentColor: '#c084fc',
-    subtitles: [
-      'The fluted marble island wasn’t in the original blueprint.',
-      'Here is why we insisted on concealing the prep zone.',
-      'Swipe to see the evening lighting mood.'
-    ],
+    videoUrl: 'https://videos.pexels.com/video-files/40397833/17261455_1440_2560_60fps.mp4',
+    subtitles: 'The fluted marble island wasn’t in the original blueprint. Here is why we insisted on it.',
     ctaMessage: 'Hey Nazim, I want the Luxury Interior walkthrough Reel format for my studio.'
   },
   {
@@ -67,27 +56,50 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     formatTitle: 'Diagnostic Problem-Solution',
     hook: 'If your knees cave in during squats, stop doing leg extensions.',
     metric: '38 Intro Passes Claimed',
-    bgGradient: 'from-[#064e3b] via-[#062922] to-[#020617]',
-    accentColor: '#34d399',
-    subtitles: [
-      'Push the floor apart through your mid-foot.',
-      'Watch how the hip angle shifts instantly.',
-      'Save this diagnostic for your next heavy leg session.'
-    ],
+    videoUrl: 'https://videos.pexels.com/video-files/34491185/14614270_1080_1920_30fps.mp4',
+    subtitles: 'Push the floor apart through your mid-foot. Watch how the hip angle shifts instantly.',
     ctaMessage: 'Hey Nazim, I want the Fitness & Performance Reel format for my coaching business.'
   }
 ];
 
 const ReelsPortfolio: React.FC = () => {
-  const [activeReel, setActiveReel] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [playingStates, setPlayingStates] = useState<{ [key: string]: boolean }>({
+    aesthetics: true,
+    interior: true,
+    fitness: true
+  });
+  const [mutedStates, setMutedStates] = useState<{ [key: string]: boolean }>({
+    aesthetics: true,
+    interior: true,
+    fitness: true
+  });
+
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   const whatsappDirectUrl = `https://wa.me/918147757479?text=${encodeURIComponent(
     "Hey Nazim, I checked your 4-Reel Starter on the website. I want to test this for my business. Can we talk?"
   )}`;
 
-  const togglePreview = (id: string) => {
-    setActiveReel(activeReel === id ? null : id);
+  const togglePlay = (id: string) => {
+    const video = videoRefs.current[id];
+    if (video) {
+      if (video.paused) {
+        video.play();
+        setPlayingStates((prev) => ({ ...prev, [id]: true }));
+      } else {
+        video.pause();
+        setPlayingStates((prev) => ({ ...prev, [id]: false }));
+      }
+    }
+  };
+
+  const toggleMute = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRefs.current[id];
+    if (video) {
+      video.muted = !video.muted;
+      setMutedStates((prev) => ({ ...prev, [id]: video.muted }));
+    }
   };
 
   return (
@@ -147,14 +159,14 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </AuroraBackground>
 
-      {/* ─── 3 CLEAN CONVERSION SHOWCASE CARDS (ZERO CLUTTER) ─── */}
+      {/* ─── 3 REAL PLAYABLE 9:16 VIDEO SHOWCASE CARDS ─── */}
       <section className="py-20 max-w-[1140px] mx-auto px-4 sm:px-6 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
             Conversion-Tested Formats
           </span>
           <h2 className="text-2xl sm:text-4xl font-black text-white">
-            The 3 High-Intent Reel Engines
+            The 3 High-Intent Reel Formats
           </h2>
           <p className="text-sm text-neutral-400">
             Engineered to stop scroll abandonment in 1.2 seconds and direct viewers straight into your DM inbox.
@@ -163,79 +175,91 @@ const ReelsPortfolio: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {SHOWCASE_REELS.map((reel) => {
-            const isPlaying = activeReel === reel.id;
+            const isPlaying = playingStates[reel.id] ?? true;
+            const isMuted = mutedStates[reel.id] ?? true;
 
             return (
               <SpotlightCard 
                 key={reel.id}
-                className="p-5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-5 flex flex-col justify-between hover:border-white/[0.16] transition-all"
+                className="p-4 sm:p-5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-4 flex flex-col justify-between hover:border-white/[0.18] transition-all"
               >
-                {/* Clean Smartphone Mockup (9:16 Aspect) */}
+                {/* 9:16 Smartphone Mockup with Real Video */}
                 <div 
-                  className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-white/[0.12] bg-gradient-to-b ${reel.bgGradient} p-5 flex flex-col justify-between shadow-2xl transition-all select-none`}
+                  onClick={() => togglePlay(reel.id)}
+                  className="relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-white/[0.12] bg-black shadow-2xl cursor-pointer group select-none"
                 >
-                  {/* Subtle Camera Dynamic Island */}
-                  <div className="relative z-20 flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase bg-black/60 backdrop-blur-md text-[#38bdf8] border border-white/10">
+                  {/* Real Video Element */}
+                  <video
+                    ref={(el) => (videoRefs.current[reel.id] = el)}
+                    src={reel.videoUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
+
+                  {/* Top Glass Header */}
+                  <div className="absolute top-3 inset-x-3 z-20 flex items-center justify-between pointer-events-none">
+                    <span className="px-2.5 py-1 rounded-md font-bold text-[10px] tracking-wider uppercase bg-black/70 backdrop-blur-md text-[#38bdf8] border border-white/10 shadow-lg">
                       {reel.niche}
                     </span>
-                    <div className="w-16 h-3.5 bg-black/80 rounded-full border border-white/10 flex items-center justify-end px-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    </div>
-                  </div>
-
-                  {/* Center: Pattern Interrupt Hook Visualizer */}
-                  <div className="relative z-20 my-auto text-center space-y-4 px-2">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/10">
-                      <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-ping" />
-                      <span className="text-[10px] font-black uppercase tracking-wider text-white">
-                        1.2s Pattern Interrupt Hook
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-black text-white leading-snug drop-shadow-lg">
-                      "{reel.hook}"
-                    </h3>
-
-                    {/* Interactive Preview Trigger */}
                     <button
-                      onClick={() => togglePreview(reel.id)}
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#1F4B99] hover:bg-[#153880] text-white text-xs font-bold shadow-lg shadow-[#1F4B99]/40 transition-all hover:scale-105 active:scale-95"
+                      onClick={(e) => toggleMute(reel.id, e)}
+                      className="pointer-events-auto p-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md text-white border border-white/10 transition-transform active:scale-90"
+                      title={isMuted ? "Unmute" : "Mute"}
                     >
-                      {isPlaying ? <Pause size={14} /> : <Play size={14} className="fill-current" />}
-                      <span>{isPlaying ? 'Pause Demo' : 'Play Scripted Demo'}</span>
+                      {isMuted ? <VolumeX size={13} className="text-neutral-400" /> : <Volume2 size={13} className="text-[#38bdf8]" />}
                     </button>
                   </div>
 
-                  {/* Bottom: Kinetic Subtitle Engine Display */}
-                  <div className="relative z-20 p-3.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="font-bold text-neutral-300 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" />
-                        Sound-Sync Kinetic Captions
-                      </span>
-                      <Volume2 size={13} className="text-[#38bdf8]" />
+                  {/* Play/Pause Overlay Indicator on Hover / Pause */}
+                  {!isPlaying && (
+                    <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                      <div className="w-14 h-14 rounded-full bg-[#1F4B99] text-white flex items-center justify-center shadow-2xl transform transition-transform group-hover:scale-110">
+                        <Play size={24} className="fill-current ml-1" />
+                      </div>
                     </div>
-                    <p className="text-xs text-neutral-200 italic leading-snug line-clamp-2">
-                      "{isPlaying ? reel.subtitles[1] : reel.subtitles[0]}"
-                    </p>
+                  )}
+
+                  {/* 1.2s Pattern Interrupt Hook Banner Overlay */}
+                  <div className="absolute top-16 inset-x-3 z-20 pointer-events-none">
+                    <div className="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-center space-y-1 shadow-xl">
+                      <span className="text-[9px] font-black uppercase tracking-wider text-[#38bdf8] block">
+                        ⚡ 1.2s Pattern Interrupt Hook
+                      </span>
+                      <p className="text-xs sm:text-sm font-black text-white leading-snug drop-shadow-md">
+                        "{reel.hook}"
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Ambient Glow */}
-                  <div 
-                    className="absolute inset-0 opacity-20 pointer-events-none"
-                    style={{
-                      background: `radial-gradient(circle at 50% 50%, ${reel.accentColor} 0%, transparent 70%)`
-                    }}
-                  />
+                  {/* Bottom: Kinetic Subtitle Banner */}
+                  <div className="absolute bottom-3 inset-x-3 z-20 pointer-events-none">
+                    <div className="p-3 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 space-y-1 shadow-2xl">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="font-bold text-white flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] animate-pulse" />
+                          Kinetic Dynamic Captions
+                        </span>
+                        <span className="text-[9px] font-mono text-neutral-400">9:16 Format</span>
+                      </div>
+                      <p className="text-xs text-neutral-200 italic leading-snug line-clamp-2">
+                        "{reel.subtitles}"
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Subtle Dark Vignette */}
+                  <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
                 </div>
 
-                {/* Card Information: Clean, Minimal & High-Converting */}
+                {/* Card Info & CTA */}
                 <div className="space-y-3 pt-1">
                   <div>
-                    <h4 className="font-bold text-white text-base leading-tight">
+                    <h3 className="font-bold text-white text-base leading-tight">
                       {reel.formatTitle}
-                    </h4>
+                    </h3>
                     <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-bold mt-1">
                       <TrendingUp size={14} />
                       <span>{reel.metric}</span>
