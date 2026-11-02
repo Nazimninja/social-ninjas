@@ -13,6 +13,7 @@ const BORDER       = 'rgba(255, 255, 255, 0.08)';
 const navLinks = [
   { label: 'AI Products', path: '/ai-products' },
   { label: 'Services',    path: '/services' },
+  { label: 'Work Samples', path: '/samples' },
   { label: 'Free Tools',  path: '/tools' },
   { label: 'Blog',        path: '/blog' },
   { label: 'About',       path: '/about' },
