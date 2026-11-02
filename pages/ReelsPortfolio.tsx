@@ -15,7 +15,6 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  ShieldCheck,
   Zap,
   Check
 } from 'lucide-react';
@@ -31,12 +30,10 @@ interface ShowcaseReel {
   creator: string;
   title: string;
   views: string;
-  likes: string;
   retentionStat: string;
   videoSrc: string;
   cleanUrl: string;
   ctaMessage: string;
-  hookSummary: string;
 }
 
 const SHOWCASE_REELS: ShowcaseReel[] = [
@@ -47,12 +44,10 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     creator: '@9thgear_',
     title: 'BMW iX vs. Mercedes EQS Comparison',
     views: '52K+ Views',
-    likes: '1.4K Likes',
     retentionStat: '88% Hold Rate',
     videoSrc: '/videos/reel-luxury-automotive.mp4',
     cleanUrl: 'https://www.instagram.com/reel/DXZRFYTESme/',
-    ctaMessage: 'Hey Nazim, I love the Luxury Automotive Reel style on your samples page. Can we produce this for my brand?',
-    hookSummary: 'Micro-second sensory sound design + split-screen comparison stops high-intent luxury buyers in 0.8s.'
+    ctaMessage: 'Hey Nazim, I love the Luxury Automotive Reel style on your samples page. Can we produce this for my brand?'
   },
   {
     id: 'hook-strategy',
@@ -61,12 +56,10 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     creator: '@hellowjai',
     title: 'Saurabh Joshi Immediate Payoff Breakdown',
     views: '587K+ Views',
-    likes: '18.9K Likes',
     retentionStat: '92% 5s Retention',
     videoSrc: '/videos/reel-hook-strategy.mp4',
     cleanUrl: 'https://www.instagram.com/reel/Dey4nf4B3Wg/',
-    ctaMessage: 'Hey Nazim, I want high-retention hook strategy Reels like the one on your samples page. How do we start?',
-    hookSummary: 'Immediate climax payoff teaser in first 1.2s makes swiping away physically impossible.'
+    ctaMessage: 'Hey Nazim, I want high-retention hook strategy Reels like the one on your samples page. How do we start?'
   },
   {
     id: 'kinetic-explainer',
@@ -75,12 +68,10 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     creator: '@rohitiyerexplains',
     title: 'Mercedes Naming Decoded & Explained',
     views: '640K+ Plays',
-    likes: '79K+ Likes',
     retentionStat: '4.8x Re-watch Ratio',
     videoSrc: '/videos/reel-kinetic-explainer.mp4',
     cleanUrl: 'https://www.instagram.com/reel/DanU-jWK_bP/',
-    ctaMessage: 'Hey Nazim, I want kinetic educational explainers like the Rohit Iyer sample. Can we talk?',
-    hookSummary: 'Curiosity reframing + word-by-word motion typography that makes complex topics effortless to watch.'
+    ctaMessage: 'Hey Nazim, I want kinetic educational explainers like the Rohit Iyer sample. Can we talk?'
   },
   {
     id: 'brand-authority',
@@ -89,30 +80,28 @@ const SHOWCASE_REELS: ShowcaseReel[] = [
     creator: '@kccinstitutes',
     title: 'Marcus Aurelius: 5 Rules for Leadership',
     views: '309K+ Views',
-    likes: '38K Likes',
     retentionStat: '86% Completion Rate',
     videoSrc: '/videos/reel-brand-authority.mp4',
     cleanUrl: 'https://www.instagram.com/reel/Dcs_ND2vUsc/',
-    ctaMessage: 'Hey Nazim, I love the Brand Leadership Reel style on your samples page. Can we create this for my business?',
-    hookSummary: 'Executive gravitas pacing + atmospheric low-end audio that commands instant authority.'
+    ctaMessage: 'Hey Nazim, I love the Brand Leadership Reel style on your samples page. Can we create this for my business?'
   }
 ];
 
 const FAQS = [
   {
-    q: "I'm awkward on camera or don't know what to talk about. How do we solve that?",
-    a: "You don't need to guess. We give you 4 bulleted hook scripts tailored to your niche. You can record 15-second natural clips on your phone, or send raw footage of your work/clinic and our team will build faceless kinetic voiceover reels."
+    q: "I'm awkward on camera. How does this work?",
+    a: "You don't need to guess what to say. We give you 4 bulleted hook scripts tailored to your business. You can record 15-second natural clips, or send raw footage of your work and our team will build faceless kinetic voiceover reels."
   },
   {
-    q: "Do I need a professional camera or lighting setup?",
-    a: "No. Every reel on this page was recorded on standard iPhones and Android smartphones. Good natural window lighting is all you need — our retention editing, kinetic captions, and sound design do the rest."
+    q: "Do I need a professional camera?",
+    a: "No. Every reel on this page was recorded on a standard iPhone or Android phone. Natural window lighting is all you need — our retention editing, kinetic captions, and sound design do the rest."
   },
   {
-    q: "How do I send my raw footage to your team?",
-    a: "We give you a private Google Drive link. Just drag and drop your raw phone clips straight from your camera roll. No editing, sorting, or trimming needed."
+    q: "How do I send my raw footage?",
+    a: "We give you a private Google Drive link. Just drag and drop your raw phone clips straight from your camera roll. No editing or trimming needed."
   },
   {
-    q: "What if I need revisions or adjustments?",
+    q: "What if I need revisions?",
     a: "Every 4-Reel Starter Sprint includes 2 rounds of revisions. If you want a caption re-worded, a font adjusted, or a transition tweaked, we refine it promptly."
   }
 ];
@@ -140,7 +129,7 @@ const ReelsPortfolio: React.FC = () => {
     "Hey Nazim, I want to claim the 4-Reel Starter Sprint ($200) for my business. Can we talk?"
   )}`;
 
-  // Autoplay videos muted reliably
+  // Autoplay all videos muted reliably
   useEffect(() => {
     Object.entries(videoRefs.current).forEach(([_, video]) => {
       if (video) {
@@ -198,7 +187,6 @@ const ReelsPortfolio: React.FC = () => {
     const willBeMuted = !currentVideo.muted;
 
     if (!willBeMuted) {
-      // Unmuting one mutes all others to prevent sound clash
       Object.entries(videoRefs.current).forEach(([key, video]) => {
         if (video && key !== id) {
           video.muted = true;
@@ -225,8 +213,8 @@ const ReelsPortfolio: React.FC = () => {
   return (
     <div className="page-wrap bg-[#07090e] text-neutral-300 selection:bg-[#38bdf8] selection:text-black">
       <SEO
-        title="4-Reel Starter Sprint ($200) | Social Ninja's Work Samples"
-        description="High-retention Reels engineered from raw phone video with pattern-interrupt hooks, kinetic typography, and multi-track sound design. One simple $200 test sprint."
+        title="4-Reel Starter Sprint ($200) | Social Ninja's"
+        description="Turn raw phone clips into high-retention Reels that convert scrollers into clients. Claim the $200 4-Reel Starter Sprint with 10-day delivery."
         faq={FAQS}
         service={{
           name: "4-Reel Starter Sprint",
@@ -236,33 +224,33 @@ const ReelsPortfolio: React.FC = () => {
         }}
       />
 
-      {/* ─── MOBILE-OPTIMIZED HERO: STRAIGHT, CLEAR & COMPELLING ─── */}
+      {/* ─── HERO SECTION: SPACIOUS, CLEAN, ZERO CLUTTER ─── */}
       <AuroraBackground className="pt-28 pb-12 sm:pt-36 sm:pb-20 border-b border-white/[0.08]">
-        <div className="max-w-[800px] mx-auto px-4 sm:px-6 text-center space-y-5">
+        <div className="max-w-[760px] mx-auto px-5 text-center space-y-4">
           
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101422] border border-[#38bdf8]/30 text-[#38bdf8] text-xs font-bold tracking-wider uppercase shadow-md shadow-[#38bdf8]/5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101422] border border-[#38bdf8]/30 text-[#38bdf8] text-xs font-bold tracking-wider uppercase">
             <Sparkles size={13} className="text-[#38bdf8]" />
-            4-Reel Starter Sprint • $200 Flat
+            4-Reel Starter Sprint • $200
           </div>
 
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.12]">
-            High-Retention Reels That Turn <br />
+            Turn Raw Phone Videos Into <br />
             <span className="bg-gradient-to-r from-white via-neutral-100 to-[#38bdf8] bg-clip-text text-transparent">
-              Scrollers Into Paying Clients.
+              Paying Clients.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base text-neutral-300 max-w-xl mx-auto leading-relaxed">
-            You shoot 15-second raw clips on your phone. We research the hooks, edit with kinetic subtitles, and mix Hollywood sound design that fills your DM calendar.
+          <p className="text-sm sm:text-base text-neutral-300 max-w-lg mx-auto leading-relaxed pt-1">
+            Send us 15-second raw clips from your phone. We script viral hooks, add kinetic subtitles, and mix sound design that fills your DM calendar.
           </p>
 
-          {/* Direct Mobile Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          {/* Primary Action Button */}
+          <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a href="#claim-sprint" className="w-full sm:w-auto">
-              <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] shadow-lg shadow-[#1F4B99]/30 text-white px-7 py-3.5">
+              <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white px-8 py-3.5 shadow-lg shadow-[#1F4B99]/30">
                 Claim 4-Reel Sprint ($200) <ArrowRight size={16} />
               </ShinyButton>
             </a>
@@ -277,27 +265,27 @@ const ReelsPortfolio: React.FC = () => {
             </a>
           </div>
 
-          {/* 3 Clear Guarantees */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-neutral-400 font-medium">
+          {/* 3 Simple Trust Pills */}
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 text-xs text-neutral-400 font-medium">
             <span className="flex items-center gap-1.5 bg-[#0e121d] px-3 py-1.5 rounded-lg border border-white/[0.06]">
-              <CheckCircle2 size={14} className="text-[#38bdf8]" /> Shot on Phone
+              <CheckCircle2 size={13} className="text-[#38bdf8]" /> Shot on Phone
             </span>
             <span className="flex items-center gap-1.5 bg-[#0e121d] px-3 py-1.5 rounded-lg border border-white/[0.06]">
-              <CheckCircle2 size={14} className="text-[#38bdf8]" /> 10-Day Turnaround
+              <CheckCircle2 size={13} className="text-[#38bdf8]" /> 10-Day Delivery
             </span>
             <span className="flex items-center gap-1.5 bg-[#0e121d] px-3 py-1.5 rounded-lg border border-white/[0.06]">
-              <CheckCircle2 size={14} className="text-[#38bdf8]" /> Zero Retainer Lock-In
+              <CheckCircle2 size={13} className="text-[#38bdf8]" /> Zero Retainer Lock-In
             </span>
           </div>
 
         </div>
       </AuroraBackground>
 
-      {/* ─── LIVE AUTOPLAYING SAMPLES: OPTIMIZED FOR MOBILE SWIPE ─── */}
-      <section className="py-12 sm:py-20 max-w-[1140px] mx-auto px-4 sm:px-6 space-y-6">
+      {/* ─── LIVE AUTOPLAYING SAMPLES: CLEAN MOBILE SWIPE ─── */}
+      <section className="py-12 sm:py-20 max-w-[1140px] mx-auto px-4 sm:px-6 space-y-5">
         
         {/* Section Header */}
-        <div className="flex items-end justify-between gap-4 max-w-4xl">
+        <div className="flex items-end justify-between gap-4 max-w-4xl px-1">
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8] flex items-center gap-1.5">
               <Zap size={13} />
@@ -307,7 +295,7 @@ const ReelsPortfolio: React.FC = () => {
               Swipe to See the Retention Edits
             </h2>
             <p className="text-xs text-neutral-400">
-              Tap the audio button to hear the sound design. Swipe horizontally to view all 4 formats.
+              Tap audio button on any reel to hear the sound design.
             </p>
           </div>
 
@@ -336,7 +324,7 @@ const ReelsPortfolio: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile-First Swipe Carousel */}
+        {/* Swipe Carousel */}
         <div 
           ref={carouselRef}
           onScroll={handleScroll}
@@ -350,12 +338,12 @@ const ReelsPortfolio: React.FC = () => {
             return (
               <div 
                 key={reel.id}
-                className="w-[84vw] sm:w-[320px] md:w-[330px] shrink-0 snap-center"
+                className="w-[82vw] sm:w-[320px] md:w-[330px] shrink-0 snap-center"
               >
-                <SpotlightCard className="p-4 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-3.5 flex flex-col justify-between hover:border-[#38bdf8]/30 transition-all shadow-xl h-full">
+                <SpotlightCard className="p-3.5 bg-[#0e121d] border border-white/[0.08] rounded-3xl space-y-3 flex flex-col justify-between hover:border-[#38bdf8]/30 transition-all shadow-xl h-full">
                   
                   {/* Top Header */}
-                  <div className="flex items-center justify-between pb-0.5">
+                  <div className="flex items-center justify-between pb-0.5 px-0.5">
                     <span className="px-2.5 py-1 rounded-full font-bold text-[10px] tracking-wider uppercase bg-[#101422] text-[#38bdf8] border border-[#38bdf8]/30">
                       {reel.category}
                     </span>
@@ -370,7 +358,7 @@ const ReelsPortfolio: React.FC = () => {
                     </a>
                   </div>
 
-                  {/* 9:16 Smartphone Mockup with Real Autoplaying Video */}
+                  {/* 9:16 Video Frame */}
                   <div 
                     onClick={() => togglePlay(reel.id)}
                     className="relative aspect-[9/16] w-full rounded-2xl overflow-hidden border border-white/[0.12] bg-black shadow-2xl cursor-pointer group select-none"
@@ -391,7 +379,7 @@ const ReelsPortfolio: React.FC = () => {
                       className="w-full h-full object-cover rounded-2xl"
                     />
 
-                    {/* Top Floating Sound Toggle Pill */}
+                    {/* Audio Toggle Button */}
                     <div className="absolute top-3 right-3 z-20">
                       <button
                         onClick={(e) => toggleMute(reel.id, e)}
@@ -419,7 +407,7 @@ const ReelsPortfolio: React.FC = () => {
                       </button>
                     </div>
 
-                    {/* Centered Play Indicator When Video Is Paused */}
+                    {/* Pause Overlay */}
                     {!isPlaying && (
                       <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-[2px]">
                         <div className="w-12 h-12 rounded-full bg-[#1F4B99] text-white flex items-center justify-center shadow-xl">
@@ -428,7 +416,7 @@ const ReelsPortfolio: React.FC = () => {
                       </div>
                     )}
 
-                    {/* In-Video Metric Overlay */}
+                    {/* Bottom In-Video Metric Overlay */}
                     <div className="absolute bottom-3 inset-x-3 z-20 pointer-events-none">
                       <div className="p-2.5 rounded-xl bg-black/85 backdrop-blur-md border border-white/10 space-y-0.5 shadow-xl">
                         <div className="font-bold text-white text-xs truncate leading-snug">
@@ -447,24 +435,16 @@ const ReelsPortfolio: React.FC = () => {
                     <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
                   </div>
 
-                  {/* Hook Summary Note */}
-                  <div className="p-2.5 rounded-xl bg-[#101422] border border-[#38bdf8]/20 text-[11px] text-neutral-300 leading-snug">
-                    <strong className="text-[#38bdf8]">Hook: </strong>
-                    {reel.hookSummary}
-                  </div>
-
-                  {/* Direct WhatsApp Action for this specific style */}
-                  <div>
-                    <a
-                      href={`https://wa.me/918147757479?text=${encodeURIComponent(reel.ctaMessage)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold bg-[#1F4B99] hover:bg-[#153880] text-white shadow-md shadow-[#1F4B99]/20 transition-all active:scale-[0.98]"
-                    >
-                      <MessageCircle size={13} />
-                      Order This Style on WhatsApp
-                    </a>
-                  </div>
+                  {/* Direct WhatsApp Action */}
+                  <a
+                    href={`https://wa.me/918147757479?text=${encodeURIComponent(reel.ctaMessage)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold bg-[#1F4B99] hover:bg-[#153880] text-white shadow-md shadow-[#1F4B99]/20 transition-all active:scale-[0.98]"
+                  >
+                    <MessageCircle size={13} />
+                    Order This Style on WhatsApp
+                  </a>
 
                 </SpotlightCard>
               </div>
@@ -490,47 +470,47 @@ const ReelsPortfolio: React.FC = () => {
 
       </section>
 
-      {/* ─── HOW IT WORKS (15 MINS OF YOUR WEEK) ─── */}
-      <section className="py-14 bg-[#0c0e15] border-y border-white/[0.08]">
-        <div className="max-w-[800px] mx-auto px-4 sm:px-6 space-y-8">
+      {/* ─── 3 STEPS: 15 MINS OF YOUR WEEK ─── */}
+      <section className="py-12 bg-[#0c0e15] border-y border-white/[0.08]">
+        <div className="max-w-[760px] mx-auto px-5 space-y-6">
           
-          <div className="text-center space-y-1.5">
+          <div className="text-center space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
-              Zero Friction Workflow
+              Zero Friction Process
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
+            <h2 className="text-xl sm:text-2xl font-black text-white">
               How It Works (15 Mins Of Your Week)
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-4 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-1.5">
+              <div className="w-7 h-7 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
                 01
               </div>
-              <h3 className="font-bold text-white text-sm">Shoot on Your Phone</h3>
+              <h3 className="font-bold text-white text-sm">Shoot on Phone</h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                We send you 4 bulleted hook concepts. You shoot quick raw clips on your phone during regular appointments or office hours.
+                We send you 4 bullet hook ideas. You shoot quick raw clips on your phone.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
+            <div className="p-4 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-1.5">
+              <div className="w-7 h-7 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
                 02
               </div>
               <h3 className="font-bold text-white text-sm">Drop into Google Drive</h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Upload raw clips to your private folder. No editing, no trimming, and no video software required.
+                Upload raw clips to your private folder. No editing or trimming needed.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
+            <div className="p-4 rounded-2xl bg-[#0e121d] border border-white/[0.08] space-y-1.5">
+              <div className="w-7 h-7 rounded-lg bg-[#1F4B99]/20 text-[#38bdf8] flex items-center justify-center font-bold text-xs">
                 03
               </div>
               <h3 className="font-bold text-white text-sm">Get 4 Finished Reels</h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Within 10 days, all 4 high-retention Reels are delivered with captions and audio links ready to publish.
+                Delivered in 10 days with captions and trending sound links ready to post.
               </p>
             </div>
           </div>
@@ -538,130 +518,106 @@ const ReelsPortfolio: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── THE SINGLE $200 STARTER SPRINT OFFER (ZERO CONFUSION) ─── */}
-      <section id="claim-sprint" className="py-16 sm:py-24 max-w-[800px] mx-auto px-4 sm:px-6">
+      {/* ─── THE SINGLE $200 STARTER SPRINT OFFER: CLEAN, MINIMAL & FOCUSED ─── */}
+      <section id="claim-sprint" className="py-16 sm:py-24 max-w-[620px] mx-auto px-5 scroll-mt-24">
         
-        <SpotlightCard className="p-6 sm:p-10 bg-[#0e121d] border-2 border-[#38bdf8] rounded-3xl shadow-2xl relative overflow-hidden space-y-6">
+        <SpotlightCard className="p-6 sm:p-8 bg-[#0e121d] border-2 border-[#38bdf8] rounded-3xl shadow-2xl relative space-y-6">
           
           {/* Header */}
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2.5">
-              <span className="px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-[#38bdf8] text-[#07090e] shadow-md shadow-[#38bdf8]/30">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#38bdf8] text-[#07090e]">
                 ★ 4-Reel Starter Sprint
               </span>
-              <span className="text-xs font-mono text-neutral-300 flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-full border border-white/10">
+              <span className="text-xs font-mono text-neutral-300 flex items-center gap-1">
                 <Clock size={12} className="text-[#38bdf8]" />
-                10-Day Turnaround Guarantee
+                10-Day Delivery
               </span>
             </div>
 
-            <div>
-              <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                Test Our Creative Standard Before Any Retainer.
-              </h2>
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1.5 leading-relaxed">
-                Get 4 high-retention Reels produced for your business with zero monthly lock-in or agency contracts.
-              </p>
-            </div>
-          </div>
-
-          {/* Pricing Box */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#07090e] border border-white/[0.08] flex items-baseline justify-between flex-wrap gap-2">
-            <div className="flex items-baseline gap-2.5">
-              <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">$200</span>
-              <span className="text-neutral-400 text-xs sm:text-sm">flat one-time (approx. ₹16,500)</span>
-            </div>
-            <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-400/20">
-              No Monthly Retainer
-            </span>
-          </div>
-
-          {/* Included Deliverables Checklist */}
-          <div className="space-y-2.5 text-xs sm:text-sm text-neutral-200">
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>4 Custom 9:16 High-Retention Reels</strong> from your raw phone clips</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>Viral Hook Scripting &amp; Angle Research</strong> (we write what stops the scroll)</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>Kinetic Typography &amp; Subtitles</strong> with glowing keyword emphasis</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>Multi-Layer Sound Design</strong> (sub-drops, swooshes &amp; licensed trending audio)</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>10-Day Delivery Guarantee</strong> with master 4K exports</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>2 Iterative Revision Rounds</strong> included until brand-aligned</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>Full Commercial Usage Rights</strong> for organic posting &amp; paid Meta Ads</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0 mt-0.5" />
-              <span><strong>Ready-to-Post Captions</strong> and curated hashtag sets</span>
-            </div>
-          </div>
-
-          {/* Guarantee Note */}
-          <div className="p-3.5 rounded-2xl bg-[#101422] border border-[#38bdf8]/30 flex items-start gap-3">
-            <ShieldCheck size={20} className="text-[#38bdf8] shrink-0 mt-0.5" />
-            <p className="text-xs text-neutral-300 leading-relaxed">
-              <strong>Risk-Free Creative Test:</strong> We don't believe in locking clients into $2,000/mo retainers upfront. Test our hooks and retention editing on a single batch of 4 Reels first.
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight pt-1">
+              Test Our Quality First.
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400">
+              Get 4 high-retention Reels produced for your business with zero monthly lock-in or agency contracts.
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row gap-3">
+          {/* Pricing Box */}
+          <div className="p-4 rounded-2xl bg-[#07090e] border border-white/[0.08] flex items-baseline justify-between flex-wrap gap-2">
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl font-black text-white">$200</span>
+              <span className="text-neutral-400 text-xs">flat one-time (approx. ₹16,500)</span>
+            </div>
+            <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full border border-emerald-400/20">
+              No Retainer
+            </span>
+          </div>
+
+          {/* Clean 4-Bullet Checklist */}
+          <div className="space-y-2.5 text-xs sm:text-sm text-neutral-200">
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+              <span><strong>4 Custom 9:16 High-Retention Reels</strong> from phone clips</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+              <span><strong>Viral Hook Scripting &amp; Concepts</strong> tailored to your niche</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+              <span><strong>Kinetic Dynamic Subtitles</strong> &amp; multi-layer sound design</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
+              <span><strong>10-Day Turnaround Guarantee</strong> with 2 revision rounds</span>
+            </div>
+          </div>
+
+          {/* Clean CTA */}
+          <div className="pt-2 space-y-3">
             <a 
               href={whatsappDirectUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1"
+              className="block"
             >
-              <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white py-4 shadow-xl">
+              <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white py-3.5 shadow-xl">
                 <MessageCircle size={16} />
                 Claim 4-Reel Sprint on WhatsApp
               </ShinyButton>
             </a>
-            <a 
-              href="https://ig.me/m/nazim_ninja" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-sm font-bold bg-[#121724] hover:bg-[#182136] border border-white/[0.08] text-white transition-colors"
-            >
-              <Smartphone size={16} className="text-[#38bdf8]" />
-              DM on Instagram
-            </a>
+            <div className="text-center">
+              <a 
+                href="https://ig.me/m/nazim_ninja" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-white transition-colors"
+              >
+                <Smartphone size={13} className="text-[#38bdf8]" />
+                Or DM on Instagram (@nazim_ninja)
+              </a>
+            </div>
           </div>
 
         </SpotlightCard>
 
       </section>
 
-      {/* ─── SHORT OBJECTION-BUSTING FAQ ─── */}
-      <section className="py-14 bg-[#0c0e15] border-t border-white/[0.08]">
-        <div className="max-w-[800px] mx-auto px-4 sm:px-6 space-y-6">
+      {/* ─── SHORT OBJECTION FAQ ─── */}
+      <section className="py-12 bg-[#0c0e15] border-t border-white/[0.08]">
+        <div className="max-w-[620px] mx-auto px-5 space-y-5">
           
           <div className="text-center space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-[#38bdf8]">
               Common Questions
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
+            <h2 className="text-xl sm:text-2xl font-black text-white">
               Frequently Asked Questions
             </h2>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {FAQS.map((faq, idx) => {
               const isOpen = activeFaq === idx;
               return (
@@ -675,11 +631,11 @@ const ReelsPortfolio: React.FC = () => {
                   >
                     <span>{faq.q}</span>
                     <span className="text-neutral-400 shrink-0">
-                      {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      {isOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-4 pb-4 pt-1 text-xs text-neutral-300 leading-relaxed border-t border-white/[0.04]">
+                    <div className="px-4 pb-4 pt-0 text-xs text-neutral-300 leading-relaxed border-t border-white/[0.04]">
                       {faq.a}
                     </div>
                   )}
@@ -692,40 +648,18 @@ const ReelsPortfolio: React.FC = () => {
       </section>
 
       {/* ─── FINAL FOOTER CTA ─── */}
-      <div className="py-16 bg-gradient-to-t from-black to-[#07090e] border-t border-white/[0.08] text-center space-y-5 px-4">
-        <h3 className="text-2xl sm:text-3xl font-black text-white max-w-lg mx-auto">
+      <div className="py-14 bg-gradient-to-t from-black to-[#07090e] border-t border-white/[0.08] text-center space-y-4 px-5 pb-20">
+        <h3 className="text-xl sm:text-2xl font-black text-white max-w-md mx-auto">
           Ready to turn phone clips into booked clients?
         </h3>
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center pt-1">
           <a href={whatsappDirectUrl} target="_blank" rel="noopener noreferrer">
             <ShinyButton variant="primary" className="text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white px-7 py-3.5">
-              <MessageCircle size={16} />
-              Message Nazim on WhatsApp (+91 81477 57479)
+              <MessageCircle size={15} />
+              Message Nazim on WhatsApp
             </ShinyButton>
           </a>
         </div>
-      </div>
-
-      {/* ─── MOBILE STICKY BOTTOM CONVERSION BAR ─── */}
-      <div className="fixed bottom-3 inset-x-3 sm:hidden z-50 bg-[#0e121d]/95 backdrop-blur-xl border border-[#38bdf8]/40 rounded-2xl p-2.5 shadow-2xl shadow-black/80 flex items-center justify-between gap-2.5">
-        <div className="space-y-0.5 truncate pl-1">
-          <div className="text-xs font-black text-white flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            4-Reel Starter: $200
-          </div>
-          <div className="text-[10px] text-neutral-400 truncate">
-            10-Day Turnaround • No Retainer
-          </div>
-        </div>
-        <a
-          href={whatsappDirectUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-[#1F4B99] text-white shrink-0 shadow-md shadow-[#1F4B99]/30"
-        >
-          <MessageCircle size={13} />
-          Claim Sprint
-        </a>
       </div>
 
     </div>
