@@ -5,7 +5,6 @@ import {
   MessageCircle, 
   Smartphone, 
   Clock, 
-  ShieldCheck, 
   Sparkles,
   ExternalLink,
   TrendingUp,
@@ -194,7 +193,7 @@ const ReelsPortfolio: React.FC = () => {
     <div className="page-wrap bg-[#07090e] text-neutral-300 selection:bg-[#38bdf8] selection:text-black">
       <SEO
         title="High-Retention Reels Studio & Mobile Showcase | Social Ninja's"
-        description="Experience real high-retention video edits with instant autoplay and kinetic sound design. Swipe through our 4 proven formats and claim the $200 4-Reel Trial."
+        description="Experience real high-retention video edits with instant autoplay and kinetic sound design. Swipe through our 4 proven formats and test the $200 4-Reel Starter Sprint."
       />
 
       {/* ─── HERO SECTION ─── */}
@@ -238,10 +237,10 @@ const ReelsPortfolio: React.FC = () => {
               <CheckCircle2 size={15} className="text-[#38bdf8]" /> Shot on Standard Phone
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={15} className="text-[#38bdf8]" /> 10-Day Guaranteed Delivery
+              <CheckCircle2 size={15} className="text-[#38bdf8]" /> 10-Day Delivery Turnaround
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={15} className="text-[#38bdf8]" /> 100% Money-Back Guarantee
+              <CheckCircle2 size={15} className="text-[#38bdf8]" /> Zero Retainer Lock-In
             </span>
           </div>
         </div>
@@ -500,7 +499,7 @@ const ReelsPortfolio: React.FC = () => {
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-[#38bdf8] text-[#07090e] shadow-md shadow-[#38bdf8]/20">
-                ★ 4-Reel Starter Trial
+                ★ 4-Reel Starter Sprint
               </span>
               <span className="text-xs font-mono text-neutral-400 flex items-center gap-1.5">
                 <Clock size={13} className="text-[#38bdf8]" />
@@ -510,10 +509,10 @@ const ReelsPortfolio: React.FC = () => {
 
             <div>
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-                Test Our Creative Quality With Zero Risk.
+                Test Our Creative Standard Before Any Retainer.
               </h2>
               <p className="text-sm text-neutral-400 mt-2">
-                Get 4 high-retention Reels produced for your business before considering any long-term retainer.
+                Get 4 high-retention Reels produced for your business with zero monthly lock-in or agency contracts.
               </p>
             </div>
           </div>
@@ -525,7 +524,7 @@ const ReelsPortfolio: React.FC = () => {
               <span className="text-neutral-400 text-sm">flat one-time (approx. ₹16,500)</span>
             </div>
             <span className="text-xs font-semibold text-[#38bdf8]">
-              No Recurring Charge
+              No Monthly Retainer
             </span>
           </div>
 
@@ -545,27 +544,27 @@ const ReelsPortfolio: React.FC = () => {
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-              <span><strong>10-Day Guaranteed Delivery</strong></span>
+              <span><strong>10-Day Delivery Turnaround</strong></span>
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-              <span><strong>48-Hour Revisions</strong> included</span>
+              <span><strong>Dedicated Revisions Included</strong> until brand aligned</span>
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 size={16} className="text-[#38bdf8] shrink-0" />
-              <span><strong>100% Money-Back Guarantee</strong></span>
+              <span><strong>Full Commercial Usage Rights</strong> &amp; exports</span>
             </div>
           </div>
 
-          {/* 100% Guarantee Box */}
-          <div className="p-4 rounded-2xl bg-[#101422] border border-[#38bdf8]/30 flex items-start gap-3.5">
-            <ShieldCheck size={24} className="text-[#38bdf8] shrink-0 mt-0.5" />
+          {/* Conversion & Value Proof Callout */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#101422] border border-[#38bdf8]/30 flex items-start gap-3.5">
+            <Sparkles size={24} className="text-[#38bdf8] shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-                100% "Love It Or Get Refunded" Guarantee
+                Why Start With A 4-Reel Starter Sprint?
               </h4>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                If you review the first finished Reel and feel the quality doesn't match your brand, we will refund your $200 immediately. No questions asked.
+                Most agencies push expensive $2,000/mo retainers and 6-month lock-in contracts upfront. We don't. We let you test our scripting, kinetic typography, and production speed on a single batch of 4 Reels. You only scale into a monthly retainer when you see real viewer retention and DM inquiries.
               </p>
             </div>
           </div>
@@ -581,7 +580,7 @@ const ReelsPortfolio: React.FC = () => {
               >
                 <ShinyButton variant="primary" className="w-full text-sm font-bold bg-[#1F4B99] hover:bg-[#153880] text-white">
                   <MessageCircle size={16} />
-                  Start 4-Reel Trial on WhatsApp
+                  Start 4-Reel Sprint on WhatsApp
                 </ShinyButton>
               </a>
               <a 
