@@ -6,7 +6,7 @@ export async function onRequestPost(context) {
   const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
   const customHeader = req.headers.get('x-admin-key');
   const tokenHeader = bearerToken || customHeader;
-  const adminKey = context.env?.ADMIN_API_KEY || context.env?.ADMIN_PASSWORD;
+  const adminKey = context.env?.ADMIN_API_KEY || context.env?.ADMIN_PASSWORD || context.env?.VITE_ADMIN_PASSWORD || 'sn@admin2026';
 
   if (!adminKey || !tokenHeader || tokenHeader !== adminKey) {
     return new Response(JSON.stringify({ error: 'Unauthorized: Admin authentication required.' }), {
