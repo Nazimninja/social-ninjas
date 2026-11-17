@@ -80,11 +80,15 @@
 
 ## 6. Marketing Automation & n8n Workflows
 
-- **Daily LinkedIn Publisher (`NazimOS Publisher`, ID `ztKys5j4Ug21IEud`)**:
-  - Cron trigger: `30 9 * * *` (Daily at 9:30 AM IST).
-  - Processes scheduled PDF carousels & single images, generates high-res PNGs, and posts to LinkedIn.
-- **Multi-Platform Monitor / Lead Automation (`Flow 5 — Multi-Platform Monitor`, ID `HoTCsqjXSFoQnJb4`)**:
-  - Always configure n8n schedule triggers using standard cron expressions to prevent engine schedule parameter validation errors.
+- **Active Production Workflows (Streamlined on Railway)**:
+  1. **Content Distribution (`NazimOS Publisher`, ID `ztKys5j4Ug21IEud`)**:
+     - Cron trigger: `30 9 * * *` (Daily at 9:30 AM IST).
+     - Processes scheduled PDF carousels & single images, generates high-res PNGs, and posts to LinkedIn.
+  2. **Fit Ninja Auto Onboard (`Fit Ninja Pro — Automated WhatsApp Welcome & Setup Guide`, ID `8ViQQiNq4COBGjyL`)**:
+     - Webhook trigger: `/webhook/fitninja-welcome` (called by `api/razorpay-webhook.js`).
+     - Dispatches instant personalized onboarding guide and routine access via Evolution API.
+- **Decommissioned / Inactive**:
+  - `Flow 5 — Multi-Platform Monitor` and `NazimOS — Sunday Scripts`: Deactivated. Lead search and outbound prospecting are handled exclusively by **Muse AI**.
 
 ---
 
