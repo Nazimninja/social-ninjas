@@ -621,6 +621,102 @@ Source: ${lead.source}`
     }
 });
 
+// ─────────────────────────────────────────────────────────────────
+// J.A.R.V.I.S. 2-Way Conversational WhatsApp Engine
+// ─────────────────────────────────────────────────────────────────
+app.post('/api/jarvis-chat', async (req, res) => {
+    try {
+        const body = req.body || {};
+        const data = body.data || {};
+        const key = data.key || {};
+        const remoteJid = key.remoteJid || '';
+        const fromMe = Boolean(key.fromMe);
+
+        const messageObj = data.message || {};
+        const incomingText = (messageObj.conversation || messageObj.extendedTextMessage?.text || '').trim();
+
+        if (!incomingText || incomingText.startsWith('🤖') || incomingText.startsWith('🚨')) {
+            return res.json({ status: 'ignored' });
+        }
+
+        const senderNumber = remoteJid.replace(/@.*$/, '');
+        const adminPhone = process.env.ADMIN_WHATSAPP_NUMBER || '918147757479';
+        const isFromAdmin = senderNumber.includes(adminPhone) || senderNumber === adminPhone || (fromMe && senderNumber.includes(adminPhone));
+        const mentionsJarvis = incomingText.toLowerCase().includes('jarvis');
+
+        if (!isFromAdmin && !mentionsJarvis) {
+            return res.json({ status: 'unauthorized_sender', senderNumber });
+        }
+
+        // Live pipeline context from Supabase
+        const CRM_URL = process.env.SUPABASE_CRM_URL || process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
+        const CRM_KEY = process.env.SUPABASE_CRM_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SUPABASE_KEY;
+
+        let pipelineSummary = 'No recent leads found.';
+        try {
+            const leadsRes = await fetch(`${CRM_URL}/rest/v1/leads?select=*&order=created_at.desc&limit=5`, {
+                headers: { 'apikey': CRM_KEY, 'Authorization': `Bearer ${CRM_KEY}` }
+            });
+            if (leadsRes.ok) {
+                const leads = await leadsRes.json();
+                const uncontacted = leads.filter(l => (l.status || '').toLowerCase().includes('new') || (l.status || '').toLowerCase().includes('hot')).length;
+                pipelineSummary = `Total Recent Leads: ${leads.length}, Uncontacted/Hot: ${uncontacted}. Latest: ${leads[0]?.name || 'None'}`;
+            }
+        } catch (_) {}
+
+        // AI Reasoning via Groq Qwen 3.8
+        const groqKey = process.env.GROQ_API_KEY || '';
+        let replyText = "Sir, I have received your directive. All systems across Social Ninja's and Fit Ninja are running smoothly.";
+
+        if (groqKey) {
+            try {
+                const systemPrompt = `You are J.A.R.V.I.S., the executive AI intelligence and second brain for Nazim, founder of Social Ninja's (socialninjas.in) and Fit Ninja (fit.socialninjas.in).
+Context:
+- Live Pipeline: ${pipelineSummary}
+- Active Systems: Railway n8n (Content Distribution at 9:30 AM IST, Fit Ninja Onboarding), Evolution API WhatsApp, Cloudflare Pages, Supabase CRM.
+- Style: Crisp, authoritative, highly competent, concise, executive tone.
+- WhatsApp format: Keep under 3-4 short paragraphs or bullet points. Use WhatsApp bold formatting like *this*. Always begin with 🤖.
+- If asked about leads, report from live pipeline context.
+- If asked to brainstorm or draft a hook/script, give an immediate, high-converting draft.`;
+
+                const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${groqKey}` },
+                    body: JSON.stringify({
+                        model: 'qwen/qwen3.8-27b',
+                        temperature: 0.3,
+                        max_tokens: 600,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: incomingText }
+                        ]
+                    })
+                });
+
+                if (groqRes.ok) {
+                    const groqData = await groqRes.json();
+                    replyText = groqData.choices?.[0]?.message?.content || replyText;
+                }
+            } catch (_) {}
+        }
+
+        // Send reply back via Evolution API
+        const evoApiUrl = process.env.EVOLUTION_API_URL || 'https://evolution-api-production-b3d9.up.railway.app';
+        const evoApiKey = process.env.EVOLUTION_API_KEY || 'NinjaFitSecret2026';
+        const evoInstance = process.env.EVOLUTION_INSTANCE || 'fitninja';
+
+        await fetch(`${evoApiUrl}/message/sendText/${evoInstance}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'apikey': evoApiKey },
+            body: JSON.stringify({ number: senderNumber || adminPhone, text: replyText })
+        });
+
+        res.json({ success: true, replySent: true });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
