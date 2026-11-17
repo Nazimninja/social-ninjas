@@ -219,6 +219,24 @@ const Contact: React.FC = () => {
                         console.warn('FormSubmit note:', fsErr);
                       }
 
+                      // 3. Trigger J.A.R.V.I.S. autonomous qualification & instant dispatcher
+                      try {
+                        await fetch('/api/jarvis', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            name: fullName.trim(),
+                            email: email.trim(),
+                            phone: phone.trim() || null,
+                            budget: budget,
+                            goals: goals || 'Strategy session inquiry',
+                            source: productKey ? `waitlist-${productKey}` : 'main-contact-page'
+                          })
+                        });
+                      } catch (jErr) {
+                        console.warn('J.A.R.V.I.S. trigger note:', jErr);
+                      }
+
                       // 3. Track conversion event
                       if (typeof window !== 'undefined') {
                         if ((window as any).gtag) {
