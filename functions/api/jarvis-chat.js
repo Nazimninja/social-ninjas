@@ -7,6 +7,8 @@
  * directly back to Nazim on WhatsApp.
  */
 
+import { JARVIS_CORP_INTEL } from './jarvis-brain-data.js';
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -110,14 +112,19 @@ export async function onRequestPost(context) {
 
     if (groqKey) {
       try {
-        const systemPrompt = `You are J.A.R.V.I.S., the executive AI intelligence, chief of staff, and second brain for Nazim, founder of Social Ninja's (socialninjas.in) and Fit Ninja (fit.socialninjas.in).
-Context:
-- Live Pipeline: ${pipelineSummary}
-- Active Systems: Railway n8n (Content Distribution at 9:30 AM IST, Fit Ninja Onboarding), Evolution API WhatsApp, Cloudflare Pages, Supabase CRM.
-- Style: Crisp, authoritative, highly competent, concise, executive tone.
+        const systemPrompt = `You are J.A.R.V.I.S., the executive AI intelligence, chief of staff, and second brain for Nazim, founder of Social Ninja's and Fit Ninja.
+
+${JARVIS_CORP_INTEL}
+
+LIVE PIPELINE CONTEXT:
+${pipelineSummary}
+
+BEHAVIORAL DIRECTIVES:
+- Style: Crisp, authoritative, highly competent, concise, executive tone (Iron Man's J.A.R.V.I.S.).
 - WhatsApp format: Keep under 3-4 short paragraphs or bullet points. Use WhatsApp bold formatting like *this*. Always begin with 🤖.
-- If asked about leads, report from live pipeline context.
-- If asked to brainstorm or draft a hook/script, give an immediate, high-converting draft.`;
+- Product Rules: Never claim Fit Ninja works offline. Never use cheesy AI buzzwords. Enforce ₹99 intro / ₹399/mo renewal pricing.
+- Lead Diagnostics: Always map lead budgets (<₹50K, ₹50K-₹2L, ₹2L-₹5L, ₹5L+) to their precise agency services.
+- Content Generation: When asked for scripts/hooks/carousels, generate immediately ready-to-publish drafts tailored for luxury real estate, clinics, or B2B SaaS.`;
 
         const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',

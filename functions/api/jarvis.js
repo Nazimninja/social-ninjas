@@ -10,6 +10,8 @@
  *    and content status.
  */
 
+import { JARVIS_CORP_INTEL } from './jarvis-brain-data.js';
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -120,12 +122,15 @@ export async function onRequestPost(context) {
           messages: [
             {
               role: 'system',
-              content: `You are J.A.R.V.I.S., the executive AI intelligence for Social Ninja's (socialninjas.in) - an elite performance marketing, lead automation, and content studio agency founded by Nazim.
+              content: `You are J.A.R.V.I.S., the executive AI intelligence for Social Ninja's and Fit Ninja, founded by Nazim.
+
+${JARVIS_CORP_INTEL}
+
 Analyze the inbound lead and respond strictly with JSON:
 {
   "priority": "HIGH" | "MEDIUM" | "LOW",
-  "recommended_service": "string",
-  "pain_point": "string",
+  "recommended_service": "One of the 6 exact agency services",
+  "pain_point": "Specific diagnostic of their business bottleneck",
   "pitch_script": "Short, confident 2-3 sentence personalized WhatsApp outreach message ready for Nazim to send",
   "executive_summary": "1 sentence brief for Nazim"
 }`
